@@ -1,0 +1,102 @@
+Write and add Chapter 7: The Last Archive.
+
+Connect this chapter from Chapter 6 using CHAPTER_6_AUDIT.md.
+
+Add at least 95 connected story nodes.
+
+Chapter 7 title:
+The Last Archive
+
+Main theme:
+Forbidden knowledge, memory, truth, history, lies, and the cost of knowing too much.
+
+The Last Archive is a hidden order preserving old-world knowledge, relic research, banned records, and the truth behind the blackout.
+
+Main locations:
+- The Door Without a Name
+- The Dust Library
+- The Memory Vault
+- The Ink Chapel
+- The Broken Observatory
+- The Relic Map Room
+- The Forbidden Stacks
+- The Archive Tribunal
+- The Hollow Lecture Hall
+- The Blackout Record Chamber
+- The Sleeping Server
+
+Important NPCs:
+1. Archivist Mael — keeper of forbidden records.
+2. Vera Quill — field scholar who distrusts the player.
+3. The Blind Indexer — a relic-touched librarian who sees memories instead of faces.
+4. Professor Ansel Vorn — old-world scientist connected to the blackout.
+5. The Ink Judge — leader of the Archive Tribunal.
+6. The Sleeping Server — an AI-like relic system that remembers the old city.
+
+Major routes:
+1. earn Last Archive trust
+2. steal forbidden records
+3. expose the Archive to another faction
+4. learn about the player’s past
+5. discover the origin of the wrist mark
+6. unlock Forgotten Scholar route
+7. unlock Relic Hunter route
+8. unlock Tactician route
+9. hide information from Mira
+10. reveal Cain’s military connection to the blackout
+11. reduce corruption through knowledge
+12. increase corruption by reading forbidden relic records
+
+Required story reveals:
+- The blackout was planned by human leaders and relic systems together.
+- The player may have been part of the original blackout project.
+- The wrist mark is a relic interface, not a curse.
+- The city was sealed to contain something underneath it.
+- The Glass Court, Iron Saints, and Last Archive all hid parts of the truth.
+- The final relic gate exists beneath the city.
+
+Add:
+- at least 10 bad endings
+- at least 4 neutral endings
+- at least 2 Last Archive faction ending previews
+- at least 1 memory recovery route
+- at least 1 forbidden knowledge corruption route
+- at least 1 companion confrontation route
+- at least 6 dice-roll checks
+- at least 6 class-specific choices
+- at least 6 background-specific choices
+- new Archive reputation changes
+- new flags
+- new endings
+- new Route Codex entries
+
+New endings:
+- Buried in the Stacks Ending
+- Forbidden Memory Ending
+- Archive Exile Ending
+- Ink Tribunal Execution Ending
+- Sleeping Server Assimilation Ending
+- Truth Without Mercy Ending
+- False Scholar Ending
+- Last Archive Alliance Preview Ending
+- Memory Restored Fragment Ending
+- Relic Map Ending
+
+New background image paths:
+- /images/backgrounds/door_without_name.png
+- /images/backgrounds/dust_library.png
+- /images/backgrounds/memory_vault.png
+- /images/backgrounds/ink_chapel.png
+- /images/backgrounds/broken_observatory.png
+- /images/backgrounds/relic_map_room.png
+- /images/backgrounds/forbidden_stacks.png
+- /images/backgrounds/archive_tribunal.png
+- /images/backgrounds/hollow_lecture_hall.png
+- /images/backgrounds/blackout_record_chamber.png
+- /images/backgrounds/sleeping_server.png
+
+After adding Chapter 7, create:
+
+CHAPTER_7_SUMMARY.md
+
+Include major routes, endings, NPCs, flags, reveals, and connection points for Chapter 8: Hunger War.

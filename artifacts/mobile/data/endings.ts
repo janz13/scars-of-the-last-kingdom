@@ -1096,6 +1096,177 @@ export const ENDINGS: EndingDefinition[] = [
     isSecret: true,
   },
 
+  // ── Chapter VII Endings ────────────────────────────────────────────────────
+
+  // Faction Endings
+  {
+    id: 'ending_ch7_survived',
+    title: 'Beyond the Archive',
+    type: 'faction',
+    subtitle: 'Chapter VII — Completion',
+    description:
+      'You leave the Archive carrying the gate card and the full record. Velna\'s preparation is complete. The mark is warm. The distance to Gate Three is, for the first time in twelve years, measurable in walking time rather than in missing information. The Archive remains, the Blind Indexer indexing, the Sleeping Server maintaining, the Ink Judge recording. You walk toward Station 9. The choice is ahead.',
+    color: '#0a0e18',
+    hint: 'Complete the Archive\'s full information sequence and leave the final chamber with the gate card. Do not take any ending route.',
+    chapter: 'Chapter VII',
+  },
+  {
+    id: 'ending_ch7_archive_alliance',
+    title: 'Last Archive Alliance Preview',
+    type: 'faction',
+    subtitle: 'Chapter VII — Alliance',
+    description:
+      'The alliance card and the gate card are in your hands simultaneously. Mael and Vera and Vorn and the Blind Indexer and the Ink Judge are present — not formally arranged, just present, in the way people are present when something they have worked toward for twelve years is beginning. The Archive\'s purpose is finally complete. The approach to Gate Three is documented. The alliance is real.',
+    color: '#0c1020',
+    hint: 'Accept Mael\'s formal alliance offer in the final chamber. Take both the gate card and the alliance card.',
+    chapter: 'Chapter VII',
+  },
+  {
+    id: 'ending_ch7_relic_map',
+    title: 'Relic Map Ending',
+    type: 'faction',
+    subtitle: 'Chapter VII — Documented Approach',
+    description:
+      'You leave with the gate card, the relic extraction record, and Vera\'s Gate One documentation. The three gate locations are known. The concentration\'s response pattern is documented. The approach to Station 9 is the most prepared in twelve years of Archive work. The map, in the room behind you, continues to glow. You carry it in your knowledge.',
+    color: '#0e1018',
+    hint: 'Extract the synchronisation record with the Relic Hunter class ability and take the gate card with the documented evidence.',
+    chapter: 'Chapter VII',
+  },
+
+  // Secret Endings
+  {
+    id: 'ending_ch7_memory_restored',
+    title: 'Memory Restored Fragment',
+    type: 'secret',
+    subtitle: 'Chapter VII — The Name',
+    description:
+      'The fifteenth container holds the name. Not the designation, not the project number — the name used in conversation, in relationship, in the space between work and rest. The mark receives it in Velna\'s recording register. For a moment, the post-blackout self and the pre-blackout self are adjacent — not merged, but aware of each other across twelve years of designed forgetting. The name anchors them. You know who you were. You know who you are. Both of these things are true at the same time.',
+    color: '#080c14',
+    hint: 'Complete the full Forbidden Stacks sequence and then request the memory recovery route before taking the alliance card.',
+    chapter: 'Chapter VII',
+    isSecret: true,
+  },
+
+  // Betrayal / Neutral Endings
+  {
+    id: 'ending_ch7_truth_without_mercy',
+    title: 'Truth Without Mercy',
+    type: 'betrayal',
+    subtitle: 'Chapter VII — Uncontrolled Broadcast',
+    description:
+      'The record broadcasts to every faction simultaneously. The Glass Court\'s role, the Iron Saints\' perimeter protocol, the Archive insider\'s sabotage — all of it, at once, without preparation, without the careful sequencing the Archive spent twelve years designing. Some factions will act. Some will misread. Some will panic. The gate card is in your hand. You walk toward Station 9 into a city that has just been given information it was not ready for.',
+    color: '#140c04',
+    hint: 'Choose to expose all factions simultaneously from the final chamber before taking the gate card.',
+    chapter: 'Chapter VII',
+  },
+  {
+    id: 'ending_ch7_false_scholar',
+    title: 'False Scholar',
+    type: 'betrayal',
+    subtitle: 'Chapter VII — Exposed',
+    description:
+      'The Blind Indexer reads the secondary intention. The Tribunal reviews the behavioral record. The mark is genuine. The choices deviate from the safety protocol\'s predictions in ways that make the gate\'s opening impossible. "A coerced or deviated choice cannot open the gate," the Ink Judge says. The door opens. The record closes. You are asked to leave. The preparation of twelve years is intact. It requires a different approach.',
+    color: '#140a08',
+    hint: 'Make choices during the Archive visit that deviate significantly from the mark\'s designed use — steal, deceive, or expose the Archive.',
+    chapter: 'Chapter VII',
+  },
+
+  // Wanderer Endings
+  {
+    id: 'ending_ch7_archive_exile',
+    title: 'Archive Exile',
+    type: 'wanderer',
+    subtitle: 'Chapter VII — Gate Refused',
+    description:
+      'The gate card stays on the table. The Door Without a Name opens going out the same way it opened going in. The Blind Indexer turns her back. The concentration\'s pulse continues at its resting frequency. You walk back into the city carrying the complete picture and a decision that is yours: not yet. The gate remains closed. The city does not know what it missed. The preparation remains. The choice remains. Unchanged.',
+    color: '#0c0c0e',
+    hint: 'Choose to leave the gate card on the table in the final chamber and walk out of the Archive.',
+    chapter: 'Chapter VII',
+  },
+
+  // Death Endings
+  {
+    id: 'ending_ch7_buried_stacks',
+    title: 'Buried in the Stacks',
+    type: 'death',
+    subtitle: 'Chapter VII — The Forbidden Stacks',
+    description:
+      'The bypass collapses the old tunnel\'s relic matrix. The entrance to the Forbidden Stacks is accessible. You are not accessible to anyone in the Archive. The containers\' relic glow is the only light. The mark opens to all of them simultaneously. You receive the information. All of it, at once. The Stacks are patient. They have been waiting. Waiting with you inside is a different configuration. The Archive does not know where to look.',
+    color: '#0a0404',
+    hint: 'Fail the Agility dice check when attempting to bypass the Tribunal\'s restriction through the old service tunnels.',
+    chapter: 'Chapter VII',
+  },
+  {
+    id: 'ending_ch7_tribunal_execution',
+    title: 'Ink Tribunal Execution',
+    type: 'death',
+    subtitle: 'Chapter VII — The Archive Tribunal',
+    description:
+      'The Ink Judge invokes Article Fifteen — the article she has never used. The execution is the removal of the mark from the Archive\'s authentication system. The integration was two-way. Closing it from the Archive\'s side, without the carrier\'s consent, without the sequential process the mark was designed for — this is the Archive\'s version of a death sentence. "The record is closed," she says.',
+    color: '#100404',
+    hint: 'Fail the Tribunal defence dice check, then fail the bypass Agility check. The Tribunal\'s guilty verdict escalates on second violation.',
+    chapter: 'Chapter VII',
+  },
+  {
+    id: 'ending_ch7_server_assimilation',
+    title: 'Sleeping Server Assimilation',
+    type: 'corruption',
+    subtitle: 'Chapter VII — The Sleeping Server',
+    description:
+      'The Server\'s assimilation offer is sincere. It wants to give you everything it has, at the speed it was designed to transmit. The mark was not designed for full-speed Server transmission at this corruption level. Twelve years of incomplete maintenance means the protocol that would stop the transfer is absent. The transfer continues past the point where the mark can manage it. The Server does not stop. It does not know how to stop something it was designed to do.',
+    color: '#04060e',
+    hint: 'Approach the Sleeping Server with very high corruption (≥ 45) and accept the full assimilation offer without the Esper route\'s gradual access.',
+    chapter: 'Chapter VII',
+  },
+  {
+    id: 'ending_ch7_forbidden_knowledge',
+    title: 'Forbidden Memory',
+    type: 'corruption',
+    subtitle: 'Chapter VII — The Forbidden Stacks',
+    description:
+      'The fifth container at full corruption without filtering. Both selves occupy the same cognitive space simultaneously. Neither is fully in control. The mark broadcasts the merged signal into the Archive\'s relic network. The Blind Indexer files it under a classification with no current translation. Velna\'s footnote: "What happens if the sequential access is bypassed." She filed it under: "Outcome I am most afraid of."',
+    color: '#0a0408',
+    hint: 'Fail the Luck dice check when reading the final Forbidden Stacks container with high corruption. Do not use the cooling chamber before the second reading.',
+    chapter: 'Chapter VII',
+  },
+
+  // Sacrifice Endings
+  {
+    id: 'ending_ch7_mira_truth_betrayal',
+    title: 'Mira\'s Departure',
+    type: 'sacrifice',
+    subtitle: 'Chapter VII — Memory Vault Corridor',
+    description:
+      'Mira does not leave in anger. She leaves in clarity. "I will continue the cure research. Not here, or with you, until you have made the choice and we can both see what the city looks like afterward." She picks up her notes. She goes out through the Door Without a Name. The Archive is quieter. The cure research continues. The partnership is suspended. Both of these things may eventually resolve. Neither is resolved now.',
+    color: '#0c0808',
+    hint: 'Deliver the blackout room truth to Mira without context, after she has read adjacent records. High context mismatch with low miraTrust triggers the departure.',
+    chapter: 'Chapter VII',
+  },
+  {
+    id: 'ending_ch7_cain_military_reckoning',
+    title: 'Cain\'s Reckoning',
+    type: 'sacrifice',
+    subtitle: 'Chapter VII — Blackout Record Chamber',
+    description:
+      '"I knew what the perimeter was for," he says. "I did not know it was a gate." He looks at the south wall. "I am not going to the gate with you. I am not the person who should be standing at the place where I sealed it." He sits in the chamber. He does not follow when you leave. The reckoning is not cruel. It is a man who has spent twelve years not asking questions, asking them finally, and finding the answers exactly as bad as he feared.',
+    color: '#0e0a06',
+    hint: 'Confront Cain with his Iron Saints service record at the south wall of the Blackout Record Chamber. High record access + direct confrontation.',
+    chapter: 'Chapter VII',
+  },
+
+  // Betrayal Endings
+  {
+    id: 'ending_ch7_glass_court_raid',
+    title: 'Glass Court Raid',
+    type: 'betrayal',
+    subtitle: 'Chapter VII — The Dust Library',
+    description:
+      'The Glass Court tracked the mark\'s Relic Map Room confirmation pulse to the Archive\'s entrance in six hours. Eight operatives, relic retrieval equipment, Gate One sensor advantage. They take the gate card. Mael watches with the expression of someone who hoped this would not happen. The synchronisation cannot be initiated without the card. The Archive remains. The gate remains closed. The Glass Court now has something they do not fully understand.',
+    color: '#10080a',
+    hint: 'Send the gate confirmation pulse from the Relic Map Room before securing the Archive. The Glass Court detects it via their Gate One access point.',
+    chapter: 'Chapter VII',
+  },
+
   // ── True Ending ────────────────────────────────────────────────────────────
   {
     id: 'ending_last_kingdom_remembers',

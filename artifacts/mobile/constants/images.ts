@@ -125,6 +125,20 @@ export const BACKGROUND_IMAGES: Record<string, any> = {
   infected_nursery:       require('../assets/images/nursery_of_knives.png'),
   crimson_relay:          require('../assets/images/choir_broadcast_point.png'),
   echo_chamber:           require('../assets/images/archive_ruin_wall.png'),
+
+  // Chapter 7 — The Last Archive (placeholder art → closest existing environment)
+  // TODO: replace with dedicated Chapter 7 archive/library pixel art
+  door_without_name:      require('../assets/images/archive_ruin_wall.png'),
+  dust_library:           require('../assets/images/archive_ruin_wall.png'),
+  memory_vault:           require('../assets/images/relic_engine_room.png'),
+  ink_chapel:             require('../assets/images/archive_ruin_wall.png'),
+  broken_observatory:     require('../assets/images/surface_dawn.png'),
+  relic_map_room:         require('../assets/images/relic_engine_room.png'),
+  forbidden_stacks:       require('../assets/images/archive_ruin_wall.png'),
+  archive_tribunal:       require('../assets/images/glass_tower_lobby.png'),
+  hollow_lecture_hall:    require('../assets/images/glass_tower_lobby.png'),
+  blackout_record_chamber: require('../assets/images/archive_ruin_wall.png'),
+  sleeping_server:        require('../assets/images/relic_engine_room.png'),
 };
 
 // ─── Gradient fallbacks & transition colors ───────────────────────────────────
@@ -368,6 +382,51 @@ export const BACKGROUND_GRADIENTS: Record<string, GradientConfig> = {
   },
   echo_chamber: {
     colors: ['#080812', '#0e0e1e', '#08081a', '#040410'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  // Chapter 7 — The Last Archive (deep indigo / muted amber archive palette)
+  door_without_name: {
+    colors: ['#080812', '#0e0e1c', '#080812', '#04040c'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  dust_library: {
+    colors: ['#0c0a08', '#18140e', '#0c0a08', '#080705'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  memory_vault: {
+    colors: ['#06080e', '#0c1018', '#060c14', '#040608'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  ink_chapel: {
+    colors: ['#08080c', '#10101a', '#08080e', '#050508'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  broken_observatory: {
+    colors: ['#0a0c10', '#121620', '#0a0c14', '#060810'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  relic_map_room: {
+    colors: ['#080c0a', '#0e1810', '#080e0a', '#040806'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  forbidden_stacks: {
+    colors: ['#060408', '#0c0810', '#060408', '#040306'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  archive_tribunal: {
+    colors: ['#0a0808', '#160e0c', '#0a0808', '#070504'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  hollow_lecture_hall: {
+    colors: ['#0c0c0a', '#181610', '#0c0c0a', '#080806'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  blackout_record_chamber: {
+    colors: ['#080608', '#100c10', '#080608', '#050405'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  sleeping_server: {
+    colors: ['#04080c', '#080e18', '#040c14', '#020608'],
     start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
   },
   // Generic fallback for any key not listed above
