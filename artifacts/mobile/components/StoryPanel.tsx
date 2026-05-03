@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import {
   Animated,
-  ImageBackground,
   Platform,
   Pressable,
   ScrollView,
@@ -10,10 +9,9 @@ import {
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Feather } from '@expo/vector-icons';
 import { useGame } from '../context/GameContext';
-import { getBackgroundGradient, getBackgroundImage } from '../constants/images';
+import BackgroundPanel from './BackgroundPanel';
 import ChoiceButton from './ChoiceButton';
 
 function StatBar({
@@ -86,169 +84,143 @@ function StatBar({
 export default function StoryPanel() {
   const { state, currentNode, availableChoices, makeChoice, setScreen } = useGame();
   const insets = useSafeAreaInsets();
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-  const prevNodeId = useRef<string>('');
 
   const topPad = Platform.OS === 'web' ? 67 : insets.top;
   const botPad = Platform.OS === 'web' ? 34 : insets.bottom;
 
-  useEffect(() => {
-    if (currentNode?.id !== prevNodeId.current) {
-      prevNodeId.current = currentNode?.id ?? '';
-      Animated.sequence([
-        Animated.timing(fadeAnim, { toValue: 0, duration: 100, useNativeDriver: true }),
-        Animated.timing(fadeAnim, { toValue: 1, duration: 400, useNativeDriver: true }),
-      ]).start();
-    }
-  }, [currentNode?.id]);
-
   if (!currentNode) {
     return (
-      <LinearGradient colors={['#0a0a0f', '#12121f']} style={styles.container}>
+      <BackgroundPanel imageKey="default" sceneKey="error">
         <View style={styles.errorState}>
           <Text style={styles.errorText}>Story node not found.</Text>
           <Pressable onPress={() => setScreen('mainMenu')}>
             <Text style={styles.errorLink}>Return to menu</Text>
           </Pressable>
         </View>
-      </LinearGradient>
+      </BackgroundPanel>
     );
   }
-
-  const bgImage = getBackgroundImage(currentNode.imageKey);
-  const gradient = getBackgroundGradient(currentNode.imageKey);
 
   const isTerminalNode = currentNode.choices.length === 0 && !currentNode.isEnding;
   const isEndingNode = currentNode.isEnding;
 
-  const innerContent = (
-    <Animated.View style={[styles.innerContent, { opacity: fadeAnim }]}>
-      {/* Stats Bar */}
-      <View style={{ paddingTop: topPad }}>
-        <StatBar
-          health={state.stats.health}
-          maxHealth={state.stats.maxHealth}
-          hunger={state.stats.hunger}
-          thirst={state.stats.thirst}
-          morale={state.stats.morale}
-          corruption={state.stats.corruption}
-          onStats={() => setScreen('stats')}
-          onInventory={() => setScreen('inventory')}
-          onCompanions={() => setScreen('companions')}
-          onFactions={() => setScreen('factions')}
-          onHistory={() => setScreen('history')}
-        />
-      </View>
-
-      {/* Story Content */}
-      <ScrollView
-        style={styles.storyScroll}
-        contentContainerStyle={styles.storyContent}
-        showsVerticalScrollIndicator={false}
-      >
-        {/* Chapter & Location */}
-        <View style={styles.meta}>
-          <Text style={styles.chapterText}>{currentNode.chapter}  ·  {currentNode.location}</Text>
-        </View>
-
-        {/* Node Title */}
-        <Text style={styles.nodeTitle}>{currentNode.title}</Text>
-
-        {/* Speaker */}
-        {currentNode.speaker && (
-          <View style={styles.speakerBadge}>
-            <View style={styles.speakerDot} />
-            <Text style={styles.speakerText}>{currentNode.speaker}</Text>
-          </View>
-        )}
-
-        {/* Narration */}
-        <Text style={styles.narration}>{currentNode.text}</Text>
-
-        {/* Dialogue */}
-        {currentNode.dialogue && (
-          <View style={styles.dialogueBox}>
-            <Text style={styles.dialogue}>"{currentNode.dialogue}"</Text>
-          </View>
-        )}
-
-        {/* Companion status strip */}
-        <View style={styles.companionStrip}>
-          {state.companions.mira.present && state.companions.mira.alive && (
-            <View style={styles.companionTag}>
-              <View style={[styles.companionDot, { backgroundColor: '#9b59b6' }]} />
-              <Text style={styles.companionName}>Mira</Text>
-            </View>
-          )}
-          {state.companions.cain.present && state.companions.cain.alive && (
-            <View style={styles.companionTag}>
-              <View style={[styles.companionDot, { backgroundColor: '#e67e22' }]} />
-              <Text style={styles.companionName}>Cain</Text>
-            </View>
-          )}
-        </View>
-      </ScrollView>
-
-      {/* Choices */}
-      <View style={[styles.choicesContainer, { paddingBottom: botPad + 8 }]}>
-        <View style={styles.choicesDivider} />
-
-        {isTerminalNode && (
-          <View style={styles.terminalNode}>
-            <Text style={styles.terminalText}>~ To be continued — Chapter 2: The Descent ~</Text>
-            <Pressable style={styles.returnBtn} onPress={() => setScreen('mainMenu')}>
-              <Text style={styles.returnBtnText}>RETURN TO MAIN MENU</Text>
-            </Pressable>
-          </View>
-        )}
-
-        {!isTerminalNode && !isEndingNode && (
-          <ScrollView
-            style={styles.choicesScroll}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ gap: 0 }}
-          >
-            {availableChoices.map(({ choice, met, reasons }) => (
-              <ChoiceButton
-                key={choice.id}
-                choiceId={choice.id}
-                text={choice.text}
-                met={met}
-                reasons={reasons}
-                flavorText={choice.flavorText}
-                onPress={() => makeChoice(choice.id)}
-              />
-            ))}
-            {availableChoices.length === 0 && (
-              <Text style={styles.noChoices}>No available choices. Check your stats and inventory.</Text>
-            )}
-          </ScrollView>
-        )}
-
-        {/* Settings button */}
-        <Pressable style={styles.settingsBtn} onPress={() => setScreen('settings')}>
-          <Feather name="menu" size={14} color="#4a4050" />
-        </Pressable>
-      </View>
-    </Animated.View>
-  );
-
-  if (bgImage) {
-    return (
-      <ImageBackground source={bgImage} style={styles.container} resizeMode="cover">
-        <LinearGradient
-          colors={['rgba(4,2,10,0.35)', 'rgba(4,2,10,0.55)', 'rgba(4,2,10,0.85)', 'rgba(4,2,10,0.97)']}
-          style={StyleSheet.absoluteFill}
-        />
-        {innerContent}
-      </ImageBackground>
-    );
-  }
-
   return (
-    <LinearGradient colors={gradient.colors} start={gradient.start} end={gradient.end} style={styles.container}>
-      {innerContent}
-    </LinearGradient>
+    <BackgroundPanel
+      imageKey={currentNode.imageKey}
+      sceneKey={currentNode.id}
+      overlayOpacity={0.72}
+      fadeDuration={380}
+    >
+      <View style={styles.innerContent}>
+        {/* Stats Bar */}
+        <View style={{ paddingTop: topPad }}>
+          <StatBar
+            health={state.stats.health}
+            maxHealth={state.stats.maxHealth}
+            hunger={state.stats.hunger}
+            thirst={state.stats.thirst}
+            morale={state.stats.morale}
+            corruption={state.stats.corruption}
+            onStats={() => setScreen('stats')}
+            onInventory={() => setScreen('inventory')}
+            onCompanions={() => setScreen('companions')}
+            onFactions={() => setScreen('factions')}
+            onHistory={() => setScreen('history')}
+          />
+        </View>
+
+        {/* Story Content */}
+        <ScrollView
+          style={styles.storyScroll}
+          contentContainerStyle={styles.storyContent}
+          showsVerticalScrollIndicator={false}
+        >
+          {/* Chapter & Location */}
+          <View style={styles.meta}>
+            <Text style={styles.chapterText}>{currentNode.chapter}  ·  {currentNode.location}</Text>
+          </View>
+
+          {/* Node Title */}
+          <Text style={styles.nodeTitle}>{currentNode.title}</Text>
+
+          {/* Speaker */}
+          {currentNode.speaker && (
+            <View style={styles.speakerBadge}>
+              <View style={styles.speakerDot} />
+              <Text style={styles.speakerText}>{currentNode.speaker}</Text>
+            </View>
+          )}
+
+          {/* Narration */}
+          <Text style={styles.narration}>{currentNode.text}</Text>
+
+          {/* Dialogue */}
+          {currentNode.dialogue && (
+            <View style={styles.dialogueBox}>
+              <Text style={styles.dialogue}>"{currentNode.dialogue}"</Text>
+            </View>
+          )}
+
+          {/* Companion status strip */}
+          <View style={styles.companionStrip}>
+            {state.companions.mira.present && state.companions.mira.alive && (
+              <View style={styles.companionTag}>
+                <View style={[styles.companionDot, { backgroundColor: '#9b59b6' }]} />
+                <Text style={styles.companionName}>Mira</Text>
+              </View>
+            )}
+            {state.companions.cain.present && state.companions.cain.alive && (
+              <View style={styles.companionTag}>
+                <View style={[styles.companionDot, { backgroundColor: '#e67e22' }]} />
+                <Text style={styles.companionName}>Cain</Text>
+              </View>
+            )}
+          </View>
+        </ScrollView>
+
+        {/* Choices */}
+        <View style={[styles.choicesContainer, { paddingBottom: botPad + 8 }]}>
+          <View style={styles.choicesDivider} />
+
+          {isTerminalNode && (
+            <View style={styles.terminalNode}>
+              <Text style={styles.terminalText}>~ To be continued — Chapter 2: The Descent ~</Text>
+              <Pressable style={styles.returnBtn} onPress={() => setScreen('mainMenu')}>
+                <Text style={styles.returnBtnText}>RETURN TO MAIN MENU</Text>
+              </Pressable>
+            </View>
+          )}
+
+          {!isTerminalNode && !isEndingNode && (
+            <ScrollView
+              style={styles.choicesScroll}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{ gap: 0 }}
+            >
+              {availableChoices.map(({ choice, met, reasons }) => (
+                <ChoiceButton
+                  key={choice.id}
+                  choiceId={choice.id}
+                  text={choice.text}
+                  met={met}
+                  reasons={reasons}
+                  flavorText={choice.flavorText}
+                  onPress={() => makeChoice(choice.id)}
+                />
+              ))}
+              {availableChoices.length === 0 && (
+                <Text style={styles.noChoices}>No available choices. Check your stats and inventory.</Text>
+              )}
+            </ScrollView>
+          )}
+
+          {/* Settings / menu button */}
+          <Pressable style={styles.settingsBtn} onPress={() => setScreen('settings')}>
+            <Feather name="menu" size={14} color="#4a4050" />
+          </Pressable>
+        </View>
+      </View>
+    </BackgroundPanel>
   );
 }
 
