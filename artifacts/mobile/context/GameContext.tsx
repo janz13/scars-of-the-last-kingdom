@@ -24,6 +24,7 @@ import {
   shouldTriggerEnding,
 } from '../logic/gameEngine';
 import { deleteSave as deleteSaveStorage, hasSave, loadGame, saveGame } from '../logic/saveSystem';
+import { getCompanionEventTrigger } from '../logic/companionSystem';
 
 const DEFAULT_COMPANIONS: CompanionPair = {
   mira: { present: false, trust: 0, alive: true },
@@ -135,20 +136,32 @@ function resolveEndingState(
 
 // ─── Helper: apply survival tick + optional hallucination redirect ────────────
 //
-// Called after every real node transition (not on __return__ from hallucinations).
-// Returns the final state — which may have currentNodeId changed to a hallucination.
+// Called after every real node transition (not on __return__ from events/hallucinations).
+// Returns the final state — which may have currentNodeId changed to an event or hallucination.
+// Priority: survival tick → hallucination → companion event
 
 function applyTickAndHallucination(next: GameState, realNodeId: string): GameState {
   // Run passive survival tick
   next = runSurvivalTick(next);
 
-  // Hallucination redirect — only on live game nodes, not during endings
+  // Hallucination redirect — checked first (higher priority)
   const hallucinationNode = getHallucinationRedirect(next);
   if (hallucinationNode) {
     const withFlag = applyEffects(next, { setFlags: ['halluc_active'] });
     return {
       ...withFlag,
       currentNodeId: hallucinationNode,
+      pendingReturnNodeId: realNodeId,
+    };
+  }
+
+  // Companion event redirect — fires when relationship conditions are met
+  const companionEventNode = getCompanionEventTrigger(next);
+  if (companionEventNode) {
+    const withFlag = applyEffects(next, { setFlags: ['companion_event_active'] });
+    return {
+      ...withFlag,
+      currentNodeId: companionEventNode,
       pendingReturnNodeId: realNodeId,
     };
   }

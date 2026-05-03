@@ -289,6 +289,13 @@ export default function StoryPanel() {
   const isTerminalNode = currentNode.choices.length === 0 && !currentNode.isEnding;
   const isEndingNode = currentNode.isEnding;
   const isHallucination = state.flags['halluc_active'] ?? false;
+  const isCompanionEvent = state.flags['companion_event_active'] ?? false;
+  // Speaker-driven accent: Mira = purple, Cain = amber, default = neutral
+  const companionAccent = isCompanionEvent
+    ? currentNode.speaker === 'Cain'
+      ? '#e67e22'
+      : '#9b59b6'
+    : '#9b59b6';
 
   // Compute survival warnings from the current game state
   const survivalWarnings = getSurvivalWarnings(state);
@@ -298,8 +305,8 @@ export default function StoryPanel() {
       <BackgroundPanel
         imageKey={currentNode.imageKey}
         sceneKey={currentNode.id}
-        overlayOpacity={isHallucination ? 0.88 : 0.78}
-        fadeDuration={isHallucination ? 600 : 420}
+        overlayOpacity={isHallucination ? 0.88 : isCompanionEvent ? 0.84 : 0.78}
+        fadeDuration={isHallucination ? 600 : isCompanionEvent ? 500 : 420}
       >
         <View style={styles.container}>
           <View style={{ paddingTop: topPad }}>
@@ -326,15 +333,27 @@ export default function StoryPanel() {
             overScrollMode="auto"
           >
             {/* ── Story section ─────────────────────────────────────── */}
-            <View style={[styles.storySection, isHallucination && styles.hallucinationSection]}>
-              <Text style={[styles.breadcrumb, isHallucination && styles.hallucinationBreadcrumb]}>
+            <View style={[
+              styles.storySection,
+              isHallucination && styles.hallucinationSection,
+              isCompanionEvent && { backgroundColor: currentNode.speaker === 'Cain' ? 'rgba(40,20,0,0.28)' : 'rgba(30,0,40,0.22)' },
+            ]}>
+              <Text style={[
+                styles.breadcrumb,
+                isHallucination && styles.hallucinationBreadcrumb,
+                isCompanionEvent && { color: currentNode.speaker === 'Cain' ? 'rgba(230,126,34,0.55)' : 'rgba(155,89,182,0.55)', letterSpacing: 3 },
+              ]}>
                 {currentNode.chapter.toUpperCase()}
                 {'  ›  '}
                 {currentNode.location.toUpperCase()}
               </Text>
 
               <Animated.View style={{ opacity: titleFade, transform: [{ translateY: titleSlide }] }}>
-                <Text style={[styles.nodeTitle, isHallucination && styles.hallucinationTitle]}>
+                <Text style={[
+                  styles.nodeTitle,
+                  isHallucination && styles.hallucinationTitle,
+                  isCompanionEvent && { color: currentNode.speaker === 'Cain' ? '#f0a050' : '#c39bd3', letterSpacing: 0.5 },
+                ]}>
                   {currentNode.title}
                 </Text>
               </Animated.View>
@@ -360,7 +379,7 @@ export default function StoryPanel() {
                 </View>
               )}
 
-              {!isHallucination && (state.companions.mira.present && state.companions.mira.alive ||
+              {!isHallucination && !isCompanionEvent && (state.companions.mira.present && state.companions.mira.alive ||
                 state.companions.cain.present && state.companions.cain.alive) && (
                 <View style={styles.companionStrip}>
                   {state.companions.mira.present && state.companions.mira.alive && (
@@ -380,13 +399,21 @@ export default function StoryPanel() {
             </View>
 
             {/* ── Survival warning strip ─────────────────────────────── */}
-            {!isEndingNode && !isHallucination && (
+            {!isEndingNode && !isHallucination && !isCompanionEvent && (
               <SurvivalWarningStrip warnings={survivalWarnings} />
             )}
 
             {/* ── Choices glass panel ────────────────────────────────── */}
-            <View style={[styles.choicesPanel, isHallucination && styles.hallucinationChoicesPanel]}>
-              <View style={[styles.choicesTopAccent, isHallucination && styles.hallucinationTopAccent]} />
+            <View style={[
+              styles.choicesPanel,
+              isHallucination && styles.hallucinationChoicesPanel,
+              isCompanionEvent && { backgroundColor: currentNode.speaker === 'Cain' ? 'rgba(40,20,0,0.92)' : 'rgba(25,10,35,0.92)' },
+            ]}>
+              <View style={[
+                styles.choicesTopAccent,
+                isHallucination && styles.hallucinationTopAccent,
+                isCompanionEvent && { backgroundColor: currentNode.speaker === 'Cain' ? 'rgba(230,126,34,0.45)' : 'rgba(155,89,182,0.35)' },
+              ]} />
 
               {isTerminalNode && (
                 <View style={styles.terminalNode}>

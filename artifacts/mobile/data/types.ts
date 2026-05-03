@@ -27,6 +27,30 @@ export type PersonalityTrait =
 
 export type CompanionChoice = 'mira' | 'cain' | 'none';
 
+// ─── Companion relationship stages ─────────────────────────────────────────
+// These are derived from trust + flags, not stored directly in GameState.
+// Use getMiraStage(state) / getCainStage(state) from logic/companionSystem.ts.
+
+export type MiraStage =
+  | 'suspicious'    // trust 0–1, default entry
+  | 'cautious'      // trust 2–3
+  | 'trusting'      // trust 4–5
+  | 'loyal'         // trust 6–7
+  | 'devoted'       // trust 8–10
+  | 'broken'        // was loyal+, player shattered the trust (flag)
+  | 'betrayer'      // flag mira_betrayed
+  | 'sacrifice_route'; // trust 8+, corruption ≤ 30, flag mira_sacrifice_willing
+
+export type CainStage =
+  | 'cold'          // trust 0–1, default entry
+  | 'respectful'    // trust 2–3
+  | 'protective'    // trust 4–5
+  | 'loyal'         // trust 6–7
+  | 'ruthless'      // flag cain_ruthless_mode (chose brutal path consistently)
+  | 'rival'         // flag cain_rival (confrontation without full betrayal)
+  | 'betrayer'      // flag cain_betrayed
+  | 'last_stand_route'; // trust 8+, flag cain_last_stand_willing
+
 export type EndingType =
   | 'death'
   | 'betrayal'
