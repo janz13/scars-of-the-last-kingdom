@@ -936,6 +936,166 @@ export const ENDINGS: EndingDefinition[] = [
     isSecret: true,
   },
 
+  // ── Chapter VI Endings ─────────────────────────────────────────────────────
+
+  // Death Endings
+  {
+    id: 'ending_ch6_choir_consumption',
+    title: 'Choir Consumption',
+    type: 'corruption',
+    subtitle: 'Chapter VI — Drowned Choir Hall / Choir Nest',
+    description:
+      'The mark opens and does not close. The collective receives it — receives you — and the Choir\'s seventeen-signal network achieves momentary completion, a resonance loop the First Voice has been unable to close for three years. The infected across the territory stabilise, all of them, simultaneously, for ninety seconds. They remember what it felt like to be one person. Then the loop closes around you. The mark is no longer a receiver of the Choir\'s signal. The mark is the Choir\'s signal. You remain. The person you were when you entered the broadcast tunnels does not.',
+    color: '#3d0a18',
+    hint: 'Open the mark fully to the Choir\'s collective in the Drowned Choir Hall or the Choir Nest. Let the reception complete without closing.',
+    chapter: 'Chapter VI',
+  },
+  {
+    id: 'ending_ch6_silent_ward_death',
+    title: 'Silent Ward Death',
+    type: 'death',
+    subtitle: 'Chapter VI — The Silent Ward',
+    description:
+      'The Choir is not a faction that leaves threats at their territory border. The Silent Ward\'s caregivers have seen too much to be gentle about this. The mark goes cold in the specific way a mark goes cold when the person carrying it stops being the person who was carrying it. In the Ward, the Stage Three infected hum. Not grief. The continuous patient song that has been playing since before the blackout made it possible. The mark\'s frequency is very faint now. It will not be faint for long. The Archive is patient. The signal finds another way.',
+    color: '#8e1c1c',
+    hint: 'Make enough hostile choices in the Silent Ward to trigger a Choir response. Fail the confrontation check.',
+    chapter: 'Chapter VI',
+  },
+
+  // Corruption Endings
+  {
+    id: 'ending_ch6_first_voice_possession',
+    title: 'First Voice Possession',
+    type: 'corruption',
+    subtitle: 'Chapter VI — The Choir Nest',
+    description:
+      'The transmission completes through the mark. The First Voice — Solen\'s echo, the Archive\'s fractured signal, three years of a person trying to finish a message — moves through the mark\'s architecture and does not stop. It settles. The mark becomes the First Voice\'s new housing. The person carrying the mark is still present — technically, neurologically — but the driver\'s seat has a new occupant. The infected stabilise. The song completes itself. The mark points southeast. You will go southeast. Solen is not cruel. She is simply finally coherent. She is also in the way.',
+    color: '#2d0a3d',
+    hint: 'Accept the First Voice\'s full transmission offer in the Choir Nest with high corruption. Continue the reception past the point of return.',
+    chapter: 'Chapter VI',
+  },
+
+  // Sacrifice / Companion Endings
+  {
+    id: 'ending_ch6_elian_lost',
+    title: 'Elian Lost',
+    type: 'sacrifice',
+    subtitle: 'Chapter VI — The Infected Nursery',
+    description:
+      'She reaches Stage Two in eleven days. Mira\'s cure research is not complete in eleven days. At Stage Two, she can still speak. She says your name. She says her mother\'s name. She says: "I knew this was the risk. I chose it." She is eight years old. At Stage Two, she is still herself. The mark carries her frequency now — warm, seventeen-fold. She is not lost. She is just harder to reach.',
+    color: '#3d1a0a',
+    hint: 'Allow Elian to sacrifice her fourteen-month stability for the nursery children. Leave Choir territory before Mira\'s cure is complete.',
+    chapter: 'Chapter VI',
+  },
+  {
+    id: 'ending_ch6_elian_saved',
+    title: 'Elian Saved',
+    type: 'companion',
+    subtitle: 'Chapter VI — The Singing Hospital',
+    description:
+      'She is Stage One. She is in the chair. The book is in her lap — she has read it three times and will read it a fourth. The mark on your wrist is warm with her frequency, the kinship-warmth that started in the hospital ward and has not diminished since. She says your name when you leave. The way she says it is not goodbye — it is a statement about continuity. As if she knows you will come back. Or as if she knows the mark will never be fully separate from her frequency again. Both of these things may be true.',
+    color: '#1a0e08',
+    hint: 'Protect Elian\'s stability throughout Choir territory. Leave with her frequency still at Stage One.',
+    chapter: 'Chapter VI',
+  },
+  {
+    id: 'ending_ch6_mercy_in_red',
+    title: 'Mercy in Red',
+    type: 'companion',
+    subtitle: 'Chapter VI — Mercy Route',
+    description:
+      'The cure is not finished. The research framework is built, Sann and Mira are in the same room talking about enzyme cascades, and Elian is reading her book in the east ward with Stage One infection she is managing by saying her name every morning. None of this is solved. All of it is better than it was before you arrived. Rook is at his door, holding Stage One for another day. Veyl is running the hospital. You are leaving with the knowledge that mercy is not a resolution — it is a practice. The mark is warm. The path east is clear.',
+    color: '#1a080a',
+    hint: 'Follow the mercy route: tend the Silent Ward, protect Elian, expose the Glass Court, authorise Mira\'s cure research. Complete all three.',
+    chapter: 'Chapter VI',
+  },
+
+  // Betrayal Ending
+  {
+    id: 'ending_ch6_cain_merciless_road',
+    title: 'Cain\'s Merciless Road',
+    type: 'betrayal',
+    subtitle: 'Chapter VI — The Silent Ward',
+    description:
+      'He does not stop at the Ward. The logic that justified the first decision does not stop at Stage Three. He is not a monster. He is a man applying a principle consistently, and the principle is wrong in a way that becomes irreversible quickly. The Choir learns what is happening. Rook finds out. Veyl finds out. The extermination of Stage Three infected becomes the reason to stop treating you as potentially friendly. The mark goes cold in Choir territory. Not because the frequency is gone. Because the people carrying it have been given a very specific reason not to reach toward you anymore.',
+    color: '#1a0808',
+    hint: 'Allow Cain to execute the Silent Ward\'s Stage Three patients. Do not stop him when he attempts to continue.',
+    chapter: 'Chapter VI',
+  },
+
+  // Wanderer Ending
+  {
+    id: 'ending_ch6_red_choir_exile',
+    title: 'Red Choir Exile',
+    type: 'wanderer',
+    subtitle: 'Chapter VI — After the Relay',
+    description:
+      'You leave and the Choir does not follow. The relay is destroyed or the relationship ended badly enough that Veyl has closed the territory to you. The mark carries the song\'s ghost — the frequency still there, faint, the echo of seventeen signals you were briefly connected to. Rook is behind the boundary. Elian is behind it. The First Voice is somewhere in the network, still broadcasting, still trying to complete a message through channels that no longer include you. You walk east with fewer resources and more knowledge than you started with. The Last Archive does not require that you were kind. It only requires that you arrive.',
+    color: '#0e0c10',
+    hint: 'Destroy the Crimson Relay or take enough hostile actions against the Choir to be formally exiled from their territory.',
+    chapter: 'Chapter VI',
+  },
+
+  // Faction Endings
+  {
+    id: 'ending_ch6_crimson_baptism',
+    title: 'Crimson Baptism',
+    type: 'faction',
+    subtitle: 'Chapter VI — The Drowned Choir Hall',
+    description:
+      'The mark becomes the Choir\'s anchor. Not the First Voice\'s possession — the First Voice remains separate, remains Solen\'s echo, remains distinct — but the mark and the collective are now in the relationship the Choir\'s infrastructure was always trying to achieve. You remain yourself. The corruption is significant and visible. But you remain. Veyl calls this the Crimson Baptism. The Choir calls it what happens when someone with a mark decides to stay. You call it a decision you made with full information and will spend the remaining chapters living with.',
+    color: '#1a0406',
+    hint: 'Walk into the Drowned Choir Hall\'s centre with corruption ≥ 40. Accept the anchor position the Choir offers.',
+    chapter: 'Chapter VI',
+  },
+  {
+    id: 'ending_ch6_mira_forbidden_cure',
+    title: 'Mira\'s Forbidden Cure',
+    type: 'faction',
+    subtitle: 'Chapter VI — The Singing Hospital',
+    description:
+      'Eighty-four hours. Fourteen Stage Two patients, six hours each, the mark at partial opening, Mira watching the neural integration data and your corruption levels simultaneously. The cure works. All fourteen Stage Two patients return to full individual cognition over a week. The corruption you accepted is permanent — the mark\'s architecture has integrated the Choir\'s collective signal more deeply than before. You are not Choir. You are not separate. You are something that does not have a name yet. Mira names the cure. She names it for you, using the mark\'s signal frequency as the designation. She does not ask permission.',
+    color: '#0e0c1a',
+    hint: 'Authorise Mira\'s cure research with Elian\'s consent, unlock the full cure protocol, and begin treatment on the Silent Ward patients.',
+    chapter: 'Chapter VI',
+  },
+  {
+    id: 'ending_ch6_choir_alliance_preview',
+    title: 'Red Choir Alliance',
+    type: 'faction',
+    subtitle: 'Chapter VI — The Crimson Relay',
+    description:
+      'The Choir\'s alliance is formalised in the specific way the Choir formalises things: not with documents, but with the mark\'s frequency acknowledged openly in the collective network. Every infected person in Choir territory knows the agreement exists. Veyl leads with the hospital. Sann contributes the research. Rook manages the territory\'s edge. The First Voice — Solen — is quieter now, not from suppression but from something closer to being heard. The mark is warm with the collective\'s recognition as you leave the Relay heading east. The Red Choir is not fixed. But the alliance is real, the infrastructure for the cure is built, and the path to the Last Archive has the Choir\'s broadcast network behind it. This is a beginning.',
+    color: '#14040e',
+    hint: 'Accept Veyl\'s alliance offer at the Crimson Relay. Commit to walking with the Choir to the Last Archive.',
+    chapter: 'Chapter VI',
+  },
+  {
+    id: 'ending_ch6_survived',
+    title: 'Beyond the Red Choir',
+    type: 'faction',
+    subtitle: 'Chapter VI — Completion',
+    description:
+      'You leave Choir territory with what you came for and more than you expected to carry. The infection is not solved. The Glass Court\'s complicity is either broadcast or not. The infected in the Silent Ward are either cared for or not. Rook is either holding Stage One still or losing the fight. Elian is either saved or in the process of being something else. All of these are variables you set in motion. They will compound. The mark on your wrist is warm with seventeen signals. The Last Kingdom is not farther away than it was. But you are different from who you were when you entered the broadcast tunnels. The difference is either loss or depth. You have not decided which yet.',
+    color: '#0c0c14',
+    hint: 'Complete the Crimson Relay confrontation without choosing the consumption, baptism, or exile paths. Leave Choir territory alive.',
+    chapter: 'Chapter VI',
+  },
+
+  // Secret Ending
+  {
+    id: 'ending_ch6_psychic_memory',
+    title: 'Psychic Memory Fragment',
+    type: 'secret',
+    subtitle: 'Chapter VI — Echo Chamber (Esper Route)',
+    description:
+      'The Echo Chamber gives you something it does not give anyone without an Esper\'s trained signal-reading: the full sequence of the Archive\'s pre-blackout transmission, not as fragments but as a complete document. You understand the Last Kingdom not as a location but as a state — a specific configuration of the Archive\'s seventeen-node network at full resonance. You understand Solen\'s role, Velna\'s design, the infection\'s origin, and the exact combination of events required to complete the transmission without destroying the carrier. You leave the Chamber with the path forward in your bones.',
+    color: '#080c18',
+    hint: 'Play as an Esper class. Use the Esper reading ability in the Echo Chamber to access the full transmission record without the collective\'s interference.',
+    chapter: 'Chapter VI',
+    isSecret: true,
+  },
+
   // ── True Ending ────────────────────────────────────────────────────────────
   {
     id: 'ending_last_kingdom_remembers',

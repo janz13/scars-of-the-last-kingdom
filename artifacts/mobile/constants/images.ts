@@ -111,6 +111,20 @@ export const BACKGROUND_IMAGES: Record<string, any> = {
   council_chamber:        require('../assets/images/glass_tower_lobby.png'),
   cracked_observatory:    require('../assets/images/archive_ruin_wall.png'),
   private_auction_hall:   require('../assets/images/glass_tower_lobby.png'),
+
+  // Chapter 6 — The Red Choir (placeholder art → closest existing environment)
+  // TODO: replace with dedicated Chapter 6 dark-infection pixel art
+  bloodlit_underpass:     require('../assets/images/collapsed_tunnel.png'),
+  singing_hospital:       require('../assets/images/hidden_clinic.png'),
+  red_chapel:             require('../assets/images/red_choir_chamber.png'),
+  vein_market:            require('../assets/images/black_market_alley.png'),
+  choir_nest:             require('../assets/images/red_choir_chamber.png'),
+  silent_ward:            require('../assets/images/hidden_clinic.png'),
+  pulse_tower:            require('../assets/images/relic_engine_room.png'),
+  drowned_choir_hall:     require('../assets/images/flooded_platform.png'),
+  infected_nursery:       require('../assets/images/nursery_of_knives.png'),
+  crimson_relay:          require('../assets/images/choir_broadcast_point.png'),
+  echo_chamber:           require('../assets/images/archive_ruin_wall.png'),
 };
 
 // ─── Gradient fallbacks & transition colors ───────────────────────────────────
@@ -309,6 +323,51 @@ export const BACKGROUND_GRADIENTS: Record<string, GradientConfig> = {
   },
   private_auction_hall: {
     colors: ['#10080e', '#1c0e18', '#10080e', '#080408'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  // Chapter 6 — The Red Choir (deep crimson infection palette)
+  bloodlit_underpass: {
+    colors: ['#0e0204', '#1a0406', '#0e0204', '#080102'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  singing_hospital: {
+    colors: ['#0a0c0a', '#121814', '#0a0c0a', '#060806'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  red_chapel: {
+    colors: ['#180202', '#280404', '#180202', '#0c0101'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  vein_market: {
+    colors: ['#120404', '#1e0606', '#120404', '#0a0202'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  choir_nest: {
+    colors: ['#1a0206', '#2a0408', '#1a0206', '#0e0103'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  silent_ward: {
+    colors: ['#080c0c', '#0e1616', '#080c0c', '#040808'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  pulse_tower: {
+    colors: ['#100204', '#1e0408', '#100204', '#080102'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  drowned_choir_hall: {
+    colors: ['#04080e', '#060e1a', '#040c14', '#020608'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  infected_nursery: {
+    colors: ['#0e0606', '#180a0a', '#0e0606', '#080303'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  crimson_relay: {
+    colors: ['#140204', '#200408', '#140204', '#0a0102'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  echo_chamber: {
+    colors: ['#080812', '#0e0e1e', '#08081a', '#040410'],
     start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
   },
   // Generic fallback for any key not listed above
