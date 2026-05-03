@@ -82,6 +82,20 @@ export const BACKGROUND_IMAGES: Record<string, any> = {
   rat_king_gate:          require('../assets/images/rat_king_gate.png'),
   hidden_clinic:          require('../assets/images/hidden_clinic.png'),
   relic_engine_room:      require('../assets/images/relic_engine_room.png'),
+
+  // Chapter 1 — intimate mark-examination scenes (placeholder → dark metro hallway)
+  examine_mark:           require('../assets/images/dark_metro_hallway.png'),
+
+  // Chapter 4 — Saints in Iron (placeholder art → closest existing environment)
+  // TODO: replace with dedicated Chapter 4 artwork
+  iron_checkpoint:        require('../assets/images/iron_saints_checkpoint.png'),
+  chapel_of_chains:       require('../assets/images/iron_saints_checkpoint.png'),
+  purification_yard:      require('../assets/images/saints_patrol.png'),
+  barracks_of_ash:        require('../assets/images/saints_patrol.png'),
+  confession_hall:        require('../assets/images/iron_saints_checkpoint.png'),
+  saint_furnace:          require('../assets/images/relic_engine_room.png'),
+  prison_carts:           require('../assets/images/collapsed_tunnel.png'),
+  war_shrine:             require('../assets/images/surface_ruins.png'),
 };
 
 // ─── Gradient fallbacks & transition colors ───────────────────────────────────
@@ -193,6 +207,44 @@ export const BACKGROUND_GRADIENTS: Record<string, GradientConfig> = {
   },
   relic_engine_room: {
     colors: ['#060414', '#0c0624', '#180a3a', '#060414'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  // Chapter 1 — examine mark
+  examine_mark: {
+    colors: ['#050508', '#0a0a12', '#050508', '#030305'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  // Chapter 4 — Saints in Iron
+  iron_checkpoint: {
+    colors: ['#080c08', '#0e1810', '#080c08', '#050805'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  chapel_of_chains: {
+    colors: ['#100804', '#1e1006', '#100804', '#080402'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  purification_yard: {
+    colors: ['#0c0c0a', '#181610', '#0c0c0a', '#080806'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  barracks_of_ash: {
+    colors: ['#0e0c08', '#1a1610', '#0e0c08', '#080604'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  confession_hall: {
+    colors: ['#0a0806', '#160e08', '#0a0806', '#060402'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  saint_furnace: {
+    colors: ['#1a0402', '#2e0604', '#1a0402', '#0c0202'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  prison_carts: {
+    colors: ['#060808', '#0c1010', '#060808', '#040606'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  war_shrine: {
+    colors: ['#0a0810', '#14101c', '#0a0810', '#060608'],
     start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
   },
   // Generic fallback for any key not listed above

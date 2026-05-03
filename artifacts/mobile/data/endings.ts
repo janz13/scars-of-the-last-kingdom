@@ -254,6 +254,187 @@ export const ENDINGS: EndingDefinition[] = [
     isSecret: true,
   },
 
+  // ── Chapter 1: Chapter-Specific Endings ──────────────────────────────────
+  {
+    id: 'ending_buried_tunnel',
+    title: 'What the Tunnel Keeps',
+    type: 'death',
+    subtitle: 'Tunnel Collapse Ending',
+    description:
+      'The ceiling comes down in a single breath. Rock and twisted steel and perfect darkness, all at once. The mark blazes white-hot for three seconds — as if it\'s trying to signal somewhere, or say goodbye to something that was listening. Then the weight presses out all light, all sound, all the things you were going to do next. The tunnels keep everything they take. They\'ve kept much more than you.',
+    color: '#2a1a1a',
+    hint: 'Choose the wrong path in the unstable tunnel sections when the collapse warning has already been triggered. The metro has no structural engineers left.',
+    chapter: 'Chapter I',
+  },
+  {
+    id: 'ending_mira_abandoned',
+    title: 'The Specific Weight',
+    type: 'death',
+    subtitle: 'Companion Abandonment — Sealed Room Ending',
+    description:
+      'You hear the sounds through the sealed door and understand, too late, what it costs to hesitate. By the time you find another way through, the maintenance room is quiet in the way rooms get quiet after. Her medical bag is on the floor. You leave carrying the specific weight of a choice that has no undoing.',
+    color: '#1a0e1a',
+    hint: 'Leave Mira behind in a sealed section and take too long finding the alternate route. Some things cannot be undone by arriving.',
+    chapter: 'Chapter I',
+  },
+  {
+    id: 'ending_cain_dies_alone',
+    title: 'The Map He Left',
+    type: 'companion',
+    subtitle: 'Companion Sacrifice — Solo Ending',
+    description:
+      'You don\'t go back. When you pass the security room door on your way to the Archive, the chain lock is open. Inside: a bedroll, empty blister packs, and a map left on the table with your name written at the top in careful block letters. He was thinking of someone else at the end. That\'s the part you\'ll carry.',
+    color: '#0e1a2a',
+    hint: 'Leave Cain wounded in the metro security room and refuse to spend medicine on him. The math he does with his remaining supplies has only one answer.',
+    chapter: 'Chapter I',
+  },
+  {
+    id: 'ending_saints_surface_execution',
+    title: 'Sinner Protocol',
+    type: 'death',
+    subtitle: 'Iron Saints Inquisition Ending',
+    description:
+      'They don\'t waste ammunition on active manifestations — Inquisition protocol is more deliberate than that. The last thing you see is the mark dim on your wrist, as if whatever gave it to you has already moved on to find the next candidate. The city keeps burning above. The Archive stays sealed another day.',
+    color: '#1a0808',
+    hint: 'Reach the city surface with an active mark and no cover story during an Iron Saints patrol window. The wand operator is never more than twelve meters away.',
+    chapter: 'Chapter I',
+  },
+  {
+    id: 'ending_ash_suffocation',
+    title: 'Ash and Quiet',
+    type: 'death',
+    subtitle: 'Surface Exposure Ending',
+    description:
+      'The ash fills your chest before the pain does. You spend the time thinking about the Archive door, the mark, the thing you were supposed to reach. The particular cruelty of dying in the open after surviving everything underground. The city above doesn\'t register your absence. It breathes its ash and keeps being ruined.',
+    color: '#1a1a14',
+    hint: 'Reach the surface without an air filter or sufficient health. Three minutes is not always enough time to get back underground.',
+    chapter: 'Chapter I',
+  },
+
+  // ── Chapter 2: Chapter-Specific Endings ──────────────────────────────────
+  {
+    id: 'c2_ending_dehydration',
+    title: 'The Simplest Killer',
+    type: 'death',
+    subtitle: 'Surface Dehydration Ending',
+    description:
+      'It takes longer than you expect and shorter than you hope. The mark dims in stages — not dramatically, just gradually, the way a signal loses quality when the receiver moves too far from the source. Three days on the surface without enough water is a physiological fact that no amount of will or mark-power changes. The city above doesn\'t require a weapon to kill you. It just requires patience.',
+    color: '#1a3a4a',
+    hint: 'Push through District 4 with your thirst already critical and no water supply. The surface offers no wells.',
+    chapter: 'Chapter II',
+  },
+  {
+    id: 'c2_ending_saints_executed',
+    title: 'Sinner Protocol — District 4',
+    type: 'death',
+    subtitle: 'Iron Saints Surface Execution Ending',
+    description:
+      'The wand finds the mark at twelve meters. The Inquisitor arrives in under two minutes. They are professional and methodical and they have done this before — the phrasing of the charges is practiced, the paperwork prepared before they reach you. The Inquisition does not hesitate at a mark this active.',
+    color: '#200808',
+    hint: 'Let the mark flare visibly at a Saints checkpoint in District 4. The wand operator\'s range is farther than it looks.',
+    chapter: 'Chapter II',
+  },
+  {
+    id: 'c2_ending_glass_vivisected',
+    title: 'Instrument Failure',
+    type: 'death',
+    subtitle: 'Glass Court Research Ending',
+    description:
+      'The mark and the instrument cannot contain each other at the same time. The analyst understands what\'s happening — you can see it in the half-second before her expression goes clinical — but the understanding comes just after the action becomes irreversible. In the final log entry, the analyst notes that the mark continued to transmit for eleven minutes after vital signs ceased. She marks the experiment as Category Two data — extraordinary yield.',
+    color: '#0a1a2a',
+    hint: 'Submit to the Glass Court\'s extraction instrument with a high-activity mark. The instrument was built for lower saturation levels.',
+    chapter: 'Chapter II',
+  },
+  {
+    id: 'c2_ending_choir_absorbed',
+    title: 'The Signal Finds Its Instrument',
+    type: 'corruption',
+    subtitle: 'Red Choir Absorption Ending',
+    description:
+      'What happens in the broadcast chamber is more like tuning — the mark aligns with the Choir\'s frequency completely, the boundary between the signal and the person who carries it becoming a question with no stable answer. The Founder watches and their expression is grief and recognition and something that might be envy. You are still you, technically. The broadcast continues. You continue with it.',
+    color: '#2a0808',
+    hint: 'Enter the Red Choir\'s broadcast chamber with maximum corruption and accept the Founder\'s invitation fully. The signal has been looking for this instrument.',
+    chapter: 'Chapter II',
+  },
+  {
+    id: 'c2_ending_market_buried',
+    title: 'The Wand Does Not Miss',
+    type: 'death',
+    subtitle: 'Black Market Raid Ending',
+    description:
+      'The mark blazes at exactly the wrong moment. The Saints\' wand operator pivots in your direction with the automatic movement of someone who has been trained to move exactly this way. The market empties around you while you stand in the middle of it holding a light you cannot put out. The Saints\' report for District 4-West notes one Category One manifestation neutralized and one underground market disrupted. Both are listed as successful outcomes.',
+    color: '#1a0c04',
+    hint: 'Let the mark flare during a Saints raid on the black market. The wand operator was already in position.',
+    chapter: 'Chapter II',
+  },
+  {
+    id: 'c2_ending_mira_dies_checkpoint',
+    title: 'Her Name on Noran Street',
+    type: 'companion',
+    subtitle: 'Mira Lost at Checkpoint Ending',
+    description:
+      'You run. The soldier\'s hand closes on Mira\'s arm and your body moves toward the exit before your mind has processed what\'s happening. She doesn\'t call for you. Three blocks north, breathing hard, you understand that she made a choice in that moment — she made noise in the wrong direction so you could reach the alley. You carry what she knew about the clinic. You carry it on Noran Street, where she worked for two years before the blackout.',
+    color: '#2a1414',
+    hint: 'Attempt the checkpoint with Mira when the Saints are on high alert and the exit window is already closing. Some decisions get made for you.',
+    chapter: 'Chapter II',
+  },
+  {
+    id: 'c2_ending_exile_wanderer',
+    title: 'Past the Edge of What Was',
+    type: 'wanderer',
+    subtitle: 'City Exile Ending',
+    description:
+      'The city ends at a collapsed highway overpass. Beyond it: open land, ash-dusted, the remnants of a transit corridor leading somewhere the city stopped caring about before the blackout. You walk into it. The mark pulses with decreasing urgency as the distance from Archive infrastructure grows — not extinguishing, just quieting. The city recedes. You become something the city doesn\'t have a file on.',
+    color: '#4a4a3a',
+    hint: 'Refuse all faction alliances in District 4 and take the eastern exit before any story flag commits you to the Archive. The city will not chase you.',
+    chapter: 'Chapter II',
+  },
+  {
+    id: 'c2_ending_saints_enlisted',
+    title: 'The Registered Sinner',
+    type: 'faction',
+    subtitle: 'Iron Saints Voluntary Surrender Ending',
+    description:
+      'The registration process takes four hours. The Saints\' Inquisition classification for a voluntary surrender with an active mark is Category One Cooperative — rare enough that the registrar looks it up twice. You are given a designation, a wrist band worn over the mark, and assigned to a supervised work detail. You will work within the Saints\' structure, bearing the mark under their observation, until the Archive makes itself relevant again.',
+    color: '#2a1a08',
+    hint: 'Approach the Iron Saints checkpoint and voluntarily declare the mark before the wand finds it. Category One Cooperative is a classification that exists for a reason.',
+    chapter: 'Chapter II',
+  },
+  {
+    id: 'c2_ending_glass_data_trade',
+    title: 'The Voluntary Subject',
+    type: 'faction',
+    subtitle: 'Glass Court Research Partnership Ending',
+    description:
+      'You stay. The arrangement is what the analyst described: medical care, food and water, and the Glass Court\'s full Archive research in exchange for access to the mark and what it transmits. You are Subject Eighteen. The work is interesting, which you hadn\'t expected. Whether this constitutes progress depends on what you think you\'re progressing toward. You are still inside a tower with very controlled access.',
+    color: '#081a2a',
+    hint: 'Negotiate a voluntary research agreement with the Glass Court analyst before the mark\'s activity exceeds the instrument\'s safe threshold.',
+    chapter: 'Chapter II',
+  },
+  {
+    id: 'c2_ending_archive_messenger',
+    title: 'The Pre-Collapse Access',
+    type: 'secret',
+    subtitle: 'Last Archive Secondary Entry Ending',
+    description:
+      'The coordinates lead to a maintenance access point in a sub-basement of a building that collapsed to everything except the foundation level. The door responds to the mark immediately. Velna\'s last message is written on the wall just inside: "It\'s larger than I expected. I\'m going further." This is the way in that the factions don\'t know about. Whatever it costs, it is the right door.',
+    color: '#1a2a1a',
+    hint: 'Recover Velna\'s full message trail and the secondary archive coordinates. The entrance the factions don\'t know about only opens to someone the mark already trusts.',
+    chapter: 'Chapter II',
+    isSecret: true,
+  },
+  {
+    id: 'ending_glass_court_prisoner',
+    title: 'Voluntary Extraction',
+    type: 'faction',
+    subtitle: 'Glass Court Mark Extraction Ending',
+    description:
+      'They take the mark from you — a process that takes three hours and leaves you intact and empty. Something is different in your wrist afterward. Not painful. Just absent. Like a word you\'ve forgotten how to pronounce. The Archive door stays sealed. The mark, transferred to a Glass Court research subject, dims after forty-eight hours and goes quiet. They never figure out why.',
+    color: '#0a1428',
+    hint: 'Surrender the mark to the Glass Court extraction team willingly. The Glass Court has been waiting for someone to agree. No one has agreed before.',
+    chapter: 'Chapter II',
+  },
+
   // ── Chapter 3: Bad Endings — Death ───────────────────────────────────────
   {
     id: 'ending_market_lynching',

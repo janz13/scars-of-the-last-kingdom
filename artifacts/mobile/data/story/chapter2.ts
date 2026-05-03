@@ -460,13 +460,13 @@ export const CHAPTER_2_NODES: StoryNode[] = [
     effectsOnEnter: { morale: -2 },
     choices: [
       {
-        id: 'c2_mira_papers_gambit',
+        id: 'c2_choose_mira_papers_gambit',
         text: 'Let Mira try her papers. Flanking her with a civilian posture.',
         nextNode: 'c2_mira_papers_gambit',
         requirements: { flags: ['mira_joins_party'] },
       },
       {
-        id: 'c2_mira_alley_route',
+        id: 'c2_choose_mira_alley_route',
         text: 'Find an alley route around the checkpoint. Longer, more dangerous.',
         nextNode: 'c2_mira_alley_route',
       },
@@ -1066,7 +1066,7 @@ export const CHAPTER_2_NODES: StoryNode[] = [
         nextNode: 'c2_market_info_broker',
       },
       {
-        id: 'c2_market_hollow_contact',
+        id: 'c2_choose_market_hollow_contact',
         text: 'Find a Hollow Children operative. You need to talk to someone who knows Kira.',
         nextNode: 'c2_market_hollow_contact',
         requirements: { flags: ['met_kira'] },
