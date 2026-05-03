@@ -98,12 +98,14 @@ export default function CharacterCreator() {
         <Text style={styles.stepLabel}>{STEPS[step]}</Text>
       </View>
 
-      <Animated.View style={[{ flex: 1, opacity: fadeAnim }]}>
-        <ScrollView
-          style={styles.scroll}
-          contentContainerStyle={[styles.content, { paddingBottom: botPad + 20 }]}
-          showsVerticalScrollIndicator={false}
-        >
+      <ScrollView
+        style={styles.scroll}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
+        overScrollMode="auto"
+      >
+        <Animated.View style={[{ opacity: fadeAnim }, styles.content, { paddingBottom: botPad + 20 }]}>
           {/* STEP 0: NAME */}
           {step === 0 && (
             <View>
@@ -257,8 +259,8 @@ export default function CharacterCreator() {
               </Pressable>
             </View>
           )}
-        </ScrollView>
-      </Animated.View>
+        </Animated.View>
+      </ScrollView>
 
       {/* Next Button */}
       {step < 5 && (
@@ -356,6 +358,7 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
   scroll: { flex: 1 },
+  scrollContent: { flexGrow: 1 },
   content: { padding: 20 },
   stepTitle: {
     fontSize: 22,
