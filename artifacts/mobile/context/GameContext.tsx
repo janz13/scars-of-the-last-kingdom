@@ -2,6 +2,7 @@ import React, { createContext, useCallback, useContext, useEffect, useRef, useSt
 import type {
   Character,
   CompanionPair,
+  DiceCheck,
   FactionRep,
   GameScreen,
   GameState,
@@ -9,6 +10,7 @@ import type {
   RouteEntry,
   Stats,
 } from '../data/types';
+import type { DiceResult } from '../logic/diceEngine';
 import { buildStartingStats, DEFAULT_INVENTORY, DEFAULT_STATS } from '../data/characterOptions';
 import { getNodeById, getStartNodeId } from '../data/storyNodes';
 import { ENDINGS } from '../data/endings';
@@ -45,9 +47,15 @@ export const INITIAL_STATE: GameState = {
   factionRep: DEFAULT_FACTION_REP,
   routeHistory: [],
   endingsDiscovered: [],
-  settings: { textSpeed: 'normal', soundEnabled: false, autoSave: true },
+  settings: { textSpeed: 'normal', soundEnabled: false, autoSave: true, skipDiceAnimation: false },
   activeEnding: null,
 };
+
+export interface PendingDiceRoll {
+  choiceId: string;
+  choiceText: string;
+  diceCheck: DiceCheck;
+}
 
 interface GameContextValue {
   state: GameState;
@@ -62,6 +70,10 @@ interface GameContextValue {
   continueGame: () => Promise<void>;
   deleteAndReset: () => Promise<void>;
   updateSettings: (settings: Partial<GameState['settings']>) => void;
+  // Dice system
+  pendingDiceRoll: PendingDiceRoll | null;
+  initiateDiceRoll: (choiceId: string) => void;
+  commitDiceRoll: (choiceId: string, result: DiceResult) => void;
   // Developer tools
   devJumpToNode: (nodeId: string) => void;
   devSetStat: (key: keyof Stats, value: number) => void;
@@ -81,6 +93,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<GameState>(INITIAL_STATE);
   const [isLoading, setIsLoading] = useState(true);
   const [hasSaveGame, setHasSaveGame] = useState(false);
+  const [pendingDiceRoll, setPendingDiceRoll] = useState<PendingDiceRoll | null>(null);
   const autoSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // On mount, check for existing save
@@ -233,6 +246,100 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
   const setScreen = useCallback((screen: GameScreen) => {
     setState((prev) => ({ ...prev, screen }));
+  }, []);
+
+  // ─── Dice system ─────────────────────────────────────────────────────────────
+
+  const initiateDiceRoll = useCallback((choiceId: string) => {
+    setState((prev) => {
+      const node = getNodeById(prev.currentNodeId);
+      if (!node) return prev;
+      const choice = node.choices.find((c) => c.id === choiceId);
+      if (!choice?.diceCheck) return prev;
+      // We set pendingDiceRoll outside setState since it's separate UI state
+      return prev;
+    });
+    // Read current state synchronously via a callback trick
+    setState((prev) => {
+      const node = getNodeById(prev.currentNodeId);
+      if (!node) return prev;
+      const choice = node.choices.find((c) => c.id === choiceId);
+      if (!choice?.diceCheck) return prev;
+      setPendingDiceRoll({ choiceId, choiceText: choice.text, diceCheck: choice.diceCheck });
+      return prev;
+    });
+  }, []);
+
+  const commitDiceRoll = useCallback((choiceId: string, result: DiceResult) => {
+    setState((prev) => {
+      const node = getNodeById(prev.currentNodeId);
+      if (!node) return prev;
+      const choice = node.choices.find((c) => c.id === choiceId);
+      if (!choice) return prev;
+
+      // Apply base choice effects, then dice result effects
+      let next = applyEffects(prev, choice.effects);
+      next = applyEffects(next, result.effects);
+
+      // Track luck reroll in flags
+      if (result.luckRerollUsed) {
+        next = { ...next, flags: { ...next.flags, dice_reroll_used: true } };
+      }
+
+      // Record route entry with dice outcome
+      const outcomeTag = result.outcome === 'criticalSuccess' ? 'CRIT ✦' :
+        result.outcome === 'criticalFailure' ? 'CRIT ✗' :
+        result.outcome === 'success' ? '✦' : '✗';
+      const entry: RouteEntry = {
+        nodeId: node.id,
+        nodeTitle: node.title,
+        choiceText: `${choice.text} [${outcomeTag} ${result.total} vs DC ${result.difficulty}]`,
+        timestamp: Date.now(),
+      };
+      next = { ...next, routeHistory: [...next.routeHistory, entry] };
+
+      let nextNodeId = result.nextNodeId;
+
+      const endingTrigger = shouldTriggerEnding(next, choice);
+      if (endingTrigger) nextNodeId = endingTrigger;
+
+      const autoRedirect = getAutoRedirect(next, nextNodeId);
+      if (autoRedirect) nextNodeId = autoRedirect;
+
+      next = { ...next, currentNodeId: nextNodeId };
+
+      const nextNode = getNodeById(nextNodeId);
+      if (nextNode?.effectsOnEnter) {
+        next = applyEffects(next, nextNode.effectsOnEnter);
+      }
+
+      const survivalEnding = checkSurvivalEndings(next);
+      if (survivalEnding) {
+        return {
+          ...next,
+          screen: 'ending',
+          activeEnding: survivalEnding,
+          endingsDiscovered: next.endingsDiscovered.includes(survivalEnding)
+            ? next.endingsDiscovered
+            : [...next.endingsDiscovered, survivalEnding],
+        };
+      }
+
+      if (nextNode?.isEnding) {
+        const endingId = nextNode.endingId ?? nextNode.id;
+        return {
+          ...next,
+          screen: 'ending',
+          activeEnding: endingId,
+          endingsDiscovered: next.endingsDiscovered.includes(endingId)
+            ? next.endingsDiscovered
+            : [...next.endingsDiscovered, endingId],
+        };
+      }
+
+      return next;
+    });
+    setPendingDiceRoll(null);
   }, []);
 
   const continueGame = useCallback(async () => {
@@ -393,6 +500,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         continueGame,
         deleteAndReset,
         updateSettings,
+        pendingDiceRoll,
+        initiateDiceRoll,
+        commitDiceRoll,
         devJumpToNode,
         devSetStat,
         devSetInventory,

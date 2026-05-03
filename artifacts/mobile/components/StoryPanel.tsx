@@ -12,6 +12,7 @@ import { Feather } from '@expo/vector-icons';
 import { useGame } from '../context/GameContext';
 import BackgroundPanel from './BackgroundPanel';
 import ChoiceButton from './ChoiceButton';
+import DiceRollOverlay from './DiceRollOverlay';
 
 // ─── Stats bar (fixed at top) ─────────────────────────────────────────────────
 
@@ -85,7 +86,8 @@ function StatBar({
 // ─── Main panel ───────────────────────────────────────────────────────────────
 
 export default function StoryPanel() {
-  const { state, currentNode, availableChoices, makeChoice, setScreen } = useGame();
+  const { state, currentNode, availableChoices, makeChoice, setScreen,
+    pendingDiceRoll, initiateDiceRoll, commitDiceRoll } = useGame();
   const insets = useSafeAreaInsets();
 
   const topPad = Platform.OS === 'web' ? 67 : insets.top;
@@ -108,6 +110,7 @@ export default function StoryPanel() {
   const isEndingNode = currentNode.isEnding;
 
   return (
+    <>
     <BackgroundPanel
       imageKey={currentNode.imageKey}
       sceneKey={currentNode.id}
@@ -212,7 +215,14 @@ export default function StoryPanel() {
                     met={met}
                     reasons={reasons}
                     flavorText={choice.flavorText}
-                    onPress={() => makeChoice(choice.id)}
+                    diceCheck={choice.diceCheck}
+                    onPress={() => {
+                      if (choice.diceCheck) {
+                        initiateDiceRoll(choice.id);
+                      } else {
+                        makeChoice(choice.id);
+                      }
+                    }}
                   />
                 ))}
                 {availableChoices.length === 0 && (
@@ -233,6 +243,17 @@ export default function StoryPanel() {
         </ScrollView>
       </View>
     </BackgroundPanel>
+
+    {/* ── Dice Roll Overlay ─────────────────────────────────────────────── */}
+    {pendingDiceRoll && (
+      <DiceRollOverlay
+        diceCheck={pendingDiceRoll.diceCheck}
+        choiceText={pendingDiceRoll.choiceText}
+        state={state}
+        onCommit={(result) => commitDiceRoll(pendingDiceRoll.choiceId, result)}
+      />
+    )}
+  </>
   );
 }
 

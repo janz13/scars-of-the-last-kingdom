@@ -1,6 +1,8 @@
 import React from 'react';
 import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Feather } from '@expo/vector-icons';
+import type { DiceCheck } from '../data/types';
+import { DICE_STAT_LABELS } from '../logic/diceEngine';
 
 interface Props {
   choiceId: string;
@@ -8,15 +10,14 @@ interface Props {
   met: boolean;
   reasons: string[];
   flavorText?: string;
+  diceCheck?: DiceCheck;
   onPress: () => void;
 }
 
-// Android ripple config for active choices
 const RIPPLE = Platform.OS === 'android'
   ? { color: 'rgba(155,89,182,0.18)', borderless: false }
   : undefined;
 
-// Larger tap target for fingers
 const HIT_SLOP = { top: 4, bottom: 4, left: 8, right: 8 };
 
 export default function ChoiceButton({
@@ -25,9 +26,11 @@ export default function ChoiceButton({
   met,
   reasons,
   flavorText,
+  diceCheck,
   onPress,
 }: Props) {
   const reasonText = reasons.length > 0 ? reasons[0] : (flavorText ?? '');
+  const hasDice = Boolean(diceCheck);
 
   return (
     <View style={styles.wrapper}>
@@ -38,7 +41,7 @@ export default function ChoiceButton({
         style={({ pressed }) => [
           styles.button,
           met ? styles.buttonActive : styles.buttonLocked,
-          // Subtle press feedback on iOS/web (Android uses ripple)
+          hasDice && met && styles.buttonDice,
           met && pressed && Platform.OS !== 'android' && styles.buttonPressed,
         ]}
       >
@@ -46,7 +49,12 @@ export default function ChoiceButton({
           {!met && (
             <Feather name="lock" size={13} color="#5a5060" style={styles.lockIcon} />
           )}
-          {met && <View style={styles.diamond} />}
+          {met && !hasDice && <View style={styles.diamond} />}
+          {met && hasDice && (
+            <View style={styles.diceBadge}>
+              <Text style={styles.diceBadgeText}>{diceCheck!.diceType.toUpperCase()}</Text>
+            </View>
+          )}
           <Text
             style={[styles.text, met ? styles.textActive : styles.textLocked]}
             numberOfLines={5}
@@ -54,6 +62,16 @@ export default function ChoiceButton({
             {text}
           </Text>
         </View>
+
+        {/* Dice info row — stat + DC */}
+        {hasDice && met && (
+          <View style={styles.diceInfo}>
+            <Feather name="zap" size={10} color="#9b59b6" />
+            <Text style={styles.diceInfoText}>
+              {DICE_STAT_LABELS[diceCheck!.stat]} check · DC {diceCheck!.difficulty}
+            </Text>
+          </View>
+        )}
 
         {!met && reasonText !== '' && (
           <Text style={styles.reason}>{reasonText}</Text>
@@ -72,12 +90,15 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     paddingHorizontal: 14,
     paddingVertical: 13,
-    // overflow: hidden required for android_ripple to be clipped to border radius
     overflow: 'hidden',
   },
   buttonActive: {
     backgroundColor: 'rgba(20,16,30,0.88)',
     borderColor: '#4a3060',
+  },
+  buttonDice: {
+    borderColor: '#6a3090',
+    backgroundColor: 'rgba(22,14,38,0.92)',
   },
   buttonLocked: {
     backgroundColor: 'rgba(10,8,15,0.75)',
@@ -98,6 +119,21 @@ const styles = StyleSheet.create({
     transform: [{ rotate: '45deg' }],
     marginRight: 2,
     flexShrink: 0,
+  },
+  diceBadge: {
+    backgroundColor: 'rgba(155,89,182,0.18)',
+    borderWidth: 1,
+    borderColor: '#5a3070',
+    borderRadius: 3,
+    paddingHorizontal: 5,
+    paddingVertical: 1,
+    flexShrink: 0,
+  },
+  diceBadgeText: {
+    fontSize: 9,
+    color: '#9b59b6',
+    fontFamily: 'Inter_700Bold',
+    letterSpacing: 0.5,
   },
   lockIcon: {
     marginRight: 2,
@@ -124,5 +160,18 @@ const styles = StyleSheet.create({
     marginLeft: 16,
     fontFamily: 'Inter_400Regular',
     fontStyle: 'italic',
+  },
+  diceInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    marginTop: 6,
+    marginLeft: 2,
+  },
+  diceInfoText: {
+    fontSize: 10,
+    color: '#6a4a80',
+    fontFamily: 'Inter_600SemiBold',
+    letterSpacing: 0.8,
   },
 });

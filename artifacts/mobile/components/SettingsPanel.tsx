@@ -58,6 +58,22 @@ export default function SettingsPanel() {
 
         <View style={styles.divider} />
 
+        <Text style={styles.sectionHeader}>DICE CHECKS</Text>
+        <Pressable
+          style={styles.toggleRow}
+          onPress={() => updateSettings({ skipDiceAnimation: !settings.skipDiceAnimation })}
+        >
+          <View>
+            <Text style={styles.toggleLabel}>Skip Dice Animation</Text>
+            <Text style={styles.toggleDesc}>Show results instantly without the rolling animation.</Text>
+          </View>
+          <View style={[styles.toggle, settings.skipDiceAnimation && styles.toggleOn]}>
+            <View style={[styles.toggleThumb, settings.skipDiceAnimation && styles.toggleThumbOn]} />
+          </View>
+        </Pressable>
+
+        <View style={styles.divider} />
+
         <Text style={styles.sectionHeader}>OTHER</Text>
         <Pressable
           style={styles.toggleRow}

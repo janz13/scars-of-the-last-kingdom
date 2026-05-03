@@ -111,6 +111,24 @@ export interface GameSettings {
   textSpeed: 'slow' | 'normal' | 'fast';
   soundEnabled: boolean;
   autoSave: boolean;
+  skipDiceAnimation: boolean;
+}
+
+export type DiceType = 'd4' | 'd6' | 'd8' | 'd10' | 'd12' | 'd20';
+export type DiceStat = 'strength' | 'intelligence' | 'agility' | 'charisma' | 'luck';
+
+export interface DiceCheck {
+  stat: DiceStat;
+  difficulty: number;
+  diceType: DiceType;
+  successNode: string;
+  failureNode: string;
+  criticalSuccessNode?: string;
+  criticalFailureNode?: string;
+  successEffects?: ChoiceEffects;
+  failureEffects?: ChoiceEffects;
+  criticalSuccessEffects?: ChoiceEffects;
+  criticalFailureEffects?: ChoiceEffects;
 }
 
 export interface CompanionPair {
@@ -187,6 +205,7 @@ export interface Choice {
   endingTrigger?: string;
   endingCondition?: (state: GameState) => boolean;
   flavorText?: string;
+  diceCheck?: DiceCheck;
 }
 
 export interface StoryNode {
