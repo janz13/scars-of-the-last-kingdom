@@ -73,6 +73,16 @@ export default function SettingsPanel() {
         {isInGame && (
           <>
             <View style={styles.divider} />
+            <Text style={styles.sectionHeader}>NAVIGATION</Text>
+            <Pressable
+              style={styles.menuBtn}
+              onPress={() => setScreen('mainMenu')}
+            >
+              <Feather name="home" size={14} color="#9b59b6" />
+              <Text style={styles.menuBtnText}>Return to Main Menu</Text>
+            </Pressable>
+
+            <View style={styles.divider} />
             <Text style={styles.sectionHeader}>DANGER ZONE</Text>
             <Pressable
               style={styles.dangerBtn}
@@ -173,6 +183,21 @@ const styles = StyleSheet.create({
   toggleThumbOn: {
     backgroundColor: '#9b59b6',
     alignSelf: 'flex-end',
+  },
+  menuBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    borderWidth: 1,
+    borderColor: '#4a3060',
+    borderRadius: 4,
+    padding: 14,
+    backgroundColor: '#12101e',
+  },
+  menuBtnText: {
+    fontSize: 13,
+    color: '#9b59b6',
+    fontFamily: 'Inter_500Medium',
   },
   dangerBtn: {
     flexDirection: 'row',

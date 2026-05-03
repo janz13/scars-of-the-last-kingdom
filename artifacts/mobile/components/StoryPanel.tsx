@@ -210,9 +210,10 @@ export default function StoryPanel() {
             </View>
           )}
 
-          {/* Settings / menu button */}
+          {/* Menu button */}
           <Pressable style={styles.settingsBtn} onPress={() => setScreen('settings')}>
-            <Feather name="menu" size={14} color="#4a4050" />
+            <Feather name="menu" size={13} color="#5a5060" />
+            <Text style={styles.settingsBtnText}>MENU</Text>
           </Pressable>
         </View>
       </View>
@@ -406,8 +407,21 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter_600SemiBold',
   },
   settingsBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
     alignSelf: 'center',
-    padding: 6,
+    gap: 5,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
     marginTop: 4,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: '#2a2038',
+  },
+  settingsBtnText: {
+    fontSize: 9,
+    letterSpacing: 2,
+    color: '#5a5060',
+    fontFamily: 'Inter_600SemiBold',
   },
 });
