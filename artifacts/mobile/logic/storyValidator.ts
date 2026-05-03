@@ -4,7 +4,19 @@
  * Run validateStory() to get a list of ValidationWarning objects.
  * Warnings are shown in Developer Mode — they never crash the game.
  *
- * Checks performed:
+ * Story content now lives in split chapter files:
+ *   artifacts/mobile/data/story/chapter1.ts
+ *   artifacts/mobile/data/story/chapter2.ts
+ *   artifacts/mobile/data/story/chapter3.ts  ... (add new chapters here)
+ *   artifacts/mobile/data/story/finalChapter1.ts
+ *   artifacts/mobile/data/story/finalChapter2.ts
+ *   artifacts/mobile/data/story/diceOutcomes.ts
+ *
+ * All chapter files are combined in story/index.ts and re-exported through
+ * storyNodes.ts. The validator sees the full merged array automatically —
+ * no changes needed here when a new chapter file is added.
+ *
+ * Checks performed across ALL chapter files:
  *   - Every choice.nextNode points to an existing node
  *   - Every choice.endingTrigger points to an existing node
  *   - Every diceCheck outcome node (successNode, failureNode, critical*) exists
@@ -333,6 +345,7 @@ export interface StorySummary {
   totalNodes: number;
   endingNodes: number;
   totalChoices: number;
+  diceCheckNodes: number;
   chapters: string[];
   chapterCounts: Record<string, number>;
   locations: string[];
@@ -345,6 +358,7 @@ export function getStorySummary(): StorySummary {
   const imageKeysSet = new Set<string>();
   let endingNodes = 0;
   let totalChoices = 0;
+  let diceCheckNodes = 0;
 
   for (const node of STORY_NODES) {
     chapterCounts[node.chapter] = (chapterCounts[node.chapter] ?? 0) + 1;
@@ -352,12 +366,14 @@ export function getStorySummary(): StorySummary {
     if (node.imageKey) imageKeysSet.add(node.imageKey);
     if (node.isEnding) endingNodes++;
     totalChoices += node.choices.length;
+    if (node.choices.some((c) => c.diceCheck)) diceCheckNodes++;
   }
 
   return {
     totalNodes: STORY_NODES.length,
     endingNodes,
     totalChoices,
+    diceCheckNodes,
     chapters: Object.keys(chapterCounts).sort(),
     chapterCounts,
     locations: [...locations].sort(),
