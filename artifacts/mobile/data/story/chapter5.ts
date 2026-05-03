@@ -459,6 +459,12 @@ export const CHAPTER_5_NODES: StoryNode[] = [
         nextNode: 'c5_lord_cael_intro',
         effects: { intelligence: 1 },
       },
+      {
+        id: 'c5_ally_accept_fully',
+        text: '"Yes to all of it. The extraction session. The cooperation. Whatever Varr needs. I want access and I want protection."',
+        nextNode: 'c5_noble_pet_end',
+        effects: { glassCourt: 20, setFlags: ['glass_court_full_ally', 'accepted_resonant_companion'] },
+      },
     ],
   },
 
@@ -1729,6 +1735,14 @@ export const CHAPTER_5_NODES: StoryNode[] = [
         text: 'Check the Auction Hall first. Lot seventeen.',
         nextNode: 'c5_private_auction_arrive',
       },
+      {
+        id: 'c5_curator_sign_collection',
+        text: '[Reckless] Sign the second form. You got the Observatory access — give them what they want.',
+        nextNode: 'c5_pale_curator_collection_end',
+        requirements: { corruption: 15 },
+        isHidden: true,
+        effects: { setFlags: ['pale_curator_secondary_form_signed'] },
+      },
     ],
   },
 
@@ -1867,7 +1881,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
       {
         id: 'c5_scholar_obs_heir',
         text: 'Find the Masked Heir. The Curator said they know about Velna.',
-        nextNode: 'c5_council_arrive',
+        nextNode: 'c5_secret_memory_end',
         effects: { setFlags: ['scholar_seeking_heir'] },
       },
     ],
