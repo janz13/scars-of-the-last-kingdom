@@ -1,28 +1,86 @@
-import { StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
+import { useGame } from "@/context/GameContext";
 
-export default function TabOneScreen() {
+import MainMenu from "@/components/MainMenu";
+import CharacterCreator from "@/components/CharacterCreator";
+import StoryPanel from "@/components/StoryPanel";
+import StatsPanel from "@/components/StatsPanel";
+import InventoryPanel from "@/components/InventoryPanel";
+import CompanionPanel from "@/components/CompanionPanel";
+import FactionPanel from "@/components/FactionPanel";
+import HistoryPanel from "@/components/HistoryPanel";
+import EndingScreen from "@/components/EndingScreen";
+import SettingsPanel from "@/components/SettingsPanel";
+import DeveloperPanel from "@/components/DeveloperPanel";
+
+function LoadingScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Replit Agent is building...</Text>
-      <Text style={styles.text}>Your app will appear here once it's ready.</Text>
+    <View style={styles.loading}>
+      <ActivityIndicator color="#9b59b6" size="large" />
     </View>
   );
 }
 
+function UnknownScreen({ screen }: { screen: string }) {
+  return (
+    <View style={styles.loading}>
+      <Text style={styles.errorText}>Unknown screen: {screen}</Text>
+    </View>
+  );
+}
+
+export default function GameRoot() {
+  const { state, isLoading } = useGame();
+
+  if (isLoading) return <LoadingScreen />;
+
+  switch (state.screen) {
+    case "mainMenu":
+      return <MainMenu />;
+    case "characterCreator":
+      return <CharacterCreator />;
+    case "game":
+    case "stats":
+    case "inventory":
+    case "companions":
+    case "factions":
+    case "history":
+    case "settings":
+    case "developer":
+      return <GameScreens screen={state.screen} />;
+    case "ending":
+      return <EndingScreen />;
+    default:
+      return <UnknownScreen screen={state.screen} />;
+  }
+}
+
+function GameScreens({ screen }: { screen: string }) {
+  switch (screen) {
+    case "game":      return <StoryPanel />;
+    case "stats":     return <StatsPanel />;
+    case "inventory": return <InventoryPanel />;
+    case "companions":return <CompanionPanel />;
+    case "factions":  return <FactionPanel />;
+    case "history":   return <HistoryPanel />;
+    case "settings":  return <SettingsPanel />;
+    case "developer": return <DeveloperPanel />;
+    default:          return <StoryPanel />;
+  }
+}
+
 const styles = StyleSheet.create({
-  container: {
+  fill: { flex: 1, backgroundColor: "#0a0a0f" },
+  loading: {
     flex: 1,
+    backgroundColor: "#0a0a0f",
     alignItems: "center",
     justifyContent: "center",
-    gap: 8,
   },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  text: {
-    fontSize: 16,
-    textAlign: "center",
-    paddingHorizontal: 20,
+  errorText: {
+    color: "#8e1c1c",
+    fontSize: 14,
+    fontFamily: "Inter_400Regular",
   },
 });
