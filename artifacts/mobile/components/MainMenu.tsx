@@ -9,107 +9,141 @@ import { ENDINGS } from '../data/endings';
 export default function MainMenu() {
   const { hasSaveGame, continueGame, setScreen, state } = useGame();
   const insets = useSafeAreaInsets();
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-  const slideAnim = useRef(new Animated.Value(30)).current;
-
   const topPad = Platform.OS === 'web' ? 67 : insets.top;
   const botPad = Platform.OS === 'web' ? 34 : insets.bottom;
 
-  useEffect(() => {
-    Animated.parallel([
-      Animated.timing(fadeAnim, { toValue: 1, duration: 1200, useNativeDriver: true }),
-      Animated.timing(slideAnim, { toValue: 0, duration: 900, useNativeDriver: true }),
-    ]).start();
-  }, []);
+  const headerFade = useRef(new Animated.Value(0)).current;
+  const headerSlide = useRef(new Animated.Value(-20)).current;
+  const button1 = useRef(new Animated.Value(0)).current;
+  const button2 = useRef(new Animated.Value(0)).current;
+  const button3 = useRef(new Animated.Value(0)).current;
+  const button4 = useRef(new Animated.Value(0)).current;
+  const button5 = useRef(new Animated.Value(0)).current;
+  const footerFade = useRef(new Animated.Value(0)).current;
+  const glowPulse = useRef(new Animated.Value(0.03)).current;
 
   const discovered = state.endingsDiscovered.length;
   const total = ENDINGS.length + 1;
 
+  useEffect(() => {
+    // Header entrance
+    Animated.parallel([
+      Animated.timing(headerFade, { toValue: 1, duration: 700, useNativeDriver: true }),
+      Animated.timing(headerSlide, { toValue: 0, duration: 550, useNativeDriver: true }),
+    ]).start();
+
+    // Staggered button entrances — faster
+    const delays = [200, 300, 400, 500, 600];
+    const anims = [button1, button2, button3, button4, button5];
+    anims.forEach((anim, i) => {
+      Animated.timing(anim, {
+        toValue: 1,
+        duration: 380,
+        delay: delays[i],
+        useNativeDriver: true,
+      }).start();
+    });
+
+    // Footer fade
+    Animated.timing(footerFade, { toValue: 1, duration: 500, delay: 800, useNativeDriver: true }).start();
+
+    // Subtle atmospheric glow pulse
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(glowPulse, { toValue: 0.055, duration: 3500, useNativeDriver: true }),
+        Animated.timing(glowPulse, { toValue: 0.02, duration: 3500, useNativeDriver: true }),
+      ])
+    ).start();
+  }, []);
+
+  const btnAnims = [button1, button2, button3, button4, button5];
+
   return (
     <LinearGradient
-      colors={['#04020a', '#0a0614', '#08041a', '#04020a']}
+      colors={['#030108', '#06030f', '#0a0516', '#04020a']}
       style={styles.container}
     >
       {/* Atmospheric top glow */}
-      <View style={styles.topGlow} />
+      <Animated.View style={[styles.topGlow, { opacity: glowPulse }]} />
+      <Animated.View style={[styles.midGlow, { opacity: glowPulse }]} />
 
-      <Animated.View
-        style={[
-          styles.content,
-          { paddingTop: topPad + 40, paddingBottom: botPad + 20 },
-          { opacity: fadeAnim, transform: [{ translateY: slideAnim }] },
-        ]}
-      >
-        {/* Game Title */}
-        <View style={styles.titleGroup}>
-          <View style={styles.markDecoration}>
-            <View style={styles.markLine} />
-            <View style={styles.markDiamond} />
-            <View style={styles.markLine} />
+      <View style={[styles.content, { paddingTop: topPad + 36, paddingBottom: botPad + 20 }]}>
+        {/* Title section */}
+        <Animated.View
+          style={[
+            styles.titleGroup,
+            { opacity: headerFade, transform: [{ translateY: headerSlide }] },
+          ]}
+        >
+          <View style={styles.runeRow}>
+            <View style={styles.runeLine} />
+            <View style={styles.runeDiamond} />
+            <View style={styles.runeLine} />
           </View>
 
           <Text style={styles.chapterLabel}>CHAPTER I</Text>
-          <Text style={styles.title}>SCARS OF THE{'\n'}LAST KINGDOM</Text>
-          <Text style={styles.subtitle}>The Ruined Station</Text>
+          <Text style={styles.title}>{'SCARS OF THE\nLAST KINGDOM'}</Text>
+
+          <View style={styles.subtitleRow}>
+            <View style={styles.subtitleTick} />
+            <Text style={styles.subtitle}>The Ruined Station</Text>
+            <View style={styles.subtitleTick} />
+          </View>
 
           <Text style={styles.tagline}>
             The city is dead. The mark on your wrist is not.
           </Text>
-        </View>
+        </Animated.View>
 
-        {/* Menu Buttons */}
+        {/* Buttons */}
         <View style={styles.buttons}>
-          <MenuButton
-            label="NEW GAME"
-            icon="play"
-            color="#9b59b6"
-            onPress={() => setScreen('characterCreator')}
-          />
+          <AnimatedMenuButton anim={button1} label="NEW GAME" icon="play" color="#9b59b6" onPress={() => setScreen('characterCreator')} />
 
           {hasSaveGame && (
-            <MenuButton
-              label="CONTINUE"
-              icon="rotate-cw"
-              color="#e67e22"
-              onPress={() => continueGame()}
-            />
+            <AnimatedMenuButton anim={button2} label="CONTINUE" icon="rotate-cw" color="#e67e22" onPress={() => continueGame()} />
           )}
 
-          <MenuButton
-            label={`ENDINGS  ${discovered}/${total}`}
+          <AnimatedMenuButton
+            anim={btnAnims[hasSaveGame ? 2 : 1]}
+            label={`ENDINGS  ${discovered} / ${total}`}
             icon="book"
-            color="#6a5e50"
+            color={discovered > 0 ? '#c9a84c' : '#3a3040'}
             onPress={() => setScreen('ending')}
             dimmed={discovered === 0}
           />
 
-          <MenuButton
+          <AnimatedMenuButton
+            anim={btnAnims[hasSaveGame ? 3 : 2]}
             label="CHAPTER ROADMAP"
             icon="map"
-            color="#5dade2"
+            color="#4a8eaa"
             onPress={() => setScreen('chapterRoadmap')}
           />
 
-          <MenuButton
+          <AnimatedMenuButton
+            anim={btnAnims[hasSaveGame ? 4 : 3]}
             label="SETTINGS"
             icon="settings"
-            color="#4a4050"
+            color="#3a3848"
             onPress={() => setScreen('settings')}
           />
         </View>
 
         {/* Footer */}
-        <View style={styles.footer}>
+        <Animated.View style={[styles.footer, { opacity: footerFade }]}>
           <View style={styles.footerLine} />
-          <Text style={styles.footerText}>175 STORY NODES  ·  21 ENDINGS  ·  7 CHARACTER CLASSES</Text>
+          <Text style={styles.footerText}>175 NODES  ·  21 ENDINGS  ·  7 CLASSES</Text>
           <View style={styles.footerLine} />
-        </View>
-      </Animated.View>
+        </Animated.View>
+      </View>
     </LinearGradient>
   );
 }
 
+// ─── Animated menu button ─────────────────────────────────────────────────────
+
 interface MenuButtonProps {
+  anim: Animated.Value;
   label: string;
   icon: string;
   color: string;
@@ -117,142 +151,198 @@ interface MenuButtonProps {
   dimmed?: boolean;
 }
 
-function MenuButton({ label, icon, color, onPress, dimmed }: MenuButtonProps) {
-  const pressAnim = useRef(new Animated.Value(1)).current;
+function AnimatedMenuButton({ anim, label, icon, color, onPress, dimmed }: MenuButtonProps) {
+  const pressScale = useRef(new Animated.Value(1)).current;
+
+  const onPressIn = () => {
+    if (dimmed) return;
+    Animated.spring(pressScale, { toValue: 0.975, useNativeDriver: true, speed: 60, bounciness: 0 }).start();
+  };
+  const onPressOut = () => {
+    Animated.spring(pressScale, { toValue: 1, useNativeDriver: true, speed: 40, bounciness: 5 }).start();
+  };
 
   return (
-    <Animated.View style={{ transform: [{ scale: pressAnim }] }}>
+    <Animated.View
+      style={{
+        opacity: anim,
+        transform: [
+          { translateX: anim.interpolate({ inputRange: [0, 1], outputRange: [-20, 0] }) },
+          { scale: pressScale },
+        ],
+      }}
+    >
       <Pressable
-        style={[styles.menuBtn, { borderColor: dimmed ? '#1a1a28' : color + '55', opacity: dimmed ? 0.4 : 1 }]}
+        style={[
+          styles.menuBtn,
+          { borderColor: dimmed ? 'rgba(30,28,40,0.6)' : `${color}33` },
+          dimmed && styles.menuBtnDimmed,
+        ]}
         onPress={dimmed ? undefined : onPress}
-        onPressIn={() => Animated.spring(pressAnim, { toValue: 0.97, useNativeDriver: true, speed: 50 }).start()}
-        onPressOut={() => Animated.spring(pressAnim, { toValue: 1, useNativeDriver: true, speed: 50 }).start()}
+        onPressIn={onPressIn}
+        onPressOut={onPressOut}
       >
-        <View style={[styles.menuBtnAccent, { backgroundColor: color }]} />
-        <Feather name={icon as any} size={16} color={color} />
-        <Text style={[styles.menuBtnText, { color: dimmed ? '#4a4050' : '#d4c5a9' }]}>{label}</Text>
-        <Feather name="chevron-right" size={14} color={color + '88'} style={styles.menuChevron} />
+        <View style={[styles.menuBtnAccent, { backgroundColor: dimmed ? '#2a2838' : color }]} />
+        <Feather name={icon as any} size={15} color={dimmed ? '#2a2838' : color} />
+        <Text style={[styles.menuBtnLabel, dimmed && styles.menuBtnLabelDimmed]}>
+          {label}
+        </Text>
+        <Feather name="chevron-right" size={13} color={dimmed ? '#2a2838' : `${color}55`} />
       </Pressable>
     </Animated.View>
   );
 }
 
+// ─── Styles ───────────────────────────────────────────────────────────────────
+
 const styles = StyleSheet.create({
   container: { flex: 1 },
+
   topGlow: {
     position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: 200,
-    backgroundColor: 'transparent',
-    borderBottomWidth: 0,
-    shadowColor: '#9b59b6',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.15,
-    shadowRadius: 60,
+    top: -40,
+    left: -60,
+    right: -60,
+    height: 280,
+    backgroundColor: '#9b59b6',
+    borderRadius: 200,
   },
+  midGlow: {
+    position: 'absolute',
+    top: 120,
+    left: '20%',
+    right: '20%',
+    height: 200,
+    backgroundColor: '#9b59b6',
+    borderRadius: 100,
+  },
+
   content: {
     flex: 1,
-    paddingHorizontal: 28,
+    paddingHorizontal: 26,
     justifyContent: 'space-between',
   },
+
   titleGroup: {
     alignItems: 'center',
-    paddingTop: 20,
   },
-  markDecoration: {
+  runeRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
-    marginBottom: 20,
+    gap: 12,
+    marginBottom: 22,
   },
-  markLine: {
-    width: 40,
+  runeLine: {
+    width: 48,
     height: 1,
-    backgroundColor: '#9b59b644',
+    backgroundColor: 'rgba(155,89,182,0.3)',
   },
-  markDiamond: {
-    width: 8,
-    height: 8,
+  runeDiamond: {
+    width: 7,
+    height: 7,
     backgroundColor: '#9b59b6',
     transform: [{ rotate: '45deg' }],
+    opacity: 0.85,
   },
   chapterLabel: {
     fontSize: 10,
-    letterSpacing: 5,
+    letterSpacing: 6,
     color: '#9b59b6',
     fontFamily: 'Inter_600SemiBold',
-    marginBottom: 12,
+    marginBottom: 14,
+    opacity: 0.9,
   },
   title: {
-    fontSize: 32,
-    color: '#d4c5a9',
+    fontSize: 34,
+    color: '#ede0c4',
     fontFamily: 'Inter_700Bold',
     textAlign: 'center',
     letterSpacing: 3,
-    lineHeight: 40,
-    marginBottom: 8,
+    lineHeight: 44,
+    marginBottom: 14,
+  },
+  subtitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    marginBottom: 18,
+  },
+  subtitleTick: {
+    width: 20,
+    height: 1,
+    backgroundColor: 'rgba(106,94,80,0.5)',
   },
   subtitle: {
-    fontSize: 13,
+    fontSize: 12,
     color: '#6a5e50',
     fontFamily: 'Inter_400Regular',
     letterSpacing: 2,
-    marginBottom: 20,
   },
   tagline: {
-    fontSize: 14,
-    color: '#5a4e60',
+    fontSize: 13,
+    color: '#4a4058',
     fontFamily: 'Inter_400Regular',
     fontStyle: 'italic',
     textAlign: 'center',
     lineHeight: 20,
+    letterSpacing: 0.3,
   },
+
   buttons: {
-    gap: 10,
+    gap: 9,
     flex: 1,
     justifyContent: 'center',
-    marginVertical: 20,
+    marginVertical: 24,
   },
   menuBtn: {
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
-    borderRadius: 4,
+    borderRadius: 3,
     paddingHorizontal: 16,
     paddingVertical: 15,
-    backgroundColor: 'rgba(10,8,20,0.7)',
-    gap: 12,
+    backgroundColor: 'rgba(8,5,18,0.85)',
+    gap: 13,
     overflow: 'hidden',
+  },
+  menuBtnDimmed: {
+    backgroundColor: 'rgba(6,4,12,0.6)',
   },
   menuBtnAccent: {
     position: 'absolute',
     left: 0,
     top: 0,
     bottom: 0,
-    width: 3,
-    opacity: 0.8,
+    width: 2.5,
+    opacity: 0.7,
   },
-  menuBtnText: {
+  menuBtnLabel: {
     flex: 1,
-    fontSize: 12,
+    fontSize: 11,
     letterSpacing: 3,
+    color: '#c8b898',
     fontFamily: 'Inter_600SemiBold',
   },
-  menuChevron: { marginLeft: 'auto' },
+  menuBtnLabelDimmed: {
+    color: '#2a2838',
+  },
+
   footer: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
-    paddingBottom: 10,
+    paddingBottom: 4,
   },
-  footerLine: { flex: 1, height: 1, backgroundColor: '#1a1a28' },
+  footerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: 'rgba(26,24,38,0.8)',
+  },
   footerText: {
     fontSize: 9,
-    color: '#3a3040',
+    color: '#2e2840',
     fontFamily: 'Inter_400Regular',
-    letterSpacing: 1,
+    letterSpacing: 1.5,
     textAlign: 'center',
   },
 });
