@@ -192,11 +192,7 @@ export default function StoryPanel() {
           )}
 
           {!isTerminalNode && !isEndingNode && (
-            <ScrollView
-              style={styles.choicesScroll}
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={{ gap: 0 }}
-            >
+            <View>
               {availableChoices.map(({ choice, met, reasons }) => (
                 <ChoiceButton
                   key={choice.id}
@@ -211,7 +207,7 @@ export default function StoryPanel() {
               {availableChoices.length === 0 && (
                 <Text style={styles.noChoices}>No available choices. Check your stats and inventory.</Text>
               )}
-            </ScrollView>
+            </View>
           )}
 
           {/* Settings / menu button */}
@@ -368,15 +364,13 @@ const styles = StyleSheet.create({
     borderTopColor: 'rgba(42,42,58,0.6)',
     paddingHorizontal: 14,
     paddingTop: 8,
-    maxHeight: 340,
+    // No maxHeight — choices render flat so all are always tappable on Android.
+    // The story ScrollView above shrinks to fit whatever space is left.
   },
   choicesDivider: {
     height: 1,
     backgroundColor: 'rgba(155,89,182,0.15)',
     marginBottom: 8,
-  },
-  choicesScroll: {
-    maxHeight: 280,
   },
   noChoices: {
     color: '#4a4050',
