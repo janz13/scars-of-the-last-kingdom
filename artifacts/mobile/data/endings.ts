@@ -423,6 +423,158 @@ export const ENDINGS: EndingDefinition[] = [
     chapter: 'Chapter III',
   },
 
+  // ── Chapter 4: Death Endings ─────────────────────────────────────────────
+  {
+    id: 'ending_ch4_malrec_verdict',
+    title: 'The Category',
+    type: 'death',
+    subtitle: 'Brother Malrec\'s Verdict Ending',
+    description:
+      'He reads from the ledger, which he completed before entering the room. He does everything before entering rooms. "Category One," he says. He does not look up. The Furnace is already warm. The Bellkeeper has not arrived. The chain does not negotiate with what it contains.',
+    color: '#2a0808',
+    hint: 'Fail to secure Veyra\'s counter-signature and fall into Malrec\'s jurisdiction. The ledger has a form for exactly this situation.',
+    chapter: 'Chapter IV',
+  },
+  {
+    id: 'ending_ch4_purification_overburn',
+    title: 'What the Chain Takes',
+    type: 'death',
+    subtitle: 'Purification Overburn Ending',
+    description:
+      'The priest miscalculates the saturation level. The harmonic frequency climbs past the treatment threshold into the band the Doctrine classifies as total mark integration removal. At ninety-eight seconds, the chain has taken everything it came for, and several things it was not supposed to take. The priest writes the outcome in the ledger. He does not look up.',
+    color: '#1a0a1a',
+    hint: 'Submit to the Purification Rite with very high corruption. The protocol was written for saturation levels the designer did not survive testing.',
+    chapter: 'Chapter IV',
+  },
+  {
+    id: 'ending_ch4_mark_overload',
+    title: 'Maximum Amplitude',
+    type: 'corruption',
+    subtitle: 'Saint Furnace Overload Ending',
+    description:
+      'The mark transmits at maximum amplitude into the suppression array. What happens when a suppression field receives the thing it was suppressing at full power is neither purification nor medicine. The chains break in sequence. The arc-lamps fail. The mark is gone — not suppressed, but transmitted. You are lighter than you have ever been and emptier than you have ever been and the difference between those two states is the whole of what has happened to you.',
+    color: '#0a0a2a',
+    hint: 'Use the mark\'s full power against the Saint Furnace\'s harmonic array. The array was not built to receive at maximum amplitude.',
+    chapter: 'Chapter IV',
+  },
+  {
+    id: 'ending_ch4_bellkeeper_claimed',
+    title: 'Relic-Touched',
+    type: 'corruption',
+    subtitle: 'Bellkeeper\'s Resonance Loop Ending',
+    description:
+      'The metro disc and the mark enter a resonance loop the body is not designed to maintain. It completes itself over four hours in the War Shrine while the Bellkeeper rings the bell at intervals that match your breathing. When it ends, the disc is embedded in the mark. The mark has expanded to match something neither of you can name. "The shore," the Bellkeeper says. It is the most beautiful sound you have ever heard. It will be the last sound you understand as a person who had a simple wrist.',
+    color: '#1a0a2a',
+    hint: 'Take the Bellkeeper\'s metro disc and hold it in the same hand as the mark for too long. The Bellkeeper did not stop you. That should have been information.',
+    chapter: 'Chapter IV',
+  },
+
+  // ── Chapter 4: Betrayal Endings ───────────────────────────────────────────
+  {
+    id: 'ending_ch4_mira_sold',
+    title: 'The Delivered Archive Agent',
+    type: 'betrayal',
+    subtitle: 'Mira Betrayal Ending',
+    description:
+      'Mira is assigned to the Eastern Archive suppression detail. Her Last Archive knowledge is more valuable than her freedom, and Veyra has made the appropriate calculation. Three days later, the mark pulses once, east, toward whatever archive door Mira is now being used to locate. The mark has not forgiven you. You are not sure you have either.',
+    color: '#1a0e2a',
+    hint: 'Give Mira\'s name and location to Saint Veyra in exchange for provisional asset status. The Saints are efficient with what they are given.',
+    chapter: 'Chapter IV',
+  },
+  {
+    id: 'ending_ch4_cain_defect',
+    title: 'Unit Six Returns',
+    type: 'betrayal',
+    subtitle: 'Cain Defection Ending',
+    description:
+      'He signs the re-enlistment form with the same deliberateness he applies to everything. His hand on your shoulder is the hand of someone who has made every part of this decision. "I told them where to find you. I\'m sorry about that. I\'m not sorry about what I got for it." The Iron Saints\' retrieval team is efficient. They have had practice.',
+    color: '#0e1a2a',
+    hint: 'Push Cain toward re-enlisting with the Iron Saints and accept his offer to use it as cover. Trust the calculation. See how it resolves.',
+    chapter: 'Chapter IV',
+  },
+
+  // ── Chapter 4: Neutral Endings ────────────────────────────────────────────
+  {
+    id: 'ending_ch4_chains_forever',
+    title: 'Registered',
+    type: 'wanderer',
+    subtitle: 'Long-Term Containment Ending',
+    description:
+      'Category One Processing item, assigned to long-term containment pending the review committee\'s determination. The committee meets quarterly. The carts are cold in the way that long-term cold is cold: not a shock, just a fact, the same fact every morning. Ashen Toma is two carts over. You decide not to tell him. You are in the system. The system is very patient.',
+    color: '#1a1a1a',
+    hint: 'Fail to negotiate with Veyra and lose the chain law challenge. Surrender rather than transmit the mark. The Saints\' containment is comprehensive.',
+    chapter: 'Chapter IV',
+  },
+
+  // ── Chapter 4: Faction Endings ────────────────────────────────────────────
+  {
+    id: 'ending_ch4_iron_saint',
+    title: 'The Iron Saint',
+    type: 'faction',
+    subtitle: 'Iron Saints Full Integration Ending',
+    description:
+      'Your registration number is in the ledger. Your first assignment is mark-suppression support on the Eastern Archive approach. Veyra shakes your hand. "The chain holds those who hold each other." The mark on your wrist has not quieted. The mark is patient. You are an Iron Saint now, and the mark is patient.',
+    color: '#2a1a06',
+    hint: 'Sign the integration form in the Confession Hall and accept full chain-certification. The Iron Saints have a form for every outcome.',
+    chapter: 'Chapter IV',
+  },
+  {
+    id: 'ending_ch4_infiltrated',
+    title: 'Deep Cover',
+    type: 'faction',
+    subtitle: 'Iron Saints Infiltration Ending',
+    description:
+      'You leave with the shift change in a Saint uniform, carrying documentation Orin signed and the Bellkeeper countersigned. You have the settlement layout, the Category One register, and Toma. The Iron Saints will find the inconsistencies eventually. They are too methodical not to. But eventually is not tonight.',
+    color: '#061a2a',
+    hint: 'Use the Shadow Broker infiltration route to extract everything from the settlement without alerting the Order. Leave before the shift change closes the window.',
+    chapter: 'Chapter IV',
+  },
+  {
+    id: 'ending_ch4_saints_survived',
+    title: 'Saints in Iron — After',
+    type: 'faction',
+    subtitle: 'Chapter IV Completion Ending',
+    description:
+      'The access shaft takes you six metres below the settlement. Down here the arc-lights do not reach and the dampening is thin enough that the mark can breathe. What you carry out: Toma if you found him. Mira if you freed her. A relic that belongs to your story. An understanding of what the Iron Saints are — not monsters. An order that found a genuine power it could not understand and built a theology around suppressing it. The Last Kingdom waits somewhere below.',
+    color: '#1a2a1a',
+    hint: 'Negotiate a path out of the Iron Saints settlement — through the Veyra pact, the chain law challenge, or careful movement. Survive Saints in Iron with your mark intact.',
+    chapter: 'Chapter IV',
+  },
+  {
+    id: 'ending_ch4_veyra_pact',
+    title: 'The Chain Goes Both Ways',
+    type: 'faction',
+    subtitle: 'Veyra Pact Ending',
+    description:
+      'She extends her hand. Not for a form — a handshake. "The chain goes both ways. That is the part Malrec forgets." You are six hours from leaving with Toma, your companions, and documentation of what the mark transmitted. The Iron Saints retain the right to contact you. You retain the right to refuse. This is, as Veyra would say, a chain. It runs both directions.',
+    color: '#2a1a2a',
+    hint: 'Negotiate the mark demonstration in the Confession Hall and propose a pact that benefits both sides. Veyra is a true believer, not an inflexible one.',
+    chapter: 'Chapter IV',
+  },
+  {
+    id: 'ending_ch4_mira_route',
+    title: 'What You Came For',
+    type: 'companion',
+    subtitle: 'Mira Rescue Ending',
+    description:
+      'She is moving before the bar is fully open — she had her feet positioned. In the maintenance passage she takes a breath and then she starts moving again. She does not ask what happened in the carts. She will ask later, when there is time for it to cost her something. She looks at you once. The question she doesn\'t ask yet is already in her face. You already know she will find out what happened in the Confession Hall.',
+    color: '#2a0a2a',
+    hint: 'Find Mira in the Prison Carts and break her out before the morning transit. The window is seven minutes. She already has the plan.',
+    chapter: 'Chapter IV',
+  },
+  {
+    id: 'ending_ch4_forgotten_scholar',
+    title: 'The Forbidden Index, Continued',
+    type: 'secret',
+    subtitle: 'Forgotten Scholar Route Ending',
+    description:
+      'The proscribed doctrine, the shore, the Last Kingdom relocated — these are coordinates, not metaphors. You have three of the four required to triangulate the location. The fourth is in the Archive. The Bellkeeper rings the bell as you leave: the Hollow Children\'s three-tone acknowledgement, translated into iron. You are registered. You are findable. The road ahead has more of these moments.',
+    color: '#0a2a1a',
+    hint: 'Follow the Forgotten Scholar background through the chapel doctrine, Orin\'s revelations, Toma\'s account, and the Bellkeeper\'s relic. The full picture requires all four sources.',
+    chapter: 'Chapter IV',
+    isSecret: true,
+  },
+
   // ── True Ending ────────────────────────────────────────────────────────────
   {
     id: 'ending_last_kingdom_remembers',
