@@ -1,4 +1,5 @@
 import type { StoryNode } from '../types';
+import { PROLOGUE_NODES } from './prologue';
 import { CHAPTER_1_NODES } from './chapter1';
 import { CHAPTER_2_NODES } from './chapter2';
 import { CHAPTER_3_NODES } from './chapter3';
@@ -42,6 +43,7 @@ import { COMPANION_EVENT_NODES } from './companionEvents';
 // ══════════════════════════════════════════════════════════════════════════════
 
 export const STORY_NODES: StoryNode[] = [
+  ...PROLOGUE_NODES,
   ...CHAPTER_1_NODES,
   ...CHAPTER_2_NODES,
   ...CHAPTER_3_NODES,
@@ -60,10 +62,11 @@ export const STORY_NODES: StoryNode[] = [
   ...HALLUCINATION_NODES,
   ...COMPANION_EVENT_NODES,
 
-  // ── ADD A NEW CHAPTER HERE ──────────────────────────────────────────────
-  // 1. Create artifacts/mobile/data/story/chapterN.ts
-  // 2. Import CHAPTER_N_NODES above
-  // 3. Spread it into this array: ...CHAPTER_N_NODES,
+  // ── HOW TO ADD A NEW CHAPTER ────────────────────────────────────────────
+  // 1. Open (or create) artifacts/mobile/data/story/chapterN.ts
+  // 2. Import its export above this block
+  // 3. Spread it into this array in chronological order: ...CHAPTER_N_NODES,
+  // 4. pnpm --filter @workspace/mobile run typecheck → must be zero errors
   // ────────────────────────────────────────────────────────────────────────
 ];
 

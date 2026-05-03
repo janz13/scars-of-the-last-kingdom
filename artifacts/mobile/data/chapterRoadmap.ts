@@ -44,6 +44,7 @@ export const CHAPTER_ROADMAP: ChapterEntry[] = [
     ],
     routesUnlocked: ['Chapter 1 — The Ruined Station'],
     status: 'planned',
+    nodeCount: 0,
   },
 
   {
