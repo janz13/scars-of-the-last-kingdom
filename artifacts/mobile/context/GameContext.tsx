@@ -11,6 +11,7 @@ import type {
 } from '../data/types';
 import { buildStartingStats, DEFAULT_INVENTORY, DEFAULT_STATS } from '../data/characterOptions';
 import { getNodeById, getStartNodeId } from '../data/storyNodes';
+import { ENDINGS } from '../data/endings';
 import {
   applyEffects,
   checkSurvivalEndings,
@@ -48,24 +49,30 @@ export const INITIAL_STATE: GameState = {
   activeEnding: null,
 };
 
-interface ChoiceWithStatus {
-  choice: ReturnType<typeof getChoicesWithStatus>[number]['choice'];
-  met: boolean;
-  reasons: string[];
-}
-
 interface GameContextValue {
   state: GameState;
   isLoading: boolean;
   hasSaveGame: boolean;
   currentNode: ReturnType<typeof getNodeById>;
   availableChoices: ReturnType<typeof getChoicesWithStatus>;
+  // Core gameplay
   startNewGame: (character: Character) => void;
   makeChoice: (choiceId: string) => void;
   setScreen: (screen: GameScreen) => void;
   continueGame: () => Promise<void>;
   deleteAndReset: () => Promise<void>;
   updateSettings: (settings: Partial<GameState['settings']>) => void;
+  // Developer tools
+  devJumpToNode: (nodeId: string) => void;
+  devSetStat: (key: keyof Stats, value: number) => void;
+  devSetInventory: (key: keyof Inventory, value: number) => void;
+  devSetFlag: (flag: string, value: boolean) => void;
+  devRemoveFlag: (flag: string) => void;
+  devUnlockAllEndings: () => void;
+  devSetFactionRep: (faction: keyof FactionRep, value: number) => void;
+  devSetCompanionTrust: (companion: 'mira' | 'cain', trust: number) => void;
+  devToggleCompanionPresent: (companion: 'mira' | 'cain') => void;
+  devResetToMenu: () => Promise<void>;
 }
 
 const GameContext = createContext<GameContextValue | null>(null);
@@ -100,6 +107,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current);
     };
   }, [state]);
+
+  // ─── Core gameplay ──────────────────────────────────────────────────────────
 
   const startNewGame = useCallback((character: Character) => {
     const { stats, inventory } = buildStartingStats(
@@ -150,7 +159,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       activeEnding: null,
     };
 
-    // Apply starting node effects
     if (startNode?.effectsOnEnter) {
       newState = applyEffects(newState, startNode.effectsOnEnter);
     }
@@ -166,10 +174,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       const choice = node.choices.find((c) => c.id === choiceId);
       if (!choice) return prev;
 
-      // Apply choice effects
       let next = applyEffects(prev, choice.effects);
 
-      // Add to route history
       const entry: RouteEntry = {
         nodeId: node.id,
         nodeTitle: node.title,
@@ -178,26 +184,21 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       };
       next = { ...next, routeHistory: [...next.routeHistory, entry] };
 
-      // Determine next node
       let nextNodeId = choice.nextNode;
 
-      // Check for ending trigger (e.g., relic awakening when corruption >= 8)
       const endingTrigger = shouldTriggerEnding(next, choice);
       if (endingTrigger) nextNodeId = endingTrigger;
 
-      // Check for automatic redirects (e.g., Cain betrayal)
       const autoRedirect = getAutoRedirect(next, nextNodeId);
       if (autoRedirect) nextNodeId = autoRedirect;
 
       next = { ...next, currentNodeId: nextNodeId };
 
-      // Apply effects on entering new node
       const nextNode = getNodeById(nextNodeId);
       if (nextNode?.effectsOnEnter) {
         next = applyEffects(next, nextNode.effectsOnEnter);
       }
 
-      // Check survival endings
       const survivalEnding = checkSurvivalEndings(next);
       if (survivalEnding) {
         return {
@@ -210,7 +211,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         };
       }
 
-      // Check if the target node is an ending
       if (nextNode?.isEnding) {
         const endingId = nextNode.endingId ?? nextNode.id;
         return {
@@ -223,7 +223,6 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         };
       }
 
-      // Check if we reached the end of chapter 1
       if (nextNodeId === 'chapter1_end') {
         return { ...next, screen: 'ending', activeEnding: 'chapter1_end' };
       }
@@ -257,6 +256,126 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     }));
   }, []);
 
+  // ─── Developer tools ────────────────────────────────────────────────────────
+
+  const devJumpToNode = useCallback((nodeId: string) => {
+    setState((prev) => {
+      const node = getNodeById(nodeId);
+      if (!node) return prev;
+
+      // Create a minimal character for testing if none exists
+      const character: Character = prev.character ?? {
+        name: 'Dev Tester',
+        background: 'forgotten_scholar',
+        characterClass: 'relic_hunter',
+        personalityTrait: 'pragmatic',
+        startingCompanion: 'none',
+      };
+
+      let next: GameState = { ...prev, character, currentNodeId: nodeId, screen: 'game' };
+
+      if (node.effectsOnEnter) {
+        next = applyEffects(next, node.effectsOnEnter);
+      }
+
+      if (node.isEnding) {
+        const endingId = node.endingId ?? node.id;
+        return {
+          ...next,
+          screen: 'ending',
+          activeEnding: endingId,
+          endingsDiscovered: next.endingsDiscovered.includes(endingId)
+            ? next.endingsDiscovered
+            : [...next.endingsDiscovered, endingId],
+        };
+      }
+
+      return next;
+    });
+  }, []);
+
+  const devSetStat = useCallback((key: keyof Stats, value: number) => {
+    setState((prev) => ({
+      ...prev,
+      stats: { ...prev.stats, [key]: Math.max(0, value) },
+    }));
+  }, []);
+
+  const devSetInventory = useCallback((key: keyof Inventory, value: number) => {
+    setState((prev) => ({
+      ...prev,
+      inventory: { ...prev.inventory, [key]: Math.max(0, value) },
+    }));
+  }, []);
+
+  const devSetFlag = useCallback((flag: string, value: boolean) => {
+    if (!flag.trim()) return;
+    setState((prev) => ({
+      ...prev,
+      flags: { ...prev.flags, [flag.trim()]: value },
+    }));
+  }, []);
+
+  const devRemoveFlag = useCallback((flag: string) => {
+    setState((prev) => {
+      const next = { ...prev.flags };
+      delete next[flag];
+      return { ...prev, flags: next };
+    });
+  }, []);
+
+  const devUnlockAllEndings = useCallback(() => {
+    const allIds = [...ENDINGS.map((e) => e.id), 'chapter1_end'];
+    setState((prev) => ({
+      ...prev,
+      endingsDiscovered: [...new Set([...prev.endingsDiscovered, ...allIds])],
+    }));
+  }, []);
+
+  const devSetFactionRep = useCallback((faction: keyof FactionRep, value: number) => {
+    setState((prev) => ({
+      ...prev,
+      factionRep: {
+        ...prev.factionRep,
+        [faction]: Math.max(-100, Math.min(100, value)),
+      },
+    }));
+  }, []);
+
+  const devSetCompanionTrust = useCallback((companion: 'mira' | 'cain', trust: number) => {
+    setState((prev) => ({
+      ...prev,
+      companions: {
+        ...prev.companions,
+        [companion]: {
+          ...prev.companions[companion],
+          trust: Math.max(0, Math.min(10, trust)),
+        },
+      },
+    }));
+  }, []);
+
+  const devToggleCompanionPresent = useCallback((companion: 'mira' | 'cain') => {
+    setState((prev) => ({
+      ...prev,
+      companions: {
+        ...prev.companions,
+        [companion]: {
+          ...prev.companions[companion],
+          present: !prev.companions[companion].present,
+        },
+      },
+    }));
+  }, []);
+
+  const devResetToMenu = useCallback(async () => {
+    await deleteSaveStorage();
+    setHasSaveGame(false);
+    setState(INITIAL_STATE);
+  }, []);
+
+  // ─── Derived values ─────────────────────────────────────────────────────────
+
   const currentNode = getNodeById(state.currentNodeId);
   const availableChoices = getChoicesWithStatus(state);
 
@@ -274,6 +393,16 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         continueGame,
         deleteAndReset,
         updateSettings,
+        devJumpToNode,
+        devSetStat,
+        devSetInventory,
+        devSetFlag,
+        devRemoveFlag,
+        devUnlockAllEndings,
+        devSetFactionRep,
+        devSetCompanionTrust,
+        devToggleCompanionPresent,
+        devResetToMenu,
       }}
     >
       {children}

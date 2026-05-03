@@ -39,7 +39,7 @@ export default function EndingScreen() {
       : ['#0a0a0f', '#14101e', '#0a0a0f'];
 
   return (
-    <LinearGradient colors={bgColors} style={styles.container}>
+    <LinearGradient colors={bgColors as [string, string, ...string[]]} style={styles.container}>
       <ScrollView contentContainerStyle={[styles.content, { paddingTop: topPad + 30, paddingBottom: botPad + 30 }]}>
         <View style={styles.topDecoration}>
           <View style={[styles.decorLine, { backgroundColor: ending?.color ?? '#9b59b6' }]} />

@@ -226,7 +226,7 @@ export function buildStartingStats(
     for (const [key, val] of Object.entries(bgOpt.statModifiers)) {
       const k = key as keyof Stats;
       if (k in baseStats) {
-        (baseStats as Record<string, number>)[k] = ((baseStats as Record<string, number>)[k] || 0) + (val as number);
+        (baseStats as unknown as Record<string, number>)[k] = ((baseStats as unknown as Record<string, number>)[k] || 0) + (val as number);
       }
     }
   }

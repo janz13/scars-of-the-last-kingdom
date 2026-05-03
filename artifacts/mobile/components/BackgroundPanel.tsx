@@ -121,7 +121,7 @@ export default function BackgroundPanel({
           imageStyle={pixelArtStyle}
         >
           {/* Dark gradient overlay so text stays readable at any brightness */}
-          <LinearGradient colors={overlayColors} style={StyleSheet.absoluteFill} />
+          <LinearGradient colors={overlayColors as [string, string, ...string[]]} style={StyleSheet.absoluteFill} />
           {children}
         </ImageBackground>
       ) : (
@@ -158,7 +158,7 @@ function FallbackBackground({ gradient, overlayColors, children }: FallbackProps
       {/* Decorative pixel-art grid lines to give fallback a retro feel */}
       <FallbackDecoration />
       {/* Darken the gradient so it matches the image overlay look */}
-      <LinearGradient colors={overlayColors} style={StyleSheet.absoluteFill} />
+      <LinearGradient colors={overlayColors as [string, string, ...string[]]} style={StyleSheet.absoluteFill} />
       {children}
     </LinearGradient>
   );
