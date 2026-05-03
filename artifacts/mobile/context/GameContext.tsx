@@ -250,24 +250,18 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
   // ─── Dice system ─────────────────────────────────────────────────────────────
 
+  // Keep a ref in sync with the current state so initiateDiceRoll can read
+  // currentNodeId without needing to call setState just to access prev.
+  const stateRef = useRef(state);
+  useEffect(() => { stateRef.current = state; }, [state]);
+
   const initiateDiceRoll = useCallback((choiceId: string) => {
-    setState((prev) => {
-      const node = getNodeById(prev.currentNodeId);
-      if (!node) return prev;
-      const choice = node.choices.find((c) => c.id === choiceId);
-      if (!choice?.diceCheck) return prev;
-      // We set pendingDiceRoll outside setState since it's separate UI state
-      return prev;
-    });
-    // Read current state synchronously via a callback trick
-    setState((prev) => {
-      const node = getNodeById(prev.currentNodeId);
-      if (!node) return prev;
-      const choice = node.choices.find((c) => c.id === choiceId);
-      if (!choice?.diceCheck) return prev;
-      setPendingDiceRoll({ choiceId, choiceText: choice.text, diceCheck: choice.diceCheck });
-      return prev;
-    });
+    const currentState = stateRef.current;
+    const node = getNodeById(currentState.currentNodeId);
+    if (!node) return;
+    const choice = node.choices.find((c) => c.id === choiceId);
+    if (!choice?.diceCheck) return;
+    setPendingDiceRoll({ choiceId, choiceText: choice.text, diceCheck: choice.diceCheck });
   }, []);
 
   const commitDiceRoll = useCallback((choiceId: string, result: DiceResult) => {

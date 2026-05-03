@@ -223,7 +223,7 @@ One raises his rifle before he's even stopped moving.`,
       nextNode: 'ambush_hidden_success',
       requirements: {
         miraPresent: true,       // Only shows if Mira is alive and present
-        miraTrust: 40,           // And trust with her is 40 or higher
+        miraTrust: 6,            // And trust with her is 6 or higher (scale 0–10)
       },
     },
   ],
@@ -256,7 +256,7 @@ walking with."`,
       text: '"I was scared. I wasn\'t thinking about the group."',
       nextNode: 'mira_forgiveness_path',
       effects: {
-        miraTrust: 12,    // Honest answer builds real trust
+        miraTrust: 2,     // Honest answer builds real trust (+2 on 0–10 scale)
         morale: 5,        // Small morale lift from the honesty
       },
     },
@@ -265,7 +265,7 @@ walking with."`,
       text: '"We both had plenty. I didn\'t think it mattered."',
       nextNode: 'mira_cold_shoulder',
       effects: {
-        miraTrust: -8,    // Deflecting damages trust
+        miraTrust: -2,    // Deflecting damages trust (−2 on 0–10 scale)
       },
     },
     {
@@ -273,7 +273,7 @@ walking with."`,
       text: 'Give her back the pills without a word.',
       nextNode: 'mira_silent_respect',
       effects: {
-        miraTrust: 20,    // Actions speak louder — big trust gain
+        miraTrust: 3,     // Actions speak louder — big trust gain (+3 on 0–10 scale)
         medicine: -2,     // Costs 2 medicine from inventory
         morale: -3,       // Small personal cost
       },
@@ -736,7 +736,7 @@ what you bring through with you.`,
         ],
 
         // Relationship requirements — must have built real bonds
-        miraTrust: 70,                 // Deep trust with Mira
+        miraTrust: 8,                  // Deep trust with Mira (8/10 — near maximum)
         miraPresent: true,             // And she must be alive
 
         // Faction standing — must have Archive scholars on your side
@@ -759,12 +759,12 @@ what you bring through with you.`,
       nextNode: 'ending_archive_mira',
       requirements: {
         miraPresent: true,
-        miraTrust: 50,
+        miraTrust: 6,                     // Companion path: moderate trust (6/10)
         blockedFlags: ['mira_betrayed'],  // Can't use this if you betrayed her
       },
       flavorText: 'Requires: Mira present and trusted.',
       effects: {
-        miraTrust: 15,
+        miraTrust: 2,                     // Final trust gain (+2 on 0–10 scale)
       },
     },
 
@@ -810,12 +810,12 @@ const EFFECTS_REFERENCE = {
   thirst:       -10,   // Hydration. Lower = thirstier. Critical faster than hunger.
   morale:       +5,    // Mental state. Affects some dialogue and choices.
 
-  // ── Attributes (go up to 100; modifier applies to dice rolls) ─────────────
+  // ── Attributes (start at 1–10; modifier applies to dice rolls) ────────────
   strength:     +1,    // Physical power. Used in melee/force dice checks.
   intelligence: +1,    // Knowledge. Used in puzzle/lore dice checks.
   agility:      +1,    // Speed and precision. Used in stealth/jump dice checks.
   charisma:     +1,    // Persuasion. Used in negotiation dice checks.
-  luck:         +1,    // Fortune. Above 60 = can reroll dice once per game.
+  luck:         +1,    // Fortune. Starting luck determines dice reroll eligibility.
 
   // ── Special ───────────────────────────────────────────────────────────────
   corruption:   +1,    // Mark influence. Affects some choices; endings read this.
@@ -831,8 +831,13 @@ const EFFECTS_REFERENCE = {
   reputation:   +5,    // General survivor standing.
 
   // ── Companion trust ───────────────────────────────────────────────────────
-  miraTrust:    +10,   // Trust with Mira specifically. Max 100.
-  cainTrust:    +10,   // Trust with Cain specifically.
+  //
+  // IMPORTANT: Companion trust uses a 0–10 scale (not 0–100).
+  // The engine clamps the value to [0, 10] on every update.
+  // Typical deltas:  small moment: +1/-1   meaningful beat: +2/-2   big sacrifice: +3/-3
+  //
+  miraTrust:    +2,    // Trust with Mira specifically. Range: 0–10.
+  cainTrust:    +2,    // Trust with Cain specifically. Range: 0–10.
 
   // ── Faction reputation ────────────────────────────────────────────────────
   ironSaints:     +5,  // The occupying military force.
@@ -865,12 +870,12 @@ const REQUIREMENTS_REFERENCE = {
   hunger:       30,    // Must not be too hungry.
   thirst:       20,
   morale:       40,
-  strength:     6,     // Attribute must be this value or higher (1–100 scale).
+  strength:     6,     // Attribute must be this value or higher (1–10 scale).
   intelligence: 5,
   agility:      5,
   charisma:     7,
-  luck:         60,    // Above 60 also enables the luck reroll.
-  corruption:   5,     // Must have AT LEAST this much corruption.
+  luck:         6,     // Starting luck (1–10); affects reroll availability.
+  corruption:   5,     // Must have AT LEAST this much corruption (0–100 scale).
 
   // ── Minimum inventory ─────────────────────────────────────────────────────
   food:         2,     // Must have at least 2 food.
@@ -881,8 +886,10 @@ const REQUIREMENTS_REFERENCE = {
   relics:       1,
 
   // ── Companion requirements ────────────────────────────────────────────────
-  miraTrust:    50,    // Trust level with Mira must be at least 50.
-  cainTrust:    40,
+  // Trust scale is 0–10. Typical thresholds:
+  //   Low bar: 3  |  Meaningful: 5  |  High trust: 7  |  Maximum bond: 9
+  miraTrust:    6,     // Trust level with Mira must be at least 6 (out of 10).
+  cainTrust:    5,
   miraPresent:  true,  // Mira must be alive and travelling with the player.
   cainPresent:  true,
 

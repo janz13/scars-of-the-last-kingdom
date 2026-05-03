@@ -7,6 +7,7 @@
  * Checks performed:
  *   - Every choice.nextNode points to an existing node
  *   - Every choice.endingTrigger points to an existing node
+ *   - Every diceCheck outcome node (successNode, failureNode, critical*) exists
  *   - Every imageKey is registered in BACKGROUND_IMAGES
  *   - Every isEnding node's endingId exists in ENDINGS
  *   - Every stat/inventory key in requirements/effects is valid
@@ -14,6 +15,8 @@
  *   - Every companion trust field is valid
  *   - Flags in requirements.flags / blockedFlags are non-empty strings
  *   - effectsOnEnter uses only known keys
+ *   - Duplicate choice IDs within a node (error)
+ *   - Duplicate choice IDs across all nodes (warning)
  */
 
 import { STORY_NODES } from '../data/storyNodes';
@@ -68,9 +71,31 @@ function isKnownEffectKey(key: string): boolean {
 export function validateStory(): ValidationWarning[] {
   const warnings: ValidationWarning[] = [];
 
+  // STORY_NODES already includes DICE_OUTCOME_NODES (pushed at module load)
   const nodeIds = new Set(STORY_NODES.map((n) => n.id));
   const endingIds = new Set(ENDINGS.map((e) => e.id));
   const imageKeys = new Set(Object.keys(BACKGROUND_IMAGES));
+
+  // ── Global duplicate choice ID check (across all nodes) ───────────────────
+  const globalChoiceIds = new Map<string, string>(); // choiceId → nodeId
+
+  for (const node of STORY_NODES) {
+    for (const choice of node.choices) {
+      if (globalChoiceIds.has(choice.id)) {
+        const firstSeen = globalChoiceIds.get(choice.id);
+        warnings.push({
+          severity: 'warning',
+          nodeId: node.id,
+          choiceId: choice.id,
+          message: `Choice id "${choice.id}" is also used in node "${firstSeen}" — IDs should be globally unique`,
+        });
+      } else {
+        globalChoiceIds.set(choice.id, node.id);
+      }
+    }
+  }
+
+  // ── Per-node checks ───────────────────────────────────────────────────────
 
   for (const node of STORY_NODES) {
 
@@ -114,19 +139,19 @@ export function validateStory(): ValidationWarning[] {
     }
 
     // ── Choices ────────────────────────────────────────────────────────────
-    const choiceIds = new Set<string>();
+    const localChoiceIds = new Set<string>();
     for (const choice of node.choices) {
 
-      // Duplicate choice IDs within the same node
-      if (choiceIds.has(choice.id)) {
+      // Duplicate choice IDs within the same node (error, not just warning)
+      if (localChoiceIds.has(choice.id)) {
         warnings.push({
           severity: 'error',
           nodeId: node.id,
           choiceId: choice.id,
-          message: `Duplicate choice id "${choice.id}" in node`,
+          message: `Duplicate choice id "${choice.id}" within this node`,
         });
       }
-      choiceIds.add(choice.id);
+      localChoiceIds.add(choice.id);
 
       // nextNode exists
       if (!nodeIds.has(choice.nextNode)) {
@@ -146,6 +171,56 @@ export function validateStory(): ValidationWarning[] {
           choiceId: choice.id,
           message: `endingTrigger "${choice.endingTrigger}" does not exist`,
         });
+      }
+
+      // ── diceCheck outcome nodes ────────────────────────────────────────
+      if (choice.diceCheck) {
+        const dc = choice.diceCheck;
+
+        if (!nodeIds.has(dc.successNode)) {
+          warnings.push({
+            severity: 'error',
+            nodeId: node.id,
+            choiceId: choice.id,
+            message: `diceCheck.successNode "${dc.successNode}" does not exist`,
+          });
+        }
+
+        if (!nodeIds.has(dc.failureNode)) {
+          warnings.push({
+            severity: 'error',
+            nodeId: node.id,
+            choiceId: choice.id,
+            message: `diceCheck.failureNode "${dc.failureNode}" does not exist`,
+          });
+        }
+
+        if (dc.criticalSuccessNode && !nodeIds.has(dc.criticalSuccessNode)) {
+          warnings.push({
+            severity: 'error',
+            nodeId: node.id,
+            choiceId: choice.id,
+            message: `diceCheck.criticalSuccessNode "${dc.criticalSuccessNode}" does not exist`,
+          });
+        }
+
+        if (dc.criticalFailureNode && !nodeIds.has(dc.criticalFailureNode)) {
+          warnings.push({
+            severity: 'error',
+            nodeId: node.id,
+            choiceId: choice.id,
+            message: `diceCheck.criticalFailureNode "${dc.criticalFailureNode}" does not exist`,
+          });
+        }
+
+        if (dc.difficulty < 1 || dc.difficulty > 30) {
+          warnings.push({
+            severity: 'warning',
+            nodeId: node.id,
+            choiceId: choice.id,
+            message: `diceCheck.difficulty (${dc.difficulty}) is outside the expected range [1, 30]`,
+          });
+        }
       }
 
       // ── Requirements ──────────────────────────────────────────────────
@@ -192,21 +267,21 @@ export function validateStory(): ValidationWarning[] {
           }
         }
 
-        // miraTrust / cainTrust bounds (optional sanity check)
+        // Companion trust bounds: engine clamps 0–10
         if (req.miraTrust !== undefined && (req.miraTrust < 0 || req.miraTrust > 10)) {
           warnings.push({
-            severity: 'warning',
+            severity: 'error',
             nodeId: node.id,
             choiceId: choice.id,
-            message: `requirements.miraTrust (${req.miraTrust}) is outside [0, 10]`,
+            message: `requirements.miraTrust (${req.miraTrust}) is outside [0, 10] — companion trust is capped at 10 by the engine`,
           });
         }
         if (req.cainTrust !== undefined && (req.cainTrust < 0 || req.cainTrust > 10)) {
           warnings.push({
-            severity: 'warning',
+            severity: 'error',
             nodeId: node.id,
             choiceId: choice.id,
-            message: `requirements.cainTrust (${req.cainTrust}) is outside [0, 10]`,
+            message: `requirements.cainTrust (${req.cainTrust}) is outside [0, 10] — companion trust is capped at 10 by the engine`,
           });
         }
       }
@@ -220,6 +295,19 @@ export function validateStory(): ValidationWarning[] {
               nodeId: node.id,
               choiceId: choice.id,
               message: `effects → unknown key "${key}"`,
+            });
+          }
+        }
+
+        // Companion trust effect bounds
+        if (choice.effects.miraTrust !== undefined) {
+          const resultTrust = (choice.effects.miraTrust ?? 0);
+          if (Math.abs(resultTrust) > 10) {
+            warnings.push({
+              severity: 'warning',
+              nodeId: node.id,
+              choiceId: choice.id,
+              message: `effects.miraTrust delta (${resultTrust}) is larger than the full scale — companion trust is capped at 10`,
             });
           }
         }

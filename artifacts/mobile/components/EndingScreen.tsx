@@ -16,12 +16,16 @@ const CHAPTER_END_DATA = {
 };
 
 const ENDING_ICONS: Record<string, string> = {
-  death: 'x-circle',
-  betrayal: 'alert-triangle',
-  corruption: 'zap',
-  savior: 'sun',
-  exile: 'wind',
-  discovery: 'search',
+  death:          'x-circle',
+  betrayal:       'alert-triangle',
+  corruption:     'zap',
+  savior:         'sun',
+  sacrifice:      'heart',
+  tyrant:         'shield',
+  companion:      'users',
+  faction:        'flag',
+  secret:         'eye',
+  wanderer:       'wind',
 };
 
 export default function EndingScreen() {

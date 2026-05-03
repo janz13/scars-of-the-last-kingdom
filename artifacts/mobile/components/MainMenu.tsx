@@ -5,6 +5,12 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Feather } from '@expo/vector-icons';
 import { useGame } from '../context/GameContext';
 import { ENDINGS } from '../data/endings';
+import { CLASSES } from '../data/characterOptions';
+import { getStorySummary } from '../logic/storyValidator';
+
+// Computed once at module load — these are compile-time constants
+const _summary = getStorySummary();
+const FOOTER_STATS = `${_summary.totalNodes} NODES  ·  ${ENDINGS.length + 1} ENDINGS  ·  ${CLASSES.length} CLASSES`;
 
 export default function MainMenu() {
   const { hasSaveGame, continueGame, setScreen, state } = useGame();
@@ -132,7 +138,7 @@ export default function MainMenu() {
         {/* Footer */}
         <Animated.View style={[styles.footer, { opacity: footerFade }]}>
           <View style={styles.footerLine} />
-          <Text style={styles.footerText}>175 NODES  ·  21 ENDINGS  ·  7 CLASSES</Text>
+          <Text style={styles.footerText}>{FOOTER_STATS}</Text>
           <View style={styles.footerLine} />
         </Animated.View>
       </View>
