@@ -795,6 +795,12 @@ export const CHAPTER_6_NODES: StoryNode[] = [
         nextNode: 'c6_chapel_arrive',
       },
       {
+        id: 'c6_elian_go_drowned_hall',
+        text: '"Take me to the Drowned Choir Hall. I want to see what initiations look like."',
+        nextNode: 'c6_drowned_hall_arrive',
+        effects: { setFlags: ['elian_guide_active'], corruption: 1 },
+      },
+      {
         id: 'c6_elian_go_hospital_mira',
         text: '[Mira present, cure research authorised] Have Mira begin studying Elian now.',
         nextNode: 'c6_hospital_mira_study',
@@ -1286,6 +1292,12 @@ export const CHAPTER_6_NODES: StoryNode[] = [
         id: 'c6_resist_echo_chamber',
         text: 'Go to the Echo Chamber. You need to understand the full picture before acting.',
         nextNode: 'c6_echo_chamber_arrive',
+      },
+      {
+        id: 'c6_resist_drowned_hall',
+        text: 'Go to the Drowned Choir Hall. See where the Choir\'s initiations happen.',
+        nextNode: 'c6_drowned_hall_arrive',
+        effects: { corruption: 1 },
       },
       {
         id: 'c6_resist_silent_ward',
