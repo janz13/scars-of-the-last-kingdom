@@ -101,7 +101,7 @@ export default function MainMenu() {
         {/* Footer */}
         <View style={styles.footer}>
           <View style={styles.footerLine} />
-          <Text style={styles.footerText}>98 STORY NODES  ·  11 ENDINGS  ·  7 CHARACTER CLASSES</Text>
+          <Text style={styles.footerText}>175 STORY NODES  ·  21 ENDINGS  ·  7 CHARACTER CLASSES</Text>
           <View style={styles.footerLine} />
         </View>
       </Animated.View>

@@ -147,7 +147,8 @@ export const CHAPTER_ROADMAP: ChapterEntry[] = [
       'Chapter 5 — The Glass Court (if glass_court_contact)',
       'Chapter 6 — The Red Choir (if red_choir_contact)',
     ],
-    status: 'planned',
+    status: 'complete',
+    nodeCount: 77,
   },
 
   {

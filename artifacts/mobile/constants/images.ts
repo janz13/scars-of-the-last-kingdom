@@ -54,11 +54,21 @@ export const BACKGROUND_IMAGES: Record<string, any> = {
   collapsed_tunnel:       require('../assets/images/collapsed_tunnel.png'),
   tunnel_camp:            require('../assets/images/tunnel_camp.png'),
 
-  // Act 2 — surface & faction zones
+  // Act 2 — surface & faction zones (Chapter 1)
   surface_ruins:          require('../assets/images/surface_ruins.png'),
   iron_saints_checkpoint: require('../assets/images/iron_saints_checkpoint.png'),
   glass_tower_gate:       require('../assets/images/glass_tower_gate.png'),
   red_choir_chamber:      require('../assets/images/red_choir_chamber.png'),
+
+  // Chapter 2 — The Surface Does Not Forgive
+  surface_dawn:           require('../assets/images/surface_dawn.png'),
+  ruined_street:          require('../assets/images/ruined_street.png'),
+  saints_patrol:          require('../assets/images/saints_patrol.png'),
+  black_market_alley:     require('../assets/images/black_market_alley.png'),
+  glass_tower_lobby:      require('../assets/images/glass_tower_lobby.png'),
+  choir_broadcast_point:  require('../assets/images/choir_broadcast_point.png'),
+  archive_ruin_wall:      require('../assets/images/archive_ruin_wall.png'),
+  surface_night:          require('../assets/images/surface_night.png'),
 
   // Act 3 — the Archive
   last_archive_door:      require('../assets/images/last_archive_door.png'),
@@ -107,6 +117,39 @@ export const BACKGROUND_GRADIENTS: Record<string, GradientConfig> = {
   },
   last_archive_door: {
     colors: ['#0a0814', '#120f1f', '#1a1030', '#0a0814'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  // Chapter 2 gradients
+  surface_dawn: {
+    colors: ['#1a0e08', '#2a1a0a', '#1a1208', '#0e0a06'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  ruined_street: {
+    colors: ['#0e0c10', '#18141e', '#0e0c10', '#08080e'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  saints_patrol: {
+    colors: ['#080c08', '#0e1810', '#080c08', '#050805'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  black_market_alley: {
+    colors: ['#0c0808', '#1a1008', '#0c0808', '#080606'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  glass_tower_lobby: {
+    colors: ['#08081e', '#0c0c2e', '#08081e', '#050510'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  choir_broadcast_point: {
+    colors: ['#180404', '#280606', '#180404', '#0c0202'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  archive_ruin_wall: {
+    colors: ['#0c0a18', '#14102a', '#1c1438', '#0c0a18'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  surface_night: {
+    colors: ['#060608', '#0c0c14', '#060608', '#040406'],
     start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
   },
   // Generic fallback for any key not listed above
