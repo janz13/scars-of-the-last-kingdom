@@ -311,6 +311,12 @@ export const CHAPTER_7_NODES: StoryNode[] = [
         effects: { setFlags: ['theft_route_considered'] },
       },
       {
+        id: 'c7_trust_go_chapel',
+        text: 'Go to the Ink Chapel first. The Subject Seven cover page is on the wall. You need to see it.',
+        nextNode: 'c7_ink_chapel_arrive',
+        effects: { intelligence: 1 },
+      },
+      {
         id: 'c7_trust_relic_read',
         text: '[Relic Hunter] Examine the relic markings on the corridor panels. The design pattern is familiar.',
         nextNode: 'c7_dust_relic_read',
@@ -612,8 +618,8 @@ export const CHAPTER_7_NODES: StoryNode[] = [
       {
         id: 'c7_mira_confront_deflect',
         text: '"That was a different person. I am not that person anymore."',
-        nextNode: 'c7_memory_vault_exit',
-        effects: { miraTrust: -2, setFlags: ['mira_confrontation_deflected'] },
+        nextNode: 'c7_mira_truth_betrayal_end',
+        effects: { miraTrust: -5, setFlags: ['mira_confrontation_deflected'] },
       },
     ],
   },
@@ -779,9 +785,9 @@ export const CHAPTER_7_NODES: StoryNode[] = [
     effectsOnEnter: { setFlags: ['velna_chapel_note_found', 'tribunal_purpose_understood'], intelligence: 3 },
     choices: [
       {
-        id: 'c7_chapel_go_tribunal',
-        text: 'The Tribunal is the door. Go.',
-        nextNode: 'c7_tribunal_arrive',
+        id: 'c7_chapel_go_verdict',
+        text: 'The Tribunal is the door. Velna said you would pass. Find out.',
+        nextNode: 'c7_ink_judge_verdict',
         effects: { lastArchive: 5 },
       },
     ],
@@ -1282,6 +1288,11 @@ export const CHAPTER_7_NODES: StoryNode[] = [
     effectsOnEnter: { setFlags: ['velna_message_received', 'forbidden_stacks_complete'], corruption: 1, intelligence: 5, morale: 5 },
     choices: [
       {
+        id: 'c7_stacks_go_city_seal',
+        text: 'There is one more shelf. The pre-city sealing record. Read it before leaving.',
+        nextNode: 'c7_forbidden_city_seal',
+      },
+      {
         id: 'c7_stacks_go_final',
         text: 'The information is complete. Go to the Archive\'s final decision point.',
         nextNode: 'c7_forbidden_stacks_exit',
@@ -1478,6 +1489,12 @@ export const CHAPTER_7_NODES: StoryNode[] = [
     text: `"The Tribunal finds that the exemption's applicability is contested and that access to the Archive's deeper levels is conditionally suspended pending appeal." The Ink Judge looks at you without apology. "You are free to use the Dust Library and the Memory Vault. The Forbidden Stacks, the Sleeping Server, and the Blackout Record Chamber remain restricted." Vera Quill's expression as she leaves the chamber is not triumphant. It is the expression of someone who is doing what they believe is correct and finding no satisfaction in it. The appeal window is six hours. Inside the six hours, the Tribunal's security protocols do not yet apply, which means the appeal period is simultaneously the restriction period and the window through which the restriction can be bypassed, if you know the Archive's corridor system well enough.`,
     effectsOnEnter: { setFlags: ['tribunal_guilty_finding', 'conditional_access_restriction'], lastArchive: -10 },
     choices: [
+      {
+        id: 'c7_guilty_accept',
+        text: 'Accept the verdict. Do not appeal. Submit to the Tribunal\'s authority.',
+        nextNode: 'c7_tribunal_execution_end',
+        effects: { setFlags: ['tribunal_submission'] },
+      },
       {
         id: 'c7_guilty_appeal',
         text: 'Invoke the formal appeal. Use the six-hour window.',
@@ -1854,7 +1871,7 @@ export const CHAPTER_7_NODES: StoryNode[] = [
       {
         id: 'c7_iron_confront_cain',
         text: 'Confront Cain. Bring him to the record and ask him to read it.',
-        nextNode: 'c7_blackout_reckoning',
+        nextNode: 'c7_cain_reckoning_end',
         effects: { setFlags: ['cain_confrontation_archive'], cainTrust: -2 },
       },
       {
@@ -2006,6 +2023,12 @@ export const CHAPTER_7_NODES: StoryNode[] = [
         effects: { intelligence: 3, setFlags: ['synchronisation_evidence_extracted'], relics: 1 },
       },
       {
+        id: 'c7_exchange_full_transfer',
+        text: 'Open the mark fully. Accept the Server\'s complete transfer. Everything it has, at once.',
+        nextNode: 'c7_server_assimilation_end',
+        effects: { setFlags: ['server_full_transfer_accepted'], corruption: 5 },
+      },
+      {
         id: 'c7_exchange_go_decision',
         text: 'The demonstration is enough. Go to the final decision.',
         nextNode: 'c7_server_decision',
@@ -2124,6 +2147,22 @@ export const CHAPTER_7_NODES: StoryNode[] = [
         requirements: { flags: ['synchronisation_record_extracted'] },
         isHidden: true,
         effects: { setFlags: ['gate_approach_documented'] },
+      },
+      {
+        id: 'c7_final_glass_court_raid',
+        text: '[Proximity alarm] The Archive\'s warning system. The Glass Court tracked the gate pulse. They are in the access tunnel.',
+        nextNode: 'c7_glass_court_raid_end',
+        requirements: { flags: ['gate_pulse_sent'] },
+        isHidden: true,
+        effects: { setFlags: ['raid_detected_late'] },
+      },
+      {
+        id: 'c7_final_false_scholar',
+        text: '[Indexer\'s assessment] The Blind Indexer appears in the doorway. Her expression has changed. She has finished indexing the record of your choices inside the Archive.',
+        nextNode: 'c7_false_scholar_end',
+        requirements: { flags: ['theft_route_mapped'] },
+        isHidden: true,
+        effects: { setFlags: ['false_scholar_triggered'] },
       },
     ],
   },
