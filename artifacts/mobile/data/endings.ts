@@ -232,6 +232,175 @@ export const ENDINGS: EndingDefinition[] = [
     isSecret: true,
   },
 
+  // ── Chapter 3: Bad Endings — Death ───────────────────────────────────────
+  {
+    id: 'ending_market_lynching',
+    title: 'The Candle Goes Out',
+    type: 'death',
+    subtitle: 'Candle Market Ending',
+    description:
+      'The Hollow Children have a law about adults who steal from them and refuse accountability. The market finds its verdict in the time it takes the last candle to gutter out. The mark dims. The tunnels are patient — they wait for everyone.',
+    color: '#8e1c1c',
+    hint: 'Get caught stealing from the Candle Market and then refuse to pay the debt. The market always knows.',
+    chapter: 'Chapter III',
+  },
+  {
+    id: 'ending_platform_drowned',
+    title: 'Below the Platform',
+    type: 'death',
+    subtitle: 'Flooded Platform Ending',
+    description:
+      'The water at the deep point is darker than the surface implied and further down than the estimate allowed. The mark pulses twice through the cold and then dims. The Hollow Children won\'t come looking. The Rat King on the far side doesn\'t record losses in his ledger.',
+    color: '#04080e',
+    hint: 'Attempt to cross the Flooded Platform alone without enough strength or preparation. The deep section does not forgive the unprepared.',
+    chapter: 'Chapter III',
+  },
+  {
+    id: 'ending_nursery_trap_death',
+    title: 'What the Children Learned',
+    type: 'death',
+    subtitle: 'Nursery of Knives Ending',
+    description:
+      'The Nursery of Knives teaches one lesson above all others. Adults who destroy what children build to keep themselves alive are catalogued differently than people who simply fail the passage. The chalk child closes their hand around the piece of chalk. They had already decided what failing looked like.',
+    color: '#0c0808',
+    hint: 'Trigger the Nursery traps and then respond with violence against the children\'s mechanisms. The Hollow Children\'s law is administered in the dark.',
+    chapter: 'Chapter III',
+  },
+  {
+    id: 'ending_saints_overwhelmed',
+    title: 'Registered at Last',
+    type: 'death',
+    subtitle: 'Iron Saints Tunnel Custody Ending',
+    description:
+      'Category Escalated plus marked person plus active tunnel presence equals a response level that doesn\'t leave room for misunderstanding. The Saints are professional about it. The mark is documented in three separate registers. Cain disappears during the custody process, as Cain always does. You are Category One, Tunnel Division, registered at last.',
+    color: '#080c08',
+    hint: 'Fight the Iron Saints patrol in the tunnel zone without enough strength, or surrender and let the Saints process you. Four against one is not an evenly matched engagement.',
+    chapter: 'Chapter III',
+  },
+
+  // ── Chapter 3: Bad Endings — Betrayal ────────────────────────────────────
+  {
+    id: 'ending_iron_saints_captured_ch3',
+    title: 'The Delivered',
+    type: 'betrayal',
+    subtitle: 'Hollow Children Betrayal Ending',
+    description:
+      'Warning the children costs you the Saints\' transaction and your freedom. The officer deduces the breach within the hour. The mark is what they were always interested in. You are Category One Priority. The processing cell smells of iron and certainty.',
+    color: '#1a4a1a',
+    hint: 'Sell the Hollow Children\'s location to the Iron Saints, then try to warn the children before the raid. The Saints are faster than you are.',
+    chapter: 'Chapter III',
+  },
+  {
+    id: 'ending_rat_king_enslaved',
+    title: 'Commodity',
+    type: 'betrayal',
+    subtitle: 'Rat King Indenture Ending',
+    description:
+      'Obstruction with a marked asset resolves into indentured transit labour. The arrangement is entirely legal by tunnel standard — you signed the intake form when you entered the gate zone. Three months of gate work. The engine room is on the other side of the gate. The mark pulses and waits.',
+    color: '#0c0a06',
+    hint: 'Refuse to pay the Rat King\'s toll and also refuse to leave. The ledger has a third option for people who block his time.',
+    chapter: 'Chapter III',
+  },
+  {
+    id: 'ending_mira_abandoned_ch3',
+    title: 'The Weight You Put Down',
+    type: 'betrayal',
+    subtitle: 'Companion Abandonment Ending',
+    description:
+      'You reach the far side. Three days later, you have access to the engine room and the information Mother Chalk offered. Cain travels with you. Mira does not. The mark pulses irregularly, which it has never done before. Cain doesn\'t mention her. You don\'t mention her. The city has a law about finished transactions.',
+    color: '#1a0e0e',
+    hint: 'Let Mira fall into the Flooded Platform\'s deep section and continue to the far side without turning back. The current does what currents do.',
+    chapter: 'Chapter III',
+  },
+
+  // ── Chapter 3: Bad Endings — Tyrant ──────────────────────────────────────
+  {
+    id: 'ending_hollow_children_massacred',
+    title: 'What Adults Do',
+    type: 'tyrant',
+    subtitle: 'Hollow Children Betrayal + Massacre Ending',
+    description:
+      'The raid takes eleven minutes. The Saints are efficient. The Candle Market is extinguished one flame at a time. Sera was in the market when the Saints arrived. She wasn\'t in the list of recovered children. This is what adults do with the trust they are given.',
+    color: '#180a0a',
+    hint: 'Betray the Hollow Children\'s location to the Iron Saints and then accept the payment. Don\'t warn them. Don\'t turn back.',
+    chapter: 'Chapter III',
+  },
+
+  // ── Chapter 3: Bad Endings — Companion ───────────────────────────────────
+  {
+    id: 'ending_mira_neglected_ch3',
+    title: 'What You Chose Not to Carry',
+    type: 'companion',
+    subtitle: 'Companion Neglect Ending',
+    description:
+      'She goes down between one step and the next. Vel treats her. Mira recovers, medically. She also reassesses. The reassessment takes two days. At the end of it she tells you, clearly and without emotion, that she is travelling alone from this point. Some things put themselves down.',
+    color: '#6c3a3a',
+    hint: 'Push Mira past her limits without rest or adequate food and water. Refuse the Hidden Clinic\'s two-day treatment. Bodies make decisions minds keep postponing.',
+    chapter: 'Chapter III',
+  },
+
+  // ── Chapter 3: Bad Endings — Corruption ──────────────────────────────────
+  {
+    id: 'ending_ch3_corruption_engine',
+    title: 'Engine Without a Ghost',
+    type: 'corruption',
+    subtitle: 'Relic Engine Full Bridge Ending',
+    description:
+      'The bridge completes. The engine has been waiting three years for a marked person willing to open the channel without reservation. By the end of the third minute, the engine has what it needed and the channel is still open and the person on this end is doing something that isn\'t quite either of the things it was doing before. Mira calls your name three times. The engine answers.',
+    color: '#180a3a',
+    hint: 'Reach the Relic Engine Room and choose to fully open the mark\'s connection without restriction. The engine was designed for exactly this. So was the outcome.',
+    chapter: 'Chapter III',
+    isSecret: false,
+  },
+
+  // ── Chapter 3: Neutral Endings — Wanderer ────────────────────────────────
+  {
+    id: 'ending_ch3_paid_passage',
+    title: 'Tollpaid',
+    type: 'wanderer',
+    subtitle: 'Empty Passage Ending',
+    description:
+      'You pay everything. The ledger records it with neutral precision. You are through the gate with nothing left to give to anyone. Mira walks with her hands empty. Cain is already ten paces ahead. The city will ask more of you. Right now you are through the gate and alive and those two facts are doing all the weight-bearing they can.',
+    color: '#2a2a2a',
+    hint: 'Give the Rat King literally everything you carry. All food, water, medicine, and scrap. The ledger accepts full payment without mercy.',
+    chapter: 'Chapter III',
+  },
+  {
+    id: 'ending_hollow_stalemate_ch3',
+    title: 'Not Wanted Here',
+    type: 'wanderer',
+    subtitle: 'Door Without a Handle Stalemate Ending',
+    description:
+      'You sit with the door. Lio finds you eventually and sits opposite, patient. Mother Chalk sends food and no message. When you finally stand, Lio gives you a chalk mark. "Come back when you know what you\'re walking toward." You leave. The door is still there. It will be there when you come back. If.',
+    color: '#3a3a3a',
+    hint: 'Reach the Door Without a Handle, touch it, and then choose to wait rather than act. The Hollow Children have a system for people stuck at this door. It has happened before.',
+    chapter: 'Chapter III',
+  },
+  {
+    id: 'ending_ch3_wander_alone',
+    title: 'The Longer Walk',
+    type: 'wanderer',
+    subtitle: 'Tunnel Exit Ending',
+    description:
+      'You leave the way you came. The Bone Turnstile returns your weapons. Lio walks you to the perimeter. He doesn\'t ask why or when. The chalk marks are unchanged. The children continue. You are not the same person who descended. Both things can be true simultaneously. You keep walking.',
+    color: '#4a4a4a',
+    hint: 'Reach the Door Without a Handle and choose to walk away from it before attempting entry. Some weights are carried forward. Some are left at the door.',
+    chapter: 'Chapter III',
+  },
+
+  // ── Chapter 3: Chapter Completion Milestone ───────────────────────────────
+  {
+    id: 'ending_ch3_trust_complete',
+    title: 'What the Tunnels Gave You',
+    type: 'faction',
+    subtitle: 'Hollow Children Alliance — Chapter III Complete',
+    description:
+      'The door deferred, not refused. Mother Chalk\'s coordinates, Patch\'s schematic, Lio\'s chalk passage — the Hollow Children gave what they had to give. Sera is eating regularly. The mark holds steady. Chapter Four is something the city hasn\'t told you the name of yet.',
+    color: '#1a2a1a',
+    hint: 'Earn the Hollow Children\'s full trust, deal with the Rat King, and reach the Door Without a Handle with your companions intact. The tunnels reward those who treat what children build as worth protecting.',
+    chapter: 'Chapter III',
+  },
+
   // ── True Ending ────────────────────────────────────────────────────────────
   {
     id: 'ending_last_kingdom_remembers',

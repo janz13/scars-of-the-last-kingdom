@@ -72,6 +72,16 @@ export const BACKGROUND_IMAGES: Record<string, any> = {
 
   // Act 3 — the Archive
   last_archive_door:      require('../assets/images/last_archive_door.png'),
+
+  // Chapter 3 — Children of the Tunnels
+  candle_market:          require('../assets/images/candle_market.png'),
+  bone_turnstile:         require('../assets/images/bone_turnstile.png'),
+  flooded_platform:       require('../assets/images/flooded_platform.png'),
+  nursery_of_knives:      require('../assets/images/nursery_of_knives.png'),
+  chalk_map_wall:         require('../assets/images/chalk_map_wall.png'),
+  rat_king_gate:          require('../assets/images/rat_king_gate.png'),
+  hidden_clinic:          require('../assets/images/hidden_clinic.png'),
+  relic_engine_room:      require('../assets/images/relic_engine_room.png'),
 };
 
 // ─── Gradient fallbacks & transition colors ───────────────────────────────────
@@ -150,6 +160,39 @@ export const BACKGROUND_GRADIENTS: Record<string, GradientConfig> = {
   },
   surface_night: {
     colors: ['#060608', '#0c0c14', '#060608', '#040406'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  // Chapter 3 gradients — Children of the Tunnels
+  candle_market: {
+    colors: ['#1a0e04', '#2a1a06', '#1a0e04', '#0e0802'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  bone_turnstile: {
+    colors: ['#0e0c0a', '#18140e', '#0e0c0a', '#08080608'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  flooded_platform: {
+    colors: ['#04080e', '#060e18', '#04080e', '#020408'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  nursery_of_knives: {
+    colors: ['#0c0808', '#180e0e', '#0c0808', '#080404'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  chalk_map_wall: {
+    colors: ['#0a0c10', '#12141c', '#0a0c10', '#060810'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  rat_king_gate: {
+    colors: ['#0c0a06', '#18140a', '#0c0a06', '#080604'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  hidden_clinic: {
+    colors: ['#080c0a', '#0e1810', '#080c0a', '#040806'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  relic_engine_room: {
+    colors: ['#060414', '#0c0624', '#180a3a', '#060414'],
     start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
   },
   // Generic fallback for any key not listed above
