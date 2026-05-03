@@ -130,6 +130,28 @@ export const ENDINGS: EndingDefinition[] = [
     hint: 'Allow your corruption stat to reach its limit without choosing the transformation path.',
     chapter: 'Chapter II',
   },
+  {
+    id: 'ending_dehydration',
+    title: 'Dry Ground',
+    type: 'death',
+    subtitle: 'Dehydration Ending',
+    description:
+      'The body is precise about water. Three days without it and the mind goes first — not into darkness but into a kind of terrible lucidity, a brightness that has nothing to do with light. You understand everything in those last minutes. You also cannot move. The mark dims quietly, as if it too has run out of something to give. The tunnels are patient. They wait for everyone.',
+    color: '#1a3a4a',
+    hint: 'Let your thirst fall to zero and ignore the warnings long enough for your health to give out. The metro has no wells.',
+    chapter: 'Chapter I',
+  },
+  {
+    id: 'ending_morale_collapse',
+    title: 'Nothing Left to Carry',
+    type: 'death',
+    subtitle: 'Morale Collapse Ending',
+    description:
+      'The tunnels did not kill you. The Iron Saints did not kill you. The mark did not kill you. You did it one choice at a time — the small decisions, the accumulation of them, the weight of each one stacked on the last. The body stops because the will stopped first. You sit down in the corridor between two stations and do not stand up again. The mark dims so slowly that for a long time afterwards it is hard to say exactly when it went out.',
+    color: '#2a1a3a',
+    hint: 'Let your morale fall to zero. Push forward without rest, without hope, and without anyone left to carry part of the weight.',
+    chapter: 'Chapter I',
+  },
 
   // ── Bad Endings ───────────────────────────────────────────────────────────
   {

@@ -11,6 +11,8 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
 import { useGame } from '../context/GameContext';
+import { getSurvivalWarnings } from '../logic/gameEngine';
+import type { SurvivalWarning, SurvivalWarningSeverity, SurvivalWarningType } from '../logic/gameEngine';
 import BackgroundPanel from './BackgroundPanel';
 import ChoiceButton from './ChoiceButton';
 import DiceRollOverlay from './DiceRollOverlay';
@@ -115,6 +117,87 @@ function StatBar({
   );
 }
 
+// ─── Survival warning strip ───────────────────────────────────────────────────
+
+const WARNING_COLORS: Record<SurvivalWarningSeverity, string> = {
+  critical: '#e74c3c',
+  warning:  '#e67e22',
+  info:     '#6a5e70',
+};
+
+const WARNING_TYPE_ICONS: Record<SurvivalWarningType, string> = {
+  hunger:    'alert-triangle',
+  thirst:    'droplet',
+  health:    'heart',
+  morale:    'wind',
+  corruption:'zap',
+  companion: 'eye',
+  supplies:  'package',
+};
+
+const WARNING_TYPE_COLORS: Record<SurvivalWarningType, string> = {
+  hunger:    '#e67e22',
+  thirst:    '#3d9ad1',
+  health:    '#e74c3c',
+  morale:    '#9b59b6',
+  corruption:'#c39bd3',
+  companion: '#a09060',
+  supplies:  '#7f8c8d',
+};
+
+function WarningRow({ warning }: { warning: SurvivalWarning }) {
+  const pulseAnim = useRef(new Animated.Value(1)).current;
+  const isCritical = warning.severity === 'critical';
+
+  useEffect(() => {
+    if (isCritical) {
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(pulseAnim, { toValue: 0.5, duration: 900, useNativeDriver: true }),
+          Animated.timing(pulseAnim, { toValue: 1, duration: 900, useNativeDriver: true }),
+        ])
+      ).start();
+    } else {
+      pulseAnim.stopAnimation();
+      pulseAnim.setValue(1);
+    }
+  }, [isCritical]);
+
+  const color = WARNING_TYPE_COLORS[warning.type];
+  const iconName = WARNING_TYPE_ICONS[warning.type] as any;
+
+  return (
+    <Animated.View
+      style={[
+        warnStyles.row,
+        { borderLeftColor: color, opacity: isCritical ? pulseAnim : 1 },
+      ]}
+    >
+      <Feather name={iconName} size={10} color={color} />
+      <Text style={[warnStyles.text, { color }]}>{warning.message}</Text>
+    </Animated.View>
+  );
+}
+
+function SurvivalWarningStrip({ warnings }: { warnings: SurvivalWarning[] }) {
+  if (warnings.length === 0) return null;
+
+  // Show at most 3 warnings, prioritising by severity
+  const sorted = [...warnings].sort((a, b) => {
+    const order: Record<SurvivalWarningSeverity, number> = { critical: 0, warning: 1, info: 2 };
+    return order[a.severity] - order[b.severity];
+  });
+  const visible = sorted.slice(0, 3);
+
+  return (
+    <View style={warnStyles.container}>
+      {visible.map((w, i) => (
+        <WarningRow key={`${w.type}-${i}`} warning={w} />
+      ))}
+    </View>
+  );
+}
+
 // ─── Chapter transition banner ────────────────────────────────────────────────
 
 function ChapterBanner({ chapter }: { chapter: string }) {
@@ -205,14 +288,18 @@ export default function StoryPanel() {
 
   const isTerminalNode = currentNode.choices.length === 0 && !currentNode.isEnding;
   const isEndingNode = currentNode.isEnding;
+  const isHallucination = state.flags['halluc_active'] ?? false;
+
+  // Compute survival warnings from the current game state
+  const survivalWarnings = getSurvivalWarnings(state);
 
   return (
     <>
       <BackgroundPanel
         imageKey={currentNode.imageKey}
         sceneKey={currentNode.id}
-        overlayOpacity={0.78}
-        fadeDuration={420}
+        overlayOpacity={isHallucination ? 0.88 : 0.78}
+        fadeDuration={isHallucination ? 600 : 420}
       >
         <View style={styles.container}>
           <View style={{ paddingTop: topPad }}>
@@ -239,15 +326,17 @@ export default function StoryPanel() {
             overScrollMode="auto"
           >
             {/* ── Story section ─────────────────────────────────────── */}
-            <View style={styles.storySection}>
-              <Text style={styles.breadcrumb}>
+            <View style={[styles.storySection, isHallucination && styles.hallucinationSection]}>
+              <Text style={[styles.breadcrumb, isHallucination && styles.hallucinationBreadcrumb]}>
                 {currentNode.chapter.toUpperCase()}
                 {'  ›  '}
                 {currentNode.location.toUpperCase()}
               </Text>
 
               <Animated.View style={{ opacity: titleFade, transform: [{ translateY: titleSlide }] }}>
-                <Text style={styles.nodeTitle}>{currentNode.title}</Text>
+                <Text style={[styles.nodeTitle, isHallucination && styles.hallucinationTitle]}>
+                  {currentNode.title}
+                </Text>
               </Animated.View>
 
               {currentNode.speaker && (
@@ -258,16 +347,20 @@ export default function StoryPanel() {
                 </View>
               )}
 
-              <Text style={styles.narration}>{currentNode.text}</Text>
+              <Text style={[styles.narration, isHallucination && styles.hallucinationNarration]}>
+                {currentNode.text}
+              </Text>
 
               {currentNode.dialogue && (
-                <View style={styles.dialogueBox}>
+                <View style={[styles.dialogueBox, isHallucination && styles.hallucinationDialogueBox]}>
                   <Text style={styles.dialogueOpenQuote}>{'\u201C'}</Text>
-                  <Text style={styles.dialogue}>{currentNode.dialogue}</Text>
+                  <Text style={[styles.dialogue, isHallucination && styles.hallucinationDialogue]}>
+                    {currentNode.dialogue}
+                  </Text>
                 </View>
               )}
 
-              {(state.companions.mira.present && state.companions.mira.alive ||
+              {!isHallucination && (state.companions.mira.present && state.companions.mira.alive ||
                 state.companions.cain.present && state.companions.cain.alive) && (
                 <View style={styles.companionStrip}>
                   {state.companions.mira.present && state.companions.mira.alive && (
@@ -286,9 +379,14 @@ export default function StoryPanel() {
               )}
             </View>
 
+            {/* ── Survival warning strip ─────────────────────────────── */}
+            {!isEndingNode && !isHallucination && (
+              <SurvivalWarningStrip warnings={survivalWarnings} />
+            )}
+
             {/* ── Choices glass panel ────────────────────────────────── */}
-            <View style={styles.choicesPanel}>
-              <View style={styles.choicesTopAccent} />
+            <View style={[styles.choicesPanel, isHallucination && styles.hallucinationChoicesPanel]}>
+              <View style={[styles.choicesTopAccent, isHallucination && styles.hallucinationTopAccent]} />
 
               {isTerminalNode && (
                 <View style={styles.terminalNode}>
@@ -335,10 +433,12 @@ export default function StoryPanel() {
                 </>
               )}
 
-              <Pressable style={styles.menuBtn} onPress={() => setScreen('settings')}>
-                <Feather name="menu" size={11} color="#3a3048" />
-                <Text style={styles.menuBtnText}>MENU</Text>
-              </Pressable>
+              {!isHallucination && (
+                <Pressable style={styles.menuBtn} onPress={() => setScreen('settings')}>
+                  <Feather name="menu" size={11} color="#3a3048" />
+                  <Text style={styles.menuBtnText}>MENU</Text>
+                </Pressable>
+              )}
             </View>
           </ScrollView>
         </View>
@@ -426,6 +526,31 @@ const barStyles = StyleSheet.create({
   },
 });
 
+const warnStyles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 18,
+    paddingVertical: 6,
+    gap: 5,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 7,
+    paddingLeft: 9,
+    paddingVertical: 4,
+    borderLeftWidth: 2,
+    borderLeftColor: '#e74c3c',
+    backgroundColor: 'rgba(10,5,20,0.55)',
+    borderRadius: 2,
+  },
+  text: {
+    fontSize: 11,
+    fontFamily: 'Inter_500Medium',
+    letterSpacing: 0.3,
+    flexShrink: 1,
+  },
+});
+
 const bannerStyles = StyleSheet.create({
   container: {
     position: 'absolute',
@@ -480,6 +605,9 @@ const styles = StyleSheet.create({
     paddingTop: 26,
     paddingBottom: 20,
   },
+  hallucinationSection: {
+    backgroundColor: 'rgba(30,0,50,0.25)',
+  },
   breadcrumb: {
     fontSize: 9,
     letterSpacing: 2.5,
@@ -488,6 +616,10 @@ const styles = StyleSheet.create({
     marginBottom: 14,
     textTransform: 'uppercase',
   },
+  hallucinationBreadcrumb: {
+    color: 'rgba(195,155,211,0.5)',
+    letterSpacing: 3,
+  },
   nodeTitle: {
     fontSize: 26,
     color: '#ede0c4',
@@ -495,6 +627,10 @@ const styles = StyleSheet.create({
     lineHeight: 34,
     letterSpacing: 0.3,
     marginBottom: 20,
+  },
+  hallucinationTitle: {
+    color: '#c39bd3',
+    letterSpacing: 0.8,
   },
   speakerBadge: {
     flexDirection: 'row',
@@ -521,6 +657,11 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter_400Regular',
     marginBottom: 16,
   },
+  hallucinationNarration: {
+    color: '#d4b8e0',
+    fontStyle: 'italic',
+    lineHeight: 28,
+  },
   dialogueBox: {
     backgroundColor: 'rgba(155,89,182,0.06)',
     borderLeftWidth: 2,
@@ -532,6 +673,10 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     borderRadius: 2,
     position: 'relative',
+  },
+  hallucinationDialogueBox: {
+    backgroundColor: 'rgba(155,89,182,0.12)',
+    borderLeftColor: 'rgba(195,155,211,0.5)',
   },
   dialogueOpenQuote: {
     fontSize: 40,
@@ -546,6 +691,10 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     fontFamily: 'Inter_400Regular',
     fontStyle: 'italic',
+  },
+  hallucinationDialogue: {
+    color: '#e0c8f0',
+    letterSpacing: 0.3,
   },
   companionStrip: {
     flexDirection: 'row',
@@ -579,10 +728,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingBottom: 4,
   },
+  hallucinationChoicesPanel: {
+    backgroundColor: 'rgba(15,5,30,0.97)',
+    borderTopColor: 'rgba(195,155,211,0.2)',
+  },
   choicesTopAccent: {
     height: 1.5,
     backgroundColor: 'rgba(155,89,182,0.2)',
     marginBottom: 12,
+  },
+  hallucinationTopAccent: {
+    backgroundColor: 'rgba(195,155,211,0.35)',
   },
   noChoices: {
     color: '#4a4058',

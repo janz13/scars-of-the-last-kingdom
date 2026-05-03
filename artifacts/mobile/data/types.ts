@@ -179,6 +179,10 @@ export interface ChoiceRequirements {
   charisma?: number;
   luck?: number;
   corruption?: number;
+  /** Blocked if corruption is >= this value — use for compassionate/emotional choices */
+  maxCorruption?: number;
+  /** Blocked if morale is >= this value — use for desperate/dark choices only available at low morale */
+  maxMorale?: number;
   food?: number;
   water?: number;
   medicine?: number;
@@ -238,4 +242,6 @@ export interface GameState {
   endingsDiscovered: string[];
   settings: GameSettings;
   activeEnding: string | null;
+  /** Set before redirecting to a hallucination node; cleared on __return__ */
+  pendingReturnNodeId?: string;
 }

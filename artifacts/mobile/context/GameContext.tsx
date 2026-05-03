@@ -19,6 +19,8 @@ import {
   checkSurvivalEndings,
   getAutoRedirect,
   getChoicesWithStatus,
+  getHallucinationRedirect,
+  runSurvivalTick,
   shouldTriggerEnding,
 } from '../logic/gameEngine';
 import { deleteSave as deleteSaveStorage, hasSave, loadGame, saveGame } from '../logic/saveSystem';
@@ -49,6 +51,7 @@ export const INITIAL_STATE: GameState = {
   endingsDiscovered: [],
   settings: { textSpeed: 'normal', soundEnabled: false, autoSave: true, skipDiceAnimation: false },
   activeEnding: null,
+  pendingReturnNodeId: undefined,
 };
 
 export interface PendingDiceRoll {
@@ -88,6 +91,70 @@ interface GameContextValue {
 }
 
 const GameContext = createContext<GameContextValue | null>(null);
+
+// ─── Helper: resolve ending from state + node ─────────────────────────────────
+
+function resolveEndingState(
+  next: GameState,
+  nextNodeId: string,
+): GameState | null {
+  // 1. Survival check (after tick)
+  const survivalEnding = checkSurvivalEndings(next);
+  if (survivalEnding) {
+    return {
+      ...next,
+      screen: 'ending',
+      activeEnding: survivalEnding,
+      endingsDiscovered: next.endingsDiscovered.includes(survivalEnding)
+        ? next.endingsDiscovered
+        : [...next.endingsDiscovered, survivalEnding],
+    };
+  }
+
+  // 2. isEnding node
+  const nextNode = getNodeById(nextNodeId);
+  if (nextNode?.isEnding) {
+    const endingId = nextNode.endingId ?? nextNode.id;
+    return {
+      ...next,
+      screen: 'ending',
+      activeEnding: endingId,
+      endingsDiscovered: next.endingsDiscovered.includes(endingId)
+        ? next.endingsDiscovered
+        : [...next.endingsDiscovered, endingId],
+    };
+  }
+
+  // 3. Legacy chapter1_end
+  if (nextNodeId === 'chapter1_end') {
+    return { ...next, screen: 'ending', activeEnding: 'chapter1_end' };
+  }
+
+  return null;
+}
+
+// ─── Helper: apply survival tick + optional hallucination redirect ────────────
+//
+// Called after every real node transition (not on __return__ from hallucinations).
+// Returns the final state — which may have currentNodeId changed to a hallucination.
+
+function applyTickAndHallucination(next: GameState, realNodeId: string): GameState {
+  // Run passive survival tick
+  next = runSurvivalTick(next);
+
+  // Hallucination redirect — only on live game nodes, not during endings
+  const hallucinationNode = getHallucinationRedirect(next);
+  if (hallucinationNode) {
+    const withFlag = applyEffects(next, { setFlags: ['halluc_active'] });
+    return {
+      ...withFlag,
+      currentNodeId: hallucinationNode,
+      pendingReturnNodeId: realNodeId,
+    };
+  }
+
+  return next;
+}
 
 export function GameProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<GameState>(INITIAL_STATE);
@@ -170,6 +237,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       routeHistory: [],
       endingsDiscovered: [],
       activeEnding: null,
+      pendingReturnNodeId: undefined,
     };
 
     if (startNode?.effectsOnEnter) {
@@ -187,8 +255,10 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       const choice = node.choices.find((c) => c.id === choiceId);
       if (!choice) return prev;
 
+      // Apply choice effects
       let next = applyEffects(prev, choice.effects);
 
+      // Record route history
       const entry: RouteEntry = {
         nodeId: node.id,
         nodeTitle: node.title,
@@ -197,48 +267,47 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       };
       next = { ...next, routeHistory: [...next.routeHistory, entry] };
 
-      let nextNodeId = choice.nextNode;
+      // ── Resolve next node ID ─────────────────────────────────────────────
+      // __return__ is the sentinel used by hallucination nodes to return
+      // the player back to the real story node they were at before the vision.
+      const isHallucinationReturn = choice.nextNode === '__return__';
+      let nextNodeId: string;
 
-      const endingTrigger = shouldTriggerEnding(next, choice);
-      if (endingTrigger) nextNodeId = endingTrigger;
+      if (isHallucinationReturn) {
+        nextNodeId = prev.pendingReturnNodeId ?? prev.currentNodeId;
+        next = { ...next, pendingReturnNodeId: undefined };
+      } else {
+        nextNodeId = choice.nextNode;
 
-      const autoRedirect = getAutoRedirect(next, nextNodeId);
-      if (autoRedirect) nextNodeId = autoRedirect;
+        const endingTrigger = shouldTriggerEnding(next, choice);
+        if (endingTrigger) nextNodeId = endingTrigger;
 
+        const autoRedirect = getAutoRedirect(next, nextNodeId);
+        if (autoRedirect) nextNodeId = autoRedirect;
+      }
+
+      // Navigate to the node
       next = { ...next, currentNodeId: nextNodeId };
 
+      // Apply the new node's entry effects
       const nextNode = getNodeById(nextNodeId);
       if (nextNode?.effectsOnEnter) {
         next = applyEffects(next, nextNode.effectsOnEnter);
       }
 
-      const survivalEnding = checkSurvivalEndings(next);
-      if (survivalEnding) {
-        return {
-          ...next,
-          screen: 'ending',
-          activeEnding: survivalEnding,
-          endingsDiscovered: next.endingsDiscovered.includes(survivalEnding)
-            ? next.endingsDiscovered
-            : [...next.endingsDiscovered, survivalEnding],
-        };
+      // ── Survival tick + hallucination (only on real transitions) ──────────
+      if (!isHallucinationReturn) {
+        const afterTick = applyTickAndHallucination(next, nextNodeId);
+        // If hallucination was triggered, currentNodeId changed — skip ending check
+        if (afterTick.currentNodeId !== nextNodeId) {
+          return afterTick;
+        }
+        next = afterTick;
       }
 
-      if (nextNode?.isEnding) {
-        const endingId = nextNode.endingId ?? nextNode.id;
-        return {
-          ...next,
-          screen: 'ending',
-          activeEnding: endingId,
-          endingsDiscovered: next.endingsDiscovered.includes(endingId)
-            ? next.endingsDiscovered
-            : [...next.endingsDiscovered, endingId],
-        };
-      }
-
-      if (nextNodeId === 'chapter1_end') {
-        return { ...next, screen: 'ending', activeEnding: 'chapter1_end' };
-      }
+      // ── Check for endings ─────────────────────────────────────────────────
+      const endingState = resolveEndingState(next, nextNodeId);
+      if (endingState) return endingState;
 
       return next;
     });
@@ -307,29 +376,16 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         next = applyEffects(next, nextNode.effectsOnEnter);
       }
 
-      const survivalEnding = checkSurvivalEndings(next);
-      if (survivalEnding) {
-        return {
-          ...next,
-          screen: 'ending',
-          activeEnding: survivalEnding,
-          endingsDiscovered: next.endingsDiscovered.includes(survivalEnding)
-            ? next.endingsDiscovered
-            : [...next.endingsDiscovered, survivalEnding],
-        };
+      // Survival tick + hallucination check
+      const afterTick = applyTickAndHallucination(next, nextNodeId);
+      if (afterTick.currentNodeId !== nextNodeId) {
+        return afterTick;
       }
+      next = afterTick;
 
-      if (nextNode?.isEnding) {
-        const endingId = nextNode.endingId ?? nextNode.id;
-        return {
-          ...next,
-          screen: 'ending',
-          activeEnding: endingId,
-          endingsDiscovered: next.endingsDiscovered.includes(endingId)
-            ? next.endingsDiscovered
-            : [...next.endingsDiscovered, endingId],
-        };
-      }
+      // Check for endings
+      const endingState = resolveEndingState(next, nextNodeId);
+      if (endingState) return endingState;
 
       return next;
     });

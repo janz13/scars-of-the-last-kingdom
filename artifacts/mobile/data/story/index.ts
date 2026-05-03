@@ -14,6 +14,7 @@ import { CHAPTER_12_NODES } from './chapter12';
 import { FINAL_CHAPTER_1_NODES } from './finalChapter1';
 import { FINAL_CHAPTER_2_NODES } from './finalChapter2';
 import { DICE_OUTCOME_NODES } from './diceOutcomes';
+import { HALLUCINATION_NODES } from './hallucinations';
 
 // ══════════════════════════════════════════════════════════════════════════════
 //  STORY INDEX — Master node registry
@@ -55,6 +56,7 @@ export const STORY_NODES: StoryNode[] = [
   ...FINAL_CHAPTER_1_NODES,
   ...FINAL_CHAPTER_2_NODES,
   ...DICE_OUTCOME_NODES,
+  ...HALLUCINATION_NODES,
 
   // ── ADD A NEW CHAPTER HERE ──────────────────────────────────────────────
   // 1. Create artifacts/mobile/data/story/chapterN.ts
