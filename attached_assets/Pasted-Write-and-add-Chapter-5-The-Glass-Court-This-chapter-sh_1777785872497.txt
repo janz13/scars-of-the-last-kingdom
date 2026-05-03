@@ -1,0 +1,214 @@
+Write and add Chapter 5: The Glass Court.
+
+This chapter should connect cleanly from Chapter 4: Saints in Iron.
+
+Before writing new nodes, check LATEST_CHAPTER_AUDIT.md and use the recommended entry points from Chapter 4 to connect into Chapter 5.
+
+Add at least 90 connected story nodes.
+
+Chapter 5 title:
+The Glass Court
+
+Main theme:
+Luxury above starvation. Power, beauty, lies, class divide, medical experiments, political survival, and moral corruption.
+
+Chapter feel:
+The Glass Court should feel completely different from the tunnels and Iron Saints territory.
+
+The tunnels were dark and desperate.
+The Iron Saints were brutal and religious.
+The Glass Court should be elegant, cold, bright, beautiful, and cruel.
+
+The people above the ruined city live behind sealed glass while everyone below starves.
+
+Main locations:
+- The Glass Gate
+- The Ascension Elevator
+- The White Atrium
+- The Hunger Gallery
+- The Orchid Clinic
+- The Mirror Ballroom
+- The Servant Quarters
+- The Experiment Ward
+- The Sky Garden
+- The Council Chamber
+- The Cracked Observatory
+- The Private Auction Hall
+
+Important NPCs:
+
+1. Lady Seraphine Vale
+Elegant ruler of the Glass Court. She treats survival like theater and enjoys watching desperate people make impossible choices.
+
+2. Director Enoch Varr
+A scientist studying relic marks, corruption, memory loss, and the player’s wrist mark.
+
+3. Juno
+A servant who secretly helps people from below. Juno can become an ally, informant, or casualty depending on player choices.
+
+4. Lord Cael Orison
+A charming noble who may manipulate or aid the player. He is useful, dangerous, and never fully honest.
+
+5. The Pale Curator
+A collector of relic-touched humans. The Curator recognizes the player and may know something about their past.
+
+6. The Masked Heir
+A mysterious figure connected to the player’s lost memory and the truth behind the blackout.
+
+Major routes:
+1. Enter the Glass Court as an invited guest.
+2. Sneak in through servant tunnels.
+3. Arrive as a prisoner or test subject.
+4. Ally with Lady Seraphine.
+5. Expose the Glass Court’s experiments.
+6. Sell out the Hollow Children for access.
+7. Use Iron Saints reputation to negotiate entry.
+8. Protect Mira from the Orchid Clinic doctors.
+9. Let Cain make a dangerous political bargain.
+10. Unlock a Fallen Noble background route.
+11. Unlock a Black Market Courier background route.
+12. Unlock a Shadow Broker class route.
+13. Unlock a Relic Hunter class route through the Pale Curator.
+14. Trigger a corruption event in the Mirror Ballroom.
+15. Discover evidence that the blackout was planned.
+
+Required story reveals:
+- The Glass Court knew about the blackout before it happened.
+- The player’s wrist mark is not unique.
+- Some nobles have been buying relic-touched survivors.
+- The Orchid Clinic is experimenting on people from below.
+- The Pale Curator recognizes the player.
+- The Masked Heir may know who the player was before the blackout.
+- The Glass Court has records connecting the Iron Saints, the Last Archive, and the relic machines.
+
+Add:
+- at least 10 bad endings
+- at least 4 neutral endings
+- at least 2 Glass Court faction ending previews
+- at least 1 Mira capture route
+- at least 1 Mira rescue route
+- at least 1 Cain political betrayal route
+- at least 1 Cain loyalty route
+- at least 1 secret memory route
+- at least 6 dice-roll checks
+- at least 6 class-specific choices
+- at least 6 background-specific choices
+- at least 5 corruption-based choices
+- new flags
+- new faction reputation changes
+- new companion relationship changes
+- new relic mark discoveries
+- new route history entries
+- new endings added to the ending tracker
+- new Route Codex entries
+
+Important companion behavior:
+
+Mira:
+Mira should be disturbed by the Orchid Clinic. If her trust is high, she admits she knows more about medical experiments than she wanted to reveal. If her trust is low, she may hide important information or attempt to leave.
+
+Cain:
+Cain should understand the political danger of the Glass Court. If his trust is high, he warns the player before traps. If his trust is low, he may make a private deal with Lord Cael or the Glass Court guards.
+
+Faction reputation:
+Chapter 5 should heavily affect:
+- Glass Court reputation
+- Hollow Children reputation
+- Iron Saints reputation
+- Last Archive reputation
+
+The player should not be able to please everyone.
+
+New flags to consider:
+- entered_glass_court_as_guest
+- entered_glass_court_as_servant
+- entered_glass_court_as_prisoner
+- met_lady_seraphine
+- met_director_varr
+- met_juno
+- met_lord_cael
+- met_pale_curator
+- met_masked_heir
+- mira_targeted_by_orchid_clinic
+- mira_saved_from_orchid_clinic
+- cain_made_political_bargain
+- cain_refused_glass_court_deal
+- discovered_blackout_was_planned
+- discovered_marks_are_not_unique
+- exposed_experiment_ward
+- sold_out_hollow_children
+- protected_servants
+- glass_court_alliance_possible
+- glass_court_hostile
+- memory_fragment_glass_ballroom
+- corruption_mirror_event
+
+New endings to add:
+- Glass Cage Ending
+- Orchid Table Ending
+- Auctioned Relic Ending
+- Cain’s Bargain Ending
+- Mira Dissection Ending
+- Servant Revolt Ending
+- Noble Pet Ending
+- Mirror Corruption Ending
+- False Ascension Ending
+- White Atrium Massacre Ending
+- Glass Court Neutral Ending
+- Seraphine Alliance Preview Ending
+- Pale Curator Collection Ending
+- Secret Memory Fragment Ending
+
+New 8-bit / pixel-art background image paths:
+- /images/backgrounds/glass_gate.png
+- /images/backgrounds/ascension_elevator.png
+- /images/backgrounds/white_atrium.png
+- /images/backgrounds/hunger_gallery.png
+- /images/backgrounds/orchid_clinic.png
+- /images/backgrounds/mirror_ballroom.png
+- /images/backgrounds/servant_quarters.png
+- /images/backgrounds/experiment_ward.png
+- /images/backgrounds/sky_garden.png
+- /images/backgrounds/council_chamber.png
+- /images/backgrounds/cracked_observatory.png
+- /images/backgrounds/private_auction_hall.png
+
+If image generation is available, generate these as consistent 8-bit pixel-art backgrounds.
+
+Image style:
+- dark luxury dystopian pixel art
+- elegant but cold
+- glass towers
+- white marble
+- gold details
+- medical horror
+- bright luxury above a starving ruined city
+- no text
+- no logos
+- mobile-friendly vertical composition
+
+Technical requirements:
+- Add the Chapter 5 nodes to src/data/story/chapter5.js
+- Make sure src/data/story/index.js imports Chapter 5
+- Make sure every new ending is added to the ending tracker
+- Make sure Developer Mode can search Chapter 5 nodes
+- Make sure Route Codex tracks Chapter 5 routes
+- Make sure all image paths have fallbacks
+- Make sure save/load works during Chapter 5
+- Make sure dice-roll choices work
+- Make sure all choices point to valid nodes
+- Make sure the app runs successfully
+
+After adding Chapter 5, create:
+
+CHAPTER_5_SUMMARY.md
+
+Include:
+- all major routes
+- all new endings
+- all new NPCs
+- all new flags
+- companion consequences
+- faction consequences
+- important reveals
+- recommended connection points for Chapter 6: The Red Choir

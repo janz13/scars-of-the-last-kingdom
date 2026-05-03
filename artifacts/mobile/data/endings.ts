@@ -756,6 +756,186 @@ export const ENDINGS: EndingDefinition[] = [
     isSecret: true,
   },
 
+  // ── Chapter V — The Glass Court ────────────────────────────────────────────
+
+  // Death Endings
+  {
+    id: 'ending_ch5_orchid_table',
+    title: 'The Orchid Table',
+    type: 'death',
+    subtitle: 'Chapter V — Orchid Clinic Route',
+    description:
+      'The extraction procedure is called a procedure because the Glass Court has a form for it. Varr conducts the session with the methodical care of someone whose primary concern is data integrity. The mark provides data enthusiastically, not understanding that the people listening are not listening in the right direction. When the session ends, the data is in Varr\'s system. The mark is significantly quieter. The person who was carrying it is present but different in a way that will take some time to measure.',
+    color: '#0a1010',
+    hint: 'Enter the Orchid Clinic. Submit to Director Varr\'s extraction protocol.',
+    chapter: 'Chapter V',
+  },
+  {
+    id: 'ending_ch5_mira_dissection',
+    title: 'Mira Dissection',
+    type: 'death',
+    subtitle: 'Chapter V — Orchid Clinic / Mira Route',
+    description:
+      'The secondary extraction takes six hours across two suites. Mira does not scream — she conducts a private medical procedure on herself in her mind, locating each sensation and classifying it. When it ends, she tells you what they took: the mark had transferred a fragment of itself into her neural pattern over months of travel. A backup. They have it now. The mark on your wrist burns once, in the direction of the shore, and then goes very quiet.',
+    color: '#0c0808',
+    hint: 'Fail to protect Mira in the Orchid Clinic. Do not rescue her before the extraction completes.',
+    chapter: 'Chapter V',
+  },
+  {
+    id: 'ending_ch5_glass_cage',
+    title: 'Glass Cage',
+    type: 'death',
+    subtitle: 'Chapter V — Experiment Ward Route',
+    description:
+      'The ward has a bed for you — bed eighteen, prepared in advance. The suppression technology reduces the mark to twelve percent of its normal output. This is not painful. It is quiet in a way that is worse than painful. Varr visits on alternating days. Dessa, from the bed beside you, puts her hand on yours one night. The mark recognises her mark and holds the recognition with the patience of something that has been waiting for a very long time.',
+    color: '#0c0c1e',
+    hint: 'Lose the confrontation in the Auction Hall without escape options. Remain in the Glass Court\'s processing system.',
+    chapter: 'Chapter V',
+  },
+  {
+    id: 'ending_ch5_white_atrium_massacre',
+    title: 'White Atrium Massacre',
+    type: 'death',
+    subtitle: 'Chapter V — Council Chamber Route',
+    description:
+      'The mark at full transmission in the White Atrium interacts with the Archive-composite glass panels in a way that is total, immediate, and irreversible. Every surface resonates simultaneously. The chandeliers shatter in a harmonic cascade. The security response arrives in ninety seconds and finds a scene the Court has no protocol for. Seraphine hears the sound from the Council floor and understands it precisely. She writes something in her ledger. She does not go to the Atrium.',
+    color: '#100808',
+    hint: 'Fail the Charisma check in the Council Chamber and choose to fight.',
+    chapter: 'Chapter V',
+  },
+  {
+    id: 'ending_ch5_auctioned_relic',
+    title: 'Auctioned Relic',
+    type: 'death',
+    subtitle: 'Chapter V — Private Auction Hall Route',
+    description:
+      'The Glass Court\'s category for this is Exceptional Resonant — Active Lattice. The successful bidder is an eastern tower family with a private research program six years in the making. The lot number is assigned. The glass chip changes hands. The mark is already pointing somewhere else — below, east-southeast, the direction it has always been pointing. Patient. Waiting. The body carrying it is no longer in a position to follow.',
+    color: '#10080e',
+    hint: 'Attempt to bid on lot seventeen in the Private Auction Hall without sufficient leverage.',
+    chapter: 'Chapter V',
+  },
+
+  // Betrayal Endings
+  {
+    id: 'ending_ch5_cain_bargain',
+    title: 'Cain\'s Bargain',
+    type: 'betrayal',
+    subtitle: 'Chapter V — Cain Political Route',
+    description:
+      'Cain completes the transaction with Lord Cael with the same deliberateness he applies to everything. Saints records received. Intelligence about you — your position, the mark\'s saturation level, the shore direction — transferred in the other direction. When he finds you afterward, his face is not at peace with what he did. "I told them things they shouldn\'t have," he says. He waits. He has decided to answer whatever you ask. That decision does not fix what happened. It tells you what it is.',
+    color: '#1a0c04',
+    hint: 'Allow Cain to take Lord Cael\'s offer in the Hunger Gallery. Give permission for the intelligence exchange.',
+    chapter: 'Chapter V',
+  },
+  {
+    id: 'ending_ch5_noble_pet',
+    title: 'Noble Pet',
+    type: 'betrayal',
+    subtitle: 'Chapter V — Seraphine Alliance Route',
+    description:
+      'The Glass Court\'s category for this is Resonant Companion — a statement about the taste and resources of whoever keeps one. Seraphine keeps you as a reference point: someone to consult, to introduce at functions, to display as evidence of the Court\'s relationship with pre-collapse technology. The mark quiets in the suppression field. You quiet in the specific way that comfort quiets things that were meant to be sharp. The shore is still below the city. The direction does not stop being true because you stopped moving.',
+    color: '#14100e',
+    hint: 'Accept Seraphine\'s terms completely, without conditions. Become a Resonant Companion.',
+    chapter: 'Chapter V',
+  },
+
+  // Corruption Endings
+  {
+    id: 'ending_ch5_mirror_corruption',
+    title: 'Mirror Corruption',
+    type: 'corruption',
+    subtitle: 'Chapter V — Mirror Ballroom Route',
+    description:
+      'The mirror lattice and the wrist lattice complete their resonance loop and the completion is not violent — it is absorptive, which is worse. Every version of you the mirrors produce converges simultaneously and the mark accepts all of it as a transmission. What emerges is still standing in the ballroom, still wearing the mark, still pointing toward the shore. But the glass chandeliers ring in unison and do not stop ringing. The Pale Curator opens their documentation case and begins to write with the pace of someone recording something they have been waiting years to record.',
+    color: '#0e0c18',
+    hint: 'Allow the mark to open fully at the centre of the Mirror Ballroom. Requires corruption ≥ 30.',
+    chapter: 'Chapter V',
+  },
+  {
+    id: 'ending_ch5_pale_curator_collection',
+    title: 'Pale Curator\'s Collection',
+    type: 'corruption',
+    subtitle: 'Chapter V — Sky Garden / Pale Curator Route',
+    description:
+      'The consent form the Pale Curator carries is not the one they showed you. The pre-Archive composite collection case accepts the mark the way Archive materials accept the mark: with recognition. The mark settles into the case. It is very still, and still pointing toward the shore, and the Curator files it with care and closes the lid. The person who was carrying the mark is still standing in the Sky Garden, still looking at the city, but the thing that was navigating is no longer on their wrist.',
+    color: '#0c1010',
+    hint: 'In the Sky Garden, accept the Pale Curator\'s terms and open the mark for full documentation.',
+    chapter: 'Chapter V',
+  },
+
+  // Wanderer Endings
+  {
+    id: 'ending_ch5_false_ascension',
+    title: 'False Ascension',
+    type: 'wanderer',
+    subtitle: 'Chapter V — Council Chamber Route',
+    description:
+      'The Glass Court calls the outcome ascension — the resonant\'s mark stabilised at maximum output, controlled, sustainable, useful for the lattice project for an estimated three to five years. The mark does not feel like ascension. It feels like being very loud in a very small room. The shore is below. The city is below. The mark continues to point in the direction it has always pointed, with the patience of something that has never stopped moving toward its destination even when the person carrying it has.',
+    color: '#0e0e18',
+    hint: 'Fail the Charisma check in the Council Chamber. Accept the Category Two processing protocol.',
+    chapter: 'Chapter V',
+  },
+  {
+    id: 'ending_ch5_glass_court_neutral',
+    title: 'Glass Court Neutral',
+    type: 'wanderer',
+    subtitle: 'Chapter V — Neutral Completion Route',
+    description:
+      'You leave the Glass Court with what you came for and the unresolvedness of having changed something large without seeing it complete. The Council knows the truth about the blackout. Juno\'s network is intact. Dessa and the resonants who walked are somewhere in the city below. The Masked Heir is still inside. The mark points southeast as you exit. Variables compound.',
+    color: '#0c0c14',
+    hint: 'Complete the Council Chamber confrontation without committing to alliance or conflict.',
+    chapter: 'Chapter V',
+  },
+
+  // Faction Endings
+  {
+    id: 'ending_ch5_servant_revolt',
+    title: 'Servant Revolt',
+    type: 'faction',
+    subtitle: 'Chapter V — Servant Quarters / Juno Route',
+    description:
+      'The forty-three servants move with the efficiency of people who have rehearsed this without being allowed to call it rehearsal. Supply shafts. Security blind spots. The mark opens the doors Juno\'s chip cannot. The building does not fall — that is not the point. The point is that forty-three people who have been running this building have, for one afternoon, stopped running it until the building understands something it chose not to. Three resonants exit the ward during the disruption. The mark, heading toward the exit, is warm with something that is not corruption.',
+    color: '#080c08',
+    hint: 'Trust Juno\'s network completely. Lead the servant revolt by passing the Charisma check in the Servant Quarters.',
+    chapter: 'Chapter V',
+  },
+  {
+    id: 'ending_ch5_seraphine_alliance',
+    title: 'Seraphine Alliance',
+    type: 'faction',
+    subtitle: 'Chapter V — Glass Court Alliance Route',
+    description:
+      'The alliance terms are written on glass paper with a glass stylus in the formality of someone who knows that informal agreements are worth only what the weaker party will enforce. "The Court commits its resources to reaching the transmission point," Seraphine says. "The Last Kingdom. Whatever is below." She looks at the city. The mark on your wrist recognises the glass paper — Archive composite — and warms. The alliance is a tool. Tools have specific uses and limits. You sign.',
+    color: '#0c0c20',
+    hint: 'Ally with Lady Seraphine in the White Atrium or the Council Chamber. Commit to full Glass Court integration.',
+    chapter: 'Chapter V',
+  },
+  {
+    id: 'ending_ch5_survived',
+    title: 'Beyond the Glass',
+    type: 'faction',
+    subtitle: 'Chapter V — Completion',
+    description:
+      'Below the Glass Court\'s towers, the ruined city receives you the way it always has: without comment, without adjustment. What you carry out: Sabel, if they came. The knowledge that the blackout was the Archive activating. The understanding that you are one node in a network of seventeen, carrying a piece of a restoration record. The mark is warm and directional and patient. Below this city — something waiting to be remembered. The path to the Red Choir is east, through the broadcast tunnels.',
+    color: '#0c0c1e',
+    hint: 'Complete the Council Chamber confrontation. Leave the Glass Court alive with Sabel and the truth about the blackout.',
+    chapter: 'Chapter V',
+  },
+
+  // Secret Ending
+  {
+    id: 'ending_ch5_secret_memory',
+    title: 'Secret Memory Fragment',
+    type: 'secret',
+    subtitle: 'Chapter V — Forgotten Scholar / Masked Heir Route',
+    description:
+      'Sabel closes their hand and the shared memory arrives as texture: the quality of the Archive before the blackout, the warmth of a building that has been thinking for three hundred years and is about to think harder. Velna is in the memory not as a person you can see, but as a presence. The message is not in words — it is in the structure of what she built. You now know what the restoration looks like. Not where it is. Not how to reach it. But what it was, before it was lost. You carry that now, in addition to everything else.',
+    color: '#080c18',
+    hint: 'Follow the Forgotten Scholar background through the Observatory documents, meet Sabel in the Council Chamber, and choose to share the memory.',
+    chapter: 'Chapter V',
+    isSecret: true,
+  },
+
   // ── True Ending ────────────────────────────────────────────────────────────
   {
     id: 'ending_last_kingdom_remembers',

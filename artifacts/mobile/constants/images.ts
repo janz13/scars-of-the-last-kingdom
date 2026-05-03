@@ -96,6 +96,21 @@ export const BACKGROUND_IMAGES: Record<string, any> = {
   saint_furnace:          require('../assets/images/relic_engine_room.png'),
   prison_carts:           require('../assets/images/collapsed_tunnel.png'),
   war_shrine:             require('../assets/images/surface_ruins.png'),
+
+  // Chapter 5 — The Glass Court (placeholder art → closest existing environment)
+  // TODO: replace with dedicated Chapter 5 dark-luxury pixel art
+  glass_gate:             require('../assets/images/glass_tower_gate.png'),
+  ascension_elevator:     require('../assets/images/glass_tower_lobby.png'),
+  white_atrium:           require('../assets/images/glass_tower_lobby.png'),
+  hunger_gallery:         require('../assets/images/glass_tower_lobby.png'),
+  orchid_clinic:          require('../assets/images/hidden_clinic.png'),
+  mirror_ballroom:        require('../assets/images/glass_tower_lobby.png'),
+  servant_quarters:       require('../assets/images/tunnel_camp.png'),
+  experiment_ward:        require('../assets/images/hidden_clinic.png'),
+  sky_garden:             require('../assets/images/surface_dawn.png'),
+  council_chamber:        require('../assets/images/glass_tower_lobby.png'),
+  cracked_observatory:    require('../assets/images/archive_ruin_wall.png'),
+  private_auction_hall:   require('../assets/images/glass_tower_lobby.png'),
 };
 
 // ─── Gradient fallbacks & transition colors ───────────────────────────────────
@@ -245,6 +260,55 @@ export const BACKGROUND_GRADIENTS: Record<string, GradientConfig> = {
   },
   war_shrine: {
     colors: ['#0a0810', '#14101c', '#0a0810', '#060608'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  // Chapter 5 — The Glass Court (dark luxury dystopian — elegant cold white/gold)
+  glass_gate: {
+    colors: ['#0c0c1e', '#141428', '#0c1020', '#080810'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  ascension_elevator: {
+    colors: ['#101018', '#181824', '#101018', '#080810'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  white_atrium: {
+    colors: ['#14141e', '#1c1c2c', '#14141e', '#0c0c14'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  hunger_gallery: {
+    colors: ['#0e0e18', '#161622', '#0e0e18', '#08080e'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  orchid_clinic: {
+    colors: ['#0a1010', '#0e1a16', '#0a1010', '#060a08'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  mirror_ballroom: {
+    colors: ['#0e0c18', '#1a1428', '#0e0c18', '#08060e'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  servant_quarters: {
+    colors: ['#0c0a08', '#161208', '#0c0a08', '#080604'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  experiment_ward: {
+    colors: ['#0a0e10', '#10161a', '#0a0e10', '#060a0c'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  sky_garden: {
+    colors: ['#0c1210', '#101c14', '#0c1210', '#080c0a'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  council_chamber: {
+    colors: ['#0c0c20', '#14142e', '#0c0c20', '#080812'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  cracked_observatory: {
+    colors: ['#080c18', '#0e1224', '#080c18', '#040610'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  private_auction_hall: {
+    colors: ['#10080e', '#1c0e18', '#10080e', '#080408'],
     start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
   },
   // Generic fallback for any key not listed above
