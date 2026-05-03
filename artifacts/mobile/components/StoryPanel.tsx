@@ -1,6 +1,5 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import {
-  Animated,
   Platform,
   Pressable,
   ScrollView,
@@ -13,6 +12,8 @@ import { Feather } from '@expo/vector-icons';
 import { useGame } from '../context/GameContext';
 import BackgroundPanel from './BackgroundPanel';
 import ChoiceButton from './ChoiceButton';
+
+// ─── Stats bar (fixed at top) ─────────────────────────────────────────────────
 
 function StatBar({
   health, maxHealth, hunger, thirst, morale, corruption,
@@ -81,6 +82,8 @@ function StatBar({
   );
 }
 
+// ─── Main panel ───────────────────────────────────────────────────────────────
+
 export default function StoryPanel() {
   const { state, currentNode, availableChoices, makeChoice, setScreen } = useGame();
   const insets = useSafeAreaInsets();
@@ -111,8 +114,9 @@ export default function StoryPanel() {
       overlayOpacity={0.72}
       fadeDuration={380}
     >
-      <View style={styles.innerContent}>
-        {/* Stats Bar */}
+      <View style={styles.container}>
+
+        {/* ── Stats bar — always visible at the top ───────────────────── */}
         <View style={{ paddingTop: topPad }}>
           <StatBar
             health={state.stats.health}
@@ -129,97 +133,110 @@ export default function StoryPanel() {
           />
         </View>
 
-        {/* Story Content */}
+        {/*
+          ── Single ScrollView for story + choices ────────────────────────
+          One continuous scroll region so Android can handle drag gestures
+          anywhere on screen without gesture-ownership conflicts.
+        */}
         <ScrollView
-          style={styles.storyScroll}
-          contentContainerStyle={styles.storyContent}
+          style={styles.scroll}
+          contentContainerStyle={[styles.scrollContent, { paddingBottom: botPad + 20 }]}
           showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+          // Android: let parent handle if needed
+          overScrollMode="auto"
         >
-          {/* Chapter & Location */}
-          <View style={styles.meta}>
-            <Text style={styles.chapterText}>{currentNode.chapter}  ·  {currentNode.location}</Text>
-          </View>
 
-          {/* Node Title */}
-          <Text style={styles.nodeTitle}>{currentNode.title}</Text>
+          {/* ── Story section ──────────────────────────────────────────── */}
+          <View style={styles.storySection}>
+            <Text style={styles.chapterText}>
+              {currentNode.chapter}{'  ·  '}{currentNode.location}
+            </Text>
 
-          {/* Speaker */}
-          {currentNode.speaker && (
-            <View style={styles.speakerBadge}>
-              <View style={styles.speakerDot} />
-              <Text style={styles.speakerText}>{currentNode.speaker}</Text>
-            </View>
-          )}
+            <Text style={styles.nodeTitle}>{currentNode.title}</Text>
 
-          {/* Narration */}
-          <Text style={styles.narration}>{currentNode.text}</Text>
-
-          {/* Dialogue */}
-          {currentNode.dialogue && (
-            <View style={styles.dialogueBox}>
-              <Text style={styles.dialogue}>"{currentNode.dialogue}"</Text>
-            </View>
-          )}
-
-          {/* Companion status strip */}
-          <View style={styles.companionStrip}>
-            {state.companions.mira.present && state.companions.mira.alive && (
-              <View style={styles.companionTag}>
-                <View style={[styles.companionDot, { backgroundColor: '#9b59b6' }]} />
-                <Text style={styles.companionName}>Mira</Text>
+            {currentNode.speaker && (
+              <View style={styles.speakerBadge}>
+                <View style={styles.speakerDot} />
+                <Text style={styles.speakerText}>{currentNode.speaker}</Text>
               </View>
             )}
-            {state.companions.cain.present && state.companions.cain.alive && (
-              <View style={styles.companionTag}>
-                <View style={[styles.companionDot, { backgroundColor: '#e67e22' }]} />
-                <Text style={styles.companionName}>Cain</Text>
+
+            <Text style={styles.narration}>{currentNode.text}</Text>
+
+            {currentNode.dialogue && (
+              <View style={styles.dialogueBox}>
+                <Text style={styles.dialogue}>"{currentNode.dialogue}"</Text>
               </View>
             )}
-          </View>
-        </ScrollView>
 
-        {/* Choices */}
-        <View style={[styles.choicesContainer, { paddingBottom: botPad + 8 }]}>
-          <View style={styles.choicesDivider} />
-
-          {isTerminalNode && (
-            <View style={styles.terminalNode}>
-              <Text style={styles.terminalText}>~ To be continued — Chapter 2: The Descent ~</Text>
-              <Pressable style={styles.returnBtn} onPress={() => setScreen('mainMenu')}>
-                <Text style={styles.returnBtnText}>RETURN TO MAIN MENU</Text>
-              </Pressable>
-            </View>
-          )}
-
-          {!isTerminalNode && !isEndingNode && (
-            <View>
-              {availableChoices.map(({ choice, met, reasons }) => (
-                <ChoiceButton
-                  key={choice.id}
-                  choiceId={choice.id}
-                  text={choice.text}
-                  met={met}
-                  reasons={reasons}
-                  flavorText={choice.flavorText}
-                  onPress={() => makeChoice(choice.id)}
-                />
-              ))}
-              {availableChoices.length === 0 && (
-                <Text style={styles.noChoices}>No available choices. Check your stats and inventory.</Text>
+            {/* Companion presence strip */}
+            <View style={styles.companionStrip}>
+              {state.companions.mira.present && state.companions.mira.alive && (
+                <View style={styles.companionTag}>
+                  <View style={[styles.companionDot, { backgroundColor: '#9b59b6' }]} />
+                  <Text style={styles.companionName}>Mira</Text>
+                </View>
+              )}
+              {state.companions.cain.present && state.companions.cain.alive && (
+                <View style={styles.companionTag}>
+                  <View style={[styles.companionDot, { backgroundColor: '#e67e22' }]} />
+                  <Text style={styles.companionName}>Cain</Text>
+                </View>
               )}
             </View>
-          )}
+          </View>
 
-          {/* Menu button */}
-          <Pressable style={styles.settingsBtn} onPress={() => setScreen('settings')}>
-            <Feather name="menu" size={13} color="#5a5060" />
-            <Text style={styles.settingsBtnText}>MENU</Text>
-          </Pressable>
-        </View>
+          {/* ── Choices section ────────────────────────────────────────── */}
+          <View style={styles.choicesSection}>
+            <View style={styles.choicesDivider} />
+
+            {isTerminalNode && (
+              <View style={styles.terminalNode}>
+                <Text style={styles.terminalText}>
+                  ~ To be continued — Chapter 2: The Descent ~
+                </Text>
+                <Pressable style={styles.returnBtn} onPress={() => setScreen('mainMenu')}>
+                  <Text style={styles.returnBtnText}>RETURN TO MAIN MENU</Text>
+                </Pressable>
+              </View>
+            )}
+
+            {!isTerminalNode && !isEndingNode && (
+              <>
+                {availableChoices.map(({ choice, met, reasons }) => (
+                  <ChoiceButton
+                    key={choice.id}
+                    choiceId={choice.id}
+                    text={choice.text}
+                    met={met}
+                    reasons={reasons}
+                    flavorText={choice.flavorText}
+                    onPress={() => makeChoice(choice.id)}
+                  />
+                ))}
+                {availableChoices.length === 0 && (
+                  <Text style={styles.noChoices}>
+                    No available choices. Check your stats and inventory.
+                  </Text>
+                )}
+              </>
+            )}
+
+            {/* Menu button */}
+            <Pressable style={styles.menuBtn} onPress={() => setScreen('settings')}>
+              <Feather name="menu" size={13} color="#5a5060" />
+              <Text style={styles.menuBtnText}>MENU</Text>
+            </Pressable>
+          </View>
+
+        </ScrollView>
       </View>
     </BackgroundPanel>
   );
 }
+
+// ─── Styles ───────────────────────────────────────────────────────────────────
 
 const barStyles = StyleSheet.create({
   container: {
@@ -273,7 +290,7 @@ const barStyles = StyleSheet.create({
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  innerContent: { flex: 1 },
+
   errorState: {
     flex: 1,
     alignItems: 'center',
@@ -282,17 +299,24 @@ const styles = StyleSheet.create({
   },
   errorText: { color: '#8e1c1c', fontSize: 14, fontFamily: 'Inter_400Regular' },
   errorLink: { color: '#9b59b6', fontSize: 14, fontFamily: 'Inter_500Medium' },
-  storyScroll: { flex: 1 },
-  storyContent: {
-    padding: 20,
-    paddingBottom: 30,
+
+  // ── Single scroll that owns the whole content area ──────────────────────
+  scroll: { flex: 1 },
+  scrollContent: {
+    flexGrow: 1,
   },
-  meta: { marginBottom: 6 },
+
+  // ── Story section ────────────────────────────────────────────────────────
+  storySection: {
+    padding: 20,
+    paddingBottom: 24,
+  },
   chapterText: {
     fontSize: 10,
     letterSpacing: 2,
     color: '#4a4050',
     fontFamily: 'Inter_600SemiBold',
+    marginBottom: 6,
   },
   nodeTitle: {
     fontSize: 22,
@@ -359,14 +383,14 @@ const styles = StyleSheet.create({
   },
   companionDot: { width: 5, height: 5, borderRadius: 3 },
   companionName: { fontSize: 11, color: '#8a7d6e', fontFamily: 'Inter_400Regular' },
-  choicesContainer: {
-    backgroundColor: 'rgba(4,2,10,0.9)',
+
+  // ── Choices section ──────────────────────────────────────────────────────
+  choicesSection: {
+    backgroundColor: 'rgba(4,2,10,0.88)',
     borderTopWidth: 1,
-    borderTopColor: 'rgba(42,42,58,0.6)',
+    borderTopColor: 'rgba(42,42,58,0.5)',
     paddingHorizontal: 14,
     paddingTop: 8,
-    // No maxHeight — choices render flat so all are always tappable on Android.
-    // The story ScrollView above shrinks to fit whatever space is left.
   },
   choicesDivider: {
     height: 1,
@@ -406,7 +430,9 @@ const styles = StyleSheet.create({
     color: '#9b59b6',
     fontFamily: 'Inter_600SemiBold',
   },
-  settingsBtn: {
+
+  // ── Menu button ──────────────────────────────────────────────────────────
+  menuBtn: {
     flexDirection: 'row',
     alignItems: 'center',
     alignSelf: 'center',
@@ -418,7 +444,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#2a2038',
   },
-  settingsBtnText: {
+  menuBtnText: {
     fontSize: 9,
     letterSpacing: 2,
     color: '#5a5060',
