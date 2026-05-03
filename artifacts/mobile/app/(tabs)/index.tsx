@@ -14,6 +14,7 @@ import EndingScreen from "@/components/EndingScreen";
 import SettingsPanel from "@/components/SettingsPanel";
 import DeveloperPanel from "@/components/DeveloperPanel";
 import ChapterRoadmapScreen from "@/components/ChapterRoadmapScreen";
+import RouteCodexScreen from "@/components/RouteCodexScreen";
 
 function LoadingScreen() {
   return (
@@ -43,6 +44,8 @@ export default function GameRoot() {
       return <CharacterCreator />;
     case "chapterRoadmap":
       return <ChapterRoadmapScreen />;
+    case "routeCodex":
+      return <RouteCodexScreen />;
     case "game":
     case "stats":
     case "inventory":

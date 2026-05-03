@@ -10,7 +10,7 @@ import { getStorySummary } from '../logic/storyValidator';
 
 // Computed once at module load — these are compile-time constants
 const _summary = getStorySummary();
-const FOOTER_STATS = `${_summary.totalNodes} NODES  ·  ${ENDINGS.length + 1} ENDINGS  ·  ${CLASSES.length} CLASSES`;
+const FOOTER_STATS = `${_summary.totalNodes} NODES  ·  ${ENDINGS.length} ENDINGS  ·  ${CLASSES.length} CLASSES`;
 
 export default function MainMenu() {
   const { hasSaveGame, continueGame, setScreen, state } = useGame();
@@ -25,11 +25,12 @@ export default function MainMenu() {
   const button3 = useRef(new Animated.Value(0)).current;
   const button4 = useRef(new Animated.Value(0)).current;
   const button5 = useRef(new Animated.Value(0)).current;
+  const button6 = useRef(new Animated.Value(0)).current;
   const footerFade = useRef(new Animated.Value(0)).current;
   const glowPulse = useRef(new Animated.Value(0.03)).current;
 
   const discovered = state.endingsDiscovered.length;
-  const total = ENDINGS.length + 1;
+  const total = ENDINGS.length;
 
   useEffect(() => {
     // Header entrance
@@ -38,9 +39,9 @@ export default function MainMenu() {
       Animated.timing(headerSlide, { toValue: 0, duration: 550, useNativeDriver: true }),
     ]).start();
 
-    // Staggered button entrances — faster
-    const delays = [200, 300, 400, 500, 600];
-    const anims = [button1, button2, button3, button4, button5];
+    // Staggered button entrances
+    const delays = [200, 300, 400, 500, 600, 700];
+    const anims = [button1, button2, button3, button4, button5, button6];
     anims.forEach((anim, i) => {
       Animated.timing(anim, {
         toValue: 1,
@@ -51,7 +52,7 @@ export default function MainMenu() {
     });
 
     // Footer fade
-    Animated.timing(footerFade, { toValue: 1, duration: 500, delay: 800, useNativeDriver: true }).start();
+    Animated.timing(footerFade, { toValue: 1, duration: 500, delay: 900, useNativeDriver: true }).start();
 
     // Subtle atmospheric glow pulse
     Animated.loop(
@@ -62,7 +63,7 @@ export default function MainMenu() {
     ).start();
   }, []);
 
-  const btnAnims = [button1, button2, button3, button4, button5];
+  const btnAnims = [button1, button2, button3, button4, button5, button6];
 
   return (
     <LinearGradient
@@ -120,6 +121,14 @@ export default function MainMenu() {
 
           <AnimatedMenuButton
             anim={btnAnims[hasSaveGame ? 3 : 2]}
+            label="ROUTE CODEX"
+            icon="compass"
+            color="#1abc9c"
+            onPress={() => setScreen('routeCodex')}
+          />
+
+          <AnimatedMenuButton
+            anim={btnAnims[hasSaveGame ? 4 : 3]}
             label="CHAPTER ROADMAP"
             icon="map"
             color="#4a8eaa"
@@ -127,7 +136,7 @@ export default function MainMenu() {
           />
 
           <AnimatedMenuButton
-            anim={btnAnims[hasSaveGame ? 4 : 3]}
+            anim={btnAnims[hasSaveGame ? 5 : 4]}
             label="SETTINGS"
             icon="settings"
             color="#3a3848"

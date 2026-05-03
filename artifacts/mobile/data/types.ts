@@ -51,7 +51,8 @@ export type GameScreen =
   | 'ending'
   | 'settings'
   | 'developer'
-  | 'chapterRoadmap';
+  | 'chapterRoadmap'
+  | 'routeCodex';
 
 export interface Character {
   name: string;

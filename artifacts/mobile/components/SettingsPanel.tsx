@@ -77,6 +77,19 @@ export default function SettingsPanel() {
         <Text style={styles.sectionHeader}>OTHER</Text>
         <Pressable
           style={styles.toggleRow}
+          onPress={() => setScreen('routeCodex')}
+        >
+          <View>
+            <Text style={styles.toggleLabel}>Route Codex</Text>
+            <Text style={styles.toggleDesc}>Track endings, companions, factions and choices.</Text>
+          </View>
+          <Feather name="chevron-right" size={16} color="#4a4050" />
+        </Pressable>
+
+        <View style={styles.divider} />
+
+        <Pressable
+          style={styles.toggleRow}
           onPress={() => setScreen('chapterRoadmap')}
         >
           <View>
