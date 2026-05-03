@@ -50,7 +50,8 @@ export type GameScreen =
   | 'history'
   | 'ending'
   | 'settings'
-  | 'developer';
+  | 'developer'
+  | 'chapterRoadmap';
 
 export interface Character {
   name: string;

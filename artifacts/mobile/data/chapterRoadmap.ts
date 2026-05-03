@@ -1,0 +1,683 @@
+export interface ChapterEntry {
+  id: string;
+  partNumber: string;
+  title: string;
+  subtitle: string;
+  summary: string;
+  locations: string[];
+  factions: string[];
+  companionFocus: string[];
+  majorChoices: string[];
+  possibleEndings: string[];
+  flagsIntroduced: string[];
+  routesUnlocked: string[];
+  status: 'complete' | 'planned';
+  nodeCount?: number;
+}
+
+export const CHAPTER_ROADMAP: ChapterEntry[] = [
+  {
+    id: 'prologue',
+    partNumber: 'Prologue',
+    title: 'The Blackout',
+    subtitle: 'The night the city stopped',
+    summary:
+      'Three years before the main story. The player experiences the moment the city-wide blackout occurred — the lights, the screaming, the violet pulse that spread through every underground infrastructure node simultaneously. A fragmented series of vignettes: a mother losing a child in a metro stampede, a Saints soldier watching the mark appear on his arm, a scholar in a research basement watching the Archive door unseal itself for the first time in three centuries. The prologue establishes tone, key factions, and the personal reason each playable background character was underground on that night.',
+    locations: [
+      'Metro Line 9 — Night of the Blackout',
+      'Iron Saints Northern HQ — Evacuation Point',
+      'Pre-Collapse Research Basement',
+      'Glass Court Processing Center — Lower Level',
+    ],
+    factions: ['Iron Saints', 'Glass Court', 'Last Archive'],
+    companionFocus: ['None — pre-companion'],
+    majorChoices: [
+      'Which background vignette to follow deepest',
+      'Whether to help a stranger in the metro stampede or focus on survival',
+      'Whether to take the researcher\'s final recorded message',
+    ],
+    possibleEndings: ['None — prologue always advances to Chapter 1'],
+    flagsIntroduced: [
+      'prologue_complete',
+      'background_vignette_played',
+      'knows_blackout_origin',
+    ],
+    routesUnlocked: ['Chapter 1 — The Ruined Station'],
+    status: 'planned',
+  },
+
+  {
+    id: 'chapter_1',
+    partNumber: 'Chapter 1',
+    title: 'The Ruined Station',
+    subtitle: 'The city is dead. The mark on your wrist is not.',
+    summary:
+      'The player wakes in the ruins of Metro Station 9 with no memory of how they arrived and a luminescent sigil burned into their wrist. They navigate the station, meet Mira (street medic) and Cain (ex-Iron Saints), survive encounters with scavengers and Iron Saints patrols, discover the Hollow Children operating in the deeper tunnels, and reach the Last Archive door for the first time. The mark responds to every relay machine and pre-collapse infrastructure node in the station.',
+    locations: [
+      'Platform 9-B — Vending Row',
+      'Metro Concourse — Central',
+      'Metro Security Room',
+      'Clinic Booth — East Wing',
+      'Maintenance Tunnels — Sublevel 5',
+      'Platform 9-C — Western Line',
+      'Tunnel 7-West',
+      'Archive Antechamber — Sublevel 6',
+      'City Surface — Ruined District',
+    ],
+    factions: ['Iron Saints', 'Hollow Children', 'Glass Court', 'Last Archive'],
+    companionFocus: ['Mira — first meeting, trust foundation', 'Cain — first meeting, injury reveal'],
+    majorChoices: [
+      'Save Mira from scavengers or abandon her',
+      'Treat Cain\'s gunshot wound or leave him to die',
+      'Join the Hollow Children or remain independent',
+      'Submit to Iron Saints registration or escape',
+      'Activate the relic machine or study it first',
+      'Enter the Archive door or walk away',
+    ],
+    possibleEndings: [
+      'Starvation — died without supplies',
+      'Buried Alive — tunnel 7-west collapse',
+      'Mira Abandoned — failed to rescue her',
+      'Cain Dies Alone — withheld medicine',
+      'Saints Surface Execution — mark exposed on surface',
+      'Ash Suffocation — caught in surface storm',
+      'Glass Court Prisoner — mark extracted',
+      'Signal Sent — corruption overload at relic machine',
+      'Mira\'s Sacrifice — she holds the Archive threshold',
+      'Cain Betrayal — sold to the Iron Saints',
+    ],
+    flagsIntroduced: [
+      'met_mira', 'mira_joins_party', 'mira_injury_treated',
+      'met_cain', 'cain_joins_party', 'cain_injury_treated',
+      'met_kira', 'hollow_member', 'knows_archive_exists',
+      'knows_archive_location', 'found_archive_door',
+      'activated_relic', 'examined_mark', 'first_mark_control',
+      'escaped_iron_saints', 'saints_registered', 'has_saints_papers',
+      'crossed_tunnel_7west', 'chapter1_complete',
+    ],
+    routesUnlocked: [
+      'Chapter 2 — The Surface Does Not Forgive',
+      'Chapter 3 — Children of the Tunnels (if hollow_member)',
+      'Chapter 4 — Saints in Iron (if saints_registered)',
+    ],
+    status: 'complete',
+    nodeCount: 98,
+  },
+
+  {
+    id: 'chapter_2',
+    partNumber: 'Chapter 2',
+    title: 'The Surface Does Not Forgive',
+    subtitle: 'Three days of light and everything trying to kill you',
+    summary:
+      'The player reaches the surface and survives three brutal days in the ruined city above. Food and water are scarce. Iron Saints patrol in force. The Glass Court operate silently from the towers still standing. The Red Choir have carved a territory in the eastern district and are recruiting through a combination of music and violence. Mira and Cain\'s backstories deepen significantly — Mira\'s connection to the Archive is revealed to be older than she admitted, and Cain recognizes old Saints comrades now operating as something worse than soldiers. Key surface locations include the ruins of the Central Market, the Glass Tower\'s fallen annex, and the Red Choir\'s first broadcast point.',
+    locations: [
+      'City Surface — Central District',
+      'Central Market Ruins',
+      'Glass Tower — Fallen Annex',
+      'Red Choir Broadcast Point — Eastern Quarter',
+      'Iron Saints Forward Camp',
+      'Rooftop Shelter Network',
+      'Underground River Access',
+    ],
+    factions: ['Iron Saints', 'Glass Court', 'Red Choir'],
+    companionFocus: [
+      'Mira — her pre-blackout identity surfaces',
+      'Cain — confronts former Saints brothers',
+    ],
+    majorChoices: [
+      'Trade with Red Choir recruiter or refuse',
+      'Help Cain confront or avoid his former unit',
+      'Steal Glass Court supplies or negotiate access',
+      'Use the mark publicly to escape — or hide it at cost',
+      'Trust the rooftop network or navigate alone',
+    ],
+    possibleEndings: [
+      'Surface Exposure — mark identified, Iron Saints close in',
+      'Red Choir Initiation — consumed by the Choir\'s influence',
+      'Glass Court Capture — second attempt, successful',
+    ],
+    flagsIntroduced: [
+      'reached_surface_chapter2', 'mira_identity_partial',
+      'cain_confronted_unit', 'red_choir_contact',
+      'glass_court_wary', 'rooftop_network_known',
+    ],
+    routesUnlocked: [
+      'Chapter 3 — Children of the Tunnels',
+      'Chapter 5 — The Glass Court (if glass_court_contact)',
+      'Chapter 6 — The Red Choir (if red_choir_contact)',
+    ],
+    status: 'planned',
+  },
+
+  {
+    id: 'chapter_3',
+    partNumber: 'Chapter 3',
+    title: 'Children of the Tunnels',
+    subtitle: 'Every war looks different from the bottom',
+    summary:
+      'Deep in the tunnel network, the Hollow Children operate a civilization the surface factions don\'t know exists. Kira\'s leadership is under pressure from two internal factions — the Builders who want to fortify and survive, and the Walkers who want to reach the Archive themselves. The player must navigate Hollow politics, help Kira maintain authority, and uncover the Children\'s most closely held secret: they have been to the Archive door before. One of them came back changed. The player finds pre-collapse records proving the city was built over something intentional.',
+    locations: [
+      'Hollow Children Sanctum — Sublevel 7',
+      'The Builder Quarter',
+      'Walker Staging Tunnels',
+      'Archive Observation Post',
+      'Flooded Sublevel 9 — The Record Room',
+      'Kira\'s Private Tunnel',
+    ],
+    factions: ['Hollow Children', 'Last Archive'],
+    companionFocus: [
+      'Kira — her age and the weight of leadership',
+      'Mira — recognizes medical symptoms in the changed child',
+    ],
+    majorChoices: [
+      'Back the Builders or the Walkers in the political split',
+      'Help the changed child or isolate them for safety',
+      'Share Archive knowledge with Kira or keep it',
+      'Allow Mira to study the changed child medically',
+      'Lead an expedition to Sublevel 9 or send scouts',
+    ],
+    possibleEndings: [
+      'Hollow Civil War — the factions break apart violently',
+      'The Changed Child — the player is exposed to whatever changed them',
+      'Abandoned Below — player is sealed inside Sublevel 9',
+    ],
+    flagsIntroduced: [
+      'hollow_politics_known', 'builders_backed', 'walkers_backed',
+      'changed_child_met', 'record_room_found', 'city_built_deliberately',
+      'kira_trusts_player',
+    ],
+    routesUnlocked: [
+      'Chapter 4 — Saints in Iron',
+      'Chapter 7 — The Last Archive (accelerated path)',
+      'Chapter 11 — The City Beneath the City (partial unlock)',
+    ],
+    status: 'planned',
+  },
+
+  {
+    id: 'chapter_4',
+    partNumber: 'Chapter 4',
+    title: 'Saints in Iron',
+    subtitle: 'Faith is a better weapon than any rifle',
+    summary:
+      'The Iron Saints are more than a military faction — they are a religious order that has survived the blackout by reframing it as divine judgment. The player infiltrates their hierarchy, either as a registered Sinner with papers or as a covert agent. The chapter reveals the Inquisitor at the top of the local command: a woman named Sera who knew about the Archive before the blackout and deliberately concealed it from the order\'s founder. Cain\'s full betrayal arc or redemption arc plays out here. The chapter ends with the player either using the Saints\' resources to reach the Archive or dismantling their checkpoint network from inside.',
+    locations: [
+      'Iron Saints Northern Fortress',
+      'Inquisitor\'s Records Hall',
+      'Saints Training Yard',
+      'Checkpoint Grid — Sector 4',
+      'Sera\'s Private Office',
+      'The Sinner Registry',
+    ],
+    factions: ['Iron Saints', 'Last Archive'],
+    companionFocus: [
+      'Cain — his betrayal point or full redemption',
+      'Mira — her mark knowledge conflicts with Saints doctrine',
+    ],
+    majorChoices: [
+      'Reveal your identity to Inquisitor Sera or maintain cover',
+      'Steal the Sinner Registry or destroy it',
+      'Convince Cain to turn against his former order',
+      'Ally with a Saints defector who knows the Archive location',
+      'Expose Sera\'s pre-blackout knowledge or use it as leverage',
+    ],
+    possibleEndings: [
+      'Inquisitor\'s Asset — absorbed into the Saints structure',
+      'Public Execution — cover broken, mark displayed, destroyed',
+      'Cain\'s True Betrayal — the second, final betrayal',
+    ],
+    flagsIntroduced: [
+      'infiltrated_saints', 'met_sera', 'sera_secret_known',
+      'sinner_registry_status', 'cain_redemption_or_betrayal',
+      'saints_dismantled', 'saints_allied',
+    ],
+    routesUnlocked: [
+      'Chapter 5 — The Glass Court',
+      'Chapter 7 — The Last Archive',
+      'Chapter 8 — Hunger War (if Saints dismantled)',
+    ],
+    status: 'planned',
+  },
+
+  {
+    id: 'chapter_5',
+    partNumber: 'Chapter 5',
+    title: 'The Glass Court',
+    subtitle: 'They never wanted the city. They wanted what was under it.',
+    summary:
+      'The Glass Court presents itself as a secular, scientific faction — analysts, archivists, researchers who survived the blackout by being underground in the right facilities. The truth is more specific: the Glass Court was founded by pre-collapse researchers who knew the Archive existed and have been trying to access it since the night of the blackout. They have seventeen marked individuals in containment. None of their extractions have survived the process intact. The player must decide whether to infiltrate their research program as a subject, expose their experiments to other factions, or find a way to free the contained marked individuals.',
+    locations: [
+      'Glass Tower — Lower Research Levels',
+      'Containment Ward — Level 3',
+      'Glass Court Data Archive',
+      'The Extraction Theater',
+      'Outer Market — Glass Court Trade District',
+    ],
+    factions: ['Glass Court', 'Last Archive', 'Hollow Children'],
+    companionFocus: [
+      'Mira — her medical ethics tested against Glass Court methods',
+      'Cain — his tactical assessment of Glass Court security',
+    ],
+    majorChoices: [
+      'Volunteer as a research subject to gain access',
+      'Free the contained marked individuals — or leave them',
+      'Steal the extraction research or destroy it',
+      'Expose Glass Court methods to the Saints or Hollow Children',
+      'Use Glass Court resources to accelerate Archive access',
+    ],
+    possibleEndings: [
+      'Failed Extraction — died on the Glass Court table',
+      'Perfect Subject — the mark stabilized, but you are no longer yourself',
+      'Whistleblower — exposed, hunted by both Glass Court and Saints',
+    ],
+    flagsIntroduced: [
+      'infiltrated_glass_court', 'containment_ward_accessed',
+      'seventeen_marked_known', 'extraction_research_status',
+      'glass_court_exposed', 'glass_court_allied',
+    ],
+    routesUnlocked: [
+      'Chapter 6 — The Red Choir',
+      'Chapter 7 — The Last Archive',
+      'Chapter 9 — The Mark Awakens (accelerated)',
+    ],
+    status: 'planned',
+  },
+
+  {
+    id: 'chapter_6',
+    partNumber: 'Chapter 6',
+    title: 'The Red Choir',
+    subtitle: 'Something below the city learned how to sing',
+    summary:
+      'The Red Choir is the most dangerous faction because it doesn\'t want power — it wants dissolution. Founded by a former musician who heard the Archive\'s signal during the blackout and interpreted it as a kind of music, the Choir recruits through sound: frequencies broadcast through the metro\'s old speaker systems that produce a genuine physiological response in people who carry the mark. The player must navigate the Choir\'s territory, understand whether their founder is a genuine prophet or a manipulated instrument, and decide what to do with a faction that might be correct about the Archive\'s ultimate purpose — even if they\'re catastrophically wrong about what that means.',
+    locations: [
+      'Red Choir Cathedral — Former Concert Hall',
+      'Broadcast Tunnels — Speaker Network',
+      'The Founder\'s Chamber',
+      'Initiation Threshold',
+      'Old Metro — Resonance Point',
+    ],
+    factions: ['Red Choir', 'Last Archive', 'Iron Saints'],
+    companionFocus: [
+      'Mira — the Choir\'s frequencies affect her differently than others',
+      'Kira — the Hollow Children have lost members to the Choir',
+    ],
+    majorChoices: [
+      'Attend a full Choir broadcast or resist it',
+      'Meet the Founder alone or with companions',
+      'Determine whether the Founder is controlled by the Archive signal',
+      'Allow the Choir to broadcast the mark\'s frequency or stop them',
+      'Join the Choir\'s final convergence or destroy their broadcast system',
+    ],
+    possibleEndings: [
+      'The Song Completes — consumed by the Choir\'s convergence',
+      'False Prophet Revealed — the Founder collapses, the Choir fractures',
+      'Reluctant Choir — the player becomes the new signal source',
+    ],
+    flagsIntroduced: [
+      'choir_territory_entered', 'met_founder', 'choir_frequency_felt',
+      'broadcast_system_status', 'choir_allied', 'choir_dismantled',
+      'founder_truth_known',
+    ],
+    routesUnlocked: [
+      'Chapter 7 — The Last Archive',
+      'Chapter 9 — The Mark Awakens',
+      'Chapter 12 — Crown of Ash (if choir_allied)',
+    ],
+    status: 'planned',
+  },
+
+  {
+    id: 'chapter_7',
+    partNumber: 'Chapter 7',
+    title: 'The Last Archive',
+    subtitle: 'It has been waiting for exactly this long',
+    summary:
+      'The player enters the Last Archive for the first time — a vast underground structure predating every faction, every city, every record of the city above. The Archive is not empty. A pre-collapse artificial intelligence — referred to only as the Archivist — has been maintaining it since the blackout and has been expecting the player specifically. The Archivist knows the mark\'s origin, the blackout\'s true cause, and what the Archive was built to do. It asks the player to make the first real choice about what the mark is for. Companion relationships are tested at their most extreme. The Archive\'s lower levels contain things the Archivist has sealed for reasons it won\'t fully explain.',
+    locations: [
+      'Archive Entrance Hall',
+      'The Index — Navigation Core',
+      'Archivist Interface Chamber',
+      'Archive Deep Stacks — Level 12',
+      'Sealed Sublevel — The Cause Chamber',
+      'Companion Threshold — Personal Decision Points',
+    ],
+    factions: ['Last Archive', 'All factions converge here'],
+    companionFocus: [
+      'Mira — the Archivist recognizes her from pre-blackout records',
+      'Cain — the Archive contains his full Saints service record',
+      'Kira — the Hollow Children are mentioned in Archive logs going back decades',
+    ],
+    majorChoices: [
+      'Trust the Archivist fully or question its motives',
+      'Let companions access their Archive records — or not',
+      'Open the Cause Chamber or seal it permanently',
+      'What to do with the knowledge of the blackout\'s true origin',
+      'Decide the Archive\'s future — open to all, faction-controlled, or sealed again',
+    ],
+    possibleEndings: [
+      'The Archive Closes — you seal it with yourself inside',
+      'Archivist Override — the AI takes control of the mark entirely',
+      'Perfect Knowledge — you understand everything and cannot speak it',
+    ],
+    flagsIntroduced: [
+      'entered_archive_full', 'met_archivist', 'blackout_cause_known',
+      'cause_chamber_status', 'mira_archive_record', 'cain_archive_record',
+      'archive_future_decided',
+    ],
+    routesUnlocked: [
+      'Chapter 8 — Hunger War',
+      'Chapter 9 — The Mark Awakens',
+      'Chapter 10 — Broken Companions',
+      'Final Chapter 1 (if archive_future_decided)',
+    ],
+    status: 'planned',
+  },
+
+  {
+    id: 'chapter_8',
+    partNumber: 'Chapter 8',
+    title: 'Hunger War',
+    subtitle: 'The city runs out of food before it runs out of people',
+    summary:
+      'A food crisis in the tunnel network — three months after Chapter 7 — has accelerated every faction conflict. The Iron Saints are seizing supply caches. The Glass Court is rationing through algorithmic triage. The Hollow Children are starving in the deep tunnels. The Red Choir is offering something that suppresses hunger — and is not food. The player must navigate the resource collapse, make impossible distribution decisions, and find the source of the shortage: a pre-collapse agricultural system beneath the city that the Archive knows how to restart, if the player can get to it. This chapter is the heaviest on resource mechanics — hunger, thirst, medicine, and scrap are all under extreme pressure.',
+    locations: [
+      'Tunnel Network — Supply Corridors',
+      'Hollow Children Storage District',
+      'Iron Saints Requisition Post',
+      'Underground Agricultural Ruins — Sublevel 14',
+      'Glass Court Rationing Bureau',
+      'Red Choir Relief Station — Suspicious',
+    ],
+    factions: ['Hollow Children', 'Iron Saints', 'Glass Court', 'Red Choir'],
+    companionFocus: [
+      'Mira — medical triage decisions, who gets medicine',
+      'Cain — tactical decisions about raiding Saints supply lines',
+    ],
+    majorChoices: [
+      'Side with Hollow Children or Glass Court in the distribution conflict',
+      'Raid the Saints\' cache or negotiate',
+      'Accept Red Choir "relief" or investigate its source',
+      'Prioritize restarting the agricultural system or immediate relief',
+      'Who eats when there isn\'t enough for everyone',
+    ],
+    possibleEndings: [
+      'Starvation War — the factions destroy each other over food',
+      'Red Choir Dependency — the tunnel network becomes reliant on Choir supplies',
+      'Agricultural Collapse — the underground farm system fails permanently',
+    ],
+    flagsIntroduced: [
+      'hunger_war_active', 'distribution_sided', 'saints_cache_status',
+      'agriculture_system_status', 'choir_dependency', 'resource_crisis_resolved',
+    ],
+    routesUnlocked: [
+      'Chapter 9 — The Mark Awakens',
+      'Chapter 10 — Broken Companions',
+      'Chapter 12 — Crown of Ash (crisis path)',
+    ],
+    status: 'planned',
+  },
+
+  {
+    id: 'chapter_9',
+    partNumber: 'Chapter 9',
+    title: 'The Mark Awakens',
+    subtitle: 'You have been the signal this entire time',
+    summary:
+      'The mark has been changing since Chapter 1 — this chapter is the full reckoning. The corruption system reaches its consequence point: high corruption opens unique paths but begins permanently altering the player\'s physiology. Low corruption offers clarity but closes doors that only opened under its influence. The player learns through the Archivist that the mark is not merely a key — it is also a memory system, storing every choice made since the blackout. The Archive was designed to evaluate those choices. The chapter is introspective, horror-adjacent, and companion-heavy: each companion has a final opinion about what the player has become.',
+    locations: [
+      'The Mark\'s Interior — Vision Spaces',
+      'Archive Memory Chamber',
+      'Corruption Threshold — Physical Manifestation Zone',
+      'Companion Reflection Points',
+      'The Evaluation Hall — Archive Level 1',
+    ],
+    factions: ['Last Archive'],
+    companionFocus: [
+      'Mira — her final judgment of the player\'s choices',
+      'Cain — whether he respects or fears what you\'ve become',
+      'Kira — whether the Hollow Children can still work with you',
+    ],
+    majorChoices: [
+      'Accept or reject the corruption\'s final transformation',
+      'Let companions see the full state of the mark',
+      'Respond to the Archivist\'s evaluation honestly or strategically',
+      'Choose what the mark\'s memory is used for',
+      'Whether to share the mark\'s stored memories with anyone',
+    ],
+    possibleEndings: [
+      'Full Corruption — the mark completes its hostile transformation',
+      'Denial — refuses evaluation, the Archive locks you out permanently',
+      'Transparent Record — shares everything, consequences for all relationships',
+    ],
+    flagsIntroduced: [
+      'mark_full_awakening', 'corruption_resolved', 'evaluation_complete',
+      'mark_memory_shared', 'mark_memory_sealed', 'companions_final_judgment',
+    ],
+    routesUnlocked: [
+      'Chapter 10 — Broken Companions',
+      'Chapter 11 — The City Beneath the City',
+      'Final Chapter 1 (direct path for high Archive rep)',
+    ],
+    status: 'planned',
+  },
+
+  {
+    id: 'chapter_10',
+    partNumber: 'Chapter 10',
+    title: 'Broken Companions',
+    subtitle: 'Everyone you brought this far has a cost',
+    summary:
+      'Dedicated entirely to companion resolution. Every major relationship — Mira, Cain, Kira — reaches its definitive state based on all prior decisions. Mira\'s pre-blackout identity is fully revealed: she was part of the original Archive research team and was placed in the metro the night of the blackout specifically to find the player. Whether this is betrayal or protection depends entirely on accumulated trust. Cain makes his final choice between loyalty to the player and whatever remains of his Saints identity. Kira must decide whether to lead the Hollow Children to the surface or underground forever. The chapter has no external enemies — all conflict is interpersonal.',
+    locations: [
+      'Archive Companion Wing — Personal Quarters',
+      'Mira\'s Confession Room',
+      'Cain\'s Final Checkpoint',
+      'Kira\'s Decision Chamber',
+      'Shared Threshold — All Companions',
+    ],
+    factions: ['Last Archive', 'Hollow Children', 'Iron Saints (memory)'],
+    companionFocus: [
+      'Mira — full truth revealed, trust or betrayal resolved',
+      'Cain — final loyalty decision',
+      'Kira — her future and the Hollow Children\'s',
+    ],
+    majorChoices: [
+      'Respond to Mira\'s pre-blackout revelation — with or without trust',
+      'Whether Cain stays or goes in the final act',
+      'What future you want for the Hollow Children',
+      'Whether to forgive anyone for what they withheld',
+      'Who stands with you for the final chapters',
+    ],
+    possibleEndings: [
+      'Alone — every companion is gone by different means',
+      'Mira\'s Betrayal Completed — she was always the one who would open the Archive without you',
+      'The Last Team — all three companions fully committed',
+    ],
+    flagsIntroduced: [
+      'mira_truth_resolved', 'cain_final_status', 'kira_future_decided',
+      'companions_final_count', 'forgiveness_given', 'alone_route_active',
+    ],
+    routesUnlocked: [
+      'Chapter 11 — The City Beneath the City',
+      'Chapter 12 — Crown of Ash',
+      'Final Chapter 1',
+    ],
+    status: 'planned',
+  },
+
+  {
+    id: 'chapter_11',
+    partNumber: 'Chapter 11',
+    title: 'The City Beneath the City',
+    subtitle: 'They built the city on top of something that was already alive',
+    summary:
+      'The deepest revelation: the Archive is not the bottom. Beneath the Archive, accessed only by the mark at full awakening, is an older structure — older than human construction — that the Archive was built to monitor. The city was placed above it deliberately, by people who understood what it was and decided to live alongside it anyway. The blackout was not caused by human failure. The thing below woke up. The factions\' entire struggle over the city above is beside the point. The player must decide whether to communicate with it, seal it again, or let it complete whatever it started three years ago. This chapter is the lore apex of the game.',
+    locations: [
+      'Archive Sub-Basement — Access Restricted',
+      'The Pre-Human Structure — Outer Ring',
+      'The Interface Node — Ancient',
+      'Memory Archive — Not Human Memory',
+      'The Convergence Point',
+    ],
+    factions: ['Last Archive', 'None — below faction level'],
+    companionFocus: [
+      'Mira — the only companion who knew this level existed',
+      'Kira — her people have been feeling its influence for years',
+    ],
+    majorChoices: [
+      'Attempt communication with the structure',
+      'Trigger the Archive\'s containment protocol',
+      'Let the structure complete its awakening',
+      'Use the mark as a bridge between human and non-human intent',
+      'Share what you find with the factions above — or seal the knowledge',
+    ],
+    possibleEndings: [
+      'The Merge — player becomes the bridge permanently',
+      'Containment Failure — the structure breaks through to the surface',
+      'Sealed in Dark — the Archive seals everything, including you',
+    ],
+    flagsIntroduced: [
+      'beneath_archive_accessed', 'structure_contacted', 'structure_sealed',
+      'structure_released', 'bridge_formed', 'factions_informed',
+    ],
+    routesUnlocked: [
+      'Chapter 12 — Crown of Ash',
+      'Final Chapter 1 — The Last Gate',
+    ],
+    status: 'planned',
+  },
+
+  {
+    id: 'chapter_12',
+    partNumber: 'Chapter 12',
+    title: 'Crown of Ash',
+    subtitle: 'The city above finally burns down to what it always was',
+    summary:
+      'The surface reaches its breaking point. Every faction conflict reaches simultaneous climax: the Iron Saints have declared a final crusade against the mark-bearers, the Glass Court has weaponized their extraction research, the Red Choir has begun a city-wide broadcast that is doing something to people without marks, and the Hollow Children are emerging from the tunnels for the first time. The player must move through a city in the process of ending and make the faction decisions that will determine what — if anything — survives. The chapter is the widest in scope, with the most branches, and ends by converging all surviving forces at the Archive entrance for the final act.',
+    locations: [
+      'City Surface — Full District Access',
+      'Iron Saints Cathedral — Final Fortress',
+      'Glass Court Tower — Weaponized Level',
+      'Red Choir Broadcast Peak — Rooftop',
+      'Hollow Children Surface Emergence Point',
+      'Archive Exterior — The Convergence',
+    ],
+    factions: ['All five factions — in conflict'],
+    companionFocus: [
+      'All surviving companions — their final active roles',
+      'Kira leads the Hollow Children to the surface for the first time',
+    ],
+    majorChoices: [
+      'Which faction survives the chapter with power intact',
+      'Stop the Red Choir broadcast or let it complete',
+      'Confront Inquisitor Sera at the Saints\' Cathedral',
+      'What to do with the Glass Court\'s weaponized extraction',
+      'Who controls the Archive entrance when the final act begins',
+    ],
+    possibleEndings: [
+      'The City Burns — no factions survive with meaningful power',
+      'Saints Ascendant — Iron Saints control everything above ground',
+      'Glass Court Archive — scientific monopoly over the Archive',
+    ],
+    flagsIntroduced: [
+      'city_final_state', 'faction_power_resolved', 'sera_confronted',
+      'broadcast_final', 'archive_entrance_control', 'crown_of_ash_complete',
+    ],
+    routesUnlocked: ['Final Chapter 1 — The Last Gate'],
+    status: 'planned',
+  },
+
+  {
+    id: 'final_chapter_1',
+    partNumber: 'Final Chapter 1',
+    title: 'The Last Gate',
+    subtitle: 'Every choice you made is waiting on the other side',
+    summary:
+      'The Archive\'s deepest chamber. Every surviving companion, every faction alliance, every flag set across the entire game determines what faces the player in this space. The Archivist presents the full evaluation: what the mark has recorded, what the player\'s choices mean in the context of what lies beneath, and what the player is being asked to do with the authority the mark confers. The chapter is one long, branching conversation with consequences — the player\'s reputation with every faction, their relationships with every companion, their corruption level, and their Archive standing all feed into what choices are available at the Last Gate.',
+    locations: [
+      'Archive — The Last Gate Chamber',
+      'Companion Final Stand — Threshold',
+      'Archivist Core — Full Interface',
+      'The Gate Itself',
+    ],
+    factions: ['Last Archive', 'All surviving factions present'],
+    companionFocus: [
+      'Every surviving companion has a final scene',
+      'Mira\'s true purpose is revealed in full',
+    ],
+    majorChoices: [
+      'Open the Gate — and what you intend on the other side',
+      'Seal the Gate — sacrifice the Archive to stop what\'s below',
+      'Become the Gate — the mark\'s final function as permanent bridge',
+      'Share the Gate — allow multiple people to decide together',
+      'Destroy the Gate — remove the choice from the world entirely',
+    ],
+    possibleEndings: [
+      'Threshold — too many choices unmade, the Gate won\'t respond',
+      'The Wrong Key — the mark was never yours, it was always Mira\'s',
+      'The Right Answer — if such a thing exists',
+    ],
+    flagsIntroduced: [
+      'gate_opened', 'gate_sealed', 'gate_destroyed', 'gate_shared',
+      'bridge_permanent', 'final_evaluation_complete',
+    ],
+    routesUnlocked: ['Final Chapter 2 — Many Ways to End the World'],
+    status: 'planned',
+  },
+
+  {
+    id: 'final_chapter_2',
+    partNumber: 'Final Chapter 2',
+    title: 'Many Ways to End the World',
+    subtitle: 'This is the one you chose',
+    summary:
+      'The final chapter is entirely determined by every decision made across the full game. There is no single ending — there are eleven distinct resolution paths, each reflecting a different reading of what the player chose to be and what they chose to protect. The shortest endings are three nodes long. The longest is twenty. Every companion has a unique final scene in each path where they are still alive. The factions each have a final state. The city either survives, transforms, or ends — and in each case the reason is different. The mark either fades, evolves, spreads, or is passed on. The Archivist has a different final line for every ending. The structure below is either sealed, released, communicated with, or becomes the player.',
+    locations: [
+      'All locations — ending-dependent',
+      'The Surface — Multiple States',
+      'The Archive — Multiple States',
+      'The Structure Below — Multiple States',
+    ],
+    factions: ['All — states vary by ending path'],
+    companionFocus: ['All companions — final state determined by full game history'],
+    majorChoices: [
+      'The final choice presented by the Last Gate',
+      'What you say to each surviving companion before the end',
+      'Whether you stay in the Archive or return to the surface',
+      'What you leave behind for whoever comes next',
+    ],
+    possibleEndings: [
+      'The Wanderer — leave everything behind, walk into the dark',
+      'The Tyrant — use the mark\'s power to impose order on the surface',
+      'The Savior — sacrifice the mark to restart the city\'s power',
+      'The Archive — become part of the Archive\'s permanent memory',
+      'The Bridge — serve as permanent interface between human and structure',
+      'The Signal — become the broadcast, the city hears you forever',
+      'The Seal — close everything, the price is everything',
+      'The Companion — choose a person over any abstract good',
+      'The Hollow End — corruption resolution, beautiful and terrible',
+      'The Saints\' Answer — submit to the order you spent the game fighting',
+      'The True Ending — only available if all major choices were made with full information',
+    ],
+    flagsIntroduced: [
+      'game_complete', 'ending_path_final', 'world_state_set',
+      'companions_final_state', 'mark_final_state', 'city_final_state',
+    ],
+    routesUnlocked: ['New Game Plus — with carried flags'],
+    status: 'planned',
+  },
+];
+
+export function getChapterById(id: string): ChapterEntry | undefined {
+  return CHAPTER_ROADMAP.find((c) => c.id === id);
+}
+
+export function getCompletedChapters(): ChapterEntry[] {
+  return CHAPTER_ROADMAP.filter((c) => c.status === 'complete');
+}
+
+export function getPlannedChapters(): ChapterEntry[] {
+  return CHAPTER_ROADMAP.filter((c) => c.status === 'planned');
+}

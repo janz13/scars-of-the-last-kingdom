@@ -61,6 +61,19 @@ export default function SettingsPanel() {
         <Text style={styles.sectionHeader}>OTHER</Text>
         <Pressable
           style={styles.toggleRow}
+          onPress={() => setScreen('chapterRoadmap')}
+        >
+          <View>
+            <Text style={styles.toggleLabel}>Chapter Roadmap</Text>
+            <Text style={styles.toggleDesc}>View the full 15-part story plan.</Text>
+          </View>
+          <Feather name="chevron-right" size={16} color="#4a4050" />
+        </Pressable>
+
+        <View style={styles.divider} />
+
+        <Pressable
+          style={styles.toggleRow}
           onPress={() => setScreen('developer')}
         >
           <View>

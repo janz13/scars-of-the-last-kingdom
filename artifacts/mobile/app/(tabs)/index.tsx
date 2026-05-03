@@ -13,6 +13,7 @@ import HistoryPanel from "@/components/HistoryPanel";
 import EndingScreen from "@/components/EndingScreen";
 import SettingsPanel from "@/components/SettingsPanel";
 import DeveloperPanel from "@/components/DeveloperPanel";
+import ChapterRoadmapScreen from "@/components/ChapterRoadmapScreen";
 
 function LoadingScreen() {
   return (
@@ -40,6 +41,8 @@ export default function GameRoot() {
       return <MainMenu />;
     case "characterCreator":
       return <CharacterCreator />;
+    case "chapterRoadmap":
+      return <ChapterRoadmapScreen />;
     case "game":
     case "stats":
     case "inventory":

@@ -84,6 +84,13 @@ export default function MainMenu() {
           />
 
           <MenuButton
+            label="CHAPTER ROADMAP"
+            icon="map"
+            color="#5dade2"
+            onPress={() => setScreen('chapterRoadmap')}
+          />
+
+          <MenuButton
             label="SETTINGS"
             icon="settings"
             color="#4a4050"
@@ -94,7 +101,7 @@ export default function MainMenu() {
         {/* Footer */}
         <View style={styles.footer}>
           <View style={styles.footerLine} />
-          <Text style={styles.footerText}>48 STORY NODES  ·  5 ENDINGS  ·  7 CHARACTER CLASSES</Text>
+          <Text style={styles.footerText}>98 STORY NODES  ·  11 ENDINGS  ·  7 CHARACTER CLASSES</Text>
           <View style={styles.footerLine} />
         </View>
       </Animated.View>
