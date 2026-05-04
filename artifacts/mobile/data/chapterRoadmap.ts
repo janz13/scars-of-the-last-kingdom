@@ -43,8 +43,8 @@ export const CHAPTER_ROADMAP: ChapterEntry[] = [
       'knows_blackout_origin',
     ],
     routesUnlocked: ['Chapter 1 — The Ruined Station'],
-    status: 'planned',
-    nodeCount: 0,
+    status: 'complete',
+    nodeCount: 3,
   },
 
   {
@@ -194,7 +194,8 @@ export const CHAPTER_ROADMAP: ChapterEntry[] = [
       'Chapter 7 — The Last Archive (accelerated path)',
       'Chapter 11 — The City Beneath the City (partial unlock)',
     ],
-    status: 'planned',
+    status: 'complete',
+    nodeCount: 231,
   },
 
   {
@@ -239,7 +240,8 @@ export const CHAPTER_ROADMAP: ChapterEntry[] = [
       'Chapter 7 — The Last Archive',
       'Chapter 8 — Hunger War (if Saints dismantled)',
     ],
-    status: 'planned',
+    status: 'complete',
+    nodeCount: 259,
   },
 
   {
