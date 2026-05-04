@@ -1,0 +1,106 @@
+Write and add Chapter 10: Broken Companions.
+
+Connect this chapter from Chapter 9 using CHAPTER_9_AUDIT.md.
+
+Add at least 100 connected story nodes.
+
+Chapter 10 title:
+Broken Companions
+
+Main theme:
+Trust, betrayal, loyalty, sacrifice, love, trauma, and the cost of the player’s choices.
+
+This chapter focuses heavily on Mira and Cain. Depending on previous choices, they may stay loyal, leave, betray the player, die, sacrifice themselves, or unlock special routes.
+
+Main locations:
+- The Quiet Safehouse
+- Mira’s Hidden Clinic
+- Cain’s War Room
+- The Broken Bridge Camp
+- The Betrayal Alley
+- The Memory Shelter
+- The Companion Crossroads
+- The Last Medicine Room
+- The Soldier’s Grave
+- The Place We Promised
+- The Empty Chair
+
+Important NPCs:
+1. Mira — companion crisis chapter.
+2. Cain — companion crisis chapter.
+3. Sera — may influence Mira’s route if alive.
+4. Juno — may expose Cain’s bargain if alive.
+5. Saint Veyra — may pull Cain toward violence.
+6. Director Varr — may reveal Mira’s secret.
+7. The Masked Heir — may manipulate both companions.
+
+Major routes:
+1. Mira loyalty route
+2. Mira betrayal route
+3. Mira sacrifice route
+4. Mira leaves route
+5. Cain loyalty route
+6. Cain betrayal route
+7. Cain rival route
+8. Cain last stand route
+9. both companions survive
+10. one companion dies
+11. both companions abandon the player
+12. secret bond route if both trust values are high
+13. lone wanderer route if both companions are lost
+14. corruption breaks relationships
+15. mercy preserves relationships
+
+Required story reveals:
+- Mira was connected to medical experiments before meeting the player.
+- Cain may have helped enforce blackout-era military orders.
+- Both companions have reasons to distrust the player.
+- High trust should unlock powerful emotional scenes.
+- Low trust should unlock betrayal or abandonment scenes.
+- Companion endings should now become possible.
+
+Add:
+- at least 12 bad endings
+- at least 5 neutral endings
+- at least 6 companion route endings/previews
+- at least 8 dice-roll checks
+- at least 6 class-specific choices
+- at least 6 background-specific choices
+- at least 8 companion-trust-based choices
+- new companion stage logic if needed
+- new flags
+- new endings
+- new Route Codex entries
+
+New endings:
+- Mira Leaves Ending
+- Mira Betrayal Ending
+- Mira Sacrifice Ending
+- Mira Devotion Route Ending
+- Cain Betrayal Ending
+- Cain Rival Ending
+- Cain Last Stand Ending
+- Cain Loyalty Route Ending
+- Both Companions Lost Ending
+- Empty Chair Ending
+- Lone Wanderer Path Ending
+- Broken Companions Neutral Ending
+
+New background image paths:
+- /images/backgrounds/quiet_safehouse.png
+- /images/backgrounds/mira_hidden_clinic.png
+- /images/backgrounds/cain_war_room.png
+- /images/backgrounds/broken_bridge_camp.png
+- /images/backgrounds/betrayal_alley.png
+- /images/backgrounds/memory_shelter.png
+- /images/backgrounds/companion_crossroads.png
+- /images/backgrounds/last_medicine_room.png
+- /images/backgrounds/soldiers_grave.png
+- /images/backgrounds/place_we_promised.png
+- /images/backgrounds/empty_chair.png
+
+After adding Chapter 10, create:
+
+CHAPTER_10_SUMMARY.md
+
+Include companion outcomes, endings, flags, trust thresholds, and connection points for Chapter 11: The City Beneath the City.

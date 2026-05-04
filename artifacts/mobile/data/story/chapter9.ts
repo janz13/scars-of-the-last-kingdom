@@ -2518,10 +2518,13 @@ export const CHAPTER_9_NODES: StoryNode[] = [
     imageKey: 'relic_scar',
     text: `The position is stated. The mark registers it — the corruption gradient responds to stated purpose with measurable adjustments. Choosing protection over power is not passive. It requires active maintenance under the pressure that comes in Chapter 10, in the entity's escalation, in the Last Gate's approach. The Heir's note on this position: "It is the hardest one to hold. It is also the only one where the fourteen would recognise what you're doing." Route: Savior Ending path unlocked. Proceed to Chapter 10.`,
     effectsOnEnter: { setFlags: ['savior_path_requirements_begun'], corruption: -2, lastArchive: 5, hollowChildren: 5 },
-    choices: [],
-    isEnding: true,
-    endingId: 'ending_ch9_savior_path',
-    endingType: 'savior',
+    choices: [
+      {
+        id: 'c9_savior_to_ch10',
+        text: 'Chapter 10 begins. The protection route continues.',
+        nextNode: 'chapter10_start',
+      },
+    ],
   },
 
   {
@@ -2532,10 +2535,13 @@ export const CHAPTER_9_NODES: StoryNode[] = [
     imageKey: 'relic_scar',
     text: `The position is stated. The corruption gradient responds to it — the system has no position on how the interface uses its power. Only on whether it uses it. The mark gets warmer. The First Voice's residual channel widens slightly. The entity's transmission pressure increases by a measurable amount. None of these are threats. They are recognitions: the tyrant path is legible to things that have been managing the marked for three years. They know what this choice tends to produce. They are prepared for it. Route: Tyrant Ending path deepened. Proceed to Chapter 10.`,
     effectsOnEnter: { setFlags: ['tyrant_path_requirements_begun'], corruption: 5 },
-    choices: [],
-    isEnding: true,
-    endingId: 'ending_ch9_tyrant_path',
-    endingType: 'tyrant',
+    choices: [
+      {
+        id: 'c9_tyrant_to_ch10',
+        text: 'Chapter 10 begins. The control route continues.',
+        nextNode: 'chapter10_start',
+      },
+    ],
   },
 
   // ── CHAPTER 9 END ─────────────────────────────────────────────────────────
@@ -2548,10 +2554,13 @@ export const CHAPTER_9_NODES: StoryNode[] = [
     imageKey: 'relic_scar',
     text: `Chapter 9 ends where it began: in the maintenance corridor, the Relic Scar's exposed wall at your back. The mark is fully awake now — not the warmth of potential but the specific heat of function. Nineteen names. Fourteen lost. Four still operating somewhere in the city by the machine network's record. One current active interface. The Last Gate requires your mark to open. The entity below the city knows your pre-blackout name. The First Voice has a third attempt queued. Cain will stay unless he has to leave. Mira is keeping her log. The gate fragment is in your possession, or it is not, and the entity and the Voice each know which. Chapter 10: Broken Companions. The mark is warm. Begin.`,
     effectsOnEnter: { setFlags: ['chapter9_complete'], morale: 3 },
-    choices: [],
-    isEnding: true,
-    endingId: 'ending_ch9_survived',
-    endingType: 'faction',
+    choices: [
+      {
+        id: 'c9_survived_to_ch10',
+        text: 'Chapter 10 begins. Begin.',
+        nextNode: 'chapter10_start',
+      },
+    ],
   },
 
   // ── SUPPLEMENTAL NODES ────────────────────────────────────────────────────
@@ -2611,9 +2620,12 @@ export const CHAPTER_9_NODES: StoryNode[] = [
     imageKey: 'gate_fragment_chamber',
     text: `The gate fragment is acquired, the corruption gradient managed, the Memory Storm's three fragments carried, the Heir's warning understood, and the pre-blackout name known. These are the beginning of the requirements the True Ending demands — not the last requirements, but the necessary first ones. The Archive's monitor system has registered the fragment acquisition. Mael's documentation is complete. Velna, if she could see this chapter, would recognise what she built and what she hoped it would produce. Proceed to Chapter 10. The requirements continue there.`,
     effectsOnEnter: { setFlags: ['true_ending_req_chapter9_complete'], lastArchive: 10, relics: 1 },
-    choices: [],
-    isEnding: true,
-    endingId: 'ending_ch9_true_ending_req',
-    endingType: 'secret',
+    choices: [
+      {
+        id: 'c9_true_req_to_ch10',
+        text: 'Chapter 10 begins. The requirements continue.',
+        nextNode: 'chapter10_start',
+      },
+    ],
   },
 ];

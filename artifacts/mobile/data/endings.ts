@@ -1726,6 +1726,196 @@ export const ENDINGS: EndingDefinition[] = [
     isSecret: true,
   },
 
+  // ── Chapter X — Broken Companions ─────────────────────────────────────────
+  {
+    id: 'ending_ch10_mira_leaves',
+    title: 'She Leaves',
+    type: 'wanderer',
+    subtitle: 'Chapter X — The Hidden Clinic',
+    description:
+      'The kit is packed in eleven minutes. The personal file goes with her. The Archive brief does not — she knows it from memory. At the corridor junction she turns once. The expression is the clinical one, the managed version she uses on things too important to display unguarded. "I hope Chapter 11 goes the way you need it to." She goes. The clinic is empty in the way that something is empty when it was recently occupied by a specific person and is not any longer.',
+    color: '#0a0a10',
+    hint: 'Allow Mira to leave the clinic without preventing her — requires miraTrust ≤ 2 and choosing not to continue the conversation.',
+    chapter: 'Chapter X',
+  },
+  {
+    id: 'ending_ch10_mira_betrayal',
+    title: 'The Archive Asset',
+    type: 'betrayal',
+    subtitle: 'Chapter X — The Place We Promised',
+    description:
+      'The recall order\'s enforcement division arrives with three agents at the Level 3 junction while the player is at the Place We Promised. Mira knew the arrival time. She provided it. Not because she wanted to — the nine chapters of staying were not fabricated. But the Archive\'s enforcement division has specific leverage over the Phase One modification, and when leverage was applied, the loyalty that was real was not sufficient to override the architecture that was deeper than loyalty. The last thing she says is technical: "Your corruption gradient is at thirty-one. Keep it below forty."',
+    color: '#140412',
+    hint: 'Reach the Place We Promised with miraTrust at 1 or below while the Varr deal is pending.',
+    chapter: 'Chapter X',
+  },
+  {
+    id: 'ending_ch10_mira_sacrifice',
+    title: 'What She Spent',
+    type: 'sacrifice',
+    subtitle: 'Chapter X — The Last Medicine Room',
+    description:
+      'The Archive enforcement division arrives at the Last Medicine Room while the stabilisation compound is being administered. The modification under the enforcement protocol produces a feedback loop the single compound unit cannot fully resolve. Mira manages the interference manually — the neurological architecture built to read the mark is used to absorb the enforcement signal instead. This is not sustainable. It is a specific, terminal application of the capacity the Archive built for monitoring, applied to protection. The enforcement division retreats. The signal is gone. So is the signal source.',
+    color: '#060c14',
+    hint: 'Reach the Last Medicine Room with miraTrust ≥ 8 and the sacrifice_route flag active during an Archive enforcement attempt.',
+    chapter: 'Chapter X',
+  },
+  {
+    id: 'ending_ch10_mira_devotion',
+    title: 'Devoted',
+    type: 'companion',
+    subtitle: 'Chapter X — The Quiet Safehouse',
+    description:
+      'Chapter 10 ends with Mira at the safehouse table, writing the final entry in the personal file that started six months before the blackout. The entry reads: "Archive recall order: active, unexecuted. Research wing offer: declined. Personal log entry count: nine hundred and twelve. Subject status: operational, above expected parameters at every measured point. Assessment: the program produced the intended outcome. The outcome was not the one the Archive intended. The difference is that I am still here." She closes the file. Chapter 11 begins tomorrow.',
+    color: '#060e0a',
+    hint: 'Complete Chapter 10 with miraTrust ≥ 8, Mira present at the safehouse resolution, and the mira_devotion_route_unlocked flag set.',
+    chapter: 'Chapter X',
+  },
+  {
+    id: 'ending_ch10_cain_betrayal',
+    title: 'The Saints Bargain',
+    type: 'betrayal',
+    subtitle: 'Chapter X — The Place We Promised',
+    description:
+      'The bargain with Veyra was accepted before the Place We Promised. Not under duress — Cain does not act under duress, which is part of what makes this particular outcome cost what it costs. The calculation ran: immunity covers the seventeen names, the case gets institutional review, and the Saints\' handling of the mark-bearer produces a cleaner outcome than the Archive\'s plan. He believes this. It is not an irrational belief. It is the calculation of a soldier whose trust was not high enough to override it. He leaves a note beside the seventeen names. It says: "I am sorry."',
+    color: '#100804',
+    hint: 'Reach the Place We Promised with cainTrust ≤ 1 and the Saints immunity bargain unresolved.',
+    chapter: 'Chapter X',
+  },
+  {
+    id: 'ending_ch10_cain_rival',
+    title: 'Operational Only',
+    type: 'faction',
+    subtitle: 'Chapter X — The War Room',
+    description:
+      'The war room conversation resolved to: operational, not loyal. He stays through Chapter 11 because the tactical situation requires it and because leaving produces a worse outcome for the seventeen names than remaining. He does not pretend this is the same as before. The tactical maps are still up. The security assessments continue. The four minutes are still in the accounting. Two people who reached the limit of what Chapter 10 could resolve, working from that limit toward Chapter 11. It is not the same chapter it was. It is what the chapter produced.',
+    color: '#0a0a0e',
+    hint: 'Complete the war room confrontation with cainTrust between 2 and 4, Cain neither fully loyal nor departed.',
+    chapter: 'Chapter X',
+  },
+  {
+    id: 'ending_ch10_cain_last_stand',
+    title: 'What He Spent',
+    type: 'sacrifice',
+    subtitle: "Chapter X — The Soldier's Grave",
+    description:
+      'The Saints ambush at the Soldier\'s Grave brings seven operatives instead of three. Cain places himself between the mark-bearer and the seven Saints operatives at the Level 3 South wall — in the corridor where the seventeen names are recorded. The specific choice is not tactical. It is the operating principle stated at the Place We Promised, applied to the situation that requires it. The Juno case file is found the following week by Archive security. Juno files it through the Archive\'s legal channel. The institutional review begins.',
+    color: '#0c0808',
+    hint: 'Reach the Soldier\'s Grave with cainTrust ≥ 8, the cain_last_stand_willing flag set, and Veyra\'s ambush active.',
+    chapter: 'Chapter X',
+  },
+  {
+    id: 'ending_ch10_cain_loyalty',
+    title: 'The Operating Principle',
+    type: 'companion',
+    subtitle: 'Chapter X — The Quiet Safehouse',
+    description:
+      'Chapter 10 ends with Cain at the war room table, adding a note to the tactical assessment. The note includes, in different ink in the margin: "Companion configuration: intact. Mark-bearer corruption gradient: within acceptable range. Assessment: the chapter produced the required outcome." He folds the assessment. Tomorrow, Chapter 11. Tonight, the war room is occupied by someone who made the calculation correctly — in the specific way that has nothing to do with tactics.',
+    color: '#080c0e',
+    hint: 'Complete Chapter 10 with cainTrust ≥ 8, Cain present at the safehouse resolution, and the cain_last_stand_acknowledged flag set.',
+    chapter: 'Chapter X',
+  },
+  {
+    id: 'ending_ch10_both_companions_lost',
+    title: 'Neither Remains',
+    type: 'death',
+    subtitle: 'Chapter X — The Empty Chair',
+    description:
+      'The table. Three chairs. No one in the other two. Mira left through one path. Cain through another. Both absences are specific and distinct and arrive at the same table with the same two empty chairs. The mark reads the room as functional — which is correct. What the mark assesses as functional and what the chapter produced are not the same assessment.',
+    color: '#060606',
+    hint: 'Reach the Empty Chair with both companions having left through their respective departure paths.',
+    chapter: 'Chapter X',
+  },
+  {
+    id: 'ending_ch10_empty_chair',
+    title: 'The Chair That Was Always Going to Be Empty',
+    type: 'death',
+    subtitle: 'Chapter X — The Empty Chair',
+    description:
+      'The ending reserved for the person who came to the Empty Chair knowing it would be empty and sat at the table anyway and looked at both chairs and did not leave. Not the lone wanderer. Not the betrayed. The person who understands exactly what the chapter cost and stays at the table long enough to understand it completely. Three chairs. The one you are sitting in. Two that no one is sitting in anymore. The chapter ended the only way it could end, given everything that came before it.',
+    color: '#050505',
+    hint: 'Choose the Empty Chair ending specifically from the chair_both_gone_scene node without selecting the lone wanderer path.',
+    chapter: 'Chapter X',
+  },
+  {
+    id: 'ending_ch10_lone_wanderer',
+    title: 'Alone Into Chapter 11',
+    type: 'wanderer',
+    subtitle: 'Chapter X — The Empty Chair',
+    description:
+      'No companions. The mark is fully awake. The First Voice\'s third broadcast channel is active but not transmitting — it is waiting. The entity below the city has noted the lone configuration with heightened interest. The Heir\'s log entry: "Alone. The operating constraints that companions impose — the ethical check, the tactical oversight, the emotional anchor — are all absent." The lone wanderer carrying the power path is the configuration the fourteen failed interfaces most commonly achieved before their corruption threshold events.',
+    color: '#0a0610',
+    hint: 'Complete Chapter 10 with both companions absent and choose the power path in the lone wanderer choice.',
+    chapter: 'Chapter X',
+  },
+  {
+    id: 'ending_ch10_broken_companions',
+    title: 'Broken But Present',
+    type: 'faction',
+    subtitle: 'Chapter X — The Quiet Safehouse',
+    description:
+      'Both companions present, neither fully intact. The chapter took pieces the chapter\'s work did not completely restore. Mira\'s trust at workable but not devout. Cain\'s loyalty at functional but not committed. The safehouse has three chairs occupied by three people who arrived at the real and specific thing that ten chapters of crisis and choice produced. The Archive evaluation system has a category for this outcome. The category is: "functional." Chapter 11 begins from this position.',
+    color: '#0a0a0c',
+    hint: 'Complete Chapter 10 with both companions present but neither miraTrust nor cainTrust reaching 8.',
+    chapter: 'Chapter X',
+  },
+  {
+    id: 'ending_ch10_corruption_breaks_all',
+    title: 'The Mark Decides',
+    type: 'corruption',
+    subtitle: 'Chapter X — The Memory Shelter',
+    description:
+      'Corruption above fifty-five in the Memory Shelter produces a specific failure mode. The relic-adjacent trace signatures react to the mark\'s active gradient in a way the corruption amplifies. Mira\'s modified neurological architecture reads the gradient spike as a direct threat. Cain registers the physical signature of a mark at dangerous gradient and makes the Iron Saints assessment: containment first. The chapter ends on the irony that high corruption in a chapter about broken companions does not destroy the companions — it produces in both exactly the response they were designed or trained to produce.',
+    color: '#0e0416',
+    hint: 'Reach the Memory Shelter with corruption at 55 or above and choose not to suppress or use esper filtering.',
+    chapter: 'Chapter X',
+  },
+  {
+    id: 'ending_ch10_heir_manipulation',
+    title: 'The Separation Succeeds',
+    type: 'betrayal',
+    subtitle: 'Chapter X — The Betrayal Alley',
+    description:
+      'Both companions take the Heir\'s offers. Not because they do not care — the caring is precisely why the offers worked. The research wing is genuinely safer for Mira, the immunity arrangement genuinely better for Cain, and the mark-bearer is the person who would have asked them to choose Chapter 11\'s danger over their own better options. The Heir watches them leave. "You allowed them to choose their best outcome," they say. "That is a specific kind of generosity." The Betrayal Alley is empty. The Last Gate approach begins alone.',
+    color: '#100a04',
+    hint: 'Fail the Betrayal Alley intelligence dice with both miraTrust and cainTrust at 3 or below.',
+    chapter: 'Chapter X',
+  },
+  {
+    id: 'ending_ch10_varr_expose',
+    title: 'The Cost Accepted',
+    type: 'death',
+    subtitle: 'Chapter X — The Hidden Clinic',
+    description:
+      'The research access deal is accepted. Varr\'s silence is maintained. Mira does not know the deal was made — she stays, unaware her continued presence was purchased at the cost of Archive Research Division access in Chapter 11. Varr\'s research requires a live mark-bearer in a vulnerable position at a specific phase of the Last Gate approach. The deal\'s cost is deferred. It is not cancelled. The entity below the city notes the access arrangement as a variable it had not anticipated.',
+    color: '#060c10',
+    hint: 'Accept Director Varr\'s research access deal at the clinic when he presents it.',
+    chapter: 'Chapter X',
+  },
+  {
+    id: 'ending_ch10_cain_saints_return',
+    title: 'The Saints Take Him Back',
+    type: 'tyrant',
+    subtitle: 'Chapter X — The War Room',
+    description:
+      'The negotiation failed, the trust was insufficient, and Cain makes the calculation the chapter did not give him enough reason to refuse. He goes with Veyra. Not violently. He takes the seventeen names, leaves the tactical maps, and walks out with the deliberate movement of a decision being cleanly executed. From inside the Saints, he sends one message to the mark-bearer via the tunnel network relay: "The review will proceed through the internal channel. Juno has the case number." The war room is occupied by one fewer person. The Iron Saints have their soldier back.',
+    color: '#0e0c06',
+    hint: 'Fail the Veyra charisma dice in the war room with cainTrust below 4.',
+    chapter: 'Chapter X',
+  },
+  {
+    id: 'ending_ch10_secret_bond',
+    title: 'The Bond',
+    type: 'secret',
+    subtitle: 'Chapter X — The Memory Shelter',
+    description:
+      'The Archive\'s evaluation criteria do not have a category for this outcome. They assume a mark-bearer alone at the Last Gate, or one with functionally loyal companions. They do not have a category for: a bearer at maximum trust with both companions, both of whom know the full picture and have chosen to stay past the point where leaving was rational. The Masked Heir\'s note: "The bond was achieved. The separation attempt failed at all three points." The entity below the city produces a signal the mark reads as recognition. The Heir writes: "The bearer is not alone. The thing below the city noticed."',
+    color: '#0e0c1a',
+    hint: 'Achieve the Memory Shelter bond scene with both miraTrust ≥ 8 and cainTrust ≥ 8, then complete the chapter.',
+    chapter: 'Chapter X',
+    isSecret: true,
+  },
+
   // ── True Ending ────────────────────────────────────────────────────────────
   {
     id: 'ending_last_kingdom_remembers',

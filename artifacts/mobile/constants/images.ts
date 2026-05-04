@@ -167,6 +167,20 @@ export const BACKGROUND_IMAGES: Record<string, any> = {
   corruption_garden:     require('../assets/images/surface_ruins.png'),
   gate_fragment_chamber: require('../assets/images/relic_engine_room.png'),
   dream_of_before:       require('../assets/images/dark_metro_hallway.png'),
+
+  // Chapter 10 — Broken Companions (placeholder art → closest existing environment)
+  // TODO: replace with dedicated Chapter 10 companion/emotional pixel art
+  quiet_safehouse:       require('../assets/images/collapsed_tunnel.png'),
+  mira_hidden_clinic:    require('../assets/images/archive_ruin_wall.png'),
+  cain_war_room:         require('../assets/images/relic_engine_room.png'),
+  broken_bridge_camp:    require('../assets/images/ruined_metro_station.png'),
+  betrayal_alley:        require('../assets/images/surface_ruins.png'),
+  memory_shelter:        require('../assets/images/dark_metro_hallway.png'),
+  companion_crossroads:  require('../assets/images/archive_ruin_wall.png'),
+  last_medicine_room:    require('../assets/images/archive_ruin_wall.png'),
+  soldiers_grave:        require('../assets/images/surface_ruins.png'),
+  place_we_promised:     require('../assets/images/dark_metro_hallway.png'),
+  empty_chair:           require('../assets/images/dark_metro_hallway.png'),
 };
 
 // ─── Gradient fallbacks & transition colors ───────────────────────────────────
@@ -544,6 +558,51 @@ export const BACKGROUND_GRADIENTS: Record<string, GradientConfig> = {
   },
   dream_of_before: {
     colors: ['#0a0a16', '#12122a', '#0c0c20', '#060610'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  // Chapter 10 — Broken Companions
+  quiet_safehouse: {
+    colors: ['#080808', '#0e0e10', '#0a0a0c', '#060606'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  mira_hidden_clinic: {
+    colors: ['#06080e', '#0a1018', '#060810', '#040608'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  cain_war_room: {
+    colors: ['#0a0806', '#160e08', '#0e0a06', '#080604'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  broken_bridge_camp: {
+    colors: ['#060a0c', '#0a1214', '#060a0e', '#04080a'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  betrayal_alley: {
+    colors: ['#080810', '#10101e', '#080814', '#04040a'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  memory_shelter: {
+    colors: ['#0a0c10', '#141620', '#0c0e16', '#06080c'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  companion_crossroads: {
+    colors: ['#080a10', '#10121e', '#080a14', '#04060a'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  last_medicine_room: {
+    colors: ['#060c0a', '#0a1610', '#060e0c', '#040806'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  soldiers_grave: {
+    colors: ['#060608', '#0c0c10', '#080808', '#040406'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  place_we_promised: {
+    colors: ['#08080e', '#10101a', '#0a0a12', '#060608'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  empty_chair: {
+    colors: ['#040404', '#080808', '#060606', '#020202'],
     start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
   },
   // Generic fallback for any key not listed above
