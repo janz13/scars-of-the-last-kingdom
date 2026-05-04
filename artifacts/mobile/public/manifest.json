@@ -1,8 +1,10 @@
 {
+  "id": "com.scarsofthelastkingdom.app",
   "name": "Scars of the Last Kingdom",
   "short_name": "Scars",
   "description": "A dark fantasy survival visual novel RPG. Make choices. Survive the surface. Carry the mark.",
   "lang": "en",
+  "dir": "ltr",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
@@ -28,11 +30,25 @@
       "src": "/icon.png",
       "sizes": "1024x1024",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
 
-  "screenshots": [],
+  "screenshots": [
+    {
+      "src": "/icon.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Main menu"
+    }
+  ],
 
   "prefer_related_applications": false,
 
