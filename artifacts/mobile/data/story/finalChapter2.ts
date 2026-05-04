@@ -1201,7 +1201,7 @@ export const FINAL_CHAPTER_2_NODES: StoryNode[] = [
     endingType: 'death',
     endingId: 'ending_fc2_corruption_final_death',
     text: `The expansion exceeded what even corruption can sustain. The relic field's absorption of the bearer's consciousness at extreme corruption levels produced a compression event: the field received the mark's full architecture simultaneously, without the mediation layer that the mark's design requires for safe transfer. The result was not the corruption god — it was the corruption's collapse. The mark, fully expanded into the relic field without proper interface protocols, created a resonance inversion that propagated through the entire city's relic network. Every relic node in the city shut down simultaneously. The Hollow Children's monitoring systems registered the shutdown in their logs: "Total field collapse — unknown cause. Field state: null." The city's relic infrastructure is inert. The bearer is not present in the field, the Gate, or anywhere the Warden's documentation has a category for. The city wakes to a morning without the relic field's ambient hum — the first morning in three hundred years. No one knows what to do. The factions do not have a protocol for a world without the relic field. The Hollow Children's maintenance manuals do not cover a maintained system that has ceased to function entirely. The city is alive. The relic system is gone. The bearer who caused it is also gone, in whatever way that is true. The city will figure out what comes next. It has always had to.`,
-    effectsOnEnter: { setFlags: ['corruption_death_final', 'relic_field_collapsed'] },
+    effectsOnEnter: { setFlags: ['corruption_death_final', 'relic_field_collapsed', 'game_complete'] },
     choices: [],
   },
 
