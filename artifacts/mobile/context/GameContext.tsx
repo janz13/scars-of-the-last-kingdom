@@ -201,7 +201,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     autoSaveTimer.current = setTimeout(() => {
       saveGame(state);
       setHasSaveGame(true);
-      setHasActiveGame(state.screen === 'game' || state.screen === 'ending');
+      setHasActiveGame(true);
     }, 1000);
 
     return () => {
@@ -338,6 +338,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
   const setScreen = useCallback((screen: GameScreen) => {
     setState((prev) => ({ ...prev, screen }));
+    if (screen === 'mainMenu' || screen === 'characterCreator' || screen === 'credits' || screen === 'routeCodex') {
+      setHasActiveGame(false);
+    }
   }, []);
 
   // ─── Dice system ─────────────────────────────────────────────────────────────
