@@ -2,7 +2,7 @@ import type { StoryNode } from '../types';
 
 // ══════════════════════════════════════════════════════════════════════════════
 //  FINAL CHAPTER 1 — THE LAST GATE
-//  84 nodes · 10 locations · 6 dice checks · 23 endings
+//  84 nodes · 10 locations · 4 dice checks · 23 endings
 //  Major theme: Judgment before the end. Every prior choice is weighed.
 //  The Gate beneath the city responds to who the mark-bearer has become.
 //
@@ -1112,7 +1112,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     location: 'The Last Gate',
     imageKey: 'last_gate',
     text: `Opening the Gate releases what has been below the city into the city above. The Gate's architecture has been building toward this event for three hundred years. The mark can execute it. The question is what the opening is for: whether it is the true opening — the original agreement's completion, the entity's sanctioned release protocol, the Foundation Period's intended resolution — or whether it is a forced opening, releasing something that was not designed to be released in this configuration, without the complete record, without the correct interface. The mark knows the difference. The Gate is asking which opening this is.`,
-    effectsOnEnter: {},
+    effectsOnEnter: { setFlags: ['gate_open_chosen'] },
     choices: [
       {
         id: 'fc1_open_true',
@@ -1177,7 +1177,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     location: 'The Last Gate',
     imageKey: 'last_gate',
     text: `Sealing the Gate requires the mark to execute a specific function it has never used: not navigation, not communication, not resonance translation — closure. The Gate's sealing mechanism requires the bearer to understand what they are closing and why, and to commit the closing as a permanent record in the mark's architecture. The sealing is not reversible. The Gate will not open again after this bearer seals it — not for the current generation, not for any future generation that does not carry a mark. Whether sealing is the right decision is the question the mark cannot answer. The bearer has to answer it.`,
-    effectsOnEnter: {},
+    effectsOnEnter: { setFlags: ['gate_seal_chosen'] },
     choices: [
       {
         id: 'fc1_seal_roll',
@@ -1227,7 +1227,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     location: 'The Last Gate',
     imageKey: 'last_gate',
     text: `Controlling the Gate means using the mark's authority to regulate what passes through in both directions — not sealing it, not opening it fully, but becoming the gate's permanent interface. The mark can do this. The thirteen-chapter calibration produced exactly the configuration that Gate control requires. The question is whether control is the right use of what the mark built: whether thirteen chapters of documented truth about the city's relationship to the Gate is meant to produce a controller, or something else. The Gate is not expressing a preference. It is presenting the option and waiting.`,
-    effectsOnEnter: {},
+    effectsOnEnter: { setFlags: ['gate_control_chosen'] },
     choices: [
       {
         id: 'fc1_control_tyrant',
@@ -1250,7 +1250,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     location: 'The Last Gate',
     imageKey: 'last_gate',
     text: `Destroying the Gate removes the choice from the world — not the Gate's question, but the mechanism through which the question is asked. Without the Gate, no bearer will face this decision again. What is below the Gate will remain below it permanently, without access, without the option of being released or sealed or controlled. The city will continue. The truth of what is below the city will persist, but without the Gate's interface, it will remain inaccessible. The Hollow Children's three-hundred-year maintenance becomes retroactively unnecessary. The transit system becomes an unusable relic. The mark becomes vestigial. All of these outcomes are clear. The Gate is still asking whether this is the chosen answer.`,
-    effectsOnEnter: {},
+    effectsOnEnter: { setFlags: ['gate_destroy_entered'] },
     choices: [
       {
         id: 'fc1_destroy_attempt',
@@ -1268,7 +1268,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     location: 'The Last Gate',
     imageKey: 'last_gate',
     text: `Merging with the Gate means becoming the permanent bridge between what is above and what is below — not a controller, not a sealed barrier, but a living interface. The mark's architecture would integrate fully with the Gate's structure, and the bearer would become the Gate: able to communicate across the threshold in both directions, able to moderate what passes, unable to leave. The Warden's record documents one previous bearer who chose this option. The record entry is the longest in the ledger. It ends: "The bridge remained." No other documentation. The mark reads the weight of it. The Gate is still asking.`,
-    effectsOnEnter: {},
+    effectsOnEnter: { setFlags: ['gate_merge_chosen'] },
     choices: [
       {
         id: 'fc1_merge_unity',
@@ -1285,7 +1285,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     location: 'The Last Gate',
     imageKey: 'last_gate',
     text: `The merger requires the unity configuration: the specific resonance of a bearer who reached the Gate having built something that approached but did not fully achieve unity — a city that almost decided together, the specific warmth of forty seconds of simultaneous understanding, carried forward through thirteen chapters as a record of what the city could have been. Whether the mark carries that record determines whether the merger produces a bridge or a collapse. The unity_almost_active flag is the Gate's recognition criterion: not the achievement, but the attempt, and what the attempt proved was possible.`,
-    effectsOnEnter: {},
+    effectsOnEnter: { setFlags: ['gate_unity_evaluated'] },
     choices: [
       {
         id: 'fc1_unity_check_pass',
