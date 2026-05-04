@@ -1330,14 +1330,9 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     effectsOnEnter: { setFlags: ['first_voice_resisted_core'] },
     choices: [
       {
-        id: 'c11_resist_to_understanding',
-        text: 'Attempt to understand the Core\'s architecture before moving on.',
-        nextNode: 'c11_core_int_dice',
-      },
-      {
-        id: 'c11_resist_to_forward',
-        text: 'The Core has been assessed. Continue.',
-        nextNode: 'c11_core_forward',
+        id: 'c11_resist_to_stable',
+        text: 'Hold the resistance. Let the mark stabilise.',
+        nextNode: 'c11_core_resisted_voice',
       },
     ],
   },
@@ -1478,7 +1473,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
       {
         id: 'c11_housing_wasteland_orphan_recognize',
         text: 'Recognize the signs of long-term sub-city survival. They adapted the same way.',
-        nextNode: 'c11_housing_survivors_scene',
+        nextNode: 'c11_housing_pale_curator_appears',
         requirements: { backgrounds: ['wasteland_orphan'] },
         effects: { morale: 3, setFlags: ['housing_survivor_bond'] },
       },
