@@ -2343,7 +2343,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
         id: 'c11_gate_touch_direct',
         text: 'Touch the Gate\'s material directly. Understand it without the mark\'s filter.',
         nextNode: 'c11_first_gate_fragment_end',
-        effects: { health: -70, corruption: 20 },
+        effects: { health: -50, corruption: 20 },
       },
       {
         id: 'c11_gate_companion_check',

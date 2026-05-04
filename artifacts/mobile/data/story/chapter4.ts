@@ -126,7 +126,7 @@ export const CHAPTER_4_NODES: StoryNode[] = [
         nextNode: 'c4_checkpoint_fight_attempt',
         diceCheck: {
           stat: 'strength',
-          difficulty: 17,
+          difficulty: 15,
           diceType: 'd20',
           successNode: 'c4_checkpoint_cleared',
           failureNode: 'c4_checkpoint_captured',
