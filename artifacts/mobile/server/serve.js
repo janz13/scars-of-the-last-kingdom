@@ -1,10 +1,10 @@
 /**
  * Standalone production server for Expo static builds.
  *
- * Serves the output of build.js (static-build/) with two special routes:
- * - GET / or /manifest with expo-platform header → platform manifest JSON
- * - GET / without expo-platform → landing page HTML
- * Everything else falls through to static file serving from ./static-build/.
+ * Request routing:
+ * - expo-platform header (ios/android) → Expo native manifest from static-build/
+ * - Browser requests → web app from dist/ (expo export --platform web output)
+ * - Fallback if dist/ missing → landing page HTML
  *
  * Zero external dependencies — uses only Node.js built-ins (http, fs, path).
  */
@@ -14,12 +14,14 @@ const fs = require("fs");
 const path = require("path");
 
 const STATIC_ROOT = path.resolve(__dirname, "..", "static-build");
+const DIST_ROOT = path.resolve(__dirname, "..", "dist");
 const TEMPLATE_PATH = path.resolve(__dirname, "templates", "landing-page.html");
 const basePath = (process.env.BASE_PATH || "/").replace(/\/+$/, "");
 
 const MIME_TYPES = {
   ".html": "text/html; charset=utf-8",
   ".js": "application/javascript; charset=utf-8",
+  ".mjs": "application/javascript; charset=utf-8",
   ".json": "application/json; charset=utf-8",
   ".css": "text/css; charset=utf-8",
   ".png": "image/png",
@@ -33,7 +35,14 @@ const MIME_TYPES = {
   ".ttf": "font/ttf",
   ".otf": "font/otf",
   ".map": "application/json",
+  ".webp": "image/webp",
+  ".mp3": "audio/mpeg",
+  ".mp4": "video/mp4",
 };
+
+function hasWebBuild() {
+  return fs.existsSync(path.join(DIST_ROOT, "index.html"));
+}
 
 function getAppName() {
   try {
@@ -81,6 +90,42 @@ function serveLandingPage(req, res, landingPageTemplate, appName) {
   res.end(html);
 }
 
+function serveWebFile(urlPath, res) {
+  const safePath = path.normalize(urlPath).replace(/^(\.\.(\/|\\|$))+/, "");
+  let filePath = path.join(DIST_ROOT, safePath === "/" ? "index.html" : safePath);
+
+  if (!filePath.startsWith(DIST_ROOT)) {
+    res.writeHead(403);
+    res.end("Forbidden");
+    return;
+  }
+
+  if (!fs.existsSync(filePath) || fs.statSync(filePath).isDirectory()) {
+    filePath = path.join(DIST_ROOT, "index.html");
+  }
+
+  if (!fs.existsSync(filePath)) {
+    res.writeHead(404);
+    res.end("Not Found");
+    return;
+  }
+
+  const ext = path.extname(filePath).toLowerCase();
+  const contentType = MIME_TYPES[ext] || "application/octet-stream";
+
+  const cacheControl =
+    safePath === "/" || ext === ".html"
+      ? "no-cache"
+      : "public, max-age=31536000, immutable";
+
+  const content = fs.readFileSync(filePath);
+  res.writeHead(200, {
+    "content-type": contentType,
+    "cache-control": cacheControl,
+  });
+  res.end(content);
+}
+
 function serveStaticFile(urlPath, res) {
   const safePath = path.normalize(urlPath).replace(/^(\.\.(\/|\\|$))+/, "");
   const filePath = path.join(STATIC_ROOT, safePath);
@@ -115,15 +160,18 @@ const server = http.createServer((req, res) => {
     pathname = pathname.slice(basePath.length) || "/";
   }
 
-  if (pathname === "/" || pathname === "/manifest") {
-    const platform = req.headers["expo-platform"];
-    if (platform === "ios" || platform === "android") {
-      return serveManifest(platform, res);
-    }
+  const platform = req.headers["expo-platform"];
 
-    if (pathname === "/") {
-      return serveLandingPage(req, res, landingPageTemplate, appName);
-    }
+  if ((pathname === "/" || pathname === "/manifest") && (platform === "ios" || platform === "android")) {
+    return serveManifest(platform, res);
+  }
+
+  if (hasWebBuild()) {
+    return serveWebFile(pathname, res);
+  }
+
+  if (pathname === "/") {
+    return serveLandingPage(req, res, landingPageTemplate, appName);
   }
 
   serveStaticFile(pathname, res);
@@ -131,5 +179,5 @@ const server = http.createServer((req, res) => {
 
 const port = parseInt(process.env.PORT || "3000", 10);
 server.listen(port, "0.0.0.0", () => {
-  console.log(`Serving static Expo build on port ${port}`);
+  console.log(`Serving on port ${port} — web build: ${hasWebBuild() ? "dist/" : "NOT FOUND (landing page fallback)"}`);
 });
