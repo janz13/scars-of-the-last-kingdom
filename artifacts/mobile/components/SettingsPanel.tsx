@@ -129,18 +129,6 @@ export default function SettingsPanel() {
           <Feather name="chevron-right" size={16} color="#4a4050" />
         </Pressable>
 
-        <View style={styles.divider} />
-
-        <Text style={styles.sectionHeader}>DEVELOPER</Text>
-        <Pressable style={styles.navRow} onPress={() => setScreen('developer')}>
-          <Feather name="terminal" size={14} color="#6a5e70" />
-          <View style={{ flex: 1 }}>
-            <Text style={styles.toggleLabel}>Developer Mode</Text>
-            <Text style={styles.toggleDesc}>Test story nodes and force game states.</Text>
-          </View>
-          <Feather name="chevron-right" size={16} color="#4a4050" />
-        </Pressable>
-
         {isInGame && (
           <>
             <View style={styles.divider} />

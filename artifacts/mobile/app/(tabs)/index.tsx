@@ -13,7 +13,6 @@ import FactionPanel from "@/components/FactionPanel";
 import HistoryPanel from "@/components/HistoryPanel";
 import EndingScreen from "@/components/EndingScreen";
 import SettingsPanel from "@/components/SettingsPanel";
-import DeveloperPanel from "@/components/DeveloperPanel";
 import ChapterRoadmapScreen from "@/components/ChapterRoadmapScreen";
 import RouteCodexScreen from "@/components/RouteCodexScreen";
 import CreditsScreen from "@/components/CreditsScreen";
@@ -59,8 +58,6 @@ export default function GameRoot() {
     case "factions":
     case "history":
     case "settings":
-    case "developer":
-      return <GameScreens screen={state.screen} />;
     case "ending":
       return <EndingScreen />;
     default:
@@ -77,7 +74,6 @@ function GameScreens({ screen }: { screen: string }) {
     case "factions":  return <FactionPanel />;
     case "history":   return <HistoryPanel />;
     case "settings":  return <SettingsPanel />;
-    case "developer": return <DeveloperPanel />;
     default:          return <StoryPanel />;
   }
 }
