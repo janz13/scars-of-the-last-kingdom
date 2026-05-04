@@ -10,6 +10,7 @@ import type { GameState } from '../data/types';
 // ──────────────────────────────────────────────────────────────────────────
 
 const SAVE_KEY = '@scars_save_v1';
+const CONTENT_WARNING_KEY = '@scars_content_warning_v1';
 
 // ─── Migration defaults ───────────────────────────────────────────────────────
 //
@@ -146,5 +147,30 @@ export async function deleteSave(): Promise<void> {
     await AsyncStorage.removeItem(SAVE_KEY);
   } catch (error) {
     console.warn('Delete save failed:', error);
+  }
+}
+
+export async function hasSeenContentWarning(): Promise<boolean> {
+  try {
+    const val = await AsyncStorage.getItem(CONTENT_WARNING_KEY);
+    return val === 'true';
+  } catch {
+    return false;
+  }
+}
+
+export async function markContentWarningSeen(): Promise<void> {
+  try {
+    await AsyncStorage.setItem(CONTENT_WARNING_KEY, 'true');
+  } catch (error) {
+    console.warn('markContentWarningSeen failed:', error);
+  }
+}
+
+export async function resetAllData(): Promise<void> {
+  try {
+    await AsyncStorage.multiRemove([SAVE_KEY, CONTENT_WARNING_KEY]);
+  } catch (error) {
+    console.warn('resetAllData failed:', error);
   }
 }

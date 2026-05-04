@@ -8,10 +8,10 @@ import { getEndingById, ENDINGS } from '../data/endings';
 
 const CHAPTER_END_DATA = {
   id: 'chapter1_end',
-  title: 'End of Chapter 1',
+  title: 'End of Chapter I',
   type: 'savior' as const,
   subtitle: 'The Descent Awaits',
-  description: 'The Archive door has opened. What lies beyond will change everything. The mark on your wrist is silent for the first time since the blackout — not because it stopped listening. Because it got what it wanted.\n\nChapter 2: The Descent — coming soon.',
+  description: 'The Archive door has opened. What lies beyond will change everything. The mark on your wrist is silent for the first time since the blackout — not because it stopped listening. Because it got what it wanted.\n\nChapter II: The Descent — coming soon.',
   color: '#9b59b6',
 };
 
@@ -36,6 +36,9 @@ export default function EndingScreen() {
   const topPad = Platform.OS === 'web' ? 67 : insets.top;
   const botPad = Platform.OS === 'web' ? 34 : insets.bottom;
 
+  // ── Are we in "endings gallery" mode (no activeEnding)? ─────────────────────
+  const isGallery = activeEnding === null;
+
   const ending = activeEnding === 'chapter1_end'
     ? CHAPTER_END_DATA
     : activeEnding
@@ -45,6 +48,10 @@ export default function EndingScreen() {
   const isDeath = ending?.type === 'death';
   const isChapterEnd = activeEnding === 'chapter1_end';
   const accentColor = ending?.color ?? '#9b59b6';
+
+  const discoveredCount = endingsDiscovered.filter((id) => id !== 'chapter1_end').length;
+  const totalEndings = ENDINGS.length;
+  const discoveredPct = totalEndings > 0 ? Math.round((discoveredCount / totalEndings) * 100) : 0;
 
   // ── Animations ─────────────────────────────────────────────────────────────
   const mountFade = useRef(new Animated.Value(0)).current;
@@ -86,15 +93,84 @@ export default function EndingScreen() {
   }, []);
 
   const iconRotateDeg = iconRotate.interpolate({ inputRange: [0, 1], outputRange: ['-15deg', '0deg'] });
-  const iconName = ending ? (ENDING_ICONS[ending.type] ?? 'alert-circle') : 'alert-circle';
+  const iconName = ending ? (ENDING_ICONS[ending.type] ?? 'alert-circle') : 'book-open';
 
   const bgColors: [string, string, string] = isDeath
     ? ['#080202', '#100606', '#080202']
     : isChapterEnd
       ? ['#060412', '#0e0820', '#060412']
-      : ['#06040e', '#0e0818', '#06040e'];
+      : isGallery
+        ? ['#060412', '#0c0820', '#060412']
+        : ['#06040e', '#0e0818', '#06040e'];
 
   const lastChoices = routeHistory.slice(-5);
+
+  // ── Gallery mode: endings discovered list ───────────────────────────────────
+  if (isGallery) {
+    return (
+      <LinearGradient colors={bgColors} style={styles.container}>
+        <View style={[styles.galleryHeader, { paddingTop: topPad + 10 }]}>
+          <Pressable style={styles.backBtn} onPress={() => setScreen('mainMenu')}>
+            <Feather name="arrow-left" size={16} color="#6a5e70" />
+          </Pressable>
+          <Text style={styles.galleryTitle}>ENDINGS DISCOVERED</Text>
+          <View style={{ width: 32 }} />
+        </View>
+
+        <ScrollView
+          contentContainerStyle={[styles.galleryContent, { paddingBottom: botPad + 32 }]}
+          showsVerticalScrollIndicator={false}
+        >
+          {/* Progress */}
+          <View style={styles.galleryProgress}>
+            <Text style={styles.galleryProgressNum}>
+              {discoveredCount}
+              <Text style={styles.galleryProgressDenom}>/{totalEndings}</Text>
+            </Text>
+            <Text style={[styles.galleryProgressPct, {
+              color: discoveredPct >= 80 ? '#c9a84c' : discoveredPct >= 40 ? '#27ae60' : '#6a5e50',
+            }]}>
+              {discoveredPct}% DISCOVERED
+            </Text>
+            <View style={styles.galleryBarTrack}>
+              <View style={[styles.galleryBarFill, {
+                width: `${discoveredPct}%` as any,
+                backgroundColor: discoveredPct >= 80 ? '#c9a84c' : discoveredPct >= 40 ? '#27ae60' : '#9b59b6',
+              }]} />
+            </View>
+          </View>
+
+          {discoveredCount === 0 ? (
+            <View style={styles.galleryEmpty}>
+              <Feather name="book-open" size={28} color="#2a2038" style={{ marginBottom: 14 }} />
+              <Text style={styles.galleryEmptyText}>
+                No endings discovered yet.{'\n'}Play the story to begin uncovering them.
+              </Text>
+            </View>
+          ) : (
+            ENDINGS.filter((e) => endingsDiscovered.includes(e.id)).map((e) => (
+              <View key={e.id} style={[styles.galleryCard, { borderColor: `${e.color}22` }]}>
+                <View style={[styles.galleryCardAccent, { backgroundColor: e.color }]} />
+                <Feather name={(ENDING_ICONS[e.type] ?? 'circle') as any} size={14} color={e.color} />
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.galleryCardTitle}>{e.title}</Text>
+                  <Text style={[styles.galleryCardSubtitle, { color: e.color }]}>
+                    {e.subtitle?.toUpperCase()}
+                  </Text>
+                </View>
+              </View>
+            ))
+          )}
+
+          <Pressable style={styles.galleryRouteBtn} onPress={() => setScreen('routeCodex')}>
+            <Feather name="compass" size={13} color="#1abc9c" />
+            <Text style={styles.galleryRouteBtnText}>VIEW ROUTE CODEX</Text>
+            <Feather name="chevron-right" size={13} color="rgba(26,188,156,0.4)" />
+          </Pressable>
+        </ScrollView>
+      </LinearGradient>
+    );
+  }
 
   return (
     <LinearGradient colors={bgColors} style={styles.container}>
@@ -175,9 +251,16 @@ export default function EndingScreen() {
               </View>
               <View style={styles.summaryDivider} />
               <View style={styles.summaryItem}>
-                <Text style={styles.summaryLabel}>ENDINGS</Text>
+                <Text style={styles.summaryLabel}>ENDINGS FOUND</Text>
                 <Text style={[styles.summaryValue, { color: accentColor }]}>
-                  {endingsDiscovered.length}<Text style={styles.summaryValueOf}>/{ENDINGS.length + 1}</Text>
+                  {discoveredCount}<Text style={styles.summaryValueOf}>/{totalEndings}</Text>
+                </Text>
+              </View>
+              <View style={styles.summaryDivider} />
+              <View style={styles.summaryItem}>
+                <Text style={styles.summaryLabel}>DISCOVERED</Text>
+                <Text style={[styles.summaryValue, { color: accentColor, fontSize: 20 }]}>
+                  {discoveredPct}<Text style={styles.summaryValueOf}>%</Text>
                 </Text>
               </View>
             </View>
@@ -200,9 +283,25 @@ export default function EndingScreen() {
 
           {/* Action buttons */}
           <View style={styles.buttons}>
-            {isDeath ? (
+            {isChapterEnd ? (
+              <>
+                <EndingButton
+                  label="START NEW TIMELINE"
+                  icon="refresh-cw"
+                  color={accentColor}
+                  onPress={() => deleteAndReset()}
+                  primary
+                />
+                <EndingButton
+                  label="VIEW ROUTE CODEX"
+                  icon="compass"
+                  color="#1abc9c"
+                  onPress={() => setScreen('routeCodex')}
+                />
+              </>
+            ) : isDeath ? (
               <EndingButton
-                label="NEW GAME"
+                label="START NEW TIMELINE"
                 icon="refresh-cw"
                 color={accentColor}
                 onPress={() => deleteAndReset()}
@@ -210,7 +309,7 @@ export default function EndingScreen() {
               />
             ) : (
               <EndingButton
-                label="PLAY AGAIN"
+                label="START NEW TIMELINE"
                 icon="refresh-cw"
                 color={accentColor}
                 onPress={() => deleteAndReset()}
@@ -264,6 +363,130 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
+  // ── Gallery styles ─────────────────────────────────────────────────────────
+  galleryHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 18,
+    paddingBottom: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(42,40,58,0.5)',
+  },
+  backBtn: {
+    padding: 6,
+    width: 32,
+  },
+  galleryTitle: {
+    fontSize: 10,
+    letterSpacing: 4,
+    color: '#6a5e70',
+    fontFamily: 'Inter_600SemiBold',
+  },
+  galleryContent: {
+    paddingHorizontal: 22,
+    paddingTop: 24,
+    gap: 10,
+  },
+  galleryProgress: {
+    backgroundColor: 'rgba(12,8,22,0.9)',
+    borderWidth: 1,
+    borderColor: 'rgba(42,40,58,0.5)',
+    borderRadius: 4,
+    padding: 20,
+    alignItems: 'center',
+    marginBottom: 8,
+    gap: 6,
+  },
+  galleryProgressNum: {
+    fontSize: 42,
+    color: '#9b59b6',
+    fontFamily: 'Inter_700Bold',
+  },
+  galleryProgressDenom: {
+    fontSize: 22,
+    color: '#3a3050',
+    fontFamily: 'Inter_400Regular',
+  },
+  galleryProgressPct: {
+    fontSize: 10,
+    letterSpacing: 2,
+    fontFamily: 'Inter_600SemiBold',
+  },
+  galleryBarTrack: {
+    width: '70%',
+    height: 4,
+    backgroundColor: 'rgba(42,40,58,0.6)',
+    borderRadius: 2,
+    overflow: 'hidden',
+    marginTop: 4,
+  },
+  galleryBarFill: {
+    height: '100%',
+    borderRadius: 2,
+  },
+  galleryEmpty: {
+    alignItems: 'center',
+    paddingVertical: 40,
+  },
+  galleryEmptyText: {
+    fontSize: 14,
+    color: '#3a3050',
+    fontFamily: 'Inter_400Regular',
+    textAlign: 'center',
+    lineHeight: 22,
+  },
+  galleryCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    backgroundColor: 'rgba(12,8,22,0.85)',
+    borderWidth: 1,
+    borderRadius: 3,
+    paddingHorizontal: 14,
+    paddingVertical: 13,
+    overflow: 'hidden',
+  },
+  galleryCardAccent: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    bottom: 0,
+    width: 2.5,
+    opacity: 0.6,
+  },
+  galleryCardTitle: {
+    fontSize: 13,
+    color: '#c8b898',
+    fontFamily: 'Inter_500Medium',
+    marginBottom: 2,
+  },
+  galleryCardSubtitle: {
+    fontSize: 9,
+    letterSpacing: 2,
+    fontFamily: 'Inter_600SemiBold',
+  },
+  galleryRouteBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    borderWidth: 1,
+    borderColor: 'rgba(26,188,156,0.25)',
+    borderRadius: 3,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    backgroundColor: 'rgba(26,188,156,0.04)',
+    marginTop: 8,
+  },
+  galleryRouteBtnText: {
+    flex: 1,
+    fontSize: 11,
+    letterSpacing: 3,
+    color: '#1abc9c',
+    fontFamily: 'Inter_600SemiBold',
+  },
+
+  // ── Ending reveal styles ───────────────────────────────────────────────────
   iconRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -376,17 +599,18 @@ const styles = StyleSheet.create({
     marginVertical: 4,
   },
   summaryLabel: {
-    fontSize: 9,
-    letterSpacing: 2,
+    fontSize: 8,
+    letterSpacing: 1.5,
     color: '#3a3450',
     fontFamily: 'Inter_600SemiBold',
+    textAlign: 'center',
   },
   summaryValue: {
-    fontSize: 28,
+    fontSize: 26,
     fontFamily: 'Inter_700Bold',
   },
   summaryValueOf: {
-    fontSize: 16,
+    fontSize: 15,
     color: '#3a3450',
     fontFamily: 'Inter_400Regular',
   },

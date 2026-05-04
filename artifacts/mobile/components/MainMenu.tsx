@@ -7,8 +7,8 @@ import { useGame } from '../context/GameContext';
 import { ENDINGS } from '../data/endings';
 import { CLASSES } from '../data/characterOptions';
 import { getStorySummary } from '../logic/storyValidator';
+import { APP_VERSION } from '../constants/version';
 
-// Computed once at module load — these are compile-time constants
 const _summary = getStorySummary();
 const FOOTER_STATS = `${_summary.totalNodes} NODES  ·  ${ENDINGS.length} ENDINGS  ·  ${CLASSES.length} CLASSES`;
 
@@ -20,41 +20,41 @@ export default function MainMenu() {
 
   const headerFade = useRef(new Animated.Value(0)).current;
   const headerSlide = useRef(new Animated.Value(-20)).current;
-  const button1 = useRef(new Animated.Value(0)).current;
-  const button2 = useRef(new Animated.Value(0)).current;
-  const button3 = useRef(new Animated.Value(0)).current;
-  const button4 = useRef(new Animated.Value(0)).current;
-  const button5 = useRef(new Animated.Value(0)).current;
-  const button6 = useRef(new Animated.Value(0)).current;
+  const btn0 = useRef(new Animated.Value(0)).current;
+  const btn1 = useRef(new Animated.Value(0)).current;
+  const btn2 = useRef(new Animated.Value(0)).current;
+  const btn3 = useRef(new Animated.Value(0)).current;
+  const btn4 = useRef(new Animated.Value(0)).current;
+  const btn5 = useRef(new Animated.Value(0)).current;
+  const btn6 = useRef(new Animated.Value(0)).current;
+  const btn7 = useRef(new Animated.Value(0)).current;
   const footerFade = useRef(new Animated.Value(0)).current;
   const glowPulse = useRef(new Animated.Value(0.03)).current;
 
+  const btnAnims = [btn0, btn1, btn2, btn3, btn4, btn5, btn6, btn7];
+
   const discovered = state.endingsDiscovered.length;
   const total = ENDINGS.length;
+  const discoveredPct = total > 0 ? Math.round((discovered / total) * 100) : 0;
 
   useEffect(() => {
-    // Header entrance
     Animated.parallel([
       Animated.timing(headerFade, { toValue: 1, duration: 700, useNativeDriver: true }),
       Animated.timing(headerSlide, { toValue: 0, duration: 550, useNativeDriver: true }),
     ]).start();
 
-    // Staggered button entrances
-    const delays = [200, 300, 400, 500, 600, 700];
-    const anims = [button1, button2, button3, button4, button5, button6];
-    anims.forEach((anim, i) => {
+    const delays = [200, 300, 400, 500, 600, 700, 800, 900];
+    btnAnims.forEach((anim, i) => {
       Animated.timing(anim, {
         toValue: 1,
         duration: 380,
-        delay: delays[i],
+        delay: delays[i] ?? 900,
         useNativeDriver: true,
       }).start();
     });
 
-    // Footer fade
-    Animated.timing(footerFade, { toValue: 1, duration: 500, delay: 900, useNativeDriver: true }).start();
+    Animated.timing(footerFade, { toValue: 1, duration: 500, delay: 1000, useNativeDriver: true }).start();
 
-    // Subtle atmospheric glow pulse
     Animated.loop(
       Animated.sequence([
         Animated.timing(glowPulse, { toValue: 0.055, duration: 3500, useNativeDriver: true }),
@@ -63,14 +63,15 @@ export default function MainMenu() {
     ).start();
   }, []);
 
-  const btnAnims = [button1, button2, button3, button4, button5, button6];
+  // Build ordered button list
+  let idx = 0;
+  const nextAnim = () => btnAnims[idx++];
 
   return (
     <LinearGradient
       colors={['#030108', '#06030f', '#0a0516', '#04020a']}
       style={styles.container}
     >
-      {/* Atmospheric top glow */}
       <Animated.View style={[styles.topGlow, { opacity: glowPulse }]} />
       <Animated.View style={[styles.midGlow, { opacity: glowPulse }]} />
 
@@ -104,15 +105,27 @@ export default function MainMenu() {
 
         {/* Buttons */}
         <View style={styles.buttons}>
-          <AnimatedMenuButton anim={button1} label="NEW GAME" icon="play" color="#9b59b6" onPress={() => setScreen('characterCreator')} />
-
           {hasSaveGame && (
-            <AnimatedMenuButton anim={button2} label="CONTINUE" icon="rotate-cw" color="#e67e22" onPress={() => continueGame()} />
+            <AnimatedMenuButton
+              anim={nextAnim()}
+              label="CONTINUE JOURNEY"
+              icon="rotate-cw"
+              color="#e67e22"
+              onPress={() => continueGame()}
+            />
           )}
 
           <AnimatedMenuButton
-            anim={btnAnims[hasSaveGame ? 2 : 1]}
-            label={`ENDINGS  ${discovered} / ${total}`}
+            anim={nextAnim()}
+            label="START NEW TIMELINE"
+            icon="play"
+            color="#9b59b6"
+            onPress={() => setScreen('characterCreator')}
+          />
+
+          <AnimatedMenuButton
+            anim={nextAnim()}
+            label={`ENDINGS  ${discovered} / ${total}  (${discoveredPct}%)`}
             icon="book"
             color={discovered > 0 ? '#c9a84c' : '#3a3040'}
             onPress={() => setScreen('ending')}
@@ -120,15 +133,15 @@ export default function MainMenu() {
           />
 
           <AnimatedMenuButton
-            anim={btnAnims[hasSaveGame ? 3 : 2]}
-            label="ROUTE CODEX"
+            anim={nextAnim()}
+            label="VIEW ROUTE CODEX"
             icon="compass"
             color="#1abc9c"
             onPress={() => setScreen('routeCodex')}
           />
 
           <AnimatedMenuButton
-            anim={btnAnims[hasSaveGame ? 4 : 3]}
+            anim={nextAnim()}
             label="CHAPTER ROADMAP"
             icon="map"
             color="#4a8eaa"
@@ -136,7 +149,15 @@ export default function MainMenu() {
           />
 
           <AnimatedMenuButton
-            anim={btnAnims[hasSaveGame ? 5 : 4]}
+            anim={nextAnim()}
+            label="CREDITS"
+            icon="star"
+            color="#8a7a60"
+            onPress={() => setScreen('credits')}
+          />
+
+          <AnimatedMenuButton
+            anim={nextAnim()}
             label="SETTINGS"
             icon="settings"
             color="#3a3848"
@@ -147,7 +168,10 @@ export default function MainMenu() {
         {/* Footer */}
         <Animated.View style={[styles.footer, { opacity: footerFade }]}>
           <View style={styles.footerLine} />
-          <Text style={styles.footerText}>{FOOTER_STATS}</Text>
+          <View style={styles.footerInner}>
+            <Text style={styles.footerText}>{FOOTER_STATS}</Text>
+            <Text style={styles.footerVersion}>{APP_VERSION}</Text>
+          </View>
           <View style={styles.footerLine} />
         </Animated.View>
       </View>
@@ -353,11 +377,22 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: 'rgba(26,24,38,0.8)',
   },
+  footerInner: {
+    alignItems: 'center',
+    gap: 3,
+  },
   footerText: {
     fontSize: 9,
     color: '#2e2840',
     fontFamily: 'Inter_400Regular',
     letterSpacing: 1.5,
+    textAlign: 'center',
+  },
+  footerVersion: {
+    fontSize: 8,
+    color: '#1e1a2a',
+    fontFamily: 'Inter_400Regular',
+    letterSpacing: 1,
     textAlign: 'center',
   },
 });

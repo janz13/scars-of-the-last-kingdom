@@ -23,7 +23,7 @@ import {
   runSurvivalTick,
   shouldTriggerEnding,
 } from '../logic/gameEngine';
-import { deleteSave as deleteSaveStorage, hasSave, loadGame, saveGame } from '../logic/saveSystem';
+import { deleteSave as deleteSaveStorage, hasSave, hasSeenContentWarning, loadGame, resetAllData as resetAllDataStorage, saveGame } from '../logic/saveSystem';
 import { getCompanionEventTrigger } from '../logic/companionSystem';
 
 const DEFAULT_COMPANIONS: CompanionPair = {
@@ -73,6 +73,7 @@ interface GameContextValue {
   setScreen: (screen: GameScreen) => void;
   continueGame: () => Promise<void>;
   deleteAndReset: () => Promise<void>;
+  resetAllData: () => Promise<void>;
   updateSettings: (settings: Partial<GameState['settings']>) => void;
   // Dice system
   pendingDiceRoll: PendingDiceRoll | null;
@@ -176,11 +177,14 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const [pendingDiceRoll, setPendingDiceRoll] = useState<PendingDiceRoll | null>(null);
   const autoSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // On mount, check for existing save
+  // On mount, check for existing save + content warning
   useEffect(() => {
     (async () => {
-      const saveExists = await hasSave();
+      const [saveExists, warningSeen] = await Promise.all([hasSave(), hasSeenContentWarning()]);
       setHasSaveGame(saveExists);
+      if (!warningSeen) {
+        setState((prev) => ({ ...prev, screen: 'contentWarning' }));
+      }
       setIsLoading(false);
     })();
   }, []);
@@ -419,6 +423,12 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     setState(INITIAL_STATE);
   }, []);
 
+  const resetAllData = useCallback(async () => {
+    await resetAllDataStorage();
+    setHasSaveGame(false);
+    setState(INITIAL_STATE);
+  }, []);
+
   const updateSettings = useCallback((settings: Partial<GameState['settings']>) => {
     setState((prev) => ({
       ...prev,
@@ -562,6 +572,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         setScreen,
         continueGame,
         deleteAndReset,
+        resetAllData,
         updateSettings,
         pendingDiceRoll,
         initiateDiceRoll,

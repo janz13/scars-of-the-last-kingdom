@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import { useGame } from "@/context/GameContext";
 
+import ContentWarningScreen from "@/components/ContentWarningScreen";
 import MainMenu from "@/components/MainMenu";
 import CharacterCreator from "@/components/CharacterCreator";
 import StoryPanel from "@/components/StoryPanel";
@@ -15,6 +16,7 @@ import SettingsPanel from "@/components/SettingsPanel";
 import DeveloperPanel from "@/components/DeveloperPanel";
 import ChapterRoadmapScreen from "@/components/ChapterRoadmapScreen";
 import RouteCodexScreen from "@/components/RouteCodexScreen";
+import CreditsScreen from "@/components/CreditsScreen";
 
 function LoadingScreen() {
   return (
@@ -38,6 +40,8 @@ export default function GameRoot() {
   if (isLoading) return <LoadingScreen />;
 
   switch (state.screen) {
+    case "contentWarning":
+      return <ContentWarningScreen />;
     case "mainMenu":
       return <MainMenu />;
     case "characterCreator":
@@ -46,6 +50,8 @@ export default function GameRoot() {
       return <ChapterRoadmapScreen />;
     case "routeCodex":
       return <RouteCodexScreen />;
+    case "credits":
+      return <CreditsScreen />;
     case "game":
     case "stats":
     case "inventory":

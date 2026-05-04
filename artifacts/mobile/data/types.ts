@@ -64,6 +64,7 @@ export type EndingType =
   | 'wanderer';
 
 export type GameScreen =
+  | 'contentWarning'
   | 'mainMenu'
   | 'characterCreator'
   | 'game'
@@ -76,7 +77,8 @@ export type GameScreen =
   | 'settings'
   | 'developer'
   | 'chapterRoadmap'
-  | 'routeCodex';
+  | 'routeCodex'
+  | 'credits';
 
 export interface Character {
   name: string;
