@@ -105,6 +105,14 @@ export default function MainMenu() {
 
         {/* Buttons */}
         <View style={styles.buttons}>
+          <AnimatedMenuButton
+            anim={nextAnim()}
+            label="START NEW TIMELINE"
+            icon="play"
+            color="#9b59b6"
+            onPress={() => setScreen('characterCreator')}
+          />
+
           {hasSaveGame && (
             <AnimatedMenuButton
               anim={nextAnim()}
@@ -114,14 +122,6 @@ export default function MainMenu() {
               onPress={() => continueGame()}
             />
           )}
-
-          <AnimatedMenuButton
-            anim={nextAnim()}
-            label="START NEW TIMELINE"
-            icon="play"
-            color="#9b59b6"
-            onPress={() => setScreen('characterCreator')}
-          />
 
           <AnimatedMenuButton
             anim={nextAnim()}
