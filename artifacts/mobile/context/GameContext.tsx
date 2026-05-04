@@ -334,6 +334,10 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
       return next;
     });
+    void saveGame(stateRef.current).then(() => {
+      setHasSaveGame(true);
+      setHasActiveGame(true);
+    });
   }, []);
 
   const setScreen = useCallback((screen: GameScreen) => {
