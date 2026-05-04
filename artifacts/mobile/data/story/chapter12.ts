@@ -2498,7 +2498,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     location: 'The Broken Throne',
     imageKey: 'broken_throne',
     text: `The chapter's final moment. The city's decision is made — or making — or unmakeable, depending on the route. The mark reads twelve chapters of accumulated resonance and returns a single reading: the bearer has carried the city's truth from the sub-city's Foundation Period to the surface's faction war to this room. What the bearer does with that truth in the next moment is the chapter's last question. The Final Gate is still ahead. The truth-bearer route is still active, if it was established. The mark points forward. It has always pointed forward.`,
-    effectsOnEnter: { setFlags: ['chapter12_final_decision'] },
+    effectsOnEnter: { setFlags: ['game_complete', 'chapter12_final_decision'] },
     choices: [
       {
         id: 'c12_decision_savior',
@@ -2539,7 +2539,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     endingType: 'faction',
     endingId: 'ending_ch12_iron_crown',
     text: `Veyra and Sera, standing at the Saint Front with the crusade mandate revised and the mark-bearer's authority formally documented, offer the Iron Crown in the way the Iron Saints offer everything: as an operational designation, not a ceremony. The crown is the city's northern perimeter, the Saints' complete formation, and the specific institutional architecture of an organization that has been building toward a city worth defending. The mark reads the Iron Crown as: stable, specific, requiring maintenance. The Final Gate ahead. The Iron Saints behind. The city, for the first time in twelve chapters, held.`,
-    effectsOnEnter: { setFlags: ['iron_crown_claimed', 'chapter12_complete', 'iron_saints_ending'] },
+    effectsOnEnter: { setFlags: ['iron_crown_claimed', 'iron_crown_held', 'chapter12_complete', 'iron_saints_ending'] },
     choices: [],
   },
 
@@ -2553,7 +2553,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     endingType: 'faction',
     endingId: 'ending_ch12_glass_crown',
     text: `Lady Seraphine formalizes the Glass Crown in writing on glass paper with a glass stylus, which is the Glass Court's way of making something permanent. The extraction device is disabled. The Glass Court's intelligence network, the servant network Juno maintains within it, and the specific analytical infrastructure that Seraphine has built across twelve chapters are now formally behind the mark-bearer's route to the Final Gate. "The Glass Court commits its resources to the gate's resolution," Seraphine says. "We always have. We were waiting for a bearer capable of receiving the commitment." The crown is analytical. The rule is through information. The Final Gate ahead, the Glass Court behind, and twelve chapters of data pointing forward.`,
-    effectsOnEnter: { setFlags: ['glass_crown_claimed', 'chapter12_complete', 'glass_court_ending'] },
+    effectsOnEnter: { setFlags: ['glass_crown_claimed', 'glass_crown_held', 'chapter12_complete', 'glass_court_ending'] },
     choices: [],
   },
 
@@ -2567,7 +2567,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     endingType: 'faction',
     endingId: 'ending_ch12_hollow_crown',
     text: `The Hollow Crown is not a crown in the surface city's sense. Mother Chalk presents it in the tunnel language that the Children speak — a specific gesture, performed by sixty-three people simultaneously, that the sub-city's three hundred years of below-ground existence produced as the Hollow Children's version of formal acknowledgment. What it means: the Children are committed to the mark-bearer's route to the Final Gate. Not as a force. As the people who have been below the thing everyone else was fighting about and have now come up. The mark reads the Hollow Crown as: old, specific, and more structurally sound than any faction built on the surface has been since the Blackout. Sixty-three people, moving upward. The Final Gate ahead.`,
-    effectsOnEnter: { setFlags: ['hollow_crown_claimed', 'chapter12_complete', 'hollow_children_ending'] },
+    effectsOnEnter: { setFlags: ['game_complete', 'hollow_crown_claimed', 'hollow_crown_held', 'chapter12_complete', 'hollow_children_ending'] },
     choices: [],
   },
 
@@ -2581,7 +2581,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     endingType: 'faction',
     endingId: 'ending_ch12_red_crown',
     text: `Mother Veyl, at the march's center with the broadcast redirected and the seventeen-fold network carrying the sub-city truth instead of the raw signal, performs the Red Crown's investiture while walking. The Red Choir does not stop for ceremonies. The march continues; the city receives the broadcast; the seventeen-fold network stabilizes around the mark-bearer's route to the Final Gate as a reference frequency. What the Red Crown means: the Choir's entire three-year transmission project, repurposed. The city hears the truth because Veyl chose to carry it instead of the signal. The mark reads the Red Crown as: resonant, active, warm with something that is not corruption. The march reaches the Final Gate approach. The crown is the march's momentum.`,
-    effectsOnEnter: { setFlags: ['red_crown_claimed', 'chapter12_complete', 'red_choir_ending'] },
+    effectsOnEnter: { setFlags: ['red_crown_claimed', 'red_crown_held', 'chapter12_complete', 'red_choir_ending'] },
     choices: [],
   },
 
@@ -2595,7 +2595,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     endingType: 'faction',
     endingId: 'ending_ch12_archive_crown',
     text: `Archivist Mael activates the failsafe broadcast while the siege is still ongoing. What the city hears, simultaneously, from every registered document-receiving station: the complete Containment Protocol history. The faction origin documentation. The entity's departure record. The mark-bearer's sub-city evidence combined with the Archive's surface documentation into the most complete historical record the city has received since the Foundation Period. The siege does not stop immediately. But within forty minutes, the faction positions begin to reconfigure around the information rather than around the resource they thought they were fighting over. The Archive Crown is not a crown. It is a record. Mael hands it to you in the form of the complete document set. "You carry the truth to the Final Gate," he says. "The Archive carries it here." Both are true.`,
-    effectsOnEnter: { setFlags: ['archive_crown_claimed', 'chapter12_complete', 'archive_ending'] },
+    effectsOnEnter: { setFlags: ['archive_crown_claimed', 'archive_crown_held', 'chapter12_complete', 'archive_ending'] },
     choices: [],
   },
 
@@ -2627,7 +2627,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     endingType: 'savior',
     endingId: 'ending_ch12_savior_of_ash',
     text: `The savior route's success produces, in the Broken Throne's hall, the specific configuration that Mother Chalk named in the market: a city that has been told what it is, by someone who went below and came back with the answer. Not every faction accepted it. Two Saint commanders left. Varr's Glass Court loyalty never fully resolved. But the room — the five factions' representatives, the Hollow Children's sixty-three, the survivors who walked in from the market and the square and the siege line — received the truth. The city has what it needs to decide. The mark-bearer has given it. The Final Gate is ahead, and the route to it is the route of someone who did not take the throne. The ash is the ash of what burned. The savior is what survived the burning. Both are true.`,
-    effectsOnEnter: { setFlags: ['savior_of_ash_claimed', 'chapter12_complete', 'savior_ending'] },
+    effectsOnEnter: { setFlags: ['game_complete', 'savior_of_ash_claimed', 'chapter12_complete', 'savior_ending'] },
     choices: [],
   },
 
@@ -2685,7 +2685,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     endingType: 'wanderer',
     endingId: 'ending_ch12_last_protector',
     text: `The Hollow Children don't go to the surface. Or the mark-bearer stays below with them. Or the chapter's final threshold — the point between the chapter's decision and the Final Gate's approach — becomes the bearer's permanent position. The Last Protector is the role that exists when the carrier decides to carry one specific thing, permanently, instead of moving forward. The sub-city's gate. The Hollow Children's space. The sixty-three people who surfaced because the entity's departure made the below-ground quiet and the above-ground survivable. The mark reads the Last Protector's configuration as: stable, specific, complete. The Final Gate remains ahead. The Last Protector remains here. The mark is warm. The city, above, continues to decide.`,
-    effectsOnEnter: { setFlags: ['last_protector_taken', 'chapter12_complete'] },
+    effectsOnEnter: { setFlags: ['game_complete', 'last_protector_taken', 'chapter12_complete'] },
     choices: [],
   },
 
@@ -2701,7 +2701,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     endingType: 'companion',
     endingId: 'ending_ch12_miras_mercy',
     text: `Mira stays. This is the ending that contains both things: Mira choosing the city's twelve chapters of medical work over the Final Gate's route, and the mark-bearer understanding that the choice is not a rejection. She is not staying because she has stopped. She is staying because the specific work that needs doing — the marked population's adaptation documentation, the Glass Court medical custody recovery, the implementation of everything twelve chapters of research has produced — requires Mira specifically, in this city, now. The mark reads Mira's departure from the gate route as: loss, specific, bearable. The warmth in the mark that started in Chapter 2 and has never fully dimmed does not dim now. It stays, at this distance, which is what the mercy in the title means: she let you keep the warmth by choosing the place where she is most herself.`,
-    effectsOnEnter: { setFlags: ['miras_mercy_complete', 'chapter12_complete', 'mira_stays_city'] },
+    effectsOnEnter: { setFlags: ['game_complete', 'miras_mercy_complete', 'mira_mercy_complete', 'chapter12_complete', 'mira_stays_city'] },
     choices: [],
   },
 
@@ -2747,7 +2747,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     endingType: 'death',
     endingId: 'ending_ch12_saint_crusade_death',
     text: `The crusade mandate's language is specific: marked individuals operating in the sub-city without Archive sanction, demonstrating relic contamination at the Foundation Protocol level. The mark's twelve-chapter history meets Veyra's mandate's documentation. The Saints are thorough. The mandate was built to be thorough. The mark dims — not immediately, but in the specific way that a relic architecture dims when the body it is integrated with stops. The sub-city's resonance holds for a moment longer than the body does. Then it too resolves. The city continues its war. The mark is noted in Veyra's operational record: contained.`,
-    effectsOnEnter: { setFlags: ['crusade_death'] },
+    effectsOnEnter: { setFlags: ['game_complete', 'crusade_death'] },
     choices: [],
   },
 
@@ -2817,7 +2817,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     endingType: 'death',
     endingId: 'ending_ch12_all_factions_burn',
     text: `All five factions burn. Not metaphorically — the Broken Throne, the faction infrastructure, the three hundred years of institutional architecture that the Blackout shattered and the factions rebuilt around the shattering. Gone. What remains: the sub-city's gate, Chalk and the Hollow Children in the tunnels below, Juno's network operating in the rubble above, and the marked population's sixty-two survivors adapting to a city without factions for the first time since the Foundation Period. The mark-bearer is in the burning. Not surviving it — having caused it, which is a different kind of ending. The city rebuilds from nothing. Whether nothing was the right price is the city's question to answer without the mark's twelve chapters of evidence. The evidence burned with the factions.`,
-    effectsOnEnter: { setFlags: ['all_factions_burn_death'] },
+    effectsOnEnter: { setFlags: ['game_complete', 'all_factions_burn_death'] },
     choices: [],
   },
 
@@ -2875,7 +2875,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     endingType: 'betrayal',
     endingId: 'ending_ch12_broken_throne',
     text: `The Broken Throne produces the betrayal that every convergence of five armed factions produces when the center cannot hold. The specific faction that breaks first depends on the route — but one breaks, and breaking creates the cascade, and the cascade ends the window, and the window was the only configuration in which the sub-city's truth could be delivered to an assembled audience. The truth is still in the bearer. The bearer is still alive, narrowly. But the room that could have received it is now a faction war with additional grievances. The Broken Throne ends the chapter with the truth undistributed and the factions choosing their own versions of it. The mark carries the complete record forward. The city carries its chosen fiction. Both will reach the Final Gate's approach from different directions.`,
-    effectsOnEnter: { setFlags: ['broken_throne_betrayal'] },
+    effectsOnEnter: { setFlags: ['game_complete', 'broken_throne_betrayal'] },
     choices: [],
   },
 
@@ -2933,7 +2933,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     endingType: 'corruption',
     endingId: 'ending_ch12_choir_consumed',
     text: `The seventeen-fold network, on critical failure, receives the mark's architecture as a signal rather than as a negotiation. The critical failure mode: the mark opens further than the bearer intended, the seventeen frequencies lock to the mark's architecture simultaneously, and the mark becomes the seventeen-fold network's primary channel. The bearer does not die. The bearer becomes the broadcast. The city receives, for approximately forty minutes, the clearest transmission the Red Choir's network has ever produced: the sub-city's truth, the mark's twelve-chapter resonance, the entity's departure record, and the specific quality of someone who carried it all and lost the container in the carrying. Mother Veyl stops the march. "The signal completed," she says. "In a way I did not intend." The mark is warm. The bearer is the warmth.`,
-    effectsOnEnter: { setFlags: ['choir_consumed_corruption'] },
+    effectsOnEnter: { setFlags: ['game_complete', 'choir_consumed_corruption'] },
     choices: [],
   },
 

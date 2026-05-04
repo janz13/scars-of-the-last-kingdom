@@ -2692,7 +2692,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     isEnding: true,
     endingType: 'death',
     endingId: 'ending_ch11_buried_city',
-    effectsOnEnter: { setFlags: ['chapter11_buried_city'] },
+    effectsOnEnter: { setFlags: ['game_complete', 'chapter11_buried_city'] },
     choices: [],
   },
 
@@ -2762,7 +2762,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     isEnding: true,
     endingType: 'betrayal',
     endingId: 'ending_ch11_pale_curator_captured',
-    effectsOnEnter: { setFlags: ['chapter11_curator_captured'] },
+    effectsOnEnter: { setFlags: ['game_complete', 'chapter11_curator_captured'] },
     choices: [],
   },
 
@@ -2818,7 +2818,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     isEnding: true,
     endingType: 'betrayal',
     endingId: 'ending_ch11_vorn_deception',
-    effectsOnEnter: { setFlags: ['chapter11_vorn_deception'] },
+    effectsOnEnter: { setFlags: ['game_complete', 'chapter11_vorn_deception'] },
     choices: [],
   },
 
@@ -2888,7 +2888,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     isEnding: true,
     endingType: 'wanderer',
     endingId: 'ending_ch11_sealed_in_dark',
-    effectsOnEnter: { setFlags: ['chapter11_sealed_dark'] },
+    effectsOnEnter: { setFlags: ['game_complete', 'chapter11_sealed_dark'] },
     choices: [],
   },
 
@@ -2944,7 +2944,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     isEnding: true,
     endingType: 'secret',
     endingId: 'ending_ch11_machine_communion',
-    effectsOnEnter: { setFlags: ['chapter11_machine_communion'] },
+    effectsOnEnter: { setFlags: ['game_complete', 'chapter11_machine_communion'] },
     choices: [],
   },
 

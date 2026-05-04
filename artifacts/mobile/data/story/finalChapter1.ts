@@ -1389,7 +1389,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     endingType: 'death',
     endingId: 'ending_fc1_memory_wall_collapse',
     text: `The complete record plays simultaneously and the mark cannot hold it. Not because the mark is insufficient — it has been building toward exactly this capacity for thirteen chapters. Because the accumulated weight of thirteen chapters of simultaneous decisions, compressed into the Memory Wall's instant-complete format, exceeds the bearer's capacity to hold without fracture. The mark's architecture collapses under the weight of its own record. The Wall continues playing. The record is intact. The bearer, who built the record across thirteen chapters, is not. The Wall holds the complete history of what they chose. The Gate records the attempt as: reached the Memory Wall. Carried the record. Could not carry it all at once. The distinction matters. The Wall knows.`,
-    effectsOnEnter: { setFlags: ['memory_wall_collapse_death'] },
+    effectsOnEnter: { setFlags: ['game_complete', 'memory_wall_collapse_death'] },
     choices: [],
   },
 
@@ -1445,7 +1445,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     endingType: 'death',
     endingId: 'ending_fc1_false_gate',
     text: `The Gate opens — but not the way the original agreement specified. The forced opening without the complete record executes a partial opening: the Gate's threshold activates, but the interface protocol is wrong, and what passes through the threshold is not the sanctioned release but the raw pressure of three hundred years of contained resonance, without curation, without the specific filtering the Warden's documentation required. The Gate does not close again immediately. What comes through the raw opening is not hostile — it has no orientation. It simply passes through everything that is in the threshold space, which includes the bearer. The city above receives a signal it cannot process. The mark records the outcome as: reached the Gate, opened it, and was inside when it opened the wrong way.`,
-    effectsOnEnter: { setFlags: ['false_gate_death'] },
+    effectsOnEnter: { setFlags: ['game_complete', 'false_gate_death'] },
     choices: [],
   },
 
@@ -1503,7 +1503,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     endingType: 'betrayal',
     endingId: 'ending_fc1_companion_abandonment',
     text: `The Companion Threshold presents the companion's final position and the bearer does not take it. Not a rejection, exactly — something closer to the specific failure of thirteen chapters of shared experience to produce the moment where the companion's offer can be accepted as what it is. The companion stays at the threshold. Not to hold it open — because there is no configuration left for them to hold. The threshold records the outcome: the companion relationship, which the mark carried for thirteen chapters as genuine, ends at the threshold when the bearer proceeds without responding to it. The Gate's assessment notes the companion threshold status. The Gate updates what it will offer at the Last Gate accordingly: certain paths close. The companion is at the threshold. The bearer is not.`,
-    effectsOnEnter: { setFlags: ['companion_abandoned'] },
+    effectsOnEnter: { setFlags: ['game_complete', 'companion_abandoned'] },
     choices: [],
   },
 
@@ -1561,7 +1561,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     endingType: 'wanderer',
     endingId: 'ending_fc1_door_no_return',
     text: `The bearer walks through the Door without answering the Gate's question. The Door of No Return is accurately named: from the other side, the Gate's field is present but the Gate itself is not accessible. The bearer is in the liminal space — between the Gate level and the sub-city level, in the infrastructure the Hollow Children maintained for three hundred years, in the space where the Gate's resonance is present without the Gate's question. The mark continues. The city is above. The Gate is below. The bearer is between them, in the liminal space, which is — the mark reads — inhabitable. People have lived in less structured circumstances than the Gate's liminal field. The Door of No Return is not death. It is a very specific kind of not-going-back.`,
-    effectsOnEnter: { setFlags: ['door_walked_through'] },
+    effectsOnEnter: { setFlags: ['game_complete', 'door_walked_through'] },
     choices: [],
   },
 
@@ -1619,7 +1619,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     endingType: 'companion',
     endingId: 'ending_fc1_cain_last_stand',
     text: `Cain holds the perimeter at the threshold. His assessment of the strategic situation is, as it has been across thirteen chapters, accurate: someone needs to hold the threshold's perimeter, and the bearer needs to reach the Gate without managing a rear position. Cain is the rear position. He positions himself at the threshold's entry point with the precision of someone who has been modeling exactly this defensive requirement for several chapters and is satisfied that the position is correct. The bearer descends. Cain does not watch the descent — he is already reading the threshold's structural load, identifying the defensible angles, settling into what will be, if the transit log is accurate, a very long wait. Cain has waited before. He is good at it. The threshold is held.`,
-    effectsOnEnter: { setFlags: ['cain_threshold_last_stand', 'threshold_perimeter_held'] },
+    effectsOnEnter: { setFlags: ['game_complete', 'cain_threshold_last_stand', 'threshold_perimeter_held'] },
     choices: [],
   },
 
@@ -1681,7 +1681,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     endingType: 'faction',
     endingId: 'ending_fc1_faction_gate',
     text: `The faction support that arrived at the Faction Hall extends to the Door of No Return, and through the Door, to the Gate question itself. The faction crown's institutional weight is sufficient for a specific resolution: the Gate's question is answered not by the individual mark-bearer but by the institutional alignment the bearer built. The Gate receives the faction configuration as a collective answer: the city's institutions, aligned, committed to the Gate's management in the interest of the city above rather than any individual's authority. The Gate responds to institutional weight the way it was designed to respond to it — with institutional answers. The Gate becomes a shared resource: managed by the faction alignment the bearer built, moderated by the mark's infrastructure, accessible through the transit system the Hollow Children maintained. The city above inherits a Gate. It is not a small inheritance.`,
-    effectsOnEnter: { morale: 20, setFlags: ['faction_gate_resolution', 'chapter_fc1_complete'] },
+    effectsOnEnter: { morale: 20, setFlags: ['game_complete', 'faction_gate_resolution', 'chapter_fc1_complete'] },
     choices: [],
   },
 
