@@ -1,0 +1,104 @@
+Write and add Chapter 8: Hunger War.
+
+Connect this chapter from Chapter 7 using CHAPTER_7_AUDIT.md.
+
+Add at least 100 connected story nodes.
+
+Chapter 8 title:
+Hunger War
+
+Main theme:
+Scarcity becomes war. Food, water, medicine, and shelter become more valuable than loyalty.
+
+This chapter should make survival mechanics matter heavily. Hunger, thirst, morale, health, medicine, faction reputation, and companion trust should strongly affect available choices.
+
+Main locations:
+- The Empty Ration Square
+- The Water Riot
+- The Burned Clinic
+- The Grain Vault
+- The Bone Soup Kitchen
+- The Scavenger Front
+- The Broken Aqueduct
+- The Famine Camp
+- The Dead Orchard
+- The Siege Tunnels
+- The Starving Bridge
+
+Important NPCs:
+1. Captain Roan — leader of a starving militia.
+2. Sera — the starving girl from Chapter 3, if saved.
+3. Juno — returns if alive from Chapter 5.
+4. Mother Chalk — may demand food for the Hollow Children.
+5. Saint Veyra — may enforce brutal ration laws.
+6. Lady Seraphine — may offer food for obedience.
+7. Mother Veyl — may offer infected aid at a cost.
+
+Major routes:
+1. protect civilians
+2. hoard supplies
+3. steal faction rations
+4. distribute food fairly
+5. choose one faction to feed
+6. let people starve to preserve resources
+7. save Sera
+8. sacrifice supplies to keep Mira alive
+9. let Cain lead a ration raid
+10. use corruption to force obedience
+11. unlock Savior route foundation
+12. unlock Tyrant route foundation
+13. unlock Lone Wanderer route foundation
+
+Required story consequences:
+- The player cannot save everyone.
+- Faction reputation should shift dramatically.
+- Mira reacts strongly to mercy or cruelty.
+- Cain respects strategic sacrifice but may become ruthless.
+- Hunger and thirst can cause deaths or bad endings.
+- Earlier choices should affect who appears and who trusts the player.
+
+Add:
+- at least 12 bad endings
+- at least 5 neutral endings
+- at least 3 route foundation endings/previews
+- at least 8 dice-roll checks
+- at least 6 class-specific choices
+- at least 6 background-specific choices
+- at least 8 survival requirement choices
+- new flags
+- new endings
+- new Route Codex entries
+
+New endings:
+- Starving Savior Ending
+- Ration Tyrant Ending
+- Water Riot Death Ending
+- Bone Soup Ending
+- Sera Lost Ending
+- Sera Saved Ending
+- Cain’s Ration Raid Ending
+- Mira’s Last Medicine Ending
+- Famine Camp Collapse Ending
+- Dead Orchard Ending
+- Hollow Children Starve Ending
+- Glass Court Feast Ending
+- Hunger War Neutral Ending
+
+New background image paths:
+- /images/backgrounds/empty_ration_square.png
+- /images/backgrounds/water_riot.png
+- /images/backgrounds/burned_clinic.png
+- /images/backgrounds/grain_vault.png
+- /images/backgrounds/bone_soup_kitchen.png
+- /images/backgrounds/scavenger_front.png
+- /images/backgrounds/broken_aqueduct.png
+- /images/backgrounds/famine_camp.png
+- /images/backgrounds/dead_orchard.png
+- /images/backgrounds/siege_tunnels.png
+- /images/backgrounds/starving_bridge.png
+
+After adding Chapter 8, create:
+
+CHAPTER_8_SUMMARY.md
+
+Include routes, endings, survival consequences, companion consequences, faction consequences, and connection points for Chapter 9: The Mark Awakens.

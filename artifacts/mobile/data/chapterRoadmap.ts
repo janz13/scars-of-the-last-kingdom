@@ -599,7 +599,8 @@ export const CHAPTER_ROADMAP: ChapterEntry[] = [
       'Chapter 10 — Broken Companions',
       'Chapter 12 — Crown of Ash (crisis path)',
     ],
-    status: 'planned',
+    status: 'complete',
+    nodeCount: 105,
   },
 
   {

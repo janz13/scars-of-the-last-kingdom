@@ -1267,6 +1267,263 @@ export const ENDINGS: EndingDefinition[] = [
     chapter: 'Chapter VII',
   },
 
+  // ── Chapter 8 Endings ──────────────────────────────────────────────────────
+  {
+    id: 'ending_ch8_survived',
+    title: 'After the Hunger War',
+    type: 'faction',
+    subtitle: 'Chapter VIII — The Starving Bridge',
+    description:
+      'The Hunger War does not end. It finds a lower equilibrium. The famine camp disperses. The Kitchen keeps running. The Burned Clinic stabilises. The Dead Orchard, twelve days and two weeks and six weeks out, produces its first harvest. Two hundred people on the Bridge watched decisions being made in their name. The mark is warm. The gate card is wherever you put it.',
+    color: '#0a0c10',
+    hint: 'Complete Chapter 8 through the agricultural plan without taking a faction-specific exit.',
+    chapter: 'Chapter VIII',
+  },
+  {
+    id: 'ending_ch8_water_riot_death',
+    title: 'Water Riot Death',
+    type: 'death',
+    subtitle: 'Chapter VIII — The Water Riot',
+    description:
+      'The crowd surges at the wrong moment. The convergence point — the place where the crowd from the west meets the crowd from the east — allows no room to stop. The crush is not violent in the sense of intent. It is violent in the sense of physics. The mark broadcasts a pulse that the people adjacent to you feel in their chests, and then the crowd\'s momentum is what it is.',
+    color: '#180404',
+    hint: 'Fail the agility check in the water riot\'s crush without a water supply to de-escalate.',
+    chapter: 'Chapter VIII',
+  },
+  {
+    id: 'ending_ch8_mira_last_medicine',
+    title: 'Mira\'s Last Medicine',
+    type: 'sacrifice',
+    subtitle: 'Chapter VIII — The Burned Clinic',
+    description:
+      'The clinic runs out of medicine on the fourth day. Juno stretches it one more day with the technique Mira taught her. The three critical cases do not survive the fifth day. The mark receives a single transmission on Mira\'s frequency on the fifth day — not words, just the signal that she is still there, still working. As if she knew.',
+    color: '#0c0a08',
+    hint: 'Fail the luck search of the clinic ruins with no medicine available. Mira\'s absence becomes permanent.',
+    chapter: 'Chapter VIII',
+  },
+  {
+    id: 'ending_ch8_glass_court_feast',
+    title: 'Glass Court Feast',
+    type: 'betrayal',
+    subtitle: 'Chapter VIII — The Grain Vault',
+    description:
+      'Seraphine\'s allocation arrives in properly labelled Glass Court humanitarian containers. Two weeks of food. Clean. Efficient. Each container carries a record of dependency. The Hunger War\'s resolution, when it comes, will be written in Glass Court administrative language — a kind of winning that does not feel like losing until the language of the documents becomes the language of everything.',
+    color: '#0c0810',
+    hint: 'Accept Seraphine\'s full deal at the Grain Vault or the Starving Bridge without negotiating better terms.',
+    chapter: 'Chapter VIII',
+  },
+  {
+    id: 'ending_ch8_bone_soup',
+    title: 'Bone Soup',
+    type: 'wanderer',
+    subtitle: 'Chapter VIII — The Bone Soup Kitchen',
+    description:
+      'You stay at the kitchen. The Grain Vault, the Bridge, the orchard — those are other people\'s crises. You are here, ladling broth to the queue that does not stop. The work is correct. The work is present. Three hundred people eat today who might not have eaten. The mark is quiet. The soup is hot.',
+    color: '#0a0806',
+    hint: 'Choose to stay at the Bone Soup Kitchen rather than continue into the chapter\'s faction crisis.',
+    chapter: 'Chapter VIII',
+  },
+  {
+    id: 'ending_ch8_sera_lost',
+    title: 'Sera Lost',
+    type: 'sacrifice',
+    subtitle: 'Chapter VIII — The Famine Camp',
+    description:
+      'The attempt to get Sera out before the collapse peaks fails. Not because of violence — because of the camp\'s collapse dynamics. Thirty metres. The crowd makes them impassable. You hear her calling your name from behind the crowd — her voice, recognisable at this distance — and then the crowd\'s momentum carries the gap past the point where a response is possible.',
+    color: '#100808',
+    hint: 'Fail the luck dice to protect Sera in the famine camp without enough food to guarantee her safety.',
+    chapter: 'Chapter VIII',
+  },
+  {
+    id: 'ending_ch8_sera_saved',
+    title: 'Sera Saved',
+    type: 'companion',
+    subtitle: 'Chapter VIII — The Famine Camp',
+    description:
+      'She is out. She stays near you for the rest of the chapter in the way of someone who has learned that proximity to a decision-maker is a resource, and who has decided this decision-maker is worth it. On the Bridge, when the factions argue, she catches your eye across the distance. She gives you a very small nod.',
+    color: '#0a0c08',
+    hint: 'Successfully protect Sera in the famine camp. Bring food or succeed on the luck check.',
+    chapter: 'Chapter VIII',
+  },
+  {
+    id: 'ending_ch8_cain_ration_raid',
+    title: 'Cain\'s Ration Raid',
+    type: 'faction',
+    subtitle: 'Chapter VIII — The Grain Vault',
+    description:
+      'Roan\'s militia executes the simultaneous approach. The food moves in four hours. Veyra arrives at hour five and says nothing that changes what has already happened. The food is already eaten. The Saints begin militarising vault access permanently. Roan approved the raid because today was today and tomorrow was tomorrow.',
+    color: '#0c0a08',
+    hint: 'Approve Roan\'s simultaneous three-point assault on the Grain Vault.',
+    chapter: 'Chapter VIII',
+  },
+  {
+    id: 'ending_ch8_famine_camp_collapse',
+    title: 'Famine Camp Collapse',
+    type: 'death',
+    subtitle: 'Chapter VIII — The Famine Camp',
+    description:
+      'The search for hidden reserves fails. The camp\'s three days of rations runs out in two and a half. On the third day the camp loses its internal organisation to entropy. The Hollow Children\'s section is the last to leave, because Chalk refuses to move them until she has a destination better than the origin. It is a long wait.',
+    color: '#180a04',
+    hint: 'Fail the luck check while searching for hidden reserves in the famine camp at critical supply.',
+    chapter: 'Chapter VIII',
+  },
+  {
+    id: 'ending_ch8_dead_orchard',
+    title: 'Dead Orchard',
+    type: 'death',
+    subtitle: 'Chapter VIII — The Dead Orchard',
+    description:
+      'The grow lights will not activate without the bacterial culture. The Dead Orchard stays dark. The infrastructure is intact — waiting for someone to bring what it needs. Two hundred and forty people in the famine camp eat the last of their reserves while the orchard sits dark two levels below them.',
+    color: '#080a06',
+    hint: 'Arrive at the Dead Orchard without the agricultural documentation or Archive access to activate the system.',
+    chapter: 'Chapter VIII',
+  },
+  {
+    id: 'ending_ch8_hollow_children_starve',
+    title: 'Hollow Children Starve',
+    type: 'death',
+    subtitle: 'Chapter VIII — The Famine Camp',
+    description:
+      'You refuse. The mathematics of the refusal are correct. Without what you have, the Hollow Children\'s supply situation deteriorates. Chalk takes the children deeper into the tunnel network, toward sections nobody else is fighting over. Some of the children she takes there will not come back. The ones who do will not forget the arithmetic.',
+    color: '#1a0808',
+    hint: 'Refuse to feed the Hollow Children in the famine camp without giving a viable alternative.',
+    chapter: 'Chapter VIII',
+  },
+  {
+    id: 'ending_ch8_roan_betrayal',
+    title: 'Roan\'s Betrayal',
+    type: 'betrayal',
+    subtitle: 'Chapter VIII — The Siege Tunnels',
+    description:
+      'The negotiation fails. In the silence after the militia falls back, Roan calculates that the negotiation approach failed and the people who failed to eat are his responsibility. He sends a messenger to the Saints checkpoint. The message is about your location. You find out what Roan did by the absence of a door where you expected one.',
+    color: '#100c08',
+    hint: 'Fail the siege tunnel negotiation, triggering Roan\'s survival calculation against you.',
+    chapter: 'Chapter VIII',
+  },
+  {
+    id: 'ending_ch8_hunger_war_neutral',
+    title: 'Hunger War Neutral',
+    type: 'wanderer',
+    subtitle: 'Chapter VIII — The Starving Bridge',
+    description:
+      'You do what is achievable. Fewer people are hungry than if the chapter had gone differently. The gap between those two states — what happened and what could have happened — is the space where you live until the mark\'s next activation. The Bridge empties. The faction positions hold.',
+    color: '#080a0c',
+    hint: 'Complete the chapter through the neutral distribution choice without committing to savior, tyrant, or wanderer.',
+    chapter: 'Chapter VIII',
+  },
+  {
+    id: 'ending_ch8_starving_savior',
+    title: 'Starving Savior',
+    type: 'savior',
+    subtitle: 'Chapter VIII — The Starving Bridge',
+    description:
+      'The coalition forms. Not cleanly, but functionally. Roan manages the Vault distribution. The Hollow Children\'s network handles Level 6. Juno\'s clinic receives consistent medicine. The Dead Orchard\'s restoration timeline is public. The Savior route is not a destination. It is a direction. The direction is set.',
+    color: '#0c1008',
+    hint: 'Build the civilian coalition at the Bridge with Vault distribution and Roan\'s alliance already secured.',
+    chapter: 'Chapter VIII',
+    isSecret: true,
+  },
+  {
+    id: 'ending_ch8_ration_tyrant',
+    title: 'Ration Tyrant',
+    type: 'tyrant',
+    subtitle: 'Chapter VIII — The Starving Bridge',
+    description:
+      'You control the supply. The gate card, the mark\'s access to relic systems, the willingness to make decisions that others will not. Veyra adapts. Seraphine negotiates. Roan follows because his people eat. The Tyrant path is maintained by resource control, which wears things down slowly rather than all at once.',
+    color: '#120808',
+    hint: 'Seize control of the supply chain — vault, aqueduct, and orchard — through the Tyrant distribution choice or armed vault enforcement.',
+    chapter: 'Chapter VIII',
+  },
+  {
+    id: 'ending_ch8_choir_dependency',
+    title: 'Choir Dependency',
+    type: 'corruption',
+    subtitle: 'Chapter VIII — The Bone Soup Kitchen',
+    description:
+      'On day twelve the Kitchen\'s supply runs short again. The dose requires incremental adjustment. Veyl is present for every adjustment. The Kitchen is now producing Red Choir nutritional infrastructure at a scale the Choir has not previously operated. Two hundred and forty people are experiencing mild broadcast-frequency attunement.',
+    color: '#140610',
+    hint: 'Accept Veyl\'s compound for the Kitchen and follow the dependency path through day twelve.',
+    chapter: 'Chapter VIII',
+  },
+  {
+    id: 'ending_ch8_lone_wanderer',
+    title: 'Lone Wanderer',
+    type: 'wanderer',
+    subtitle: 'Chapter VIII — The Starving Bridge',
+    description:
+      'The Bridge belongs to the factions. You leave it to them. The tunnel network is large. The Hunger War is a specific crisis in specific locations. You find a place where it has not reached. The gate card is in your coat. The mark is quiet. The Wanderer path is the road taken when the destination on offer is not worth the price.',
+    color: '#080a0c',
+    hint: 'Choose the Wanderer path at the final distribution choice, refusing to align with any faction or coalition.',
+    chapter: 'Chapter VIII',
+    isSecret: true,
+  },
+  {
+    id: 'ending_ch8_scattered_survivors',
+    title: 'Scattered Survivors',
+    type: 'wanderer',
+    subtitle: 'Chapter VIII — The Starving Bridge',
+    description:
+      'The coalition does not form. The crowd disperses. Seraphine\'s table gets signed by hungry people who cannot afford principles. The scattered survivors — those who chose neither side — are the majority of the tunnel network. They are not broken. Scattered is survivable, mostly.',
+    color: '#0a0808',
+    hint: 'Fail the Bridge speech and choose to accept the coalition\'s collapse rather than continuing to the final decision.',
+    chapter: 'Chapter VIII',
+  },
+  {
+    id: 'ending_ch8_stalemate',
+    title: 'Hunger War Stalemate',
+    type: 'wanderer',
+    subtitle: 'Chapter VIII — The Starving Bridge',
+    description:
+      'The Bridge reaches equilibrium. Seraphine and Veyra are both insufficient to act without the other\'s permission, which neither will grant. Everyone runs out of energy to escalate before they run out of food. The stalemate is not peace. It is a pause large enough to sleep in.',
+    color: '#0a0a0c',
+    hint: 'Accept the stalemate after failing the Bridge speech.',
+    chapter: 'Chapter VIII',
+  },
+  {
+    id: 'ending_ch8_scavenger_ambush',
+    title: 'Scavenger Ambush',
+    type: 'death',
+    subtitle: 'Chapter VIII — The Scavenger Front',
+    description:
+      'The fallback route is compromised. The Saints anticipated the retreat and pre-positioned squads at the secondary exit. The engagement removes the option of a controlled retreat. Dever is separated. The supply line operation fails completely. The Scavenger Front collapses.',
+    color: '#180806',
+    hint: 'Choose to wait at the fallback position after a failed Scavenger Front push.',
+    chapter: 'Chapter VIII',
+  },
+  {
+    id: 'ending_ch8_aqueduct_collapse',
+    title: 'The Aqueduct Collapses',
+    type: 'death',
+    subtitle: 'Chapter VIII — The Broken Aqueduct',
+    description:
+      'The failed repair destabilises the pipe section. Fragments from the fractured regulator lodge in the next manifold junction, which fails twelve hours later. Twelve tunnel sections lose water access. The Water Riot restarts with greater intensity. Dever\'s log: "Repair attempted. Repair failed. Failure escalated."',
+    color: '#060c14',
+    hint: 'Fail the intelligence dice on the aqueduct repair and choose not to abandon the site.',
+    chapter: 'Chapter VIII',
+  },
+  {
+    id: 'ending_ch8_militia_massacre',
+    title: 'The Militia Goes Too Far',
+    type: 'tyrant',
+    subtitle: 'Chapter VIII — The Siege Tunnels',
+    description:
+      'The supply corridor is open and the order to hold is not followed. Nineteen days of hunger and a successful engagement combine in forty-three people who have been angry longer than they have been disciplined. The tunnel network hears what happened. The Hollow Children do not send another delegation to the ration square.',
+    color: '#160a04',
+    hint: 'Choose to push further after securing the junction, removing Roan\'s disciplinary restraint.',
+    chapter: 'Chapter VIII',
+  },
+  {
+    id: 'ending_ch8_water_poison',
+    title: 'Veyra\'s Water',
+    type: 'death',
+    subtitle: 'Chapter VIII — The Grain Vault',
+    description:
+      'The document authorises Level 5 water access. The Level 5 water has slow contamination from a chemical storage failure classified as "within acceptable parameters for short-term use." Acceptable parameters correct in a way that causes harm — the most effective kind of correctness for producing harm without accountability.',
+    color: '#060c10',
+    hint: 'Accept Veyra\'s water document without inspecting the Level 5 supply source.',
+    chapter: 'Chapter VIII',
+  },
+
   // ── True Ending ────────────────────────────────────────────────────────────
   {
     id: 'ending_last_kingdom_remembers',

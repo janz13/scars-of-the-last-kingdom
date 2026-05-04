@@ -139,6 +139,20 @@ export const BACKGROUND_IMAGES: Record<string, any> = {
   hollow_lecture_hall:    require('../assets/images/glass_tower_lobby.png'),
   blackout_record_chamber: require('../assets/images/archive_ruin_wall.png'),
   sleeping_server:        require('../assets/images/relic_engine_room.png'),
+
+  // Chapter 8 — Hunger War (placeholder art → closest existing environment)
+  // TODO: replace with dedicated Chapter 8 famine/survival pixel art
+  empty_ration_square:   require('../assets/images/collapsed_tunnel.png'),
+  water_riot:            require('../assets/images/ruined_street.png'),
+  burned_clinic:         require('../assets/images/hidden_clinic.png'),
+  grain_vault:           require('../assets/images/relic_engine_room.png'),
+  bone_soup_kitchen:     require('../assets/images/tunnel_camp.png'),
+  scavenger_front:       require('../assets/images/surface_ruins.png'),
+  broken_aqueduct:       require('../assets/images/flooded_platform.png'),
+  famine_camp:           require('../assets/images/tunnel_camp.png'),
+  dead_orchard:          require('../assets/images/surface_ruins.png'),
+  siege_tunnels:         require('../assets/images/collapsed_tunnel.png'),
+  starving_bridge:       require('../assets/images/ruined_metro_station.png'),
 };
 
 // ─── Gradient fallbacks & transition colors ───────────────────────────────────
@@ -427,6 +441,50 @@ export const BACKGROUND_GRADIENTS: Record<string, GradientConfig> = {
   },
   sleeping_server: {
     colors: ['#04080c', '#080e18', '#040c14', '#020608'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  empty_ration_square: {
+    colors: ['#0c0a06', '#1a1408', '#0c0a06', '#080604'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  water_riot: {
+    colors: ['#060a10', '#0c1420', '#060a10', '#040608'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  burned_clinic: {
+    colors: ['#0e0808', '#1a1008', '#0e0808', '#090504'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  grain_vault: {
+    colors: ['#080c08', '#101810', '#080c08', '#050806'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  bone_soup_kitchen: {
+    colors: ['#0e0a04', '#1c1408', '#0e0a04', '#090704'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  scavenger_front: {
+    colors: ['#080a08', '#101410', '#080a08', '#050705'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  broken_aqueduct: {
+    colors: ['#060c10', '#0a1420', '#060c10', '#040810'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  famine_camp: {
+    colors: ['#0c0804', '#180e06', '#0c0804', '#080504'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  dead_orchard: {
+    colors: ['#080a06', '#101406', '#080a06', '#060704'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  siege_tunnels: {
+    colors: ['#080608', '#100a10', '#080608', '#050405'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  starving_bridge: {
+    colors: ['#0a0a0e', '#12121c', '#0a0a0e', '#070708'],
     start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
   },
   // Generic fallback for any key not listed above
