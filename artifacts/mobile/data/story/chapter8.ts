@@ -403,6 +403,11 @@ export const CHAPTER_8_NODES: StoryNode[] = [
         text: 'The riot is over. Move to the famine camp.',
         nextNode: 'c8_famine_camp_arrive',
       },
+      {
+        id: 'c8_riot_manage_water',
+        text: 'Stay and manage the water distribution. The flow will be contested in minutes.',
+        nextNode: 'c8_riot_water_division',
+      },
     ],
   },
 
@@ -585,6 +590,12 @@ export const CHAPTER_8_NODES: StoryNode[] = [
         id: 'c8_vault_find_veyra',
         text: 'Approach the checkpoint directly. Confront Veyra\'s scheduling.',
         nextNode: 'c8_vault_veyra_enforce',
+      },
+      {
+        id: 'c8_vault_survey_interior',
+        text: 'Survey the vault interior first. Understand what is here before deciding how to move it.',
+        nextNode: 'c8_vault_interior_survey',
+        effects: { intelligence: 2 },
       },
     ],
   },
@@ -809,6 +820,12 @@ export const CHAPTER_8_NODES: StoryNode[] = [
         text: 'Watch Veyl. Something about the red stains on her fingertips is wrong.',
         nextNode: 'c8_soup_veyl_appear',
         effects: { intelligence: 2 },
+      },
+      {
+        id: 'c8_soup_talk_collective',
+        text: 'Talk to the kitchen collective before making any moves. They have been running this longer than anyone.',
+        nextNode: 'c8_soup_kitchen_collective',
+        effects: { morale: 3 },
       },
     ],
   },
@@ -1069,6 +1086,12 @@ export const CHAPTER_8_NODES: StoryNode[] = [
         text: 'Assess the repair requirements.',
         nextNode: 'c8_aqueduct_assess',
       },
+      {
+        id: 'c8_aqueduct_check_downstream',
+        text: 'Walk the downstream sections first. Understand how many people this break is affecting.',
+        nextNode: 'c8_aqueduct_downstream_check',
+        effects: { intelligence: 1 },
+      },
     ],
   },
 
@@ -1209,6 +1232,11 @@ export const CHAPTER_8_NODES: StoryNode[] = [
         requirements: { flags: ['sera_saved_ch3'] },
         isHidden: true,
       },
+      {
+        id: 'c8_state_medical_check',
+        text: 'Assess the medical situation. Some people in this camp are past the triage threshold.',
+        nextNode: 'c8_camp_medical_triage',
+      },
     ],
   },
 
@@ -1239,6 +1267,11 @@ export const CHAPTER_8_NODES: StoryNode[] = [
         nextNode: 'c8_camp_chalk_confrontation',
         requirements: { flags: ['vault_distributed'] },
         effects: { hollowChildren: 15, morale: 5 },
+      },
+      {
+        id: 'c8_hollow_chalk_alone',
+        text: 'Find Chalk somewhere private. She said she can work with the true version.',
+        nextNode: 'c8_chalk_private_moment',
       },
     ],
   },
@@ -1379,6 +1412,11 @@ export const CHAPTER_8_NODES: StoryNode[] = [
         id: 'c8_orchard_activate_now',
         text: 'Activate the grow lights. Begin the restoration.',
         nextNode: 'c8_orchard_agricultural_system',
+      },
+      {
+        id: 'c8_orchard_get_dever',
+        text: 'Get Dever\'s detailed assessment of what the irrigation restoration requires before committing.',
+        nextNode: 'c8_orchard_restoration_detail',
       },
     ],
   },
@@ -1584,6 +1622,11 @@ export const CHAPTER_8_NODES: StoryNode[] = [
         id: 'c8_bridge_roan_first',
         text: 'Get to Roan. He needs to hold the militia steady.',
         nextNode: 'c8_bridge_roan_speech',
+      },
+      {
+        id: 'c8_bridge_walk_through',
+        text: 'Walk through the dispersal zone. Listen to the people moving toward the Bridge before engaging the factions.',
+        nextNode: 'c8_bridge_approach_walk',
       },
     ],
   },
