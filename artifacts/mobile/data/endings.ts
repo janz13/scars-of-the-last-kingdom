@@ -2508,6 +2508,280 @@ export const ENDINGS: EndingDefinition[] = [
     chapter: 'Chapter XII',
   },
 
+  // ── Final Chapter 1 Endings ───────────────────────────────────────────────
+
+  // Death endings (8)
+  {
+    id: 'ending_fc1_memory_wall_collapse',
+    title: 'The Wall Collapses',
+    type: 'death',
+    subtitle: 'Final Chapter 1 — The Memory Wall',
+    description:
+      'The complete record plays simultaneously and the mark cannot hold it all at once. The bearer collapses under the weight of thirteen chapters of accumulated history. The Memory Wall holds the record intact. The bearer who built it does not survive the holding.',
+    color: '#14080a',
+    hint: 'Fail the intelligence critical check at the Memory Wall.',
+    chapter: 'Final Chapter 1',
+  },
+  {
+    id: 'ending_fc1_gate_rejection',
+    title: 'Gate Rejection',
+    type: 'death',
+    subtitle: 'Final Chapter 1 — The Last Gate',
+    description:
+      'The Gate\'s resistance protocols activate fully. The thirteen-chapter calibration becomes the pressure applied against itself. The Gate records the attempt: reached the Last Gate, chose an unsupported path, failed the resistance. The city continues. The Gate remains closed.',
+    color: '#14080a',
+    hint: 'Attempt to push through the Gate\'s resistance and fail the strength check.',
+    chapter: 'Final Chapter 1',
+  },
+  {
+    id: 'ending_fc1_faction_betrayal_killed',
+    title: 'The Hall\'s Judgment',
+    type: 'death',
+    subtitle: 'Final Chapter 1 — The Faction Hall',
+    description:
+      'The Faction Hall\'s pre-entry security protocol activates when the solo bearer\'s record fails the institutional assessment. The Gate\'s security is old and thorough and accurate. Access denied.',
+    color: '#14080a',
+    hint: 'Fail the charisma critical check in the Faction Hall without any faction crown.',
+    chapter: 'Final Chapter 1',
+  },
+  {
+    id: 'ending_fc1_corruption_consumed',
+    title: 'Consumed at the Mirror',
+    type: 'death',
+    subtitle: 'Final Chapter 1 — The Corruption Mirror',
+    description:
+      'The mirror\'s diagnostic function amplifies extreme corruption beyond the mark\'s containment architecture. What remains is not a bearer with a corrupted mark. It is a corruption with a mark-shaped vessel. The Gate closes.',
+    color: '#14080a',
+    hint: 'Enter the Corruption Mirror with corruption ≥ 90 and trigger the hidden collapse choice.',
+    chapter: 'Final Chapter 1',
+  },
+  {
+    id: 'ending_fc1_false_gate',
+    title: 'The Wrong Opening',
+    type: 'death',
+    subtitle: 'Final Chapter 1 — The Last Gate',
+    description:
+      'The Gate opens — but wrong. Three hundred years of contained resonance escapes through an improperly configured interface without curation. The bearer is inside the threshold when it opens incorrectly. The city above receives a signal it cannot process.',
+    color: '#14080a',
+    hint: 'Force the Gate open without the true_ending_route_active or unity_almost_active flag.',
+    chapter: 'Final Chapter 1',
+  },
+  {
+    id: 'ending_fc1_heir_strikes',
+    title: 'The Warden\'s Justice',
+    type: 'death',
+    subtitle: 'Final Chapter 1 — The Gate Antechamber',
+    description:
+      'The Masked Heir, as last Gate Warden, exercises the right of intervention. The three-hundred-year ledger records two previous interventions. Bearer reached the Gate Antechamber. Warden assessment: not compatible. Access denied.',
+    color: '#14080a',
+    hint: 'Arrive at the Gate Antechamber with the heir_knife_complete flag active from Chapter 12.',
+    chapter: 'Final Chapter 1',
+    isSecret: true,
+  },
+  {
+    id: 'ending_fc1_companion_killed',
+    title: 'The Cost of the Companion',
+    type: 'death',
+    subtitle: 'Final Chapter 1 — The Gate Antechamber',
+    description:
+      'The antechamber\'s preliminary field surges against extreme corruption. The companion absorbs the release. They have time to say what they would say, which is what they have been saying for thirteen chapters: it was worth it. The Gate asks its question. The bearer proceeds.',
+    color: '#14080a',
+    hint: 'Reach the Gate Antechamber with a companion present and corruption ≥ 85.',
+    chapter: 'Final Chapter 1',
+  },
+  {
+    id: 'ending_fc1_mark_overwhelm',
+    title: 'The Weight Wins',
+    type: 'death',
+    subtitle: 'Final Chapter 1 — The Door of No Return',
+    description:
+      'The liminal space between the Door and the Gate\'s exit field dissolves the mark\'s architecture at extreme corruption. The bearer becomes the signal. The liminal space receives them. The Door of No Return earns its name.',
+    color: '#14080a',
+    hint: 'Reach the Door of No Return with corruption ≥ 85 and trigger the hidden overwhelm choice.',
+    chapter: 'Final Chapter 1',
+  },
+
+  // Betrayal endings (3)
+  {
+    id: 'ending_fc1_companion_abandonment',
+    title: 'Companion Abandonment',
+    type: 'betrayal',
+    subtitle: 'Final Chapter 1 — The Companion Threshold',
+    description:
+      'The bearer passes through the Companion Threshold without responding to the companion\'s offer. The companion stays. Not to hold it open — because there is no configuration left for them to hold. The Gate updates what it will offer accordingly.',
+    color: '#1a0808',
+    hint: 'Dismiss a companion at the Companion Threshold rather than accepting or sending them to sacrifice.',
+    chapter: 'Final Chapter 1',
+  },
+  {
+    id: 'ending_fc1_faction_betrayal',
+    title: 'The Hall Closes',
+    type: 'betrayal',
+    subtitle: 'Final Chapter 1 — The Faction Hall',
+    description:
+      'The Faction Hall assessment ends without resolution. The solo argument without institutional alignment fails. The Hall closes structurally. The Gate Antechamber is not accessible from this side. The city is behind and the only remaining direction.',
+    color: '#1a0808',
+    hint: 'Fail the charisma check in the Faction Hall without any faction crown (non-critical failure).',
+    chapter: 'Final Chapter 1',
+  },
+  {
+    id: 'ending_fc1_false_gate_opening',
+    title: 'The False Opening',
+    type: 'betrayal',
+    subtitle: 'Final Chapter 1 — The Last Gate',
+    description:
+      'The Gate opens forced and wrong. The city receives a second Blackout signal. The Hollow Children recognize it. Mother Chalk\'s assessment: "The Gate opened wrong. It will take three hundred more years to build the correct interface again." The false opening is complete.',
+    color: '#1a0808',
+    hint: 'Choose to force the Gate open without the true opening flags.',
+    chapter: 'Final Chapter 1',
+  },
+
+  // Wanderer / Neutral endings (4)
+  {
+    id: 'ending_fc1_last_gate_lockin',
+    title: 'Last Gate Lock-In',
+    type: 'wanderer',
+    subtitle: 'Final Chapter 1 — The Last Gate',
+    description:
+      'The Gate will not seal until its question is answered. The bearer is locked in the assessment chambers: Gate present, Gate question active. The return stair is inaccessible. Time is available. Whether time produces an answer is the question the Gate asked in the first place.',
+    color: '#0a0a12',
+    hint: 'Fail the sealing dice check or fail the unity merge without unity_almost_active.',
+    chapter: 'Final Chapter 1',
+  },
+  {
+    id: 'ending_fc1_door_no_return',
+    title: 'Door of No Return',
+    type: 'wanderer',
+    subtitle: 'Final Chapter 1 — The Door of No Return',
+    description:
+      'The bearer walks through the Door without answering the Gate\'s question. From the other side, the Gate is present but not accessible. The liminal space is inhabitable. The Door of No Return is not death. It is a very specific kind of not-going-back.',
+    color: '#0a0a12',
+    hint: 'Choose to walk through the Door of No Return without a faction or faction crown active.',
+    chapter: 'Final Chapter 1',
+  },
+  {
+    id: 'ending_fc1_gate_sealed_wanderer',
+    title: 'Sealed and Alone',
+    type: 'wanderer',
+    subtitle: 'Final Chapter 1 — The Last Gate',
+    description:
+      'The Gate is sealed. The bearer ascends alone. The city above will never know what was sealed below it. The bearer will know. The knowing is carried upward, alone, into a city still deciding what it is, with one fewer question below it.',
+    color: '#0a0a12',
+    hint: 'Seal the Gate successfully without the crown_of_ash_savior flag.',
+    chapter: 'Final Chapter 1',
+  },
+  {
+    id: 'ending_fc1_lone_wanderer_gate',
+    title: 'The Wanderer Walks Past',
+    type: 'wanderer',
+    subtitle: 'Final Chapter 1 — The Descent Stair',
+    description:
+      'The lone wanderer reaches the stair and walks past it. The Gate will still be there. The mark will still be active. I was here. I saw what was being asked. I chose not to answer. The Gate\'s assessment: acknowledged.',
+    color: '#0a0a12',
+    hint: 'Choose the lone wanderer departure option at the Descent Stair.',
+    chapter: 'Final Chapter 1',
+  },
+
+  // Companion endings (2)
+  {
+    id: 'ending_fc1_mira_sacrifice',
+    title: 'Mira\'s Threshold',
+    type: 'companion',
+    subtitle: 'Final Chapter 1 — The Companion Threshold',
+    description:
+      'Mira stays at the threshold and holds it open. The next bearer will find it already held. She is not the end of anything. She is the door that remains open after the one who built the relationship passed through it.',
+    color: '#2a1a08',
+    hint: 'Send Mira to hold the threshold with the mira_mercy_complete flag from Chapter 12.',
+    chapter: 'Final Chapter 1',
+  },
+  {
+    id: 'ending_fc1_cain_last_stand',
+    title: 'Cain\'s Threshold',
+    type: 'companion',
+    subtitle: 'Final Chapter 1 — The Companion Threshold',
+    description:
+      'Cain holds the perimeter at the threshold. The position is defensible. The wait will be long. Cain has waited before. He is good at it. The threshold is held.',
+    color: '#2a1a08',
+    hint: 'Send Cain to hold the threshold perimeter with the cain_stays_city flag from Chapter 12.',
+    chapter: 'Final Chapter 1',
+  },
+
+  // Corruption endings (2)
+  {
+    id: 'ending_fc1_corruption_threshold',
+    title: 'Corruption Threshold',
+    type: 'corruption',
+    subtitle: 'Final Chapter 1 — The Corruption Mirror',
+    description:
+      'The resistance fails. The corruption stabilizes into its own coherent architecture and becomes the primary signal. The mark continues — but what it carries now is the corruption\'s version of thirteen chapters. The Gate routes accordingly.',
+    color: '#3d0a18',
+    hint: 'Attempt to resist the mirror at corruption ≥ 80.',
+    chapter: 'Final Chapter 1',
+  },
+  {
+    id: 'ending_fc1_tyrant_gate_control',
+    title: 'Tyrant\'s Gate',
+    type: 'corruption',
+    subtitle: 'Final Chapter 1 — The Last Gate',
+    description:
+      'The tyrant\'s claim extends to the Gate. The control interface activates for the corrupted-institutional mark configuration. The Gate becomes a controlled passage. The Warden\'s ledger records: Gate controlled. The entry is written in the same handwriting as every other entry.',
+    color: '#3d0a18',
+    hint: 'Choose to control the Gate with the tyrant_throne_claimed flag active from Chapter 12.',
+    chapter: 'Final Chapter 1',
+  },
+
+  // Savior ending (1)
+  {
+    id: 'ending_fc1_gate_sealed_savior',
+    title: 'The Savior\'s Seal',
+    type: 'savior',
+    subtitle: 'Final Chapter 1 — The Last Gate',
+    description:
+      'The Gate is sealed cleanly, by a bearer who spent thirteen chapters choosing the city over personal authority. The sealing executes correctly. The warmth dims. The savior ascends. The city breathes.',
+    color: '#080e0e',
+    hint: 'Seal the Gate successfully with the crown_of_ash_savior flag from Chapter 12.',
+    chapter: 'Final Chapter 1',
+  },
+
+  // Faction ending (1)
+  {
+    id: 'ending_fc1_faction_gate',
+    title: 'The Faction Gate',
+    type: 'faction',
+    subtitle: 'Final Chapter 1 — The Door of No Return',
+    description:
+      'The Gate becomes a shared institutional resource, managed by the faction alignment the bearer built across thirteen chapters. The city above inherits a Gate. It is not a small inheritance.',
+    color: '#0e0c08',
+    hint: 'Reach the Door of No Return with at least one faction crown active and choose the faction exit.',
+    chapter: 'Final Chapter 1',
+  },
+
+  // Secret endings (2)
+  {
+    id: 'ending_fc1_unity_gate',
+    title: 'The Unity Gate',
+    type: 'secret',
+    subtitle: 'Final Chapter 1 — The Last Gate',
+    description:
+      'The unity configuration — forty seconds of simultaneous understanding, carried forward — is sufficient for the merger. The bearer becomes the bridge. The city above and what exists below communicate through the mark, mediated by thirteen chapters of proof that the city can understand its history. The bridge is warm, and patient, and very old, and very new.',
+    color: '#0e1a10',
+    hint: 'Choose to merge with the Gate with unity_almost_active and gate_acknowledged_mark flags set.',
+    chapter: 'Final Chapter 1',
+    isSecret: true,
+  },
+  {
+    id: 'ending_fc1_true_ending_path',
+    title: 'The Original Agreement',
+    type: 'secret',
+    subtitle: 'Final Chapter 1 — The Last Gate',
+    description:
+      'The true opening executes as the Foundation Period\'s Gate Wardens specified. The entity departed. The gate opened as sanctioned. The city receives what it was designed to receive — not the garbled distress call it mistook the Blackout for, but the correct signal. What the city does with it is the question Final Chapter 2 will ask. The answer to Final Chapter 1\'s question: yes.',
+    color: '#c9a84c',
+    hint: 'Complete all true ending conditions: true_ending_route_active from Chapter 11, complete_record_held, faction_truth_released, and gate_acknowledged_mark.',
+    chapter: 'Final Chapter 1',
+    isSecret: true,
+  },
+
   // ── True Ending ────────────────────────────────────────────────────────────
   {
     id: 'ending_last_kingdom_remembers',

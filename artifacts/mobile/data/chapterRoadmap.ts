@@ -879,7 +879,8 @@ export const CHAPTER_ROADMAP: ChapterEntry[] = [
       'bridge_permanent', 'final_evaluation_complete',
     ],
     routesUnlocked: ['Final Chapter 2 — Many Ways to End the World'],
-    status: 'planned',
+    status: 'complete',
+    nodeCount: 84,
   },
 
   {

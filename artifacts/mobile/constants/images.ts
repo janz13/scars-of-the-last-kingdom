@@ -197,6 +197,20 @@ export const BACKGROUND_IMAGES: Record<string, any> = {
   execution_plaza:         require('../assets/images/surface_ruins.png'),
   citywide_battlefield:    require('../assets/images/surface_ruins.png'),
 
+  // ── Final Chapter 1 — The Last Gate ────────────────────────────────────
+  // Placeholder art mapped to closest existing environment images.
+  // TODO: Replace with dedicated deep-gate / liminal pixel art.
+  descent_stair:           require('../assets/images/collapsed_tunnel.png'),
+  final_metro_line:        require('../assets/images/relic_engine_room.png'),
+  bone_platform:           require('../assets/images/archive_ruin_wall.png'),
+  gate_antechamber:        require('../assets/images/relic_engine_room.png'),
+  memory_wall:             require('../assets/images/archive_ruin_wall.png'),
+  companion_threshold:     require('../assets/images/dark_metro_hallway.png'),
+  faction_hall:            require('../assets/images/glass_tower_lobby.png'),
+  corruption_mirror:       require('../assets/images/relic_engine_room.png'),
+  last_gate:               require('../assets/images/relic_engine_room.png'),
+  door_of_no_return:       require('../assets/images/collapsed_tunnel.png'),
+
   // ── Chapter 11 — The City Beneath the City ──────────────────────────────
   // Placeholder art mapped to closest existing environment images.
   // TODO: Replace with dedicated sub-city / ancient-structure pixel art.
@@ -724,6 +738,48 @@ export const BACKGROUND_GRADIENTS: Record<string, GradientConfig> = {
   },
   first_gate: {
     colors: ['#0a0814', '#160e24', '#0a0814', '#07060e'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+
+  // ── Final Chapter 1 — The Last Gate ─────────────────────────────────────
+  descent_stair: {
+    colors: ['#060810', '#0a0c1a', '#060810', '#04060c'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  final_metro_line: {
+    colors: ['#080614', '#100a22', '#080614', '#05040e'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  bone_platform: {
+    colors: ['#0c0a08', '#1a1610', '#0c0a08', '#080706'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  gate_antechamber: {
+    colors: ['#0a0814', '#160e24', '#0a0814', '#07060e'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  memory_wall: {
+    colors: ['#080c18', '#0e1228', '#080c18', '#050810'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  companion_threshold: {
+    colors: ['#0a0808', '#160e0c', '#0a0808', '#070605'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  faction_hall: {
+    colors: ['#080a0c', '#10121a', '#080a0c', '#050608'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  corruption_mirror: {
+    colors: ['#140608', '#221010', '#140608', '#0e0405'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  last_gate: {
+    colors: ['#0c0814', '#1a1028', '#0c0814', '#08060e'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  door_of_no_return: {
+    colors: ['#06060e', '#0a0a18', '#06060e', '#040410'],
     start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
   },
 
