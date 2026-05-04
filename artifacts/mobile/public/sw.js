@@ -24,6 +24,7 @@ const SHELL_ASSETS = [
   '/manifest.json',
   '/icon.png',
   '/favicon.ico',
+  '/privacy-policy.html',
 ];
 
 /**

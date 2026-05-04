@@ -51,7 +51,7 @@ export default function Root({ children }: PropsWithChildren) {
 
         {/* ── Apple touch icon (home screen icon on iOS) ────────────── */}
         <link rel="apple-touch-icon" href="/icon.png" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/icon.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
         {/* ── PWA manifest ─────────────────────────────────────────── */}
         <link rel="manifest" href="/manifest.json" />
