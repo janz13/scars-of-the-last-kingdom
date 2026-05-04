@@ -184,7 +184,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     (async () => {
       const [saveExists, warningSeen] = await Promise.all([hasSave(), hasSeenContentWarning()]);
       setHasSaveGame(saveExists);
-      setHasActiveGame(saveExists);
+      setHasActiveGame(false);
       if (!warningSeen) {
         setState((prev) => ({ ...prev, screen: 'contentWarning' }));
       }
@@ -265,7 +265,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       newState = applyEffects(newState, startNode.effectsOnEnter);
     }
 
-    setState(newState);
+      setState(newState);
+      setHasSaveGame(true);
+      setHasActiveGame(true);
   }, []);
 
   const makeChoice = useCallback((choiceId: string) => {
@@ -416,7 +418,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const continueGame = useCallback(async () => {
     const saved = await loadGame();
     if (saved) {
-      setState(saved);
+      setState({ ...saved, screen: 'game' });
       setHasSaveGame(true);
       setHasActiveGame(true);
     }
