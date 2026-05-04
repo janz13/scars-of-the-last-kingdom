@@ -299,6 +299,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
       {
         id: 'c12_demand_roll',
         text: 'Deliver the address. What the mark carries is the most credible thing in this room.',
+        nextNode: 'c12_council_peace_success',
         diceCheck: {
           stat: 'charisma',
           difficulty: 7,
@@ -691,6 +692,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
       {
         id: 'c12_strength_roll',
         text: 'Demonstrate the mark\'s physical coherence. Show Veyra what she\'s actually dealing with.',
+        nextNode: 'c12_saint_strength_success',
         diceCheck: {
           stat: 'strength',
           difficulty: 8,
@@ -838,6 +840,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
       {
         id: 'c12_sera_dice_roll',
         text: 'Make the case directly. The sub-city truth is the only argument that reaches Sera\'s specific framework.',
+        nextNode: 'c12_saint_sera_success',
         diceCheck: {
           stat: 'charisma',
           difficulty: 8,
@@ -991,6 +994,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
       {
         id: 'c12_glass_int_roll',
         text: 'Run the analysis. The mark\'s sub-city calibration is the only tool precise enough for this.',
+        nextNode: 'c12_glass_int_success',
         diceCheck: {
           stat: 'intelligence',
           difficulty: 7,
@@ -1254,6 +1258,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
       {
         id: 'c12_choir_dice_roll',
         text: 'Give Veyl the reason. The sub-city truth, the Containment Protocol, the entity\'s departure — everything the mark has carried.',
+        nextNode: 'c12_choir_cha_success',
         diceCheck: {
           stat: 'charisma',
           difficulty: 6,
@@ -1482,6 +1487,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
       {
         id: 'c12_archive_int_roll',
         text: 'Run the full analysis. The mark\'s sub-city experience is the bridge.',
+        nextNode: 'c12_archive_int_success',
         diceCheck: {
           stat: 'intelligence',
           difficulty: 8,
@@ -1707,6 +1713,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
       {
         id: 'c12_hollow_agility_roll',
         text: 'Navigate the route. The sub-city experience applies here.',
+        nextNode: 'c12_hollow_agility_success',
         diceCheck: {
           stat: 'agility',
           difficulty: 6,
@@ -1969,6 +1976,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
       {
         id: 'c12_tyrant_dice_roll',
         text: 'Make the claim. Let the room respond.',
+        nextNode: 'c12_throne_tyrant_success',
         diceCheck: {
           stat: 'strength',
           difficulty: 9,
@@ -2024,6 +2032,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
       {
         id: 'c12_savior_dice_roll',
         text: 'Make the argument. The city has been waiting twelve chapters for this specific case.',
+        nextNode: 'c12_throne_savior_success',
         diceCheck: {
           stat: 'charisma',
           difficulty: 9,
@@ -2198,6 +2207,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
       {
         id: 'c12_intervene_roll',
         text: 'Make the approach. The geometry supports it.',
+        nextNode: 'c12_execution_save_success',
         diceCheck: {
           stat: 'agility',
           difficulty: 7,
@@ -2323,6 +2333,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
       {
         id: 'c12_battlefield_luck_roll',
         text: 'Navigate. Read the lines. Find the gap.',
+        nextNode: 'c12_battlefield_survive',
         diceCheck: {
           stat: 'luck',
           difficulty: 5,

@@ -841,7 +841,7 @@ export const CHAPTER_ROADMAP: ChapterEntry[] = [
     ],
     routesUnlocked: ['Final Chapter 1 — The Last Gate'],
     status: 'complete',
-    nodeCount: 141,
+    nodeCount: 137,
   },
 
   {
