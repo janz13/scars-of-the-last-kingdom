@@ -2157,6 +2157,357 @@ export const ENDINGS: EndingDefinition[] = [
     chapter: 'Chapter 11',
   },
 
+  // ── Chapter 12 Endings ─────────────────────────────────────────────────────
+
+  // Faction Endings (5)
+  {
+    id: 'ending_ch12_iron_crown',
+    title: 'Iron Crown',
+    type: 'faction',
+    subtitle: 'Chapter XII — Iron Saints Victory Route',
+    description:
+      'Veyra and Sera, with the crusade mandate revised and the mark-bearer\'s authority formally documented, offer the Iron Crown as an operational designation. The Saints are behind you. The city\'s northern perimeter is held. The Final Gate is ahead.',
+    color: '#0e0c08',
+    hint: 'Earn ironSaints ≥ 12, convert Sera, and invoke the alliance with Veyra at the Saint outcome.',
+    chapter: 'Chapter XII',
+  },
+  {
+    id: 'ending_ch12_glass_crown',
+    title: 'Glass Crown',
+    type: 'faction',
+    subtitle: 'Chapter XII — Glass Court Victory Route',
+    description:
+      'Lady Seraphine formalizes the Glass Crown on glass paper with a glass stylus. The extraction device is disabled. The Glass Court\'s intelligence network and Juno\'s servant infrastructure are committed to the mark-bearer\'s route to the Final Gate. The rule is through information.',
+    color: '#080c14',
+    hint: 'Earn glassCourt ≥ 12, disable the extraction device, and invoke Seraphine\'s trust at the Glass outcome.',
+    chapter: 'Chapter XII',
+  },
+  {
+    id: 'ending_ch12_hollow_crown',
+    title: 'Hollow Crown',
+    type: 'faction',
+    subtitle: 'Chapter XII — Hollow Children Victory Route',
+    description:
+      'Mother Chalk presents the Hollow Crown in the tunnel language of sixty-three people who have been below the city\'s decision for three hundred years. They are above ground now. They are committed. The Final Gate ahead; the Children behind.',
+    color: '#080806',
+    hint: 'Earn hollowChildren ≥ 12 and commit the Children to the surface route. Claim the crown at the Hollow outcome.',
+    chapter: 'Chapter XII',
+  },
+  {
+    id: 'ending_ch12_red_crown',
+    title: 'Red Crown',
+    type: 'faction',
+    subtitle: 'Chapter XII — Red Choir Victory Route',
+    description:
+      'Mother Veyl redirects the three-year broadcast while walking. The city hears the sub-city truth through the Red Choir\'s infrastructure. The march arrives at the Final Gate approach carrying the seventeen-fold network as a reference frequency around the mark-bearer\'s route.',
+    color: '#14060a',
+    hint: 'Earn redChoir ≥ 12 and redirect the broadcast successfully. Claim the crown at the Choir outcome.',
+    chapter: 'Chapter XII',
+  },
+  {
+    id: 'ending_ch12_archive_crown',
+    title: 'Archive Crown',
+    type: 'faction',
+    subtitle: 'Chapter XII — Last Archive Victory Route',
+    description:
+      'Archivist Mael activates the failsafe broadcast while the siege holds. Every registered document-receiving station in the city receives the complete Containment Protocol history simultaneously. The faction war reconfigures around information. The crown is a record, not a throne.',
+    color: '#080a10',
+    hint: 'Earn lastArchive ≥ 12 and complete the archive analysis. Activate Mael\'s failsafe at the Archive outcome.',
+    chapter: 'Chapter XII',
+  },
+
+  // Tyrant Ending (1)
+  {
+    id: 'ending_ch12_tyrant_of_ash',
+    title: 'Tyrant of Ash',
+    type: 'tyrant',
+    subtitle: 'Chapter XII — Broken Throne / Tyrant Route',
+    description:
+      'The Broken Throne is held. The city is structurally coherent under a single authority for the first time since the Blackout. The mark\'s twelve-chapter navigation of relic infrastructure, translated into operational authority. The city breathes. It does not choose. The mark-bearer chose for it.',
+    color: '#1a0808',
+    hint: 'Claim the Broken Throne with corruption ≥ 40, pass the strength DC 9 d12 check, and choose to rule with the mark\'s authority.',
+    chapter: 'Chapter XII',
+  },
+
+  // Savior Ending (1)
+  {
+    id: 'ending_ch12_savior_of_ash',
+    title: 'Savior of Ash',
+    type: 'savior',
+    subtitle: 'Chapter XII — Broken Throne / Savior Route',
+    description:
+      'The city has what it needs to decide. The mark-bearer gave it. The Broken Throne was not taken — the premise that it needed to be taken was dismantled. The ash is the ash of what burned. The savior is what survived. Both are true.',
+    color: '#080e0e',
+    hint: 'Pass the charisma DC 9 d10 at the Broken Throne\'s savior path. Complete the companion moments. Choose "The city is saved" at the final decision.',
+    chapter: 'Chapter XII',
+  },
+
+  // Wanderer Endings (4)
+  {
+    id: 'ending_ch12_lone_wanderer_lock',
+    title: 'Lone Wanderer Lock-In',
+    type: 'wanderer',
+    subtitle: 'Chapter XII — Wander Route Lock-In',
+    description:
+      'The city decides for itself. The lone wanderer exits through the eastern gate while the city is still deciding. What it decides without the mark-bearer present will determine what the Final Gate opens onto. The mark points east. The city continues west.',
+    color: '#0a0a0a',
+    hint: 'Choose the wanderer path at the Broken Throne or exit through the eastern gate on the citywide battlefield route.',
+    chapter: 'Chapter XII',
+  },
+  {
+    id: 'ending_ch12_crown_ash_neutral',
+    title: 'Crown of Ash',
+    type: 'wanderer',
+    subtitle: 'Chapter XII — Neutral Completion Route',
+    description:
+      'The chapter\'s crown is ash because what preceded the crown was burning. The city has the truth and doesn\'t have a ruler and is therefore exactly as complicated as a city given truth without a ruler always is. The mark-bearer leaves having done what the mark was built for: carrying, delivering, and not requiring the delivery be received with gratitude.',
+    color: '#0c0c0c',
+    hint: 'Complete the chapter through the final decision without claiming a faction crown, tyrant, or savior route.',
+    chapter: 'Chapter XII',
+  },
+  {
+    id: 'ending_ch12_silent_departure',
+    title: 'Silent Departure',
+    type: 'wanderer',
+    subtitle: 'Chapter XII — Ashen Square Early Exit',
+    description:
+      'The exit is east. The lone wanderer has always known it. Twelve chapters of carrying a city\'s truth through a city\'s war, and the exit is east. The mark points east. The bearer walks. The Final Gate is east. The city is west.',
+    color: '#080808',
+    hint: 'Choose to leave through the Ashen Square\'s eastern exit with the lone_wanderer_ch12 flag active.',
+    chapter: 'Chapter XII',
+  },
+  {
+    id: 'ending_ch12_last_protector',
+    title: 'The Last Protector',
+    type: 'wanderer',
+    subtitle: 'Chapter XII — Hollow Children / Protector Route',
+    description:
+      'The mark-bearer stays at the threshold. The sub-city\'s gate. The Hollow Children\'s space. Sixty-three people who surfaced because the entity\'s departure made the below-ground quiet. The Last Protector is the role that exists when the carrier decides to carry one specific thing, permanently, instead of moving forward. The mark is warm.',
+    color: '#080a08',
+    hint: 'Tell the Hollow Children to go back below and stay with them, or choose "Stay at the threshold" at the final decision.',
+    chapter: 'Chapter XII',
+  },
+
+  // Companion Endings (2)
+  {
+    id: 'ending_ch12_miras_mercy',
+    title: 'Mira\'s Mercy',
+    type: 'companion',
+    subtitle: 'Chapter XII — Mira / Companion Route',
+    description:
+      'Mira stays. She is not staying because she has stopped — she is staying because the city\'s twelve chapters of medical work requires her specifically, now, here. The warmth in the mark that started in Chapter 2 stays, at this distance. She let you keep it by choosing the place where she is most herself.',
+    color: '#140e08',
+    hint: 'Reach the companion moment with Mira present and choose the mercy ending in Mira\'s final scene.',
+    chapter: 'Chapter XII',
+  },
+  {
+    id: 'ending_ch12_cains_war',
+    title: 'Cain\'s War',
+    type: 'companion',
+    subtitle: 'Chapter XII — Cain / Companion Route',
+    description:
+      'Cain goes to his war. The Saint commanders reorganizing toward the Archive need someone who knows how they reorganize. Cain does not come to the Final Gate. He sends a message through Juno\'s network: "The commanders are contained. The Archive is holding. Go."',
+    color: '#0e0c0a',
+    hint: 'Reach the companion moment with Cain present and choose the war ending in Cain\'s final scene.',
+    chapter: 'Chapter XII',
+  },
+
+  // Secret Ending (1)
+  {
+    id: 'ending_ch12_unity_almost',
+    title: 'Unity Almost',
+    type: 'secret',
+    subtitle: 'Chapter XII — Unity Covenant Route',
+    description:
+      'The unity covenant holds for forty seconds. All five factions acknowledging the same truth simultaneously. Then it ends — not with violence, but with the entropy of five institutions remembering they are five institutions. Almost was not nothing. Almost was everything the city had. The mark carries the almost forward to the Final Gate.',
+    color: '#0a0810',
+    hint: 'Achieve unity_route_available from the council peace address, maintain factionRep ≥ 5 with all five factions, then invoke the covenant at the Broken Throne.',
+    chapter: 'Chapter XII',
+    isSecret: true,
+  },
+
+  // Death Endings (9)
+  {
+    id: 'ending_ch12_saint_crusade_death',
+    title: 'The Crusade Mandate',
+    type: 'death',
+    subtitle: 'Chapter XII — Saint Front / Crusade Death',
+    description:
+      'The crusade mandate\'s documentation meets the mark\'s twelve-chapter history. The Saints are thorough. The mandate was built to be thorough. The mark dims in the specific way a relic architecture dims when the body it is integrated with stops. The sub-city\'s resonance holds a moment longer than the body does.',
+    color: '#8e1c1c',
+    hint: 'Fail the strength check with a critical failure, trigger the corruption threshold at the Saint Front, or fail the charisma dice critically against Inquisitor Sera.',
+    chapter: 'Chapter XII',
+  },
+  {
+    id: 'ending_ch12_glass_extraction',
+    title: 'Extracted',
+    type: 'death',
+    subtitle: 'Chapter XII — Glass Barricade / Extraction Death',
+    description:
+      'The extraction device activates on the bearer. The mark fragments. The bearer does not die immediately — the device\'s test data confirmed survival. What is lost: the coherence of twelve chapters of accumulated resonance. Seraphine notes the outcome. The device will be recalibrated for the next bearer.',
+    color: '#8e1c1c',
+    hint: 'Fail the intelligence check DC 7 d8 at the Glass Barricade extraction device.',
+    chapter: 'Chapter XII',
+  },
+  {
+    id: 'ending_ch12_hollow_collapse',
+    title: 'The Tunnel Closes',
+    type: 'death',
+    subtitle: 'Chapter XII — Hollow Children Hideout / Collapse Death',
+    description:
+      'The tunnel structure fails completely. The Hollow Children maintain the rubble site afterward. They have maintained sites like it for three hundred years. The mark\'s resonance held in the rubble for six hours after the bearer\'s death.',
+    color: '#8e1c1c',
+    hint: 'Roll a critical failure on the agility DC 6 d6 check navigating the Hollow Children\'s hideout route.',
+    chapter: 'Chapter XII',
+  },
+  {
+    id: 'ending_ch12_sera_execution',
+    title: 'The Inquisitor\'s Mandate',
+    type: 'death',
+    subtitle: 'Chapter XII — Saint Front / Sera Execution',
+    description:
+      'Inquisitor Sera\'s operational mandate does not require Veyra\'s revision. When the confrontation fails, the mandate proceeds with the specific efficiency of fifteen years of enforcement work. The bearer is filed as contained. Sera writes the outcome clean, specific, final.',
+    color: '#8e1c1c',
+    hint: 'Fail the charisma DC 8 d10 confrontation check against Inquisitor Sera.',
+    chapter: 'Chapter XII',
+  },
+  {
+    id: 'ending_ch12_battlefield_overwhelmed',
+    title: 'Overwhelmed',
+    type: 'death',
+    subtitle: 'Chapter XII — Citywide Battlefield / Overwhelmed Death',
+    description:
+      'The battlefield\'s gaps close before the bearer finds them. No faction intended this outcome, and all five produced it. The mark dims. The city continues. The truth was delivered. The bearer was not the container. The city is.',
+    color: '#8e1c1c',
+    hint: 'Fail the luck DC 5 d6 navigation check on the citywide battlefield without class-specific cover.',
+    chapter: 'Chapter XII',
+  },
+  {
+    id: 'ending_ch12_all_factions_burn',
+    title: 'All Factions Burn',
+    type: 'death',
+    subtitle: 'Chapter XII — Broken Throne / Destruction Route',
+    description:
+      'All five factions burn. What remains: the sub-city\'s gate, Chalk and the Hollow Children in the tunnels, Juno\'s network in the rubble. The city rebuilds from nothing. Whether nothing was the right price is the city\'s question to answer without the mark\'s twelve chapters of evidence. The evidence burned with the factions.',
+    color: '#8e1c1c',
+    hint: 'Choose the destruction route at the Broken Throne and confirm the burning.',
+    chapter: 'Chapter XII',
+  },
+  {
+    id: 'ending_ch12_throne_collapse',
+    title: 'The Throne Falls',
+    type: 'death',
+    subtitle: 'Chapter XII — Broken Throne / Tyrant Failure',
+    description:
+      'The tyrant\'s claim collapses when the room declines to accept a seventh authority in a city that survived six. The factions exit. The Broken Throne falls on what was under it. The sub-city truth goes undelivered. The bearer gave twelve chapters. The city gave the throne back.',
+    color: '#8e1c1c',
+    hint: 'Fail the strength DC 9 d12 check at the Broken Throne\'s tyrant path.',
+    chapter: 'Chapter XII',
+  },
+  {
+    id: 'ending_ch12_execution_plaza',
+    title: 'The Execution Plaza',
+    type: 'death',
+    subtitle: 'Chapter XII — Execution Plaza / Plaza Death',
+    description:
+      'The execution plaza\'s ninety-second window closed. Two executions instead of one. The mark\'s resonance holds in the plaza longer than it should. The Hollow Children\'s representatives note it and do not comment. The city continues its war.',
+    color: '#8e1c1c',
+    hint: 'Fail the agility DC 7 d8 intervention check at the Execution Plaza, or choose not to intervene.',
+    chapter: 'Chapter XII',
+  },
+  {
+    id: 'ending_ch12_city_burns',
+    title: 'City Burns',
+    type: 'death',
+    subtitle: 'Chapter XII — Red Choir March / Broadcast Cascade',
+    description:
+      'The redirect fails completely. The broadcast completes without direction. The city burns in the specific way cities burn when the decision about what they are becomes undeniable. The mark survives in the rubble\'s resonance until the city cools enough to remember what it was carrying.',
+    color: '#8e1c1c',
+    hint: 'Fail the choir broadcast redirect and choose "The broadcast completes" when the redirect_failed flag is active.',
+    chapter: 'Chapter XII',
+  },
+
+  // Betrayal Endings (4)
+  {
+    id: 'ending_ch12_broken_throne',
+    title: 'Broken Throne',
+    type: 'betrayal',
+    subtitle: 'Chapter XII — Broken Throne / Betrayal',
+    description:
+      'One faction broke first, and breaking created the cascade. The window for receiving the sub-city\'s truth closes. The truth is still in the bearer — alive, narrowly. The Broken Throne ends the chapter with the truth undistributed and the factions choosing their own versions of it.',
+    color: '#1a0c0c',
+    hint: 'Fail the unity covenant check or roll a critical failure on the charisma DC 9 d10 savior dice.',
+    chapter: 'Chapter XII',
+  },
+  {
+    id: 'ending_ch12_varr_betrayal',
+    title: 'Varr\'s Betrayal',
+    type: 'betrayal',
+    subtitle: 'Chapter XII — Glass Barricade / Varr Betrayal',
+    description:
+      'Varr\'s defection was a performance. Twenty-three years of Glass Court intelligence, and the specific skill of performing defection is the kind of skill that career produces. The bearer trusted it. Seraphine accepts the outcome. The extraction device activates on the bearer.',
+    color: '#1a0c0c',
+    hint: 'Trust Varr\'s defection without the shadow network\'s confirmed read (varr_defection_known flag absent).',
+    chapter: 'Chapter XII',
+  },
+  {
+    id: 'ending_ch12_mael_seal',
+    title: 'The Archive Sealed',
+    type: 'betrayal',
+    subtitle: 'Chapter XII — Archive Siege / Mael Seal',
+    description:
+      'Mael\'s failsafe was not a broadcast — it seals the Archive with everyone inside. The complete record is safe. The bearer is inside. The city decides without intervention. "The record is safe. Everything inside this building is safe." He is correct about both.',
+    color: '#1a0c0c',
+    hint: 'Yield the sub-city records to Mael\'s custody entirely at the Archive Siege.',
+    chapter: 'Chapter XII',
+  },
+  {
+    id: 'ending_ch12_heir_knife',
+    title: 'The Heir\'s Knife',
+    type: 'betrayal',
+    subtitle: 'Chapter XII — Broken Throne / Heir Betrayal',
+    description:
+      'The sub-city rejection carried forward. The Masked Heir strikes at the Broken Throne\'s convergence with the precision of twelve chapters of patience. The mark\'s resonance holds in the Broken Throne\'s hall for four minutes and thirty seconds — the longest it has held above ground. The Heir is already carrying the record.',
+    color: '#1a0c0c',
+    hint: 'Carry the heir_rejected flag from Chapter 11 to the Broken Throne heir confrontation.',
+    chapter: 'Chapter XII',
+  },
+
+  // Corruption Endings (3)
+  {
+    id: 'ending_ch12_choir_consumed',
+    title: 'Choir Consumed',
+    type: 'corruption',
+    subtitle: 'Chapter XII — Red Choir March / Choir Consumed',
+    description:
+      'On critical failure, the mark opens further than intended. The seventeen frequencies lock to the mark\'s architecture simultaneously. The bearer becomes the broadcast. For forty minutes the city receives the clearest transmission the Red Choir has ever produced — the sub-city\'s truth, through someone who lost the container in the carrying.',
+    color: '#3d0a18',
+    hint: 'Roll a critical failure on the charisma DC 6 d8 check at the Red Choir broadcast redirect.',
+    chapter: 'Chapter XII',
+  },
+  {
+    id: 'ending_ch12_choir_city',
+    title: 'The City Choir',
+    type: 'corruption',
+    subtitle: 'Chapter XII — Red Choir March / City Consumption',
+    description:
+      'The broadcast completes at full intensity. At sixty-plus corruption, the city\'s signal integration is not temporary. The city sings. The bearer sings with it. The faction war continues outside the song. The song continues everywhere else.',
+    color: '#3d0a18',
+    hint: 'Choose to let the broadcast continue with corruption ≥ 60 in the choir broadcast choice.',
+    chapter: 'Chapter XII',
+  },
+  {
+    id: 'ending_ch12_tyrant_corrupt',
+    title: 'Tyrant Corrupted',
+    type: 'corruption',
+    subtitle: 'Chapter XII — Broken Throne / Corruption Throne',
+    description:
+      'The throne holds. The corruption completes. The tyrant rules with the mark\'s full relic authority — not the entity\'s presence, but the twelve-chapter residue of a presence that has just departed. The factions avoid it. The city is ruled. The ruling is thorough and built on the opposite of the truth: the truth was that the city could choose.',
+    color: '#3d0a18',
+    hint: 'Claim the tyrant throne successfully with corruption ≥ 70, then choose the corruption completion option.',
+    chapter: 'Chapter XII',
+  },
+
   // ── True Ending ────────────────────────────────────────────────────────────
   {
     id: 'ending_last_kingdom_remembers',

@@ -840,7 +840,8 @@ export const CHAPTER_ROADMAP: ChapterEntry[] = [
       'broadcast_final', 'archive_entrance_control', 'crown_of_ash_complete',
     ],
     routesUnlocked: ['Final Chapter 1 — The Last Gate'],
-    status: 'planned',
+    status: 'complete',
+    nodeCount: 141,
   },
 
   {

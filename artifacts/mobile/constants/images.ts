@@ -182,6 +182,21 @@ export const BACKGROUND_IMAGES: Record<string, any> = {
   place_we_promised:     require('../assets/images/dark_metro_hallway.png'),
   empty_chair:           require('../assets/images/dark_metro_hallway.png'),
 
+  // ── Chapter 12 — Crown of Ash ────────────────────────────────────────────
+  // Placeholder art mapped to closest existing environment images.
+  // TODO: Replace with dedicated city-war / faction-front pixel art.
+  ashen_square:            require('../assets/images/surface_ruins.png'),
+  war_council:             require('../assets/images/archive_ruin_wall.png'),
+  burning_market:          require('../assets/images/tunnel_camp.png'),
+  saint_front:             require('../assets/images/iron_saints_checkpoint.png'),
+  glass_barricade:         require('../assets/images/glass_tower_gate.png'),
+  red_choir_march:         require('../assets/images/red_choir_chamber.png'),
+  archive_siege:           require('../assets/images/last_archive_door.png'),
+  hollow_children_hideout: require('../assets/images/collapsed_tunnel.png'),
+  broken_throne:           require('../assets/images/archive_ruin_wall.png'),
+  execution_plaza:         require('../assets/images/surface_ruins.png'),
+  citywide_battlefield:    require('../assets/images/surface_ruins.png'),
+
   // ── Chapter 11 — The City Beneath the City ──────────────────────────────
   // Placeholder art mapped to closest existing environment images.
   // TODO: Replace with dedicated sub-city / ancient-structure pixel art.
@@ -620,6 +635,52 @@ export const BACKGROUND_GRADIENTS: Record<string, GradientConfig> = {
     colors: ['#040404', '#080808', '#060606', '#020202'],
     start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
   },
+  // ── Chapter 12 gradients ──────────────────────────────────────────────────
+  ashen_square: {
+    colors: ['#100a06', '#1e1008', '#100a06', '#0a0704'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  war_council: {
+    colors: ['#080a0c', '#10141a', '#080a0c', '#050608'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  burning_market: {
+    colors: ['#140a06', '#241208', '#140a06', '#0e0704'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  saint_front: {
+    colors: ['#0a0c08', '#14180e', '#0a0c08', '#060808'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  glass_barricade: {
+    colors: ['#080c14', '#0e1422', '#080c14', '#05080e'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  red_choir_march: {
+    colors: ['#14060a', '#240a10', '#14060a', '#0e0406'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  archive_siege: {
+    colors: ['#060810', '#0a0e1e', '#060810', '#04060c'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  hollow_children_hideout: {
+    colors: ['#080806', '#10100a', '#080806', '#060604'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  broken_throne: {
+    colors: ['#0c080a', '#1a0e10', '#0c080a', '#080506'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  execution_plaza: {
+    colors: ['#140606', '#240a0a', '#140606', '#0e0404'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  citywide_battlefield: {
+    colors: ['#100c06', '#1e1608', '#100c06', '#0a0904'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+
   // ── Chapter 11 gradients ──────────────────────────────────────────────────
   sub_city_gate: {
     colors: ['#060408', '#0c0810', '#060408', '#040306'],
