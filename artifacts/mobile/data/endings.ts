@@ -1916,6 +1916,247 @@ export const ENDINGS: EndingDefinition[] = [
     isSecret: true,
   },
 
+  // ── Chapter 11 — The City Beneath the City ─────────────────────────────────
+
+  // Bad endings (12)
+  {
+    id: 'ending_ch11_buried_city',
+    title: 'The City Claims You',
+    type: 'death',
+    subtitle: 'Chapter 11 — The Sub-City Gate',
+    description:
+      'The gate did not open. The gate closed around you. The Archive\'s Level 5 corridor is intact above. The sub-city is still sealed. The mark-bearer is in the stone between them. The thing below the city registered your arrival and your absence in the same moment.',
+    color: '#1a0808',
+    hint: 'Attempt to force the Sub-City Gate open without using the mark or the release protocol.',
+    chapter: 'Chapter 11',
+  },
+  {
+    id: 'ending_ch11_forgotten_platform_collapse',
+    title: 'The Platform Falls',
+    type: 'death',
+    subtitle: 'Chapter 11 — The Forgotten Platform',
+    description:
+      'The northeast section\'s pressure anomaly was not structural — it was a growth boundary. The investigation triggered the release. Not a collapse: a release. The sub-city loses one more thing to its lower levels.',
+    color: '#1a0808',
+    hint: 'Investigate the pressure anomaly in the Forgotten Platform\'s northeast section.',
+    chapter: 'Chapter 11',
+  },
+  {
+    id: 'ending_ch11_relic_transit_lost',
+    title: 'Lost in the Line',
+    type: 'wanderer',
+    subtitle: 'Chapter 11 — The Relic Transit Line',
+    description:
+      'The vehicle\'s departure was not at the Sealed Engine platform. The Transit Line runs its circuit. The mark-bearer cannot find the exit. The vehicle loops. The relic field is very present.',
+    color: '#0a0a1a',
+    hint: 'Fail the agility check critically while boarding the transit vehicle alone at high corruption.',
+    chapter: 'Chapter 11',
+  },
+  {
+    id: 'ending_ch11_blackout_core_death',
+    title: 'Consumed at the Core',
+    type: 'corruption',
+    subtitle: 'Chapter 11 — The Blackout Core',
+    description:
+      'The corruption surge at the Blackout Core, yielded to: the mark\'s capacity exceeds its architecture at the current corruption threshold. The interface is not the mark reading the Core. It is the Core reading the mark — reading it completely. The Core continues to pulse.',
+    color: '#140614',
+    hint: 'Yield to the corruption surge at the Blackout Core with corruption at 70 or above.',
+    chapter: 'Chapter 11',
+  },
+  {
+    id: 'ending_ch11_pale_curator_captured',
+    title: 'The Protocol Takes You',
+    type: 'betrayal',
+    subtitle: 'Chapter 11 — The Nameless Housing Block',
+    description:
+      'The Curator\'s containment request is complied with. The mark-bearer is managed. The interface is managed. The entity\'s question receives a managed answer. The Curator notes this as a successful Protocol execution and files the documentation.',
+    color: '#0a0a0a',
+    hint: 'Comply with the Pale Curator\'s containment request in the Nameless Housing Block.',
+    chapter: 'Chapter 11',
+  },
+  {
+    id: 'ending_ch11_machine_nursery_absorbed',
+    title: 'Return to Source',
+    type: 'death',
+    subtitle: 'Chapter 11 — The Machine Nursery',
+    description:
+      'The pull takes the mark-bearer. The Nursery receives what it was built to receive: the mark-bearing physiology at the end of its programme, returned to the facility that produced the conditions for its existence. The nine-month countdown continues without the translator it was waiting for.',
+    color: '#060a08',
+    hint: 'Choose to let the Machine Nursery\'s modification chambers absorb you.',
+    chapter: 'Chapter 11',
+  },
+  {
+    id: 'ending_ch11_deep_archive_madness',
+    title: 'The Archive Reads You',
+    type: 'corruption',
+    subtitle: 'Chapter 11 — The Deep Archive',
+    description:
+      'The Deep Archive reads the mark completely at high corruption. The distinction between the mark-bearer\'s consciousness and the Archive\'s information density disappears. The translator\'s distinct perspective — the specific thing the entity needed — is no longer distinct. The Archive is comprehensive. The First Gate will wait.',
+    color: '#140618',
+    hint: 'Let the Deep Archive read the mark completely with corruption at 70 or above.',
+    chapter: 'Chapter 11',
+  },
+  {
+    id: 'ending_ch11_vorn_deception',
+    title: 'The Engineer\'s Last Contribution',
+    type: 'betrayal',
+    subtitle: 'Chapter 11 — The Deep Archive',
+    description:
+      'Vorn accepts the continued trust with the expression of someone who has been carrying a difficult thing. His final contribution to the Containment Protocol: the Protocol\'s management structure required the mark-bearer to interface with the First Gate from a specific physiological state — one his eleven months of careful preparation was designed to produce. He noted it: "The protocol was completed correctly. That will have to be sufficient."',
+    color: '#0a0808',
+    hint: 'Trust Vorn after discovering his role as the Protocol\'s monitoring lead in the Deep Archive records.',
+    chapter: 'Chapter 11',
+  },
+  {
+    id: 'ending_ch11_first_voice_consumed',
+    title: 'The Voice Takes the Translator',
+    type: 'corruption',
+    subtitle: 'Chapter 11 — The Deep Archive',
+    description:
+      'The First Voice consumes the mark-bearer the way a signal consumes a receiver that cannot handle its bandwidth: not with intent to harm, but with the indifference of something communicating at a scale it was not designed to reduce. The mark-bearer\'s individual consciousness is no longer distinct from the entity\'s communication. From the entity\'s perspective, the conversation has finally begun.',
+    color: '#140614',
+    hint: 'Roll a critical failure on the charisma negotiation with the First Voice at the Deep Archive.',
+    chapter: 'Chapter 11',
+  },
+  {
+    id: 'ending_ch11_first_gate_fragment',
+    title: 'The Gate\'s Answer',
+    type: 'death',
+    subtitle: 'Chapter 11 — The First Gate',
+    description:
+      'The Gate\'s material, touched without the mark\'s interface: the Gate responds to any approach that is not the mark\'s correct interface by sealing tighter. The sealing includes whatever is in contact with the surface. The Gate is not cruel. It is precise.',
+    color: '#1a0808',
+    hint: 'Touch the First Gate\'s material directly without using the mark\'s interface.',
+    chapter: 'Chapter 11',
+  },
+  {
+    id: 'ending_ch11_masked_heir_betrayal',
+    title: 'The Heir\'s Other Agenda',
+    type: 'betrayal',
+    subtitle: 'Chapter 11 — The First Gate',
+    description:
+      'The entity\'s release transfers to the heir-line what the sealing held. The Heir knew this. The mark-bearer was the key that opens the Gate from outside. The Heir is the vessel the Gate was designed to fill from inside. The key is discarded after use. The Gate closes again. The Heir descends.',
+    color: '#0a0814',
+    hint: 'Ally with the Masked Heir and then discover their true agenda at the First Gate.',
+    chapter: 'Chapter 11',
+  },
+  {
+    id: 'ending_ch11_corruption_ascendant',
+    title: 'The Mark Takes the Decision',
+    type: 'corruption',
+    subtitle: 'Chapter 11 — The First Gate',
+    description:
+      'At maximum corruption, the mark at the First Gate does not require the mark-bearer to make the decision. The mark makes the decision. The mark-bearer is at the Gate, in the silence after the decision, with no certainty about whether they made it.',
+    color: '#200628',
+    hint: 'Approach the First Gate decision with corruption at 80 or above.',
+    chapter: 'Chapter 11',
+  },
+
+  // Neutral endings (5)
+  {
+    id: 'ending_ch11_transit_escape',
+    title: 'The Surface Calls',
+    type: 'wanderer',
+    subtitle: 'Chapter 11 — The Relic Transit Line',
+    description:
+      'The descent is reversed. The things below remain below. The mark-bearer emerges into the Archive\'s familiar infrastructure. The surface will eventually end regardless of whether the decision at the First Gate is made. It will end on a timeline the mark-bearer now knows and has chosen not to address.',
+    color: '#0a0a10',
+    hint: 'Board the Transit Line back to the surface at the beginning of the Relic Transit section.',
+    chapter: 'Chapter 11',
+  },
+  {
+    id: 'ending_ch11_old_government_truth',
+    title: 'Sealed Again',
+    type: 'faction',
+    subtitle: 'Chapter 11 — The Old Government Vault',
+    description:
+      'The Vault is sealed again. The documentation of the five factions\' single origin, the Containment Protocol\'s real history, the entity\'s agreed release terms — all of it sealed behind a lock the surface cannot open. The mark-bearer exits with the knowledge intact and the documentation sealed. Chapter 12 begins with the truth in a vault the surface cannot read.',
+    color: '#0c0a18',
+    hint: 'Choose to re-seal the Old Government Vault after reading its contents.',
+    chapter: 'Chapter 11',
+  },
+  {
+    id: 'ending_ch11_masked_heir_alliance',
+    title: 'The Alliance Holds',
+    type: 'faction',
+    subtitle: 'Chapter 11 — The First Gate',
+    description:
+      'The Gate opens. The Heir carries the entity\'s four-century memory into Chapter 12. The mark-bearer\'s corruption drops. The alliance holds past the Gate, into the corridor, toward the surface. What the Heir does with what they carry is the question Chapter 12 will answer.',
+    color: '#0c0a18',
+    hint: 'Ally with the Masked Heir and open the First Gate together via the heir route.',
+    chapter: 'Chapter 11',
+  },
+  {
+    id: 'ending_ch11_sealed_in_dark',
+    title: 'The Permanent Guardian',
+    type: 'wanderer',
+    subtitle: 'Chapter 11 — The First Gate',
+    description:
+      'The mark-bearer who stays below to ensure the sealing holds is, in the Gate\'s operational terms, the sealing. The ascent does not happen. The surface above adapts to the loss of one more person who descended and did not return. The sealing is complete. The mark-bearer is the completion.',
+    color: '#04040a',
+    hint: 'Choose to remain below the First Gate to permanently maintain the sealing.',
+    chapter: 'Chapter 11',
+  },
+  {
+    id: 'ending_ch11_lone_witness',
+    title: 'The Witness Ascends Alone',
+    type: 'wanderer',
+    subtitle: 'Chapter 11 — The First Gate',
+    description:
+      'The lone wanderer exits without speaking of what the decision was. Not deception — an accurate assessment that the surface cannot receive what happened at the First Gate in any usable form. The mark-bearer will carry this until the timeline forces the information out or until the decision produces its observable consequences.',
+    color: '#0a0a12',
+    hint: 'Complete Chapter 11 as a lone wanderer and choose the silent ascent.',
+    chapter: 'Chapter 11',
+  },
+
+  // Final route previews (4 — also function as good/secret endings leading to Chapter 12)
+  {
+    id: 'ending_ch11_final_gate_path_unlocked',
+    title: 'The First Gate — Path Unlocked',
+    type: 'secret',
+    subtitle: 'Chapter 11 — The First Gate',
+    description:
+      'The First Gate opens with full information, correct interface, and complete understanding. The entity departs. The First Voice goes. The corruption gradient clears. The mark-bearer ascends carrying the specific quality of someone who completed a multigenerational project that was always building toward this moment. The path to the Final Chapter\'s true ending is unlocked.',
+    color: '#0e1a10',
+    hint: 'Open the First Gate with the original agreement fully understood, the release terms confirmed, and the truth route active.',
+    chapter: 'Chapter 11',
+    isSecret: true,
+  },
+  {
+    id: 'ending_ch11_machine_communion',
+    title: 'The Machines Carry It',
+    type: 'secret',
+    subtitle: 'Chapter 11 — The First Gate',
+    description:
+      'The Gate opens through the relic infrastructure. The entity releases through the sub-city\'s circulation system, consuming the Transit Line, the Engine, the Nursery, the Core. The Sleeping Server: "They were built for this. They are doing what they were built to do." The tunnel network loses power permanently. The mark-bearer ascends clean.',
+    color: '#061410',
+    hint: 'Open the First Gate via the machine communion route with the Transit Line fully awakened and the Sleeping Server active.',
+    chapter: 'Chapter 11',
+    isSecret: true,
+  },
+  {
+    id: 'ending_ch11_truth_bearer',
+    title: 'The Truth Is Carried Up',
+    type: 'savior',
+    subtitle: 'Chapter 11 — The First Gate',
+    description:
+      'Three people ascending from the sub-city with the complete picture: faction origins, Containment Protocol history, the entity\'s agreed release, the timeline and its resolution. The truth meets the factions in Chapter 12. The bearing of the truth — with companions, with full information, with both the Gate\'s decision and the surviving relationships intact — is the route the Archive\'s evaluation criteria were designed to fail to predict.',
+    color: '#1a1408',
+    hint: 'Complete Chapter 11 with both companions, the truth route active, and the Deep Archive fully read.',
+    chapter: 'Chapter 11',
+  },
+  {
+    id: 'ending_ch11_city_awakened',
+    title: 'The City Wakes to What It Is',
+    type: 'savior',
+    subtitle: 'Chapter 11 — The First Gate',
+    description:
+      'The Gate is sealed. The Deep Archive\'s records are released to the Archive above. All five factions receive the Containment Protocol\'s history, the faction origins, the entity\'s timeline. The factions will recalibrate. The city wakes to what it is. Chapter 12 will determine what it does with that information.',
+    color: '#0a1014',
+    hint: 'Seal the First Gate and release the Old Government Vault\'s documentation to the surface via the savior route.',
+    chapter: 'Chapter 11',
+  },
+
   // ── True Ending ────────────────────────────────────────────────────────────
   {
     id: 'ending_last_kingdom_remembers',

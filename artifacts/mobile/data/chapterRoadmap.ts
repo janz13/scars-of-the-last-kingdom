@@ -799,7 +799,8 @@ export const CHAPTER_ROADMAP: ChapterEntry[] = [
       'Chapter 12 — Crown of Ash',
       'Final Chapter 1 — The Last Gate',
     ],
-    status: 'planned',
+    status: 'complete',
+    nodeCount: 146,
   },
 
   {

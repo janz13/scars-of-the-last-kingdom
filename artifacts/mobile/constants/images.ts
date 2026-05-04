@@ -181,6 +181,21 @@ export const BACKGROUND_IMAGES: Record<string, any> = {
   soldiers_grave:        require('../assets/images/surface_ruins.png'),
   place_we_promised:     require('../assets/images/dark_metro_hallway.png'),
   empty_chair:           require('../assets/images/dark_metro_hallway.png'),
+
+  // ── Chapter 11 — The City Beneath the City ──────────────────────────────
+  // Placeholder art mapped to closest existing environment images.
+  // TODO: Replace with dedicated sub-city / ancient-structure pixel art.
+  sub_city_gate:           require('../assets/images/collapsed_tunnel.png'),
+  forgotten_platform:      require('../assets/images/dark_metro_hallway.png'),
+  underworld_district:     require('../assets/images/dark_metro_hallway.png'),
+  relic_transit_line:      require('../assets/images/relic_engine_room.png'),
+  sealed_engine:           require('../assets/images/relic_engine_room.png'),
+  blackout_core:           require('../assets/images/archive_ruin_wall.png'),
+  nameless_housing_block:  require('../assets/images/tunnel_camp.png'),
+  old_government_vault:    require('../assets/images/archive_ruin_wall.png'),
+  machine_nursery:         require('../assets/images/relic_engine_room.png'),
+  deep_archive:            require('../assets/images/archive_ruin_wall.png'),
+  first_gate:              require('../assets/images/relic_engine_room.png'),
 };
 
 // ─── Gradient fallbacks & transition colors ───────────────────────────────────
@@ -605,6 +620,52 @@ export const BACKGROUND_GRADIENTS: Record<string, GradientConfig> = {
     colors: ['#040404', '#080808', '#060606', '#020202'],
     start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
   },
+  // ── Chapter 11 gradients ──────────────────────────────────────────────────
+  sub_city_gate: {
+    colors: ['#060408', '#0c0810', '#060408', '#040306'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  forgotten_platform: {
+    colors: ['#050508', '#0a0a12', '#050508', '#030306'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  underworld_district: {
+    colors: ['#060508', '#0c0a10', '#060508', '#040306'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  relic_transit_line: {
+    colors: ['#060810', '#0a0e1e', '#060810', '#04060c'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  sealed_engine: {
+    colors: ['#080a06', '#10140a', '#080a06', '#050705'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  blackout_core: {
+    colors: ['#0a0614', '#160a24', '#0a0614', '#07040e'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  nameless_housing_block: {
+    colors: ['#0a0806', '#14100a', '#0a0806', '#070604'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  old_government_vault: {
+    colors: ['#0c0a18', '#14102a', '#0c0a18', '#08060e'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  machine_nursery: {
+    colors: ['#060a08', '#0a1410', '#060a08', '#040706'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  deep_archive: {
+    colors: ['#080618', '#10082a', '#08061c', '#050410'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  first_gate: {
+    colors: ['#0a0814', '#160e24', '#0a0814', '#07060e'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+
   // Generic fallback for any key not listed above
   default: {
     colors: ['#0a0a14', '#12121f', '#0a0a14', '#080810'],

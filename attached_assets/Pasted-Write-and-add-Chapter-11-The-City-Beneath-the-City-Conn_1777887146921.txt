@@ -1,0 +1,98 @@
+Write and add Chapter 11: The City Beneath the City.
+
+Connect this chapter from Chapter 10 using CHAPTER_10_AUDIT.md.
+
+Add at least 105 connected story nodes.
+
+Chapter 11 title:
+The City Beneath the City
+
+Main theme:
+The truth under the ruins. Ancient machinery, buried guilt, forgotten people, and the real reason the city collapsed.
+
+Main locations:
+- The Sub-City Gate
+- The Forgotten Platform
+- The Underworld District
+- The Relic Transit Line
+- The Sealed Engine
+- The Blackout Core
+- The Nameless Housing Block
+- The Old Government Vault
+- The Machine Nursery
+- The Deep Archive
+- The First Gate
+
+Important NPCs:
+1. The Masked Heir — reveals major truths.
+2. The Sleeping Server — returns if activated.
+3. Professor Ansel Vorn — reveals the blackout project.
+4. Mother Chalk — may guide tunnel paths.
+5. The First Voice — tries to reach the core.
+6. The Pale Curator — may attempt to capture the player again.
+
+Major routes:
+1. discover the real blackout core
+2. learn who built the relic system
+3. find evidence against all major factions
+4. save buried survivors
+5. abandon buried survivors
+6. use the mark to awaken machines
+7. destroy relic machines
+8. side with the Masked Heir
+9. reject the Masked Heir
+10. unlock true ending requirements
+11. unlock faction war consequences
+12. unlock final gate route
+
+Required story reveals:
+- The city above was built over an older city.
+- The relic system kept something sealed.
+- The blackout was partly an attempted containment event.
+- The player was tied to the First Gate.
+- The Masked Heir may be family, clone, rival, or former ally depending on route.
+- Chapter 12 will decide who controls the city.
+
+Add:
+- at least 12 bad endings
+- at least 5 neutral endings
+- at least 4 final route previews
+- at least 8 dice-roll checks
+- at least 7 class-specific choices
+- at least 7 background-specific choices
+- at least 10 mark/corruption choices
+- new final-route flags
+- new endings
+- new Route Codex entries
+
+New endings:
+- Buried City Ending
+- Blackout Core Death Ending
+- Machine Nursery Ending
+- Masked Heir Alliance Ending
+- Masked Heir Betrayal Ending
+- First Gate Fragment Ending
+- Deep Archive Madness Ending
+- Forgotten Platform Collapse Ending
+- Old Government Truth Ending
+- Relic Transit Lost Ending
+- Final Gate Path Unlocked
+
+New background image paths:
+- /images/backgrounds/sub_city_gate.png
+- /images/backgrounds/forgotten_platform.png
+- /images/backgrounds/underworld_district.png
+- /images/backgrounds/relic_transit_line.png
+- /images/backgrounds/sealed_engine.png
+- /images/backgrounds/blackout_core.png
+- /images/backgrounds/nameless_housing_block.png
+- /images/backgrounds/old_government_vault.png
+- /images/backgrounds/machine_nursery.png
+- /images/backgrounds/deep_archive.png
+- /images/backgrounds/first_gate.png
+
+After adding Chapter 11, create:
+
+CHAPTER_11_SUMMARY.md
+
+Include major truths, final route flags, endings, and connection points for Chapter 12: Crown of Ash.
