@@ -1901,7 +1901,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
         nextNode: 'c6_relay_arrive',
       },
       {
-        id: 'c6_resist_echo_chamber',
+        id: 'c6_first_voice_resist_echo_chamber',
         text: 'Go to the Echo Chamber first.',
         nextNode: 'c6_echo_chamber_arrive',
       },

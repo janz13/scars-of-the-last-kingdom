@@ -474,7 +474,7 @@ export const FINAL_CHAPTER_2_NODES: StoryNode[] = [
         id: 'fc2_mira_tomorrow_choose',
         text: 'Stay with Mira. The surface is enough.',
         nextNode: 'fc2_mira_tomorrow_end',
-        requirements: { miraTrust: 15 },
+        requirements: { miraTrust: 10 },
       },
       {
         id: 'fc2_savior_after_mira',
@@ -497,7 +497,7 @@ export const FINAL_CHAPTER_2_NODES: StoryNode[] = [
         id: 'fc2_cain_last_stand_final',
         text: 'Cain stays. His last stand is here, protecting what remains.',
         nextNode: 'fc2_cain_last_stand_final_end',
-        requirements: { cainTrust: 15 },
+        requirements: { cainTrust: 10 },
       },
       {
         id: 'fc2_savior_after_cain',

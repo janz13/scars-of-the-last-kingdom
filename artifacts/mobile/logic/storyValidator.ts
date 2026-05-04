@@ -64,6 +64,7 @@ const COMPANION_PRESENT_KEYS = new Set(['miraPresent', 'cainPresent']);
 
 const REQUIREMENT_ONLY_KEYS = new Set([
   'flags', 'blockedFlags', 'classes', 'backgrounds', 'factionRep',
+  'maxCorruption', 'maxMorale',
   ...COMPANION_TRUST_KEYS, ...COMPANION_PRESENT_KEYS,
 ]);
 
@@ -165,8 +166,8 @@ export function validateStory(): ValidationWarning[] {
       }
       localChoiceIds.add(choice.id);
 
-      // nextNode exists
-      if (!nodeIds.has(choice.nextNode)) {
+      // nextNode exists (__return__ is a sentinel resolved at runtime by GameContext)
+      if (choice.nextNode !== '__return__' && !nodeIds.has(choice.nextNode)) {
         warnings.push({
           severity: 'error',
           nodeId: node.id,

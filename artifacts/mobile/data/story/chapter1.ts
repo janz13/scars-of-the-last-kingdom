@@ -1461,7 +1461,13 @@ export const CHAPTER_1_NODES: StoryNode[] = [
     imageKey: 'last_archive_door',
     text: 'The door opens. Cold air rushes out — ancient, preserved, carrying the scent of old paper and something electrical. Beyond: shelves upon shelves of pre-collapse data and a machine larger than anything above, its single lens turning toward you. It recognizes the mark. And somewhere in the city above, something ancient wakes up and takes notice.',
     effectsOnEnter: { lastArchive: 10, morale: 5, setFlags: ['entered_archive', 'chapter1_complete'] },
-    choices: [],
+    choices: [
+      {
+        id: 'chapter1_end_continue',
+        text: 'Step inside. Whatever comes next, it starts here.',
+        nextNode: 'chapter2_start',
+      },
+    ],
   },
 
   // ────────────────────────────────
