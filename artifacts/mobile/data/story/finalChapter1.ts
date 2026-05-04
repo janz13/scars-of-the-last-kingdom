@@ -56,7 +56,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'Who Descended',
     location: 'The Descent Stair',
     imageKey: 'descent_stair',
-    text: `The stair is wide enough for two. The mark reads the configuration it's been carrying since Chapter 12's resolution: who remained, who departed to their own war, who was never here to begin with. The signal below does not distinguish. The gate below responds to the mark, not to the company kept. But the company kept changes what the descent means, and what choices are available when the Gate finally asks.`,
+    text: `The stair is wide enough for two. The mark reads the configuration it's been carrying since the surface resolution: who remained, who departed to their own war, who was never here to begin with. The signal below does not distinguish. The gate below responds to the mark, not to the company kept. But the company kept changes what the descent means, and what choices are available when the Gate finally asks.`,
     effectsOnEnter: {},
     choices: [
       {
@@ -97,7 +97,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'Three at the Stair',
     location: 'The Descent Stair',
     imageKey: 'descent_stair',
-    text: `Mira checks the air quality at the first landing. Cain counts the stair's structural load-bearing points without being asked. The specific competence of two people who have been doing this for thirteen chapters has reduced itself to something quieter than habit — closer to a language with no unnecessary words. The mark reads them both as it has read them since Chapter 1: familiar, stable, and worth the weight they add to every descent. The Gate below doesn't know what they are to you. It will, when you arrive.`,
+    text: `Mira checks the air quality at the first landing. Cain counts the stair's structural load-bearing points without being asked. The specific competence of two people who have been doing this together has reduced itself to something quieter than habit — closer to a language with no unnecessary words. The mark reads them both as it has read them from the beginning: familiar, stable, and worth the weight they add to every descent. The Gate below doesn't know what they are to you. It will, when you arrive.`,
     effectsOnEnter: { miraTrust: 3, cainTrust: 3, morale: 8, setFlags: ['fc1_both_companions'] },
     choices: [
       {
@@ -131,7 +131,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'Cain at the Stair',
     location: 'The Descent Stair',
     imageKey: 'descent_stair',
-    text: `Cain reads the stair in seconds. "No observable threats. Pre-Blackout construction — older than the Saints' founding. The descent takes approximately forty minutes at a sustainable pace. We have light for three hours." He pauses at the first landing, looking at the mark on your wrist in the way he's been looking at it since Chapter 1 — not with suspicion anymore, but with the specific attentiveness of someone who has spent thirteen chapters learning what it means. "Whatever is at the bottom," he says, "we reach it."`,
+    text: `Cain reads the stair in seconds. "No observable threats. Pre-Blackout construction — older than the Saints' founding. The descent takes approximately forty minutes at a sustainable pace. We have light for three hours." He pauses at the first landing, looking at the mark on your wrist in the way he's been looking at it since the metro — not with suspicion anymore, but with the specific attentiveness of someone who has spent a long time learning what it means. "Whatever is at the bottom," he says, "we reach it."`,
     effectsOnEnter: { cainTrust: 5, morale: 5, setFlags: ['fc1_cain_companion'] },
     choices: [
       {
@@ -207,7 +207,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'What the Mark Carries',
     location: 'The Final Metro Line',
     imageKey: 'final_metro_line',
-    text: `The train moves before anyone boards it. The mark is the ignition. The memory fragments accumulated across thirteen chapters — the sub-city truth, the entity's departure record, the Foundation Period's complete history — are reading the transit infrastructure as a request: present what you've found. The gate is running a preliminary evaluation on the ride down. Whatever the mark carries will determine what it finds when the train stops. The class and calibration of thirteen chapters of choice is being read right now, through the train's original interface, as the platform recedes.`,
+    text: `The train moves before anyone boards it. The mark is the ignition. The memory fragments accumulated across the full descent — the sub-city truth, the entity's departure record, the Foundation Period's complete history — are reading the transit infrastructure as a request: present what you've found. The gate is running a preliminary evaluation on the ride down. Whatever the mark carries will determine what it finds when the train stops. The accumulated calibration of every choice made is being read right now, through the train's original interface, as the platform recedes.`,
     effectsOnEnter: { intelligence: 2, setFlags: ['gate_preliminary_evaluation'] },
     choices: [
       {
@@ -236,7 +236,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'The Gate\'s First Voice',
     location: 'The Final Metro Line',
     imageKey: 'final_metro_line',
-    text: `The esper sense reaches through the train's relic architecture and finds the Gate's preliminary resonance — not a thought, not language, but the specific weight of something very old that has been waiting for something it recognizes. It recognizes the mark. Not the bearer — the mark. The thirteen chapters of calibration. The specific history of choices that produced this configuration. The impression it leaves is not approval, exactly. It is acknowledgment. The Gate knows the mark is coming. It has always known. The acknowledgment is: it is ready.`,
+    text: `The esper sense reaches through the train's relic architecture and finds the Gate's preliminary resonance — not a thought, not language, but the specific weight of something very old that has been waiting for something it recognizes. It recognizes the mark. Not the bearer — the mark. The accumulated calibration. The specific history of choices that produced this configuration. The impression it leaves is not approval, exactly. It is acknowledgment. The Gate knows the mark is coming. It has always known. The acknowledgment is: it is ready.`,
     effectsOnEnter: { intelligence: 4, morale: 8, setFlags: ['gate_acknowledged_mark', 'esper_gate_contact'] },
     choices: [
       {
@@ -289,7 +289,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'The Bone Platform',
     location: 'The Bone Platform',
     imageKey: 'bone_platform',
-    text: `The Bone Platform is named for its material: the walls are carved from compressed calcium deposits that are pre-human in origin, shaped by something that understood load-bearing architecture before the city above was founded. The mark reads the platform's construction the way it has read every space in thirteen chapters — as accumulated decision. The decision accumulated here is: this was built to be a waiting room. A place where whoever carried the mark would arrive, assess what they were carrying, and choose a direction before approaching the Gate. Three routes branch from the platform. The Gate is ahead. The Memory Wall, the Companion Threshold, and the Faction Hall are the three assessments the Gate runs before it opens.`,
+    text: `The Bone Platform is named for its material: the walls are carved from compressed calcium deposits that are pre-human in origin, shaped by something that understood load-bearing architecture before the city above was founded. The mark reads the platform's construction the way it has read every space since the first node — as accumulated decision. The decision accumulated here is: this was built to be a waiting room. A place where whoever carried the mark would arrive, assess what they were carrying, and choose a direction before approaching the Gate. Three routes branch from the platform. The Gate is ahead. The Memory Wall, the Companion Threshold, and the Faction Hall are the three assessments the Gate runs before it opens.`,
     effectsOnEnter: { setFlags: ['bone_platform_reached'] },
     choices: [
       {
@@ -306,7 +306,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'The Assessors',
     location: 'The Bone Platform',
     imageKey: 'bone_platform',
-    text: `At the platform's three branches, figures wait. They are not faction representatives — they are something the mark recognizes as the Gate's own assessment interface, wearing the faces of every decision made across thirteen chapters. The Memory Wall to the left holds the complete record. The Companion Threshold ahead holds the relational record. The Faction Hall to the right holds the institutional record. All three must be traversed before the Gate Antechamber opens. This is not a test. It is an accounting. The gate is not asking whether you are worthy. It is asking whether you know what you are carrying.`,
+    text: `At the platform's three branches, figures wait. They are not faction representatives — they are something the mark recognizes as the Gate's own assessment interface, wearing the faces of every decision made across the full journey. The Memory Wall to the left holds the complete record. The Companion Threshold ahead holds the relational record. The Faction Hall to the right holds the institutional record. All three must be traversed before the Gate Antechamber opens. This is not a test. It is an accounting. The gate is not asking whether you are worthy. It is asking whether you know what you are carrying.`,
     effectsOnEnter: { intelligence: 2, setFlags: ['gate_assessment_begun'] },
     choices: [
       {
@@ -325,7 +325,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'The Memory Wall',
     location: 'The Memory Wall',
     imageKey: 'memory_wall',
-    text: `The Memory Wall is not a wall. It is a surface that plays back. Every major choice made across thirteen chapters exists in the wall's record — not as summary, but as the mark's own stored resonance. The specific frequency of each decision: which companions were kept, which factions were addressed, which truths were released, which corruptions were accepted. The wall does not judge the record. It displays it. The Gate is reading through the wall what the bearer is carrying. The bearer can read it too, from this side. The question the Memory Wall asks is not what you chose. It is: do you recognize what you chose, and do you carry it consciously?`,
+    text: `The Memory Wall is not a wall. It is a surface that plays back. Every major choice made across the full journey exists in the wall's record — not as summary, but as the mark's own stored resonance. The specific frequency of each decision: which companions were kept, which factions were addressed, which truths were released, which corruptions were accepted. The wall does not judge the record. It displays it. The Gate is reading through the wall what the bearer is carrying. The bearer can read it too, from this side. The question the Memory Wall asks is not what you chose. It is: do you recognize what you chose, and do you carry it consciously?`,
     effectsOnEnter: { setFlags: ['memory_wall_reached'] },
     choices: [
       {
@@ -359,7 +359,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'Who Walked With You',
     location: 'The Memory Wall',
     imageKey: 'memory_wall',
-    text: `The companion memory plays: every interaction with Mira and Cain across thirteen chapters, in the mark's resonance record. Not in words but in the specific thermal signature of trust accumulated or broken. Mira's trust record shows as a slow warmth — clinical at the start, something warmer by Chapter 4, something the mark reads as genuine by Chapter 7. Cain's shows as a colder architecture: respect, then something the mark reads as the functional equivalent of loyalty without its vocabulary. The wall is not recording what you feel about them. It is recording what the mark felt, through thirteen chapters of calibration, as the most legible reading of what was between you. What the mark felt is accurate.`,
+    text: `The companion memory plays: every interaction with Mira and Cain through everything, in the mark's resonance record. Not in words but in the specific thermal signature of trust accumulated or broken. Mira's trust record shows as a slow warmth — clinical at the start, something warmer in the tunnels, something the mark reads as genuine by the Library levels. Cain's shows as a colder architecture: respect, then something the mark reads as the functional equivalent of loyalty without its vocabulary. The wall is not recording what you feel about them. It is recording what the mark felt, through the full accumulated calibration, as the most legible reading of what was between you. What the mark felt is accurate.`,
     effectsOnEnter: { morale: 5, setFlags: ['companion_memory_reviewed'] },
     choices: [
       {
@@ -376,7 +376,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'Five Institutions',
     location: 'The Memory Wall',
     imageKey: 'memory_wall',
-    text: `The faction memory plays: every reputation point, every alliance offered and refused, every negotiation and every failure of negotiation across thirteen chapters. The Iron Saints show as a weight. The Glass Court shows as a texture. The Red Choir shows as a frequency. The Last Archive shows as a depth. The Hollow Children show as something the mark reads as the oldest signal — older than any of the named factions, older than the city's formal organization, the resonance of people who adapted to a truth that everyone above them chose not to acknowledge. The five factions were not the city. They were the city's institutions. The city underneath them was always something else. The memory wall shows the difference.`,
+    text: `The faction memory plays: every reputation point, every alliance offered and refused, every negotiation and every failure of negotiation across every encounter. The Iron Saints show as a weight. The Glass Court shows as a texture. The Red Choir shows as a frequency. The Last Archive shows as a depth. The Hollow Children show as something the mark reads as the oldest signal — older than any of the named factions, older than the city's formal organization, the resonance of people who adapted to a truth that everyone above them chose not to acknowledge. The five factions were not the city. They were the city's institutions. The city underneath them was always something else. The memory wall shows the difference.`,
     effectsOnEnter: { intelligence: 3, setFlags: ['faction_memory_reviewed'] },
     choices: [
       {
@@ -410,7 +410,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'The Weight of It',
     location: 'The Memory Wall',
     imageKey: 'memory_wall',
-    text: `The complete record plays simultaneously — all of it, at once. Every choice, every companion interaction, every faction decision, every fragment of the entity's departure record, every moment of the sub-city's three-hundred-year truth. The mark processes what thirteen chapters of a city's accumulated history feels like when it is held consciously. Whether the bearer can hold it determines what they carry to the Gate. Whether they can hold it determines what the Gate receives.`,
+    text: `The complete record plays simultaneously — all of it, at once. Every choice, every companion interaction, every faction decision, every fragment of the entity's departure record, every moment of the sub-city's three-hundred-year truth. The mark processes what a city's full accumulated history feels like when it is held consciously. Whether the bearer can hold it determines what they carry to the Gate. Whether they can hold it determines what the Gate receives.`,
     effectsOnEnter: {},
     choices: [
       {
@@ -440,7 +440,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'The Companion Threshold',
     location: 'The Companion Threshold',
     imageKey: 'companion_threshold',
-    text: `The Companion Threshold is the second assessment chamber. It takes the form of a space that the Gate's architecture has configured to reflect the specific relational weight the mark carries: whoever descended with the bearer is here, in the threshold's record, as the clearest version of what they were across thirteen chapters. The threshold does not manufacture a confrontation. It presents what was already there. Whatever remains between the bearer and the companions who descended — trust, fracture, sacrifice, distance — the threshold makes it legible. The Gate is not interested in sentiment. It is interested in what the companion presence means for what the mark does at the Gate.`,
+    text: `The Companion Threshold is the second assessment chamber. It takes the form of a space that the Gate's architecture has configured to reflect the specific relational weight the mark carries: whoever descended with the bearer is here, in the threshold's record, as the clearest version of what they were through everything. The threshold does not manufacture a confrontation. It presents what was already there. Whatever remains between the bearer and the companions who descended — trust, fracture, sacrifice, distance — the threshold makes it legible. The Gate is not interested in sentiment. It is interested in what the companion presence means for what the mark does at the Gate.`,
     effectsOnEnter: { setFlags: ['companion_threshold_reached'] },
     choices: [
       {
@@ -457,7 +457,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'The Relational Record',
     location: 'The Companion Threshold',
     imageKey: 'companion_threshold',
-    text: `The threshold reads the companion configuration and presents it. The mark has been carrying this configuration since Chapter 12's exit. What it means at the Gate is: who is standing at the threshold alongside the bearer determines what Gate options are available, and what the Gate's assessment of the mark's relational record produces. The threshold is specific: it wants to know whether the companion relationship was real, or whether it was functional. The mark's thirteen-chapter record is unambiguous about the difference.`,
+    text: `The threshold reads the companion configuration and presents it. The mark has been carrying this configuration since the surface. What it means at the Gate is: who is standing at the threshold alongside the bearer determines what Gate options are available, and what the Gate's assessment of the mark's relational record produces. The threshold is specific: it wants to know whether the companion relationship was real, or whether it was functional. The mark's accumulated record is unambiguous about the difference.`,
     effectsOnEnter: {},
     choices: [
       {
@@ -492,7 +492,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'Mira at the Threshold',
     location: 'The Companion Threshold',
     imageKey: 'companion_threshold',
-    text: `Mira at the threshold is Mira at her clearest: the thirteen-chapter accumulation of a person who arrived as a medic with a clinical relationship to truth and developed something that the threshold's record reads as devotion — not to the bearer, specifically, but to what the bearer was trying to do. "I know what the Gate is," she says. "I've known since Chapter 7, when I found the Archive's secondary documentation." She did not say. She stayed. "I can go through with you. Or I can stay here — at the threshold — and keep it open. Those are different things for what you find on the other side." She is giving you the choice. The threshold is recording whether you understand what she's offering.`,
+    text: `Mira at the threshold is Mira at her clearest: the accumulated weight of a person who arrived as a medic with a clinical relationship to truth and developed something that the threshold's record reads as devotion — not to the bearer, specifically, but to what the bearer was trying to do. "I know what the Gate is," she says. "I've known since the Library level, when I found the Archive's secondary documentation." She did not say. She stayed. "I can go through with you. Or I can stay here — at the threshold — and keep it open. Those are different things for what you find on the other side." She is giving you the choice. The threshold is recording whether you understand what she's offering.`,
     effectsOnEnter: { miraTrust: 5, setFlags: ['mira_threshold_scene'] },
     choices: [
       {
@@ -521,7 +521,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'What Mira Carries',
     location: 'The Companion Threshold',
     imageKey: 'companion_threshold',
-    text: `Mira walks through the threshold with the mark. The threshold's record updates: the companion relationship was real. The Gate receives this. On the other side of the threshold, Mira is holding something she picked up in Chapter 7 and has been carrying without naming — the Archive's assessment of what the mark was designed to find. "Whatever you decide at the Gate," she says, "you have the complete picture. You know that now." She is not asking you to decide anything. She is confirming that the decision, when it comes, is made with full information. That was always what she was for.`,
+    text: `Mira walks through the threshold with the mark. The threshold's record updates: the companion relationship was real. The Gate receives this. On the other side of the threshold, Mira is holding something she found at the Library level and has been carrying without naming — the Archive's assessment of what the mark was designed to find. "Whatever you decide at the Gate," she says, "you have the complete picture. You know that now." She is not asking you to decide anything. She is confirming that the decision, when it comes, is made with full information. That was always what she was for.`,
     effectsOnEnter: { miraTrust: 3, morale: 10, setFlags: ['mira_at_gate', 'companion_threshold_passed'] },
     choices: [
       {
@@ -538,7 +538,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'Cain at the Threshold',
     location: 'The Companion Threshold',
     imageKey: 'companion_threshold',
-    text: `Cain at the threshold is not a different Cain than the one who read the Ashen Square's perimeter in Chapter 12. He is the same Cain — the one who chose to descend rather than stay for his war, which was not a small choice. The threshold records it. He reads the threshold the way he reads everything — as a problem with variables and solutions. "The Gate's architecture suggests that whoever passes through it does not return the same way," he says. "I've seen this pattern in Old Government documentation. Foundation-period gate mechanics." He knows. "I'll go through with you. Or I'll hold the perimeter here. Either is a defensible position." He means it literally. The threshold is recording whether the bearer sees the weight in both options.`,
+    text: `Cain at the threshold is not a different Cain than the one who read the Ashen Square's perimeter on the surface. He is the same Cain — the one who chose to descend rather than stay for his war, which was not a small choice. The threshold records it. He reads the threshold the way he reads everything — as a problem with variables and solutions. "The Gate's architecture suggests that whoever passes through it does not return the same way," he says. "I've seen this pattern in Old Government documentation. Foundation-period gate mechanics." He knows. "I'll go through with you. Or I'll hold the perimeter here. Either is a defensible position." He means it literally. The threshold is recording whether the bearer sees the weight in both options.`,
     effectsOnEnter: { cainTrust: 5, setFlags: ['cain_threshold_scene'] },
     choices: [
       {
@@ -567,7 +567,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'What Cain Carries',
     location: 'The Companion Threshold',
     imageKey: 'companion_threshold',
-    text: `Cain passes through the threshold with the precision of someone who has been mentally modeling this space since the transit line. On the other side, he reads the Gate Antechamber the way he has read every tactically significant space across thirteen chapters — as a field. "The Antechamber is a pre-entry buffer," he says. "Standard gate architecture: the Gate reads the bearer before opening, and the buffer space is where the final assessment occurs." He looks at the mark. "The mark is what it is. The thirteen chapters built it. The Gate is going to receive exactly what was built." He does not say whether that's enough. He doesn't say it isn't.`,
+    text: `Cain passes through the threshold with the precision of someone who has been mentally modeling this space since the transit line. On the other side, he reads the Gate Antechamber the way he has read every tactically significant space — as a field. "The Antechamber is a pre-entry buffer," he says. "Standard gate architecture: the Gate reads the bearer before opening, and the buffer space is where the final assessment occurs." He looks at the mark. "The mark is what it is. Everything built it. The Gate is going to receive exactly what was built." He does not say whether that's enough. He doesn't say it isn't.`,
     effectsOnEnter: { cainTrust: 3, morale: 8, setFlags: ['cain_at_gate', 'companion_threshold_passed'] },
     choices: [
       {
@@ -584,7 +584,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'Both at the Threshold',
     location: 'The Companion Threshold',
     imageKey: 'companion_threshold',
-    text: `Mira and Cain at the threshold together produce a specific configuration: two people who have been working in close proximity for thirteen chapters and have developed the specific trust of people who never chose each other but never chose not to. Mira catalogs the threshold's architectural intent. Cain reads the structural load. They don't coordinate — they don't need to. The threshold's record reads both configurations simultaneously: the warmth of the medical relationship and the colder architecture of tactical trust. Together, they form something that the threshold records as the most complete companion configuration the Gate can receive. The bearer is not alone in any sense the Gate can measure.`,
+    text: `Mira and Cain at the threshold together produce a specific configuration: two people who have been working in close proximity under sustained pressure and have developed the specific trust of people who never chose each other but never chose not to. Mira catalogs the threshold's architectural intent. Cain reads the structural load. They don't coordinate — they don't need to. The threshold's record reads both configurations simultaneously: the warmth of the medical relationship and the colder architecture of tactical trust. Together, they form something that the threshold records as the most complete companion configuration the Gate can receive. The bearer is not alone in any sense the Gate can measure.`,
     effectsOnEnter: { miraTrust: 3, cainTrust: 3, morale: 15, setFlags: ['both_companions_at_gate', 'companion_threshold_passed', 'mira_at_gate', 'cain_at_gate'] },
     choices: [
       {
@@ -620,7 +620,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'The Faction Hall',
     location: 'The Faction Hall',
     imageKey: 'faction_hall',
-    text: `The Faction Hall is the third assessment chamber, and the one the Gate's architecture dedicates the most structural space to: because faction relationships, across the thirteen chapters, were the primary way the city organized its response to the mark's existence. The Hall is lined with five alcoves. Each alcove holds the resonance record of one faction's relationship with the mark-bearer across the game. They are not representations of the faction leaders — they are the mark's record of how each institution was engaged. The Gate is reading what the bearer did with the city's five most powerful institutions. Whether they were used, allied, ignored, or harmed determines what support, if any, arrives at the Gate.`,
+    text: `The Faction Hall is the third assessment chamber, and the one the Gate's architecture dedicates the most structural space to: because faction relationships, across the whole journey, were the primary way the city organized its response to the mark's existence. The Hall is lined with five alcoves. Each alcove holds the resonance record of one faction's relationship with the mark-bearer. They are not representations of the faction leaders — they are the mark's record of how each institution was engaged. The Gate is reading what the bearer did with the city's five most powerful institutions. Whether they were used, allied, ignored, or harmed determines what support, if any, arrives at the Gate.`,
     effectsOnEnter: { setFlags: ['faction_hall_reached'] },
     choices: [
       {
@@ -769,7 +769,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'Cold Alcoves',
     location: 'The Faction Hall',
     imageKey: 'faction_hall',
-    text: `The five alcoves are not fully lit. The faction relationships across thirteen chapters did not produce a Crown alignment — or the alignments that were built did not reach the Gate's recognition threshold. The Hall is not empty: the mark's resonance is present, and the Gate can read it. But the institutional weight of five aligned factions is not here. What is here: the bearer's individual record, the mark's thirteen chapters of solo calibration, and the specific quality of someone who reached the Gate without the city's institutions behind them. The Gate can receive this. It is a harder argument to make without institutional weight. Whether the argument can be made depends on what the mark carries without support.`,
+    text: `The five alcoves are not fully lit. The faction relationships across the journey did not produce a Crown alignment — or the alignments that were built did not reach the Gate's recognition threshold. The Hall is not empty: the mark's resonance is present, and the Gate can read it. But the institutional weight of five aligned factions is not here. What is here: the bearer's individual record, the mark's accumulated solo calibration, and the singular weight of someone who reached the Gate without the city's institutions behind them. The Gate can receive this. It is a harder argument to make without institutional weight. Whether the argument can be made depends on what the mark carries without support.`,
     effectsOnEnter: { morale: -5, setFlags: ['faction_hall_no_support'] },
     choices: [
       {
@@ -786,7 +786,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'The Hall Unified',
     location: 'The Faction Hall',
     imageKey: 'faction_hall',
-    text: `The active alcoves converge their resonance toward the Hall's center: a single point of institutional weight committed to the mark-bearer's approach to the Gate. This is what the faction relationships across thirteen chapters built. Not a throne — not authority over the factions — but a commitment from the city's institutions that the bearer's decision at the Gate is recognized as legitimate. The Gate receives this. The faction hall's assessment is complete. The Gate Antechamber is open.`,
+    text: `The active alcoves converge their resonance toward the Hall's center: a single point of institutional weight committed to the mark-bearer's approach to the Gate. This is what the faction relationships across the whole journey built. Not a throne — not authority over the factions — but a commitment from the city's institutions that the bearer's decision at the Gate is recognized as legitimate. The Gate receives this. The faction hall's assessment is complete. The Gate Antechamber is open.`,
     effectsOnEnter: { morale: 15, setFlags: ['faction_hall_unified', 'gate_antechamber_unlocked'] },
     choices: [
       {
@@ -803,12 +803,12 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'The Hall Resists',
     location: 'The Faction Hall',
     imageKey: 'faction_hall',
-    text: `Without a Crown alignment, the Faction Hall's assessment runs against the mark's record rather than with it. The five alcoves are not lit, but they are not empty — they hold the resonance of every faction interaction across thirteen chapters, and the Gate is reading what those interactions produced. The question the Hall asks, in the absence of institutional alignment, is: why should the Gate respond to this bearer? The mark has thirteen chapters of answer. Whether the answer is sufficient depends on whether the reasoning holds under the Hall's evaluation — which is, in practical terms, the Gate's own evaluation, conducted through institutional memory.`,
+    text: `Without a Crown alignment, the Faction Hall's assessment runs against the mark's record rather than with it. The five alcoves are not lit, but they are not empty — they hold the resonance of every faction interaction across the journey, and the Gate is reading what those interactions produced. The question the Hall asks, in the absence of institutional alignment, is: why should the Gate respond to this bearer? The mark's record is the answer. Whether the answer is sufficient depends on whether the reasoning holds under the Hall's evaluation — which is, in practical terms, the Gate's own evaluation, conducted through institutional memory.`,
     effectsOnEnter: {},
     choices: [
       {
         id: 'fc1_betrayal_roll',
-        text: 'Make the case through the mark\'s record alone. Thirteen chapters is the argument.',
+        text: 'Make the case through the mark\'s record alone. Everything accumulated is the argument.',
         nextNode: 'fc1_gate_antechamber',
         diceCheck: {
           stat: 'charisma',
@@ -832,7 +832,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'The Gate Antechamber',
     location: 'The Gate Antechamber',
     imageKey: 'gate_antechamber',
-    text: `The Gate Antechamber is a buffer space — built between the assessment chambers and the Gate itself so that whatever arrived at the Gate had time to settle into full awareness of what it was carrying. The antechamber is warm in a way that is not temperature. It is the mark's resonance interacting with the Gate's preliminary field: a recognition event. The mark has been calibrating for this interaction since the first node. The Gate has been waiting for this configuration since the Blackout. The Masked Heir is here. Unmasked since Chapter 12's surface emergence, the Heir carries the final piece of information the Gate needs before it can open — or before it can choose not to.`,
+    text: `The Gate Antechamber is a buffer space — built between the assessment chambers and the Gate itself so that whatever arrived at the Gate had time to settle into full awareness of what it was carrying. The antechamber is warm in a way that is not temperature. It is the mark's resonance interacting with the Gate's preliminary field: a recognition event. The mark has been calibrating for this interaction since the first node. The Gate has been waiting for this configuration since the Blackout. The Masked Heir is here. Unmasked now — the surface forced the question — the Heir carries the final piece of information the Gate needs before it can open — or before it can choose not to.`,
     effectsOnEnter: { setFlags: ['gate_antechamber_reached'] },
     choices: [
       {
@@ -878,7 +878,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'The Warden\'s Record',
     location: 'The Gate Antechamber',
     imageKey: 'gate_antechamber',
-    text: `The Heir hands over the documentation: six pages, Foundation Period handwriting, the Gate Warden family's maintenance record for the mark across twelve previous bearers. The mark has been through twelve other people before this one. Twelve openings or closings or sealings or transformations of the Gate, each one recorded in the Warden's family ledger. The current configuration — the one the mark built through thirteen chapters of this bearer's choices — is documented as: unresolved. Every previous bearer resolved the Gate question one way or another. The current bearer has not yet. "The Gate," the Heir says, "is asking what you will do that none of the twelve before you did." They don't say what that is. The documentation does not say. The antechamber is warm and waiting.`,
+    text: `The Heir hands over the documentation: six pages, Foundation Period handwriting, the Gate Warden family's maintenance record for the mark across twelve previous bearers. The mark has been through twelve other people before this one. Twelve openings or closings or sealings or transformations of the Gate, each one recorded in the Warden's family ledger. The current configuration — the one the mark built through this bearer's specific choices — is documented as: unresolved. Every previous bearer resolved the Gate question one way or another. The current bearer has not yet. "The Gate," the Heir says, "is asking what you will do that none of the twelve before you did." They don't say what that is. The documentation does not say. The antechamber is warm and waiting.`,
     effectsOnEnter: { intelligence: 6, morale: 8, setFlags: ['warden_record_received', 'twelve_bearers_known'] },
     choices: [
       {
@@ -895,7 +895,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'The Mark\'s Own Record',
     location: 'The Gate Antechamber',
     imageKey: 'gate_antechamber',
-    text: `The Heir holds the documentation. The mark's thirteen-chapter record is the only documentation that matters here — not the Warden family's three-hundred-year ledger, but what was built specifically by this bearer's specific choices. The Heir does not argue. "The Gate will read what you built," they say. "If it's sufficient, the documentation doesn't matter." They step aside. The antechamber holds both possibilities: the Warden's record waiting at the Heir's side, the mark's own record present in the bearer's accumulated choices. The Gate will evaluate both, even if only one was consciously offered.`,
+    text: `The Heir holds the documentation. The mark's own record is the only documentation that matters here — not the Warden family's three-hundred-year ledger, but what was built specifically by this bearer's specific choices. The Heir does not argue. "The Gate will read what you built," they say. "If it's sufficient, the documentation doesn't matter." They step aside. The antechamber holds both possibilities: the Warden's record waiting at the Heir's side, the mark's own record present in the bearer's accumulated choices. The Gate will evaluate both, even if only one was consciously offered.`,
     effectsOnEnter: { intelligence: 2, setFlags: ['heir_documentation_declined'] },
     choices: [
       {
@@ -1038,7 +1038,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'The Clean Signal',
     location: 'The Corruption Mirror',
     imageKey: 'corruption_mirror',
-    text: `The mirror shows a mark with minimal corruption: the bearer's original signal runs clear, the relic interactions across thirteen chapters have been metabolized rather than accumulated, and the architecture is stable. The Gate reads this configuration as the most functional available: all resolution paths are open, the true-ending requirements are satisfied at the corruption level, and the bearing capacity for whatever the Gate's answer requires is at maximum. The mirror dims — evaluation complete — and the warmth of the clean signal fills the room. The mark feels different from this side of the mirror. Not stronger. More itself.`,
+    text: `The mirror shows a mark with minimal corruption: the bearer's original signal runs clear, the relic interactions throughout have been metabolized rather than accumulated, and the architecture is stable. The Gate reads this configuration as the most functional available: all resolution paths are open, the true-ending requirements are satisfied at the corruption level, and the bearing capacity for whatever the Gate's answer requires is at maximum. The mirror dims — evaluation complete — and the warmth of the clean signal fills the room. The mark feels different from this side of the mirror. Not stronger. More itself.`,
     effectsOnEnter: { morale: 12, intelligence: 3, setFlags: ['low_corruption_mirror', 'corruption_mirror_passed', 'clean_signal'] },
     choices: [
       {
@@ -1057,7 +1057,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'The Last Gate',
     location: 'The Last Gate',
     imageKey: 'last_gate',
-    text: `The Last Gate is the reason the city exists. Not metaphorically — literally: the city above was founded around the infrastructure that the Gate required for its operation, and three hundred years of faction conflict were the superstructure built over a single architectural fact: something beneath the city needed to be either managed or opened, and nobody above agreed on which, and the disagreement built walls and institutions and wars until it built the city the bearer has been navigating for thirteen chapters. The Gate is: a surface approximately four meters tall and three meters wide, composed of the same compressed calcium material as the Bone Platform but older, older than anything that has been dated in the city's archaeological record. And it is warm. And it is asking.`,
+    text: `The Last Gate is the reason the city exists. Not metaphorically — literally: the city above was founded around the infrastructure that the Gate required for its operation, and three hundred years of faction conflict were the superstructure built over a single architectural fact: something beneath the city needed to be either managed or opened, and nobody above agreed on which, and the disagreement built walls and institutions and wars until it built the city the bearer has been navigating all this time. The Gate is: a surface approximately four meters tall and three meters wide, composed of the same compressed calcium material as the Bone Platform but older, older than anything that has been dated in the city's archaeological record. And it is warm. And it is asking.`,
     effectsOnEnter: { setFlags: ['last_gate_reached'] },
     choices: [
       {
@@ -1074,7 +1074,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'The Question',
     location: 'The Last Gate',
     imageKey: 'last_gate',
-    text: `The Gate reads the mark — all of it, in the specific way that architecture designed for this purpose reads: not the bearer's intentions, but the mark's record of what the bearer actually did across thirteen chapters. The reading takes approximately two minutes. At the end of the reading, the Gate asks its question. Not in language — in the mark. In the specific resonance that corresponds to the decision the Gate needs from this bearer. Translated into the closest available language: the Gate is not asking what you want. It is asking what you understand. And what you will do with that understanding. The Gate's five available responses are presented simultaneously, as options that the mark's configuration makes accessible. Some are closed. Some are open. All are irreversible.`,
+    text: `The Gate reads the mark — all of it, in the specific way that architecture designed for this purpose reads: not the bearer's intentions, but the mark's record of what the bearer actually did across the full journey. The reading takes approximately two minutes. At the end of the reading, the Gate asks its question. Not in language — in the mark. In the specific resonance that corresponds to the decision the Gate needs from this bearer. Translated into the closest available language: the Gate is not asking what you want. It is asking what you understand. And what you will do with that understanding. The Gate's five available responses are presented simultaneously, as options that the mark's configuration makes accessible. Some are closed. Some are open. All are irreversible.`,
     effectsOnEnter: { intelligence: 5, setFlags: ['gate_question_received'] },
     choices: [
       {
@@ -1128,7 +1128,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
       },
       {
         id: 'fc1_open_force',
-        text: 'Force the Gate open. The thirteen-chapter record is enough.',
+        text: 'Force the Gate open. The accumulated record is enough.',
         nextNode: 'fc1_false_gate_opening_end',
       },
       {
@@ -1147,7 +1147,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'The Original Agreement',
     location: 'The Last Gate',
     imageKey: 'last_gate',
-    text: `The true opening requires the complete set of conditions the Foundation Period's Gate Wardens specified: the complete record held consciously, the correct interface executed by the mark, the original agreement's terms understood and confirmed. The mark runs the validation — checking every flag set across thirteen chapters against the Warden's documented requirements. The validation result is immediate and specific: either the configuration is complete, or it identifies exactly what is missing. The Gate is holding its breath — architecturally. It has been holding it for three hundred years.`,
+    text: `The true opening requires the complete set of conditions the Foundation Period's Gate Wardens specified: the complete record held consciously, the correct interface executed by the mark, the original agreement's terms understood and confirmed. The mark runs the validation — checking every accumulated flag against the Warden's documented requirements. The validation result is immediate and specific: either the configuration is complete, or it identifies exactly what is missing. The Gate is holding its breath — architecturally. It has been holding it for three hundred years.`,
     effectsOnEnter: { intelligence: 3, setFlags: ['true_ending_validation'] },
     choices: [
       {
@@ -1203,7 +1203,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'The Gate Closes',
     location: 'The Last Gate',
     imageKey: 'last_gate',
-    text: `The sealing executes. The mark's architecture shifts to accommodate the function — it is not painful, but it is permanent: the mark changes in a way that can be felt, the specific change of a system that has completed its primary function and has transitioned to a secondary state. The Gate closes. Not loudly — the Gate has been patient for three hundred years; it closes with the same patience. The warmth of the antechamber diminishes. The city above will never know exactly what the Gate was. What the city will know is that it stopped responding. Whether that is the right outcome — whether a closed city is a safer city — is a question the sealing does not answer. The answer was already given in thirteen chapters of choices.`,
+    text: `The sealing executes. The mark's architecture shifts to accommodate the function — it is not painful, but it is permanent: the mark changes in a way that can be felt, the specific change of a system that has completed its primary function and has transitioned to a secondary state. The Gate closes. Not loudly — the Gate has been patient for three hundred years; it closes with the same patience. The warmth of the antechamber diminishes. The city above will never know exactly what the Gate was. What the city will know is that it stopped responding. Whether that is the right outcome — whether a closed city is a safer city — is a question the sealing does not answer. The answer was already given in the accumulated choices.`,
     effectsOnEnter: { morale: 15, setFlags: ['gate_sealed'] },
     choices: [
       {
@@ -1226,7 +1226,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'The Controlled Gate',
     location: 'The Last Gate',
     imageKey: 'last_gate',
-    text: `Controlling the Gate means using the mark's authority to regulate what passes through in both directions — not sealing it, not opening it fully, but becoming the gate's permanent interface. The mark can do this. The thirteen-chapter calibration produced exactly the configuration that Gate control requires. The question is whether control is the right use of what the mark built: whether thirteen chapters of documented truth about the city's relationship to the Gate is meant to produce a controller, or something else. The Gate is not expressing a preference. It is presenting the option and waiting.`,
+    text: `Controlling the Gate means using the mark's authority to regulate what passes through in both directions — not sealing it, not opening it fully, but becoming the gate's permanent interface. The mark can do this. The accumulated calibration produced exactly the configuration that Gate control requires. The question is whether control is the right use of what the mark built: whether the documented truth about the city's relationship to the Gate is meant to produce a controller, or something else. The Gate is not expressing a preference. It is presenting the option and waiting.`,
     effectsOnEnter: { setFlags: ['gate_control_chosen'] },
     choices: [
       {
@@ -1284,7 +1284,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'The Unity Threshold',
     location: 'The Last Gate',
     imageKey: 'last_gate',
-    text: `The merger requires the unity configuration: the specific resonance of a bearer who reached the Gate having built something that approached but did not fully achieve unity — a city that almost decided together, the specific warmth of forty seconds of simultaneous understanding, carried forward through thirteen chapters as a record of what the city could have been. Whether the mark carries that record determines whether the merger produces a bridge or a collapse. The unity_almost_active flag is the Gate's recognition criterion: not the achievement, but the attempt, and what the attempt proved was possible.`,
+    text: `The merger requires the unity configuration: the specific resonance of a bearer who reached the Gate having built something that approached but did not fully achieve unity — a city that almost decided together, the specific warmth of forty seconds of simultaneous understanding, carried forward through the ascent as a record of what the city could have been. Whether the mark carries that record determines whether the merger produces a bridge or a collapse. The unity_almost_active flag is the Gate's recognition criterion: not the achievement, but the attempt, and what the attempt proved was possible.`,
     effectsOnEnter: { setFlags: ['gate_unity_evaluated'] },
     choices: [
       {
@@ -1307,7 +1307,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'The Gate Resists',
     location: 'The Last Gate',
     imageKey: 'last_gate',
-    text: `The Gate is not passive about certain decisions. Destruction. Control without institutional authority. Certain forced configurations. The Gate has been patient for three hundred years, but it was built with specific response protocols for approaches it was not designed to accommodate. The resistance is not violence — it is the mark's own architecture, used against itself: the Gate is asking the mark to validate the decision through the mark's own accumulated record, and certain decisions cannot be validated by what the thirteen chapters built. Whether the mark can push through the resistance is the question.`,
+    text: `The Gate is not passive about certain decisions. Destruction. Control without institutional authority. Certain forced configurations. The Gate has been patient for three hundred years, but it was built with specific response protocols for approaches it was not designed to accommodate. The resistance is not violence — it is the mark's own architecture, used against itself: the Gate is asking the mark to validate the decision through the mark's own accumulated record, and certain decisions cannot be validated by what the mark's record built. Whether the mark can push through the resistance is the question.`,
     effectsOnEnter: { setFlags: ['gate_resistance_active'] },
     choices: [
       {
@@ -1369,7 +1369,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
       },
       {
         id: 'fc1_step_overwhelm',
-        text: 'The mark cannot sustain itself in the liminal space. The thirteen chapters are too heavy.',
+        text: 'The mark cannot sustain itself in the liminal space. The accumulated weight is too heavy.',
         nextNode: 'fc1_mark_overwhelm_end',
         requirements: { corruption: 85 },
         isHidden: true,
@@ -1388,7 +1388,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     isEnding: true,
     endingType: 'death',
     endingId: 'ending_fc1_memory_wall_collapse',
-    text: `The complete record plays simultaneously and the mark cannot hold it. Not because the mark is insufficient — it has been building toward exactly this capacity for thirteen chapters. Because the accumulated weight of thirteen chapters of simultaneous decisions, compressed into the Memory Wall's instant-complete format, exceeds the bearer's capacity to hold without fracture. The mark's architecture collapses under the weight of its own record. The Wall continues playing. The record is intact. The bearer, who built the record across thirteen chapters, is not. The Wall holds the complete history of what they chose. The Gate records the attempt as: reached the Memory Wall. Carried the record. Could not carry it all at once. The distinction matters. The Wall knows.`,
+    text: `The complete record plays simultaneously and the mark cannot hold it. Not because the mark is insufficient — it has been building toward exactly this capacity throughout. Because the accumulated weight of every simultaneous decision, compressed into the Memory Wall's instant-complete format, exceeds the bearer's capacity to hold without fracture. The mark's architecture collapses under the weight of its own record. The Wall continues playing. The record is intact. The bearer, who built the record across the full journey, is not. The Wall holds the complete history of what they chose. The Gate records the attempt as: reached the Memory Wall. Carried the record. Could not carry it all at once. The distinction matters. The Wall knows.`,
     effectsOnEnter: { setFlags: ['game_complete', 'memory_wall_collapse_death'] },
     choices: [],
   },
@@ -1402,7 +1402,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     isEnding: true,
     endingType: 'death',
     endingId: 'ending_fc1_gate_rejection',
-    text: `The Gate's resistance protocols activate fully when the push-through fails. Not a weapon — a seal. The Gate's architecture turns the mark's own resonance against itself: the thirteen-chapter calibration becomes the pressure, and the pressure is applied by the Gate's field to the mark's architecture in a way that the mark was not designed to withstand from inside. The Gate is not cruel about it. It is thorough. The Gate records the attempt as: reached the Last Gate, chose a path not supported by the mark's accumulated record, attempted to push through the resistance, failed. The record is complete. The city above continues. The Gate remains closed, for now.`,
+    text: `The Gate's resistance protocols activate fully when the push-through fails. Not a weapon — a seal. The Gate's architecture turns the mark's own resonance against itself: the accumulated calibration becomes the pressure, and the pressure is applied by the Gate's field to the mark's architecture in a way that the mark was not designed to withstand from inside. The Gate is not cruel about it. It is thorough. The Gate records the attempt as: reached the Last Gate, chose a path not supported by the mark's accumulated record, attempted to push through the resistance, failed. The record is complete. The city above continues. The Gate remains closed, for now.`,
     effectsOnEnter: { setFlags: ['gate_rejection_death'] },
     choices: [],
   },
@@ -1472,7 +1472,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     isEnding: true,
     endingType: 'death',
     endingId: 'ending_fc1_companion_killed',
-    text: `The antechamber's preliminary field, interacting with the mark's high-corruption architecture, surges. The companion is in the field. The mark's surge is not directed at the companion — the mark has no orientation in that state — but the field's interaction with the antechamber's interface produces a release that the companion absorbs. The companion does not die immediately. They have time to say what they would say, which is, in the end, what they have been saying across thirteen chapters: it was worth it. The mark dims with the weight of what just happened. The corruption falls. The antechamber is quiet. The bearer proceeds to the Gate carrying something that the mark architecture will record as: the cost of the companion. The Gate receives the record. The Gate does not judge it. The Gate asks its question.`,
+    text: `The antechamber's preliminary field, interacting with the mark's high-corruption architecture, surges. The companion is in the field. The mark's surge is not directed at the companion — the mark has no orientation in that state — but the field's interaction with the antechamber's interface produces a release that the companion absorbs. The companion does not die immediately. They have time to say what they would say, which is, in the end, what they have been saying throughout: it was worth it. The mark dims with the weight of what just happened. The corruption falls. The antechamber is quiet. The bearer proceeds to the Gate carrying something that the mark architecture will record as: the cost of the companion. The Gate receives the record. The Gate does not judge it. The Gate asks its question.`,
     effectsOnEnter: { setFlags: ['companion_killed_at_antechamber'] },
     choices: [],
   },
@@ -1486,7 +1486,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     isEnding: true,
     endingType: 'death',
     endingId: 'ending_fc1_mark_overwhelm',
-    text: `The liminal space between the Door and the Gate's exit field is not empty. It is the specific environment where the Gate's resonance and the city's deepest infrastructure intersect without mediation — and in this environment, a mark carrying extreme corruption and thirteen chapters of accumulated weight cannot sustain coherent operation. The weight wins. Not a collapse — a dissolution. The mark's architecture, at the intersection of the Gate's field and its own extreme configuration, distributes itself through the liminal space. What remains: the mark's resonance, present in the liminal space as a permanent signal. The bearer is the signal. The liminal space receives them. The Door of No Return earns its name in a way that was not originally intended by whoever named it, but is accurate in a way that the Gate's designers would recognize.`,
+    text: `The liminal space between the Door and the Gate's exit field is not empty. It is the specific environment where the Gate's resonance and the city's deepest infrastructure intersect without mediation — and in this environment, a mark carrying extreme corruption and the full accumulated weight of the journey cannot sustain coherent operation. The weight wins. Not a collapse — a dissolution. The mark's architecture, at the intersection of the Gate's field and its own extreme configuration, distributes itself through the liminal space. What remains: the mark's resonance, present in the liminal space as a permanent signal. The bearer is the signal. The liminal space receives them. The Door of No Return earns its name in a way that was not originally intended by whoever named it, but is accurate in a way that the Gate's designers would recognize.`,
     effectsOnEnter: { setFlags: ['liminal_dissolution_death'] },
     choices: [],
   },
@@ -1502,7 +1502,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     isEnding: true,
     endingType: 'betrayal',
     endingId: 'ending_fc1_companion_abandonment',
-    text: `The Companion Threshold presents the companion's final position and the bearer does not take it. Not a rejection, exactly — something closer to the specific failure of thirteen chapters of shared experience to produce the moment where the companion's offer can be accepted as what it is. The companion stays at the threshold. Not to hold it open — because there is no configuration left for them to hold. The threshold records the outcome: the companion relationship, which the mark carried for thirteen chapters as genuine, ends at the threshold when the bearer proceeds without responding to it. The Gate's assessment notes the companion threshold status. The Gate updates what it will offer at the Last Gate accordingly: certain paths close. The companion is at the threshold. The bearer is not.`,
+    text: `The Companion Threshold presents the companion's final position and the bearer does not take it. Not a rejection, exactly — something closer to the specific failure of everything shared to produce the moment where the companion's offer can be accepted as what it is. The companion stays at the threshold. Not to hold it open — because there is no configuration left for them to hold. The threshold records the outcome: the companion relationship, which the mark carried throughout as genuine, ends at the threshold when the bearer proceeds without responding to it. The Gate's assessment notes the companion threshold status. The Gate updates what it will offer at the Last Gate accordingly: certain paths close. The companion is at the threshold. The bearer is not.`,
     effectsOnEnter: { setFlags: ['game_complete', 'companion_abandoned'] },
     choices: [],
   },
@@ -1588,7 +1588,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     isEnding: true,
     endingType: 'wanderer',
     endingId: 'ending_fc1_lone_wanderer_gate',
-    text: `The lone wanderer reaches the stair and walks past it. Not because the Gate is unimportant — the mark reads the Gate's direction clearly, has read it since Chapter 1. Because the choice to walk past the Gate is the specific freedom of a configuration that was never obligated to anyone's resolution. The Gate will still be there. The city will still have what it has. The mark will still be active. The wanderer will still be walking. Whatever the Gate was holding below the city will remain held. The wanderer's record, carried in the mark across thirteen chapters, is: I was here. I saw what was being asked. I chose not to answer. The Gate's assessment, recording the wanderer's record with the same accuracy it applies to every configuration: acknowledged. The stair recedes. The city is ahead.`,
+    text: `The lone wanderer reaches the stair and walks past it. Not because the Gate is unimportant — the mark reads the Gate's direction clearly, has read it from the beginning. Because the choice to walk past the Gate is the specific freedom of a configuration that was never obligated to anyone's resolution. The Gate will still be there. The city will still have what it has. The mark will still be active. The wanderer will still be walking. Whatever the Gate was holding below the city will remain held. The wanderer's record, carried in the mark through everything: I was here. I saw what was being asked. I chose not to answer. The Gate's assessment, recording the wanderer's record with the same accuracy it applies to every configuration: acknowledged. The stair recedes. The city is ahead.`,
     effectsOnEnter: { setFlags: ['lone_wanderer_past_gate'] },
     choices: [],
   },
@@ -1604,7 +1604,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     isEnding: true,
     endingType: 'companion',
     endingId: 'ending_fc1_mira_sacrifice',
-    text: `Mira stays at the threshold. She holds it open — which is the specific function the threshold's architecture provides for a companion with her configuration: the medical training, the systematic relationship to truth, the thirteen chapters of quiet devotion to what the mark was trying to do. The threshold, with Mira as its interface, becomes something the Gate's assessment record notes as significant: a companion who chose the threshold over the gate as a deliberate act of holding space for whoever comes after. The bearer descends to the Gate without Mira, carrying her presence as a record rather than a companion. The Gate receives it. The threshold remains open. Mira is not the end of anything. She is the door that the next bearer will find already held.`,
+    text: `Mira stays at the threshold. She holds it open — which is the specific function the threshold's architecture provides for a companion with her configuration: the medical training, the systematic relationship to truth, the quiet devotion throughout to what the mark was trying to do. The threshold, with Mira as its interface, becomes something the Gate's assessment record notes as significant: a companion who chose the threshold over the gate as a deliberate act of holding space for whoever comes after. The bearer descends to the Gate without Mira, carrying her presence as a record rather than a companion. The Gate receives it. The threshold remains open. Mira is not the end of anything. She is the door that the next bearer will find already held.`,
     effectsOnEnter: { setFlags: ['mira_threshold_sacrifice', 'threshold_held_open'] },
     choices: [],
   },
@@ -1710,7 +1710,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     isEnding: true,
     endingType: 'secret',
     endingId: 'ending_fc1_true_ending_path',
-    text: `The original agreement. All conditions met. The true opening executes as the Foundation Period's Gate Wardens specified: the complete record held consciously; the correct interface, executed by the mark's thirteen-chapter calibration; the original agreement's terms confirmed — the entity departed, the gate opened as a sanctioned release, the city above received the signal it was designed to receive rather than the garbled distress call it mistook the Blackout for. What passes through the Gate in the true opening is not a threat. It is information. The specific information that the city has been misreading for three hundred years, delivered correctly. The Gate opens. The information reaches the city. The city receives what it was designed to receive. What it does with it is the question that Final Chapter 2 will ask. The answer to Final Chapter 1's question is: yes. The original agreement is kept.`,
+    text: `The original agreement. All conditions met. The true opening executes as the Foundation Period's Gate Wardens specified: the complete record held consciously; the correct interface, built through years of mark calibration; the original agreement's terms confirmed — the entity departed, the gate opened as a sanctioned release, the city above received the signal it was designed to receive rather than the garbled distress call it mistook the Blackout for. What passes through the Gate in the true opening is not a threat. It is information. The specific information that the city has been misreading for three hundred years, delivered correctly. The Gate opens. The information reaches the city. The city receives what it was designed to receive. What it does with it is the question the surface will answer. The answer to the question asked here is: yes. The original agreement is kept.`,
     effectsOnEnter: { morale: 40, intelligence: 10, setFlags: ['true_ending_gate_opened', 'original_agreement_kept', 'chapter_fc1_complete', 'final_chapter2_true_path'] },
     choices: [],
   },

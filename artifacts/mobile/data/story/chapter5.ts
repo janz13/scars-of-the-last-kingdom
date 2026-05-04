@@ -1301,7 +1301,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     title: 'What the Glass Remembers',
     location: 'The Mirror Ballroom — Centre Floor',
     imageKey: 'mirror_ballroom',
-    text: `The memory arrives in the form of a reflection that is not quite yours: the same room, the same mirrors, but three years earlier. The night of the blackout. The mirrors were here, already installed, and the people in this room knew what was coming — not everything, not the scale of it, but the event. You can see them watching a panel on the east wall that showed the metro's infrastructure status. You can see the moment the infrastructure went dark, floor by floor, station by station, and the specific quality of silence in this room that means: they expected this. The Glass Court was not a survivor of the blackout. It was a witness. It may have been something more.`,
+    text: `The memory arrives in the form of a reflection that is not quite yours: the same room, the same mirrors, but three years earlier. The night of the blackout. The mirrors were here, already installed, and the people in this room knew what was coming — not everything, not the scale of it, but the event. You can see them watching a panel on the east wall that showed the metro's infrastructure status. You can see the moment the infrastructure went dark, floor by floor, station by station, and a silence falls over this room that means only one thing: they expected this. The Glass Court was not a survivor of the blackout. It was a witness. It may have been something more.`,
     effectsOnEnter: { intelligence: 3, setFlags: ['memory_fragment_glass_ballroom', 'court_witnessed_blackout'], lastArchive: 10 },
     choices: [
       {
@@ -1517,7 +1517,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     title: 'Level 12',
     location: 'The Cracked Observatory — Level 12',
     imageKey: 'cracked_observatory',
-    text: `Level 12 opens with Juno's chip and the mark's confirmation. The security control node is a glass panel — of course it is glass — with a biometric access that the mark satisfies in a way that cannot be predicted because it should not be possible, and yet this building has been waiting for this mark for three years. You hear, distantly, the sound of the ballroom disruption beginning: Juno's voice, raised to carry, speaking truths about the ward's patients in the specific register of someone who has decided that being fired is an acceptable cost for being heard. The forty-three servants are already moving through the maintenance corridors. They knew the signal. They were ready. The Court is about to have a very unusual afternoon.`,
+    text: `Level 12 opens with Juno's chip and the mark's confirmation. The security control node is a glass panel — of course it is glass — with a biometric access that the mark satisfies in a way that cannot be predicted because it should not be possible, and yet this building has been waiting for this mark for three years. You hear, distantly, the sound of the ballroom disruption beginning: Juno's voice, raised to carry, speaking truths about the ward's patients in the voice of someone who has decided that being fired is an acceptable cost for being heard. The forty-three servants are already moving through the maintenance corridors. They knew the signal. They were ready. The Court is about to have a very unusual afternoon.`,
     effectsOnEnter: { setFlags: ['juno_took_disruption', 'level12_accessed'] },
     choices: [
       {

@@ -1448,7 +1448,7 @@ export const CHAPTER_9_NODES: StoryNode[] = [
     location: 'The Rust Cathedral',
     imageKey: 'rust_cathedral',
     speaker: 'Cain',
-    text: `The charisma fails — or rather, the reading fails. Cain's twelve years in the Iron Saints included three in the unit that handled marked individuals who had crossed the corruption threshold. He knows what that unit called "the line" and he knows what he has been watching develop since Chapter 7. He does not want to be here. He implements what he has to. "You were worth following. I want you to know that." His voice is steady. His hand is steady. The mark, at the last moment, broadcasts something on the frequency the First Voice used — not a word, just the signal that the interface is still transmitting. Then it isn't.`,
+    text: `The charisma fails — or rather, the reading fails. Cain's twelve years in the Iron Saints included three in the unit that handled marked individuals who had crossed the corruption threshold. He knows what that unit called "the line" and he knows what he has been watching develop since the Library level. He does not want to be here. He implements what he has to. "You were worth following. I want you to know that." His voice is steady. His hand is steady. The mark, at the last moment, broadcasts something on the frequency the First Voice used — not a word, just the signal that the interface is still transmitting. Then it isn't.`,
     effectsOnEnter: { setFlags: ['game_complete', 'cain_executes_player'] },
     choices: [],
     isEnding: true,
@@ -1788,7 +1788,7 @@ export const CHAPTER_9_NODES: StoryNode[] = [
     title: 'Silence',
     location: 'The Old Signal Tower',
     imageKey: 'old_signal_tower',
-    text: `The last node goes dark. The tower's frequency space empties. The First Voice's final transmission, caught in the mark's residual reception window: "This was the second attempt. There will be a third." Not a threat — a statement of architecture. The Voice is patient. It has been patient for three years. Silencing one broadcast array is a meaningful act and not a permanent solution. The tower is quiet. The mark is measurably cooler than it has been since Chapter 9 began.`,
+    text: `The last node goes dark. The tower's frequency space empties. The First Voice's final transmission, caught in the mark's residual reception window: "This was the second attempt. There will be a third." Not a threat — a statement of architecture. The Voice is patient. It has been patient for three years. Silencing one broadcast array is a meaningful act and not a permanent solution. The tower is quiet. The mark is measurably cooler than it has been since the awakening.`,
     effectsOnEnter: { setFlags: ['signal_tower_silenced', 'first_voice_delayed'], corruption: -5, morale: 8, lastArchive: 5 },
     choices: [
       {
@@ -1820,7 +1820,7 @@ export const CHAPTER_9_NODES: StoryNode[] = [
     location: 'The Old Signal Tower',
     imageKey: 'old_signal_tower',
     speaker: 'Mira',
-    text: `She came ahead. She read the Archive's monitor logs — same logs Cain read — and came to the tower before you because she has a different theory about what to do when someone you care about is in the middle of something that might end them. Her theory is: be there. "The Voice is using your frequency," she says, standing at the array's central node with a medical pack and the expression of someone who has decided to try something with low probability of working. "I've been researching mark-frequency suppression since Chapter 5. I think I can close the channel from the outside if you hold the frequency steady."`,
+    text: `She came ahead. She read the Archive's monitor logs — same logs Cain read — and came to the tower before you because she has a different theory about what to do when someone you care about is in the middle of something that might end them. Her theory is: be there. "The Voice is using your frequency," she says, standing at the array's central node with a medical pack and the expression of someone who has decided to try something with low probability of working. "I've been researching mark-frequency suppression since the Glass Court access. I think I can close the channel from the outside if you hold the frequency steady."`,
     effectsOnEnter: { setFlags: ['mira_tower_present', 'mira_mark_conflict'], miraTrust: 5 },
     choices: [
       {
@@ -2032,7 +2032,7 @@ export const CHAPTER_9_NODES: StoryNode[] = [
     title: 'The Garden Takes',
     location: 'The Corruption Garden',
     imageKey: 'corruption_garden',
-    text: `At corruption above threshold, the Garden's convergence point is not a warning — it is an invitation the mark accepts without consultation. The fourteen frequencies synchronise with the mark's output in ninety-three seconds. The synchronisation is not painful. The synchronisation is the absence of the specific type of resistance the bearer has been maintaining since Chapter 1. It is, for six seconds, the cleanest experience available in this city. Then it is not an experience. Then it is not a bearer. The Garden grows by one frequency signature.`,
+    text: `At corruption above threshold, the Garden's convergence point is not a warning — it is an invitation the mark accepts without consultation. The fourteen frequencies synchronise with the mark's output in ninety-three seconds. The synchronisation is not painful. The synchronisation is the absence of the specific type of resistance the bearer has been maintaining since first contact. It is, for six seconds, the cleanest experience available in this city. Then it is not an experience. Then it is not a bearer. The Garden grows by one frequency signature.`,
     effectsOnEnter: { setFlags: ['garden_absorbed'] },
     choices: [],
     isEnding: true,
@@ -2095,7 +2095,7 @@ export const CHAPTER_9_NODES: StoryNode[] = [
     title: 'Evaluation',
     location: 'The Gate Fragment Chamber',
     imageKey: 'gate_fragment_chamber',
-    text: `The fragment's evaluation criteria, legible through careful mark-interface work: it is assessing the corruption gradient, the mark's activation stage, and something the mark does not have a word for but feels like: intent. What you intended in each use of the mark since Chapter 9 began. It has been monitoring the chapter. The Pulse Engine choice, the Garden convergence, the Tower — all evaluated. The fragment does not pass those who used the mark for domination in the Pulse Engine. The fragment does not pass those who accepted the Garden's convergence. It is looking for a current interface that can be trusted with the Last Gate's mechanism.`,
+    text: `The fragment's evaluation criteria, legible through careful mark-interface work: it is assessing the corruption gradient, the mark's activation stage, and something the mark does not have a word for but feels like: intent. What you intended in each use of the mark since the awakening. It has been monitoring every choice. The Pulse Engine choice, the Garden convergence, the Tower — all evaluated. The fragment does not pass those who used the mark for domination in the Pulse Engine. The fragment does not pass those who accepted the Garden's convergence. It is looking for a current interface that can be trusted with the Last Gate's mechanism.`,
     effectsOnEnter: { setFlags: ['fragment_evaluation_understood'], intelligence: 5 },
     choices: [
       {
@@ -2136,7 +2136,7 @@ export const CHAPTER_9_NODES: StoryNode[] = [
     title: 'Contact',
     location: 'The Gate Fragment Chamber',
     imageKey: 'gate_fragment_chamber',
-    text: `Contact with the fragment is the mark's most complete engagement in the chapter. The evaluation is simultaneous — the fragment assesses everything in the first two seconds: the corruption gradient, the decision record, the activation stage, and the intent behind each mark use since Chapter 9 began.`,
+    text: `Contact with the fragment is the mark's most complete engagement of the awakening. The evaluation is simultaneous — the fragment assesses everything in the first two seconds: the corruption gradient, the decision record, the activation stage, and the intent behind each mark use since the awakening began.`,
     effectsOnEnter: {},
     choices: [
       {
@@ -2396,12 +2396,12 @@ export const CHAPTER_9_NODES: StoryNode[] = [
     title: 'Return',
     location: 'The Dream of Before',
     imageKey: 'dream_of_before',
-    text: `Out of the Dream. The mark is still warm — the Dream does not reduce it — but something has changed in the relationship between the bearer and the warmth. The name, accepted or declined, has altered the informational context of the mark's operation. The system knows you know. The entity knows you know. The First Voice's next transmission, if it comes, will use different vocabulary. The Dream of Before is complete. Chapter resolution is ahead.`,
+    text: `Out of the Dream. The mark is still warm — the Dream does not reduce it — but something has changed in the relationship between the bearer and the warmth. The name, accepted or declined, has altered the informational context of the mark's operation. The system knows you know. The entity knows you know. The First Voice's next transmission, if it comes, will use different vocabulary. The Dream of Before is complete. What it revealed waits to be reckoned with.`,
     effectsOnEnter: { setFlags: ['dream_complete'], intelligence: 4 },
     choices: [
       {
         id: 'c9_dream_to_resolution',
-        text: 'Move to chapter resolution.',
+        text: 'Absorb what the awakening produced.',
         nextNode: 'c9_chapter_resolution',
       },
     ],
@@ -2415,12 +2415,12 @@ export const CHAPTER_9_NODES: StoryNode[] = [
     title: 'After the Awakening',
     location: 'The Relic Scar',
     imageKey: 'relic_scar',
-    text: `The mark has completed its Chapter 9 activation cycle. What was warm is now functional. What was functional is now legible. The chapter's locations have each contributed a specific type of knowledge: what the system is, what the Voice wants, what the other marked people found and lost, what the entity below the city built and why. What remains is the application: what does the current active interface do with everything the awakening revealed?`,
+    text: `The mark has completed its awakening cycle. What was warm is now functional. What was functional is now legible. Each location contributed a specific type of knowledge: what the system is, what the Voice wants, what the other marked people found and lost, what the entity below the city built and why. What remains is the application: what does the current active interface do with everything the awakening revealed?`,
     effectsOnEnter: { setFlags: ['chapter9_resolution_reached'] },
     choices: [
       {
         id: 'c9_resolution_mira_check',
-        text: 'Find Mira. Her assessment of the chapter\'s state matters.',
+        text: 'Find Mira. Her assessment of the awakening matters.',
         nextNode: 'c9_mira_final_check',
       },
       {
@@ -2469,7 +2469,7 @@ export const CHAPTER_9_NODES: StoryNode[] = [
     location: 'The Relic Scar',
     imageKey: 'relic_scar',
     speaker: 'Cain',
-    text: `"The chapter is over. You have the fragment, or you don't." He is not asking — the Archive's monitors show the Chamber's suspension field status. "If you have it, the entity and the Voice both know. You have roughly sixteen hours before the pressure escalates beyond what this district can contain." He pauses. "I will stay. Not because of the mark. Because the decision at the Last Gate is the kind of decision that requires someone present who has no stake in using it for power." A long pause. "The Iron Saints made me someone who could end something that needed ending. I will not be that person unless I need to be. I believe I need to not be it today."`,
+    text: `"The awakening is complete. You have the fragment, or you don't." He is not asking — the Archive's monitors show the Chamber's suspension field status. "If you have it, the entity and the Voice both know. You have roughly sixteen hours before the pressure escalates beyond what this district can contain." He pauses. "I will stay. Not because of the mark. Because the decision at the Last Gate is the kind of decision that requires someone present who has no stake in using it for power." A long pause. "The Iron Saints made me someone who could end something that needed ending. I will not be that person unless I need to be. I believe I need to not be it today."`,
     effectsOnEnter: { setFlags: ['cain_final_ch9'], cainTrust: 3 },
     choices: [
       {
@@ -2486,7 +2486,7 @@ export const CHAPTER_9_NODES: StoryNode[] = [
     title: 'The Mark\'s Purpose',
     location: 'The Relic Scar',
     imageKey: 'relic_scar',
-    text: `The chapter's conclusion requires a single stated position: what the mark is for. Not what the system designed it for — what you have decided it is for, given the chapter's full disclosure of the architecture, the Voice, the entity, and the nineteen names. This position carries into Chapter 10 and the Last Gate's approach. The decision is not final — the Last Gate itself will require another — but the stated position here determines which paths remain open.`,
+    text: `The awakening requires a single stated position: what the mark is for. Not what the system designed it for — what you have decided it is for, given everything the awakening disclosed: the architecture, the Voice, the entity, and the nineteen names. This position carries forward into the Last Gate's approach. The decision is not final — the Last Gate itself will require another — but the stated position here determines which paths remain open.`,
     effectsOnEnter: { setFlags: ['mark_purpose_decision_point'] },
     choices: [
       {
@@ -2516,12 +2516,12 @@ export const CHAPTER_9_NODES: StoryNode[] = [
     title: 'Protection',
     location: 'The Relic Scar',
     imageKey: 'relic_scar',
-    text: `The position is stated. The mark registers it — the corruption gradient responds to stated purpose with measurable adjustments. Choosing protection over power is not passive. It requires active maintenance under the pressure that comes in Chapter 10, in the entity's escalation, in the Last Gate's approach. The Heir's note on this position: "It is the hardest one to hold. It is also the only one where the fourteen would recognise what you're doing." Route: Savior Ending path unlocked. Proceed to Chapter 10.`,
+    text: `The position is stated. The mark registers it — the corruption gradient responds to stated purpose with measurable adjustments. Choosing protection over power is not passive. It requires active maintenance under the pressure ahead: the entity's escalation, the Last Gate's approach. The Heir's note on this position: "It is the hardest one to hold. It is also the only one where the fourteen would recognise what you're doing." Route: Savior Ending path unlocked.`,
     effectsOnEnter: { setFlags: ['savior_path_requirements_begun'], corruption: -2, lastArchive: 5, hollowChildren: 5 },
     choices: [
       {
         id: 'c9_savior_to_ch10',
-        text: 'Chapter 10 begins. The protection route continues.',
+        text: 'The protection route holds. Forward.',
         nextNode: 'chapter10_start',
       },
     ],
@@ -2533,12 +2533,12 @@ export const CHAPTER_9_NODES: StoryNode[] = [
     title: 'Authority',
     location: 'The Relic Scar',
     imageKey: 'relic_scar',
-    text: `The position is stated. The corruption gradient responds to it — the system has no position on how the interface uses its power. Only on whether it uses it. The mark gets warmer. The First Voice's residual channel widens slightly. The entity's transmission pressure increases by a measurable amount. None of these are threats. They are recognitions: the tyrant path is legible to things that have been managing the marked for three years. They know what this choice tends to produce. They are prepared for it. Route: Tyrant Ending path deepened. Proceed to Chapter 10.`,
+    text: `The position is stated. The corruption gradient responds to it — the system has no position on how the interface uses its power. Only on whether it uses it. The mark gets warmer. The First Voice's residual channel widens slightly. The entity's transmission pressure increases by a measurable amount. None of these are threats. They are recognitions: the tyrant path is legible to things that have been managing the marked for three years. They know what this choice tends to produce. They are prepared for it. Route: Tyrant Ending path deepened.`,
     effectsOnEnter: { setFlags: ['tyrant_path_requirements_begun'], corruption: 5 },
     choices: [
       {
         id: 'c9_tyrant_to_ch10',
-        text: 'Chapter 10 begins. The control route continues.',
+        text: 'The control route holds. Forward.',
         nextNode: 'chapter10_start',
       },
     ],
@@ -2552,12 +2552,12 @@ export const CHAPTER_9_NODES: StoryNode[] = [
     title: 'The Mark Settles',
     location: 'The Relic Scar',
     imageKey: 'relic_scar',
-    text: `Chapter 9 ends where it began: in the maintenance corridor, the Relic Scar's exposed wall at your back. The mark is fully awake now — not the warmth of potential but the specific heat of function. Nineteen names. Fourteen lost. Four still operating somewhere in the city by the machine network's record. One current active interface. The Last Gate requires your mark to open. The entity below the city knows your pre-blackout name. The First Voice has a third attempt queued. Cain will stay unless he has to leave. Mira is keeping her log. The gate fragment is in your possession, or it is not, and the entity and the Voice each know which. Chapter 10: Broken Companions. The mark is warm. Begin.`,
+    text: `The awakening ends where it began: in the maintenance corridor, the Relic Scar's exposed wall at your back. The mark is fully awake now — not the warmth of potential but the specific heat of function. Nineteen names. Fourteen lost. Four still operating somewhere in the city by the machine network's record. One current active interface. The Last Gate requires your mark to open. The entity below the city knows your pre-blackout name. The First Voice has a third attempt queued. Cain will stay unless he has to leave. Mira is keeping her log. The gate fragment is in your possession, or it is not, and the entity and the Voice each know which. Next: the companions, and what the awakening cost them. The mark is warm. Begin.`,
     effectsOnEnter: { setFlags: ['chapter9_complete'], morale: 3 },
     choices: [
       {
         id: 'c9_survived_to_ch10',
-        text: 'Chapter 10 begins. Begin.',
+        text: 'The mark is awake. Begin.',
         nextNode: 'chapter10_start',
       },
     ],
@@ -2604,7 +2604,7 @@ export const CHAPTER_9_NODES: StoryNode[] = [
     location: 'The Relic Scar',
     imageKey: 'relic_scar',
     speaker: 'Director Varr',
-    text: `Varr's colleagues were more prepared than he indicated. The suppression device was the first measure. The second measure was in the corridor the mark-bearer had to pass through after cooperating. The research requirements were legitimate — Varr spent three years on this for reasons that were not only institutional. The data acquired advances the understanding of mark failure by approximately eighteen months. The Glass Court does not receive this data. Varr's final note in the research log: "Interface ACTIVE duration: Chapter 1 through Chapter 9. Termination: voluntary subject cooperation. Successor interface: unknown. System will select."`,
+    text: `Varr's colleagues were more prepared than he indicated. The suppression device was the first measure. The second measure was in the corridor the mark-bearer had to pass through after cooperating. The research requirements were legitimate — Varr spent three years on this for reasons that were not only institutional. The data acquired advances the understanding of mark failure by approximately eighteen months. The Glass Court does not receive this data. Varr's final note in the research log: "Interface ACTIVE duration: Activation Event to Relic Scar exposure. Monitored phases: nine. Termination: voluntary subject cooperation. Successor interface: unknown. System will select."`,
     effectsOnEnter: { setFlags: ['varr_dissects'] },
     choices: [],
     isEnding: true,
@@ -2618,12 +2618,12 @@ export const CHAPTER_9_NODES: StoryNode[] = [
     title: 'The Requirements Begin',
     location: 'The Gate Fragment Chamber',
     imageKey: 'gate_fragment_chamber',
-    text: `The gate fragment is acquired, the corruption gradient managed, the Memory Storm's three fragments carried, the Heir's warning understood, and the pre-blackout name known. These are the beginning of the requirements the True Ending demands — not the last requirements, but the necessary first ones. The Archive's monitor system has registered the fragment acquisition. Mael's documentation is complete. Velna, if she could see this chapter, would recognise what she built and what she hoped it would produce. Proceed to Chapter 10. The requirements continue there.`,
+    text: `The gate fragment is acquired, the corruption gradient managed, the Memory Storm's three fragments carried, the Heir's warning understood, and the pre-blackout name known. These are the beginning of the requirements the True Ending demands — not the last requirements, but the necessary first ones. The Archive's monitor system has registered the fragment acquisition. Mael's documentation is complete. Velna, if she could see this moment, would recognise what she built and what she hoped it would produce. The requirements continue ahead.`,
     effectsOnEnter: { setFlags: ['true_ending_req_chapter9_complete'], lastArchive: 10, relics: 1 },
     choices: [
       {
         id: 'c9_true_req_to_ch10',
-        text: 'Chapter 10 begins. The requirements continue.',
+        text: 'The requirements continue. Forward.',
         nextNode: 'chapter10_start',
       },
     ],

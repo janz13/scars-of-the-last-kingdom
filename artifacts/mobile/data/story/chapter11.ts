@@ -32,7 +32,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     title: 'The City Beneath the City',
     location: 'The Sub-City Gate',
     imageKey: 'sub_city_gate',
-    text: `The Archive's basement ends at a wall. Not a structural wall — a deliberate sealing, three meters of reinforced concrete with the Archive's founding sigil cut into its face at the point where the lower access corridor terminates. The mark reads the wall the way it reads everything that contains something: not as an obstacle, but as a question about what is on the other side. The chapter that began with the word "begin" at the end of Chapter 10 begins here, at the wall, with whoever survived the companion reckoning.`,
+    text: `The Archive's basement ends at a wall. Not a structural wall — a deliberate sealing, three meters of reinforced concrete with the Archive's founding sigil cut into its face at the point where the lower access corridor terminates. The mark reads the wall the way it reads everything that contains something: not as an obstacle, but as a question about what is on the other side. What began with the word "begin" descends here, at the wall, with whoever survived the companion reckoning.`,
     effectsOnEnter: { setFlags: ['chapter11_begun'] },
     choices: [
       {
@@ -49,7 +49,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     title: 'The Lower Access Corridor',
     location: 'The Sub-City Gate',
     imageKey: 'sub_city_gate',
-    text: `The lower access corridor is eighty meters below the Archive's above-ground footprint, accessible only from the Level 5 maintenance grid. The Archive's documentation described it as sub-basement infrastructure. The documentation was not wrong. It was not complete. The construction pre-dates the Archive by an uncertain amount — the concrete is the Archive's, added in the Foundation Period; the passage beneath it was here first. The mark has been orienting toward this direction since the awakening in Chapter 9, a persistent low-frequency pull that the previous chapter's decisions have not resolved.`,
+    text: `The lower access corridor is eighty meters below the Archive's above-ground footprint, accessible only from the Level 5 maintenance grid. The Archive's documentation described it as sub-basement infrastructure. The documentation was not wrong. It was not complete. The construction pre-dates the Archive by an uncertain amount — the concrete is the Archive's, added in the Foundation Period; the passage beneath it was here first. The mark has been orienting toward this direction since the awakening — a persistent low-frequency pull that the reckoning above did not resolve.`,
     effectsOnEnter: {},
     choices: [
       {
@@ -66,7 +66,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     title: 'Who Came Down',
     location: 'The Sub-City Gate',
     imageKey: 'sub_city_gate',
-    text: `The companion configuration from Chapter 10 is the configuration that approaches the wall. The mark reads whoever is present as a secondary resonance alongside the primary awakening. The thing beyond the wall reads the same data through the concrete. Whatever carried into Chapter 11 — both companions, one, none — shapes what the sub-city shows first.`,
+    text: `The companion configuration that survived the reckoning is the configuration that approaches the wall. The mark reads whoever is present as a secondary resonance alongside the primary awakening. The thing beyond the wall reads the same data through the concrete. Whatever came down here — both companions, one, none — shapes what the sub-city shows first.`,
     effectsOnEnter: {},
     choices: [
       {
@@ -332,7 +332,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     title: 'Two Scripts',
     location: 'The Forgotten Platform',
     imageKey: 'forgotten_platform',
-    text: `The Platform's signs are in two scripts: a pre-blackout administrative language, legible, reading "Foundation Station — Interface Level"; and a second script beneath it that is not in any Archive catalogue. The second script is older. The mark reads it not as language but as instruction — the same kind of information encountered in the Memory Shelter's deepest residue. The instruction translates, in the mark's rendering: "The bearer carries the key. The key was always here." The mark has been reading fragments of this sentence in various forms since Chapter 9.`,
+    text: `The Platform's signs are in two scripts: a pre-blackout administrative language, legible, reading "Foundation Station — Interface Level"; and a second script beneath it that is not in any Archive catalogue. The second script is older. The mark reads it not as language but as instruction — the same kind of information encountered in the Memory Shelter's deepest residue. The instruction translates, in the mark's rendering: "The bearer carries the key. The key was always here." The mark has been reading fragments of this sentence in various forms since the awakening.`,
     effectsOnEnter: { intelligence: 1, setFlags: ['ancient_script_first_contact'] },
     choices: [
       {
@@ -1195,7 +1195,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     title: 'The Containment Event',
     location: 'The Blackout Core',
     imageKey: 'blackout_core',
-    text: `The Blackout was an attempted containment event. This is the chapter's first full statement of the truth that has been present in fragments since Chapter 7. The relic system — the Transit Line, the Engine, the Gate, the Nursery, the Core — was built by a pre-Archive technical tradition as a management interface for something that was sealed below the city long before the city existed. The city was built above the sealing deliberately, as an additional layer of containment: the weight of human habitation, the mark-bearing population as a distributed monitoring network. The city was, from its founding, a containment device. Its inhabitants were part of the mechanism without knowing it.`,
+    text: `The Blackout was an attempted containment event. The truth has been present in fragments since the Library level — this is its first full statement. The relic system — the Transit Line, the Engine, the Gate, the Nursery, the Core — was built by a pre-Archive technical tradition as a management interface for something that was sealed below the city long before the city existed. The city was built above the sealing deliberately, as an additional layer of containment: the weight of human habitation, the mark-bearing population as a distributed monitoring network. The city was, from its founding, a containment device. Its inhabitants were part of the mechanism without knowing it.`,
     effectsOnEnter: { intelligence: 3, setFlags: ['blackout_containment_revealed'] },
     choices: [
       {
@@ -1236,7 +1236,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     title: 'The Masked Heir',
     location: 'The Blackout Core',
     imageKey: 'blackout_core',
-    text: `The Masked Heir is here. At the Blackout Core. Unmasked or still masked — their choice. Equipment surrounds them: monitoring devices, resonance recorders, documentation systems indicating months of ongoing observation. The Heir has been here before the mark-bearer descended. The Heir has been monitoring the Core's pulse. They look at the mark. "I knew you would get here eventually," the Heir says. "I have been trying to accelerate that timeline since Chapter 4. The Core does not have indefinite patience." They produce the documentation they have been compiling. The mark reads their physiological state as: no deception. The Heir is telling the truth as they understand it.`,
+    text: `The Masked Heir is here. At the Blackout Core. Unmasked or still masked — their choice. Equipment surrounds them: monitoring devices, resonance recorders, documentation systems indicating months of ongoing observation. The Heir has been here before the mark-bearer descended. The Heir has been monitoring the Core's pulse. They look at the mark. "I knew you would get here eventually," the Heir says. "I have been trying to accelerate that timeline for months. The Core does not have indefinite patience." They produce the documentation they have been compiling. The mark reads their physiological state as: no deception. The Heir is telling the truth as they understand it.`,
     effectsOnEnter: { setFlags: ['heir_at_core'] },
     choices: [
       {
@@ -1461,7 +1461,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     title: 'Twelve',
     location: 'The Nameless Housing Block',
     imageKey: 'nameless_housing_block',
-    text: `The twelve individuals in the Housing Block are a specific kind of survivor: researchers, maintenance personnel, Archive contractors, and at least two people whose presence here cannot be explained by any official documentation. They have been monitoring the Core from this level for years, with instruments that are improvised but accurate. They have a more current picture of the Core's development timeline than the Archive's official record and have been unable to communicate it to the surface because the blackout interrupted the sub-city's communication infrastructure. They know the mark-bearer was coming. They have been tracking the mark's progression toward the sub-city since Chapter 9's awakening.`,
+    text: `The twelve individuals in the Housing Block are a specific kind of survivor: researchers, maintenance personnel, Archive contractors, and at least two people whose presence here cannot be explained by any official documentation. They have been monitoring the Core from this level for years, with instruments that are improvised but accurate. They have a more current picture of the Core's development timeline than the Archive's official record and have been unable to communicate it to the surface because the blackout interrupted the sub-city's communication infrastructure. They know the mark-bearer was coming. They have been tracking the mark's progression toward the sub-city since the awakening.`,
     effectsOnEnter: { setFlags: ['housing_residents_met'] },
     choices: [
       {
@@ -2452,7 +2452,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     title: 'The Truth Route',
     location: 'The First Gate',
     imageKey: 'first_gate',
-    text: `The truth route: open the Gate, release the entity, survive — survive as a changed person, the mark having fulfilled its function and ceased producing the effects the previous eleven chapters documented. The entity departs. The First Voice goes. The corruption gradient clears over the following days. The sub-city becomes an empty infrastructure. The surface population adjusts to a world where the relic field drops to background levels and the factions' power dynamics shift accordingly. The mark-bearer lives. Chapter 12 begins. The truth route is the route that completes the original agreement and clears the sub-city for whatever the surface decides to do with it. This is the decision that was four centuries in the building.`,
+    text: `The truth route: open the Gate, release the entity, survive — survive as a changed person, the mark having fulfilled its function and ceased producing the effects documented along the way. The entity departs. The First Voice goes. The corruption gradient clears over the following days. The sub-city becomes an empty infrastructure. The surface population adjusts to a world where the relic field drops to background levels and the factions' power dynamics shift accordingly. The mark-bearer lives. The surface awaits. The truth route is the route that completes the original agreement and clears the sub-city for whatever the surface decides to do with it. This is the decision that was four centuries in the building.`,
     effectsOnEnter: { corruption: -15, morale: 10, setFlags: ['truth_route_taken', 'final_gate_unlocked'] },
     choices: [
       {
@@ -2500,7 +2500,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     title: 'The Savior Route',
     location: 'The First Gate',
     imageKey: 'first_gate',
-    text: `The savior route: seal the Gate for four more centuries, but seal it with full information. Leave the Deep Archive's records surfaced to the Archive above. The Containment Protocol's history made available to all five factions. Seal the Gate and then spend Chapter 12 rebuilding the surface using the truth of what is below it. The entity waits — patiently, in the way it has waited for four centuries. The mark-bearer is no longer a passive vessel but the person who chose the sealing, who understood what was sealed and why, and who carries the responsibility of the choice into Chapter 12. The corruption clears because the choice was made with full information. Chapter 12 is hard for different reasons.`,
+    text: `The savior route: seal the Gate for four more centuries, but seal it with full information. Leave the Deep Archive's records surfaced to the Archive above. The Containment Protocol's history made available to all five factions. Seal the Gate and then ascend to rebuild the surface using the truth of what is below it. The entity waits — patiently, in the way it has waited for four centuries. The mark-bearer is no longer a passive vessel but the person who chose the sealing, who understood what was sealed and why, and who carries the responsibility of the choice toward the surface. The corruption clears because the choice was made with full information. What comes next is hard for different reasons.`,
     effectsOnEnter: { corruption: -20, morale: 15, setFlags: ['savior_route_taken', 'gate_sealed_knowledge'] },
     choices: [
       {
@@ -2523,7 +2523,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     title: 'The Heir Route',
     location: 'The First Gate',
     imageKey: 'first_gate',
-    text: `The heir route: align with the Masked Heir and open the Gate together, the heir providing the original agreement's documentation as legal foundation, the mark-bearer providing the translation, the combined action honouring the agreement in its original form. The heir route's outcome depends on whether the Heir's additional agenda — what they want after the release — is compatible with what the entity and the mark-bearer produced together. The alliance was always heading here. Whether it holds past the opening is the question that Chapter 12 will answer.`,
+    text: `The heir route: align with the Masked Heir and open the Gate together, the heir providing the original agreement's documentation as legal foundation, the mark-bearer providing the translation, the combined action honouring the agreement in its original form. The heir route's outcome depends on whether the Heir's additional agenda — what they want after the release — is compatible with what the entity and the mark-bearer produced together. The alliance was always heading here. Whether it holds past the opening is the question the surface will answer.`,
     effectsOnEnter: { setFlags: ['heir_route_taken'] },
     choices: [
       {
@@ -2594,7 +2594,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     title: 'Three Ascending',
     location: 'The First Gate',
     imageKey: 'first_gate',
-    text: `Both companions exit with the mark-bearer. The sub-city behind them, the decision behind them, Chapter 12 ahead. Mira reads the mark's post-Gate state as the cleanest gradient she has recorded since Chapter 1 — whichever route was taken, the decision produced clarity. Cain notes the ascent's physical condition: the Sub-City Gate is behind, the Archive's basement ahead, the surface's ongoing chaos the next operational context. "The factions do not know what is below them," he says. "They will." The chapter ends at the Archive's Level 5 access point. Chapter 12 begins from here.`,
+    text: `Both companions exit with the mark-bearer. The sub-city behind them, the decision behind them, the surface ahead. Mira reads the mark's post-Gate state as the cleanest gradient she has recorded since the metro — whichever route was taken, the decision produced clarity. Cain notes the ascent's physical condition: the Sub-City Gate is behind, the Archive's basement ahead, the surface's ongoing chaos the next operational context. "The factions do not know what is below them," he says. "They will." The ascent is complete. The surface waits.`,
     effectsOnEnter: { corruption: -10, morale: 15, setFlags: ['chapter11_complete', 'both_companions_ch12'] },
     choices: [
       {
@@ -2606,7 +2606,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
       },
       {
         id: 'c11_both_to_chapter_end',
-        text: 'Chapter 11 is complete. Chapter 12 begins.',
+        text: 'The sub-city is behind. Ascend.',
         nextNode: 'c11_chapter11_end',
       },
     ],
@@ -2618,12 +2618,12 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     title: 'Two Ascending',
     location: 'The First Gate',
     imageKey: 'first_gate',
-    text: `Mira and the mark-bearer exit the sub-city. The absence of Cain in this configuration is a specific shape — the decisions below were made with medical support and without tactical anchor, and the Gate's decision carries that asymmetry into Chapter 12. Mira's post-Gate assessment: "The corruption gradient is at a level I would describe as functional. Not optimal. The decision resolved something the mark has been carrying since Chapter 9." She closes her kit. "The surface will be different from what we left it." She is correct. Chapter 12 begins.`,
+    text: `Mira and the mark-bearer exit the sub-city. The absence of Cain in this configuration is a specific shape — the decisions below were made with medical support and without tactical anchor, and the Gate's decision carries that asymmetry to the surface. Mira's post-Gate assessment: "The corruption gradient is at a level I would describe as functional. Not optimal. The decision resolved something the mark has been carrying since the awakening." She closes her kit. "The surface will be different from what we left it." She is correct.`,
     effectsOnEnter: { corruption: -8, morale: 8, setFlags: ['chapter11_complete', 'mira_only_ch12'] },
     choices: [
       {
         id: 'c11_mira_to_chapter_end',
-        text: 'Chapter 11 is complete. Chapter 12 begins.',
+        text: 'The sub-city is behind. Ascend.',
         nextNode: 'c11_chapter11_end',
       },
     ],
@@ -2635,12 +2635,12 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     title: 'Two Ascending',
     location: 'The First Gate',
     imageKey: 'first_gate',
-    text: `Cain and the mark-bearer exit the sub-city. Mira's absence below was the medical gap — the corruption monitoring function absent, the Gate's decision made without the clinical assessment she would have provided. Cain's assessment is tactical: "The Gate is either open or sealed. Either way, the surface factions are operating without information about what changed down here. That is a window. We should use it before it closes." His operational frame for everything, applied to the deepest metaphysical decision the game has produced. The mark registers it as correct. Chapter 12 begins.`,
+    text: `Cain and the mark-bearer exit the sub-city. Mira's absence below was the medical gap — the corruption monitoring function absent, the Gate's decision made without the clinical assessment she would have provided. Cain's assessment is tactical: "The Gate is either open or sealed. Either way, the surface factions are operating without information about what changed down here. That is a window. We should use it before it closes." His operational frame for everything, applied to the deepest metaphysical decision the story has produced. The mark registers it as correct.`,
     effectsOnEnter: { corruption: -8, morale: 8, setFlags: ['chapter11_complete', 'cain_only_ch12'] },
     choices: [
       {
         id: 'c11_cain_to_chapter_end',
-        text: 'Chapter 11 is complete. Chapter 12 begins.',
+        text: 'The sub-city is behind. Ascend.',
         nextNode: 'c11_chapter11_end',
       },
     ],
@@ -2652,12 +2652,12 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     title: 'One Ascending',
     location: 'The First Gate',
     imageKey: 'first_gate',
-    text: `The lone wanderer exits the sub-city. No companion to read the mark's post-Gate state. No tactical anchor for what the surface presents. The mark-bearer descended alone and ascended alone and made the Gate's decision alone — the most complete version of the lone wanderer route's implication. The entity's communication, the heir's claim, the Curator's authority, the Nursery's production history: all of it was processed without a secondary voice. The decision was made in the silence below the city. Whatever it was, it was entirely the mark-bearer's. Chapter 12 begins from that position.`,
+    text: `The lone wanderer exits the sub-city. No companion to read the mark's post-Gate state. No tactical anchor for what the surface presents. The mark-bearer descended alone and ascended alone and made the Gate's decision alone — the most complete version of the lone wanderer route's implication. The entity's communication, the heir's claim, the Curator's authority, the Nursery's production history: all of it was processed without a secondary voice. The decision was made in the silence below the city. Whatever it was, it was entirely the mark-bearer's. The surface begins from that position.`,
     effectsOnEnter: { corruption: -5, setFlags: ['chapter11_complete', 'lone_wanderer_ch12'] },
     choices: [
       {
         id: 'c11_alone_to_chapter_end',
-        text: 'Chapter 11 is complete. Chapter 12 begins.',
+        text: 'The sub-city is behind. Ascend alone.',
         nextNode: 'c11_chapter11_end',
       },
     ],
@@ -2669,12 +2669,12 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     title: 'The City Beneath the City Closes',
     location: 'The Sub-City Gate',
     imageKey: 'sub_city_gate',
-    text: `Chapter 11 closes at the Archive's Level 5 access point. The corridor looks different from above: shorter, more clearly bounded, the transition between Archive construction and what is older less visible from this direction. The mark reads the space between here and the First Gate as: done. The decision was made. The sub-city's relic field is what the decision left it. The First Voice is what the decision left it. The surface's factions are at their various precipices, ready for Chapter 12 to determine which ones fall and which ones stand. The city beneath the city has been visited. Chapter 12: Crown of Ash. The surface finally burns down to what it always was.`,
+    text: `The Archive's Level 5 access point. The corridor looks different from above: shorter, more clearly bounded, the transition between Archive construction and what is older less visible from this direction. The mark reads the space between here and the First Gate as: done. The decision was made. The sub-city's relic field is what the decision left it. The First Voice is what the decision left it. The surface's factions are at their various precipices, each deciding which ones fall and which ones stand. The city beneath the city has been visited. Above: Crown of Ash. The surface finally burns down to what it always was.`,
     effectsOnEnter: { setFlags: ['chapter11_complete'], morale: 5 },
     choices: [
       {
         id: 'c11_end_to_ch12',
-        text: 'Chapter 12 begins.',
+        text: 'Ascend.',
         nextNode: 'chapter12_start',
       },
     ],
@@ -2772,7 +2772,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     title: 'Sealed Again',
     location: 'The Old Government Vault',
     imageKey: 'old_government_vault',
-    text: `The Vault is sealed again. The documentation of the five factions' single origin, the Containment Protocol's real history, the entity's agreed release terms — all of it is sealed behind a lock that the mark-bearer just demonstrated cannot be opened by force. The chapter's sub-city evidence will not reach the surface. The factions will continue their war over a city whose purpose they do not understand. The entity will continue its nine-month countdown toward a decision the mark-bearer has declined to make on its behalf. The mark-bearer exits the sub-city with the knowledge intact and the documentation sealed. Knowledge without evidence is what it is. Chapter 12 begins with the truth in a vault the surface cannot open.`,
+    text: `The Vault is sealed again. The documentation of the five factions' single origin, the Containment Protocol's real history, the entity's agreed release terms — all of it is sealed behind a lock that the mark-bearer just demonstrated cannot be opened by force. The sub-city evidence will not reach the surface. The factions will continue their war over a city whose purpose they do not understand. The entity will continue its nine-month countdown toward a decision the mark-bearer has declined to make on its behalf. The mark-bearer exits the sub-city with the knowledge intact and the documentation sealed. Knowledge without evidence is what it is. The ascent begins with the truth in a vault the surface cannot open.`,
     isEnding: true,
     endingType: 'faction',
     endingId: 'ending_ch11_old_government_truth',
@@ -2912,7 +2912,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     title: 'The Alliance Holds',
     location: 'The First Gate',
     imageKey: 'first_gate',
-    text: `The Gate opens. The original agreement is honoured. The entity releases. The heir-line receives what the original agreement intended for it — not the entity's awareness as a possession, but the specific information the entity has been holding for four centuries: the complete memory of what the city was built on and why, translated into a form human decision-making can use. The Masked Heir carries this into Chapter 12. The mark-bearer carries a mark that is now quieter — the First Voice's signal reduced to a background hum after the entity's surface expression has ended. The alliance holds past the Gate, into the corridor, into the Archive's basement, toward the surface. What the Heir does with what they carry is the question Chapter 12 will answer. The mark-bearer will be there to see it.`,
+    text: `The Gate opens. The original agreement is honoured. The entity releases. The heir-line receives what the original agreement intended for it — not the entity's awareness as a possession, but the specific information the entity has been holding for four centuries: the complete memory of what the city was built on and why, translated into a form human decision-making can use. The Masked Heir carries this toward the surface. The mark-bearer carries a mark that is now quieter — the First Voice's signal reduced to a background hum after the entity's surface expression has ended. The alliance holds past the Gate, into the corridor, into the Archive's basement, toward the surface. What the Heir does with what they carry is the question the surface will answer. The mark-bearer will be there to see it.`,
     isEnding: true,
     endingType: 'faction',
     endingId: 'ending_ch11_masked_heir_alliance',
@@ -2926,7 +2926,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     title: 'The First Gate — Path Unlocked',
     location: 'The First Gate',
     imageKey: 'first_gate',
-    text: `The First Gate opens with full information, correct interface, and the complete understanding of what the mark was built to do. The entity releases in the form the original agreement specified: a departure, not an expansion. The mark ceases to produce its current effects over the following days. The corruption gradient clears. The First Voice goes. The sub-city becomes an empty infrastructure, its purpose served. The mark-bearer ascends with whatever companions survived and whatever version of the surface Chapter 12 contains, carrying the specific quality of someone who completed a multigenerational project that was always building toward this moment. The path to the Final Chapter's true ending is unlocked. The route through Chapter 12 will determine whether it is reached.`,
+    text: `The First Gate opens with full information, correct interface, and the complete understanding of what the mark was built to do. The entity releases in the form the original agreement specified: a departure, not an expansion. The mark ceases to produce its current effects over the following days. The corruption gradient clears. The First Voice goes. The sub-city becomes an empty infrastructure, its purpose served. The mark-bearer ascends with whatever companions survived, carrying the weight of someone who completed a multigenerational project that was always building toward this moment. The path to the Final Chapter's true ending is unlocked. The ascent to the surface will determine whether it is reached.`,
     isEnding: true,
     endingType: 'secret',
     endingId: 'ending_ch11_final_gate_path_unlocked',
@@ -2954,7 +2954,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     title: 'The Truth Is Carried Up',
     location: 'The First Gate',
     imageKey: 'first_gate',
-    text: `Three people ascending from the sub-city with the complete picture: the faction origins, the Containment Protocol's history, the entity's agreed release, the nine-month timeline and its resolution. The truth is not abstract. It is specific, documented in the Vault and the Deep Archive's records, confirmed by the Gate's own mechanism. Two companions and the mark-bearer carrying it to a surface that is fighting over a container without knowing it is a container. Chapter 12 will be the chapter where the truth meets the factions. The bearing of the truth — the specific act of carrying it up, with companions, with full information, with both the Gate's decision and the surviving relationships intact — is the route the Archive's evaluation criteria were designed to fail to predict. The mark registers the ascent as: complete.`,
+    text: `Three people ascending from the sub-city with the complete picture: the faction origins, the Containment Protocol's history, the entity's agreed release, the nine-month timeline and its resolution. The truth is not abstract. It is specific, documented in the Vault and the Deep Archive's records, confirmed by the Gate's own mechanism. Two companions and the mark-bearer carrying it to a surface that is fighting over a container without knowing it is a container. Above, the truth meets the factions. The bearing of the truth — the specific act of carrying it up, with companions, with full information, with both the Gate's decision and the surviving relationships intact — is the route the Archive's evaluation criteria were designed to fail to predict. The mark registers the ascent as: complete.`,
     isEnding: true,
     endingType: 'savior',
     endingId: 'ending_ch11_truth_bearer',
@@ -2968,7 +2968,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     title: 'The City Wakes to What It Is',
     location: 'The First Gate',
     imageKey: 'first_gate',
-    text: `The Gate is sealed. The Deep Archive's records are released to the Archive above — every piece of documentation the Old Government Vault contained, surfaced through the Archive's existing distribution infrastructure, addressed to all five factions. The Containment Protocol's history. The faction origins. The entity's timeline. The sealing's cost. The surface receives it over the hours following the mark-bearer's ascent. The factions will respond to the truth the way factions respond to anything: with conflict, with negotiation, with the specific recalibration of people who have been told that the thing they were fighting over is not what they thought it was. The city wakes to what it is. Chapter 12 will determine what it does with that information.`,
+    text: `The Gate is sealed. The Deep Archive's records are released to the Archive above — every piece of documentation the Old Government Vault contained, surfaced through the Archive's existing distribution infrastructure, addressed to all five factions. The Containment Protocol's history. The faction origins. The entity's timeline. The sealing's cost. The surface receives it over the hours following the mark-bearer's ascent. The factions will respond to the truth the way factions respond to anything: with conflict, with negotiation, with the specific recalibration of people who have been told that the thing they were fighting over is not what they thought it was. The city wakes to what it is. What it does with that information is the surface's question now.`,
     isEnding: true,
     endingType: 'savior',
     endingId: 'ending_ch11_city_awakened',

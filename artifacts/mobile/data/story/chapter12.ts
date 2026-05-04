@@ -40,7 +40,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     title: 'Crown of Ash',
     location: 'The Ashen Square',
     imageKey: 'ashen_square',
-    text: `The Ashen Square was a market before the Blackout. The burned-out stalls and scorched paving stones still bear the mark of what it used to be. What it is now: a fire line between the Iron Saints' perimeter and everything else. The mark reads the city the way it has read every built structure for twelve chapters — not as geography, but as accumulated decision. The decision accumulating here is: who inherits. From the sub-city gate behind you to the five faction fronts above, the city is simultaneously burning and deciding. Chapter 12 begins at the line between what was and what the factions will make of it.`,
+    text: `The Ashen Square was a market before the Blackout. The burned-out stalls and scorched paving stones still bear the mark of what it used to be. What it is now: a fire line between the Iron Saints' perimeter and everything else. The mark reads the city the way it has read every built structure along the way — not as geography, but as accumulated decision. The decision accumulating here is: who inherits. From the sub-city gate behind you to the five faction fronts above, the city is simultaneously burning and deciding. The ascent begins at the line between what was and what the factions will make of it.`,
     effectsOnEnter: { setFlags: ['chapter12_begun'] },
     choices: [
       {
@@ -57,7 +57,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     title: 'Who Survived',
     location: 'The Ashen Square',
     imageKey: 'ashen_square',
-    text: `The companion configuration that carried through Chapter 11 is the configuration standing in the Ashen Square. The mark reads whoever is present as a secondary resonance — familiar, stable, altered by what the sub-city showed them. The factions' scouts have already spotted movement at the square's edge. There is a window before they identify you specifically. The window is short.`,
+    text: `The companion configuration that survived the sub-city is the configuration standing in the Ashen Square. The mark reads whoever is present as a secondary resonance — familiar, stable, altered by what the sub-city showed them. The factions' scouts have already spotted movement at the square's edge. There is a window before they identify you specifically. The window is short.`,
     effectsOnEnter: {},
     choices: [
       {
@@ -432,7 +432,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     title: 'What the Market Knows',
     location: 'The Burning Market',
     imageKey: 'burning_market',
-    text: `The market's information infrastructure is informal and accurate. Three confirmed items: the Glass Court extraction device was tested on a willing bearer three days ago — the bearer survived, the mark was not fully removed, the bearer is now in Glass Court medical custody. The Red Choir broadcast is targeting the mark-bearer specifically — Veyl knows the sub-city truth from Chapter 11's release and is building the transmission around it. The Hollow Children's surface emergence was not planned — something in the sub-city's changed resonance after the gate event drove them up. Four unconfirmed items on request.`,
+    text: `The market's information infrastructure is informal and accurate. Three confirmed items: the Glass Court extraction device was tested on a willing bearer three days ago — the bearer survived, the mark was not fully removed, the bearer is now in Glass Court medical custody. The Red Choir broadcast is targeting the mark-bearer specifically — Veyl knows the sub-city truth from the gate event's release and is building the transmission around it. The Hollow Children's surface emergence was not planned — something in the sub-city's changed resonance after the gate event drove them up. Four unconfirmed items on request.`,
     effectsOnEnter: { intelligence: 2, setFlags: ['market_intel_gathered'] },
     choices: [
       {
@@ -804,7 +804,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     title: 'Inquisitor Sera',
     location: 'The Saint Front',
     imageKey: 'saint_front',
-    text: `Inquisitor Sera is the crusade's enforcement arm, which means she is the part that acts when the crusade's documented reasoning doesn't need to accompany the action. She is not cruel either. She is precise. The precision has a different quality than Veyra's — Veyra's is institutional, Sera's is personal. She has a specific opinion about the mark, about the sub-city, and about what the mark-bearer's survival of Chapter 11 means for the crusade mandate's operational integrity. The opinion is: it doesn't. "Veyra's revision doesn't extend to my operational mandate," she says. "My mandate is intact." She is holding it.`,
+    text: `Inquisitor Sera is the crusade's enforcement arm, which means she is the part that acts when the crusade's documented reasoning doesn't need to accompany the action. She is not cruel either. She is precise. The precision has a different quality than Veyra's — Veyra's is institutional, Sera's is personal. She has a specific opinion about the mark, about the sub-city, and about what the mark-bearer's survival of the sub-city means for the crusade mandate's operational integrity. The opinion is: it doesn't. "Veyra's revision doesn't extend to my operational mandate," she says. "My mandate is intact." She is holding it.`,
     effectsOnEnter: { setFlags: ['sera_confronted'] },
     choices: [
       {
@@ -1063,7 +1063,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     title: 'Juno\'s Network',
     location: 'The Glass Barricade',
     imageKey: 'glass_barricade',
-    text: `Juno is in the Glass Court barricade because Juno is always where the Glass Court's operational infrastructure is most vulnerable, which is where the servants are. The servant network from Chapter 5 has maintained structural continuity — the same people, the same channels, now running interference for the mark-bearer rather than for the Glass Court's internal operations. Juno doesn't say this is unexpected. "The device was always going to be the chapter's pivot," she says. "We've had a disabling access point for two days. We were waiting for someone who could use it."`,
+    text: `Juno is in the Glass Court barricade because Juno is always where the Glass Court's operational infrastructure is most vulnerable, which is where the servants are. The servant network from the Glass Court infiltration has maintained structural continuity — the same people, the same channels, now running interference for the mark-bearer rather than for the Glass Court's internal operations. Juno doesn't say this is unexpected. "The device was always going to be the pivot," she says. "We've had a disabling access point for two days. We were waiting for someone who could use it."`,
     effectsOnEnter: { setFlags: ['juno_contacted'] },
     choices: [
       {
@@ -1159,7 +1159,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     title: 'Mother Veyl',
     location: 'The Red Choir March',
     imageKey: 'red_choir_march',
-    text: `Mother Veyl at the march's center is older than she looked in earlier chapters — the march takes something from her that the stationary Choir spaces don't. She sings while she walks, under her breath, in the register the mark has learned to read as the Choir's specific frequency: not the First Voice's signal, not the mark's architecture, but the seventeen-fold network that the Red Choir's infected have been maintaining since Chapter 6. She sees the mark before she sees the bearer. "The sub-city gate's departure changed the signal," she says. "The seventeen are stabilising without the First Voice's carrier. The march is the carrier now." She is not asking you to understand this. She is reporting a fact. "The broadcast will complete in two hours. I can redirect it. The question is whether you can give me a reason to."`,
+    text: `Mother Veyl at the march's center is older than she looked at the Choir's sanctuary — the march takes something from her that the stationary Choir spaces don't. She sings while she walks, under her breath, in the register the mark has learned to read as the Choir's specific frequency: not the First Voice's signal, not the mark's architecture, but the seventeen-fold network that the Red Choir's infected have been maintaining since the initial communion outbreak. She sees the mark before she sees the bearer. "The sub-city gate's departure changed the signal," she says. "The seventeen are stabilising without the First Voice's carrier. The march is the carrier now." She is not asking you to understand this. She is reporting a fact. "The broadcast will complete in two hours. I can redirect it. The question is whether you can give me a reason to."`,
     effectsOnEnter: { setFlags: ['veyl_met'] },
     choices: [
       {
@@ -1422,7 +1422,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
       },
       {
         id: 'c12_mael_truth_bearer',
-        text: 'The truth-bearer route from Chapter 11 carries the sub-city\'s complete record. Give it to Mael.',
+        text: 'The sub-city\'s complete record was carried up. Give it to Mael.',
         nextNode: 'c12_archive_truth_bearer_route',
         requirements: { flags: ['truth_bearer_ch12'] },
       },
@@ -1463,7 +1463,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     title: 'The Complete Record',
     location: 'The Archive Siege',
     imageKey: 'archive_siege',
-    text: `The truth-bearer configuration from Chapter 11 — both companions, full sub-city documentation, the First Gate's complete record — produces a reaction in Mael that is not emotional in the way most people mean when they use that word. It is professional. He processes the sub-city evidence with the attention of someone whose entire career has been building toward the moment when this specific record would surface. "The surface documentation I have and the sub-city record you carry are complementary," he says. "Together they constitute the complete Containment Protocol history — the founding, the Blackout, the entity's presence, the departure protocol. This is the document that resolves the faction war." He is not overstating. He is assessing.`,
+    text: `The truth-bearer configuration from the sub-city — both companions, full sub-city documentation, the First Gate's complete record — produces a reaction in Mael that is not emotional in the way most people mean when they use that word. It is professional. He processes the sub-city evidence with the attention of someone whose entire career has been building toward the moment when this specific record would surface. "The surface documentation I have and the sub-city record you carry are complementary," he says. "Together they constitute the complete Containment Protocol history — the founding, the Blackout, the entity's presence, the departure protocol. This is the document that resolves the faction war." He is not overstating. He is assessing.`,
     effectsOnEnter: { intelligence: 5, lastArchive: 10, setFlags: ['complete_record_assembled', 'faction_resolution_available'] },
     choices: [
       {
@@ -2264,7 +2264,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     title: 'The Citywide Battlefield',
     location: 'The Citywide Battlefield',
     imageKey: 'citywide_battlefield',
-    text: `Outside the Broken Throne's building, the chapter's five-faction conflict has reached the citywide battlefield stage — which is not a military designation but a civic one: the city is the battlefield, every street and block and surviving structure a contested position. The faction war has been building toward this since Chapter 1. It looks exactly like what it is: a city that has been fighting itself for three hundred years finally making the conflict visible. The mark reads the battlefield the way it reads every space of accumulated decision. The decision being made here is the chapter's decision. The mark-bearer moving through it is either the resolution or the last surviving variable.`,
+    text: `Outside the Broken Throne's building, the five-faction conflict has reached the citywide battlefield stage — which is not a military designation but a civic one: the city is the battlefield, every street and block and surviving structure a contested position. The faction war has been building toward this since the founding sealing, three hundred years of pressure finally making the conflict visible. The mark reads the battlefield the way it reads every space of accumulated decision. The mark-bearer moving through it is either the resolution or the last surviving variable.`,
     effectsOnEnter: { setFlags: ['citywide_battlefield_entered'] },
     choices: [
       {
@@ -2310,7 +2310,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     title: 'Close Range',
     location: 'The Citywide Battlefield',
     imageKey: 'citywide_battlefield',
-    text: `The blade survivor's close-range training turns the faction line's structural weakness — the gap between the third and fourth position that every armed formation has if the formation is moving rather than fixed — into a transit corridor. The crossing is not bloodless, but it is complete. The blade survivor reaches the other side with the specific quality of someone who has done exactly this thing in exactly this kind of space for exactly as long as it takes, and has always known the cost is the cost.`,
+    text: `The blade survivor's close-range training turns the faction line's structural weakness — the gap between the third and fourth position that every armed formation has if the formation is moving rather than fixed — into a transit corridor. The crossing is not bloodless, but it is complete. The blade survivor reaches the other side with the economy of someone who has done exactly this thing in exactly this kind of space for exactly as long as it takes, and has always known the cost is the cost.`,
     effectsOnEnter: { health: -15, setFlags: ['blade_through_complete'] },
     choices: [
       {
@@ -2430,7 +2430,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     title: 'Mira\'s Choice',
     location: 'The Broken Throne',
     imageKey: 'broken_throne',
-    text: `Mira outside the Broken Throne's hall: standing in the specific posture of someone who has made a decision and is waiting for the conversation that makes it real. The city's savior route success gives her something she has been building toward since Chapter 1's opening — not the city's resolution, but the possibility of one. "The marked population's adaptation pathway is documented," she says. "The Glass Court medical custody case is recoverable. The Archive has the complete record." She pauses. "I'm staying. There's twelve chapters of medical work to implement and I'm the most qualified person in the city to do it." She is not asking for permission. She is completing a sentence that started in Chapter 1.`,
+    text: `Mira outside the Broken Throne's hall: standing in the specific posture of someone who has made a decision and is waiting for the conversation that makes it real. The city's savior route success gives her something she has been building toward since the metro — not the city's resolution, but the possibility of one. "The marked population's adaptation pathway is documented," she says. "The Glass Court medical custody case is recoverable. The Archive has the complete record." She pauses. "I'm staying. There's years of medical work to implement and I'm the most qualified person in the city to do it." She is not asking for permission. She is completing a sentence that started in a tunnel below the city.`,
     effectsOnEnter: { miraTrust: 5, setFlags: ['mira_final_choice'] },
     choices: [
       {
@@ -2700,7 +2700,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     isEnding: true,
     endingType: 'companion',
     endingId: 'ending_ch12_miras_mercy',
-    text: `Mira stays. This is the ending that contains both things: Mira choosing the city's twelve chapters of medical work over the Final Gate's route, and the mark-bearer understanding that the choice is not a rejection. She is not staying because she has stopped. She is staying because the specific work that needs doing — the marked population's adaptation documentation, the Glass Court medical custody recovery, the implementation of everything twelve chapters of research has produced — requires Mira specifically, in this city, now. The mark reads Mira's departure from the gate route as: loss, specific, bearable. The warmth in the mark that started in Chapter 2 and has never fully dimmed does not dim now. It stays, at this distance, which is what the mercy in the title means: she let you keep the warmth by choosing the place where she is most herself.`,
+    text: `Mira stays. This is the ending that contains both things: Mira choosing the city's accumulated medical work over the Final Gate's route, and the mark-bearer understanding that the choice is not a rejection. She is not staying because she has stopped. She is staying because the specific work that needs doing — the marked population's adaptation documentation, the Glass Court medical custody recovery, the implementation of everything years of research has produced — requires Mira specifically, in this city, now. The mark reads Mira's departure from the gate route as: loss, specific, bearable. The warmth in the mark that first appeared in the early tunnels and has never fully dimmed does not dim now. It stays, at this distance, which is what the mercy in the title means: she let you keep the warmth by choosing the place where she is most herself.`,
     effectsOnEnter: { setFlags: ['game_complete', 'miras_mercy_complete', 'mira_mercy_complete', 'chapter12_complete', 'mira_stays_city'] },
     choices: [],
   },
@@ -2916,7 +2916,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     isEnding: true,
     endingType: 'betrayal',
     endingId: 'ending_ch12_heir_knife',
-    text: `The sub-city established the basis for many things. The rejection in the sub-city — whatever form it took in Chapter 11 — established the basis for this. The Masked Heir, unmasked and inheriting, strikes in the Broken Throne with the specific precision of someone who has been carrying the rejection for the duration of the chapter and has chosen the convergence point as the resolution. The strike is not political. It is personal. It is the oldest reason for a knife at the Broken Throne: someone who was wronged and had the patience to wait for the right room. The mark dims. The sub-city's resonance holds in the Broken Throne's hall for four minutes and thirty seconds, which is the longest it has held in any space above ground. The Heir does not note this. They are already carrying the record.`,
+    text: `The sub-city established the basis for many things. The rejection below — whatever form it took at the First Gate — established the basis for this. The Masked Heir, unmasked and inheriting, strikes in the Broken Throne with the specific precision of someone who has been carrying the rejection across the ascent and has chosen the convergence point as the resolution. The strike is not political. It is personal. It is the oldest reason for a knife at the Broken Throne: someone who was wronged and had the patience to wait for the right room. The mark dims. The sub-city's resonance holds in the Broken Throne's hall for four minutes and thirty seconds, which is the longest it has held in any space above ground. The Heir does not note this. They are already carrying the record.`,
     effectsOnEnter: { setFlags: ['heir_knife_complete'] },
     choices: [],
   },
@@ -2932,7 +2932,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     isEnding: true,
     endingType: 'corruption',
     endingId: 'ending_ch12_choir_consumed',
-    text: `The seventeen-fold network, on critical failure, receives the mark's architecture as a signal rather than as a negotiation. The critical failure mode: the mark opens further than the bearer intended, the seventeen frequencies lock to the mark's architecture simultaneously, and the mark becomes the seventeen-fold network's primary channel. The bearer does not die. The bearer becomes the broadcast. The city receives, for approximately forty minutes, the clearest transmission the Red Choir's network has ever produced: the sub-city's truth, the mark's twelve-chapter resonance, the entity's departure record, and the specific quality of someone who carried it all and lost the container in the carrying. Mother Veyl stops the march. "The signal completed," she says. "In a way I did not intend." The mark is warm. The bearer is the warmth.`,
+    text: `The seventeen-fold network, on critical failure, receives the mark's architecture as a signal rather than as a negotiation. The critical failure mode: the mark opens further than the bearer intended, the seventeen frequencies lock to the mark's architecture simultaneously, and the mark becomes the seventeen-fold network's primary channel. The bearer does not die. The bearer becomes the broadcast. The city receives, for approximately forty minutes, the clearest transmission the Red Choir's network has ever produced: the sub-city's truth, the mark's long resonance, the entity's departure record, and the presence of someone who carried it all and lost the container in the carrying. Mother Veyl stops the march. "The signal completed," she says. "In a way I did not intend." The mark is warm. The bearer is the warmth.`,
     effectsOnEnter: { setFlags: ['game_complete', 'choir_consumed_corruption'] },
     choices: [],
   },

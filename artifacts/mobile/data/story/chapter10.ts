@@ -22,7 +22,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     title: 'Broken Companions',
     location: 'The Quiet Safehouse',
     imageKey: 'quiet_safehouse',
-    text: `Three days after the awakening. The mark is operational, legible, and demanding. The safehouse Mira sourced in the Level 3 maintenance district is quieter than anything the last nine chapters produced — no factions, no entities, no First Voice. Just the sound of the tunnel network doing what it does and two people somewhere in these corridors who have been carrying things they have not said. Chapter 10 is about those things. It is the chapter that costs the most and produces the least that is measurable. The mark registers the emotional gradient the way it registers structural pressure: as data with consequences.`,
+    text: `Three days after the awakening. The mark is operational, legible, and demanding. The safehouse Mira sourced in the Level 3 maintenance district is quieter than anything the last nine days produced — no factions, no entities, no First Voice. Just the sound of the tunnel network doing what it does and two people somewhere in these corridors who have been carrying things they have not said. What they have not said costs the most and produces the least that is measurable. The mark registers the emotional gradient the way it registers structural pressure: as data with consequences.`,
     effectsOnEnter: { setFlags: ['chapter10_begun'] },
     choices: [
       {
@@ -62,7 +62,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     location: 'The Quiet Safehouse',
     imageKey: 'quiet_safehouse',
     speaker: 'Mira',
-    text: `She is at the bench, not working. The vials are already organised. She has been organising them again. "There is something I have been intending to tell you since Chapter 1," she says. No preamble. No clinical framing. "I did not tell you because the moment was always wrong, or I was afraid of what it would do to what we were building, or I told myself it was not relevant yet." She sets down the last vial. "It is relevant now. It has been relevant since the blackout." She turns. Her expression is the one she uses before delivering a prognosis she would rather not deliver. "The Archive placed me in this metro. Before the blackout. I was not a survivor who found a purpose. I was already here to find you."`,
+    text: `She is at the bench, not working. The vials are already organised. She has been organising them again. "There is something I have been intending to tell you since the metro," she says. No preamble. No clinical framing. "I did not tell you because the moment was always wrong, or I was afraid of what it would do to what we were building, or I told myself it was not relevant yet." She sets down the last vial. "It is relevant now. It has been relevant since the blackout." She turns. Her expression is the one she uses before delivering a prognosis she would rather not deliver. "The Archive placed me in this metro. Before the blackout. I was not a survivor who found a purpose. I was already here to find you."`,
     effectsOnEnter: { setFlags: ['mira_truth_begins', 'chapter10_mira_opening'] },
     choices: [
       {
@@ -144,7 +144,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
       },
       {
         id: 'c10_full_reveal_anger',
-        text: '"You should have told me at Chapter 1."',
+        text: '"You should have told me from the beginning."',
         nextNode: 'c10_mira_response_anger',
         effects: { miraTrust: -2 },
       },
@@ -188,7 +188,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     location: 'The Quiet Safehouse',
     imageKey: 'quiet_safehouse',
     speaker: 'Mira',
-    text: `"Yes." She does not argue the point. "I should have told you in Chapter 1. The reasons I did not are not good enough, and I know that. Fear of your reaction. Fear of losing what we were building. Fear that the Archive would learn I had disclosed and act on it before you had enough strength to resist them." She stands. "I am not asking you to accept the timing. I am asking you to decide what to do with the information now that you have it. The Archive's agenda has not stopped because I told you. Director Varr's dossier on my assignment still exists. Whatever your decision, you should see my clinic records before you finalise it."`,
+    text: `"Yes." She does not argue the point. "I should have told you when we first met. The reasons I did not are not good enough, and I know that. Fear of your reaction. Fear of losing what we were building. Fear that the Archive would learn I had disclosed and act on it before you had enough strength to resist them." She stands. "I am not asking you to accept the timing. I am asking you to decide what to do with the information now that you have it. The Archive's agenda has not stopped because I told you. Director Varr's dossier on my assignment still exists. Whatever your decision, you should see my clinic records before you finalise it."`,
     effectsOnEnter: { setFlags: ['mira_anger_response_given'] },
     choices: [
       {
@@ -236,7 +236,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     location: 'The Quiet Safehouse',
     imageKey: 'quiet_safehouse',
     speaker: 'Cain',
-    text: `He is in the main corridor, running a maintenance check on the safehouse's ventilation grid — the kind of task that gives hands something to do while a mind works through something harder. "I need to tell you something about the blackout," he says without looking up. "Not what I told you. What I didn't." He sets the tool down. His movements have the economy of someone who has rehearsed a difficult thing and is now doing it anyway. "The evacuation orders I enforced in the lower levels — I knew they were wrong. Not illegal. Not technically wrong. But wrong in the way that things can be legal and still wrong. Seventeen people died in that corridor because I cleared it before the structural assessment was complete." He finally looks at you. "I have been next to you for ten chapters waiting for the right moment. There is no right moment."`,
+    text: `He is in the main corridor, running a maintenance check on the safehouse's ventilation grid — the kind of task that gives hands something to do while a mind works through something harder. "I need to tell you something about the blackout," he says without looking up. "Not what I told you. What I didn't." He sets the tool down. His movements have the economy of someone who has rehearsed a difficult thing and is now doing it anyway. "The evacuation orders I enforced in the lower levels — I knew they were wrong. Not illegal. Not technically wrong. But wrong in the way that things can be legal and still wrong. Seventeen people died in that corridor because I cleared it before the structural assessment was complete." He finally looks at you. "I have been next to you this whole time waiting for the right moment. There is no right moment."`,
     effectsOnEnter: { setFlags: ['cain_truth_begins', 'chapter10_cain_opening'] },
     choices: [
       {
@@ -312,7 +312,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     title: 'The Archive Files',
     location: "Mira's Hidden Clinic",
     imageKey: 'mira_hidden_clinic',
-    text: `The sealed case contains three types of documents. A standard Archive medical monitoring template — populated with your data from Chapter 1 onward. A pre-blackout research brief, Archive Medical Division header, subject designation "Interface Candidate 7 — Primary Monitoring Assignment." And a personal file that does not use Archive formatting: handwritten, dated, beginning six months before the blackout and running through to last week. The Archive brief is a fourteen-page document. The intelligence required to read it correctly — to distinguish what it mandated from what Mira actually did — is not trivial. The personal file is legible without training. The question is which one you need more.`,
+    text: `The sealed case contains three types of documents. A standard Archive medical monitoring template — populated with your data from first contact onward. A pre-blackout research brief, Archive Medical Division header, subject designation "Interface Candidate 7 — Primary Monitoring Assignment." And a personal file that does not use Archive formatting: handwritten, dated, beginning six months before the blackout and running through to last week. The Archive brief is a fourteen-page document. The intelligence required to read it correctly — to distinguish what it mandated from what Mira actually did — is not trivial. The personal file is legible without training. The question is which one you need more.`,
     effectsOnEnter: { setFlags: ['clinic_records_opened'] },
     choices: [
       {
@@ -413,7 +413,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     location: "Mira's Hidden Clinic",
     imageKey: 'mira_hidden_clinic',
     speaker: 'Director Varr',
-    text: `He is in the corridor outside the clinic, not inside. Waiting, not searching. "I found the clinic six weeks ago," he says before you can ask. "I have not reported its location to the Archive. That is not an act of generosity — it is a professional decision. Mira's data is more useful to me if she remains operational than if the Archive retrieves her." He examines you with the same clinical detachment he applies to everything. "I have also not reported your corruption gradient this chapter, which has been within actionable range twice. You should know that someone is tracking what I am not reporting. My silence has a cost I have not yet named."`,
+    text: `He is in the corridor outside the clinic, not inside. Waiting, not searching. "I found the clinic six weeks ago," he says before you can ask. "I have not reported its location to the Archive. That is not an act of generosity — it is a professional decision. Mira's data is more useful to me if she remains operational than if the Archive retrieves her." He examines you with the same clinical detachment he applies to everything. "I have also not reported your corruption gradient in recent weeks, which has been within actionable range twice. You should know that someone is tracking what I am not reporting. My silence has a cost I have not yet named."`,
     effectsOnEnter: { setFlags: ['varr_ch10_met'] },
     choices: [
       {
@@ -614,7 +614,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     title: 'The War Room',
     location: "Cain's War Room",
     imageKey: 'cain_war_room',
-    text: `The war room is three maintenance rooms repurposed: a tactical table built from a signal console, wall maps with pins and wire, a single bunk that has not been used recently. Cain has been running the external security assessment from here since Chapter 7. The room smells like metal, cigarette substitute, and the specific chemical residue that means someone has been cleaning weapons. On the tactical table, alongside the district maps, is a sealed folder marked with an Iron Saints watermark that has been partially redacted. The folder is open. He did not hide it.`,
+    text: `The war room is three maintenance rooms repurposed: a tactical table built from a signal console, wall maps with pins and wire, a single bunk that has not been used recently. Cain has been running the external security assessment from here since the Archive library access. The room smells like metal, cigarette substitute, and the specific chemical residue that means someone has been cleaning weapons. On the tactical table, alongside the district maps, is a sealed folder marked with an Iron Saints watermark that has been partially redacted. The folder is open. He did not hide it.`,
     effectsOnEnter: { setFlags: ['cain_war_room_arrived'] },
     choices: [
       {
@@ -764,7 +764,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     choices: [
       {
         id: 'c10_defense_believe',
-        text: '"I have watched you make different calculations for nine chapters. Yes."',
+        text: '"I have watched you make different calculations all this time. Yes."',
         nextNode: 'c10_cain_accept_past',
         effects: { cainTrust: 4 },
       },
@@ -808,7 +808,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     location: "Cain's War Room",
     imageKey: 'cain_war_room',
     speaker: 'Cain',
-    text: `He accepts this without arguing. "I understand." He does not move. "I will remain operationally useful for this chapter. Whatever you need in terms of tactics, security, the bridge camp situation — I will provide that." A pause that has something in it. "What I will not provide is the pretense that this is the same as what it was. If the answer is that the four minutes is the permanent account, then the account is what it is. I can work from that." He pauses. "The Iron Saints version of me operated from a worse account for longer. I am familiar with the format."`,
+    text: `He accepts this without arguing. "I understand." He does not move. "I will remain operationally useful through this. Whatever you need in terms of tactics, security, the bridge camp situation — I will provide that." A pause that has something in it. "What I will not provide is the pretense that this is the same as what it was. If the answer is that the four minutes is the permanent account, then the account is what it is. I can work from that." He pauses. "The Iron Saints version of me operated from a worse account for longer. I am familiar with the format."`,
     effectsOnEnter: { setFlags: ['cain_rejected', 'cain_rival_path_set'], cainTrust: -2 },
     choices: [
       {
@@ -954,7 +954,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     title: 'The Bridge Camp',
     location: 'The Broken Bridge Camp',
     imageKey: 'broken_bridge_camp',
-    text: `The Broken Bridge Camp occupies the Level 3 transit junction where the main tram line collapsed during the blackout — the bridge half-standing, the camp built across the stable section and into both tunnel approaches. Three hundred and twelve people have been here since Chapter 8. The camp coordinator from the Hunger War period, Dever, is at the main table. Near the east entrance, two familiar faces: Sera, if she survived, reading medical notes. Juno, if she survived, at a portable legal documentation station. The camp has processed the end of the Hunger War and is now managing what comes after it — the specific human cost of survival at reduced intensity.`,
+    text: `The Broken Bridge Camp occupies the Level 3 transit junction where the main tram line collapsed during the blackout — the bridge half-standing, the camp built across the stable section and into both tunnel approaches. Three hundred and twelve people have been here since the Hunger War's final push. The camp coordinator from the Hunger War period, Dever, is at the main table. Near the east entrance, two familiar faces: Sera, if she survived, reading medical notes. Juno, if she survived, at a portable legal documentation station. The camp has processed the end of the Hunger War and is now managing what comes after it — the specific human cost of survival at reduced intensity.`,
     effectsOnEnter: { setFlags: ['bridge_camp_ch10_arrived'] },
     choices: [
       {
@@ -1133,7 +1133,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     location: 'The Betrayal Alley',
     imageKey: 'betrayal_alley',
     speaker: 'The Masked Heir',
-    text: `"What I get is a Last Gate negotiation that has a capable mark-bearer who has not been destabilised by avoidable companion crises." They step away from the wall. "I am offering both of your companions an alternative. Mira: Archive Medical Division drops the recall order in exchange for her relocating to the Archive's Level 1 research wing. She keeps her work. She leaves your company. It is a better arrangement for her than Chapter 11 will be." They pause. "Cain: the Iron Saints immunity arrangement includes a formal exoneration of the Level 3 South operation. The case Juno is building goes away. He returns to the Saints with his record clean." They spread their hands. "These are not bad offers. I need you to be honest about whether you are keeping them with you for their benefit or yours."`,
+    text: `"What I get is a Last Gate negotiation that has a capable mark-bearer who has not been destabilised by avoidable companion crises." They step away from the wall. "I am offering both of your companions an alternative. Mira: Archive Medical Division drops the recall order in exchange for her relocating to the Archive's Level 1 research wing. She keeps her work. She leaves your company. It is a better arrangement for her than what comes next will be." They pause. "Cain: the Iron Saints immunity arrangement includes a formal exoneration of the Level 3 South operation. The case Juno is building goes away. He returns to the Saints with his record clean." They spread their hands. "These are not bad offers. I need you to be honest about whether you are keeping them with you for their benefit or yours."`,
     effectsOnEnter: { setFlags: ['heir_offers_made'] },
     choices: [
       {
@@ -1188,7 +1188,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     location: 'The Betrayal Alley',
     imageKey: 'betrayal_alley',
     speaker: 'The Masked Heir',
-    text: `"Veyra's immunity arrangement covers the Level 3 South operation entirely. Juno's case file goes into the Iron Saints internal review process, where it will be handled as an institutional matter rather than a personal accusation against Cain specifically." They pause. "The exoneration is not justice for the seventeen people — nothing is. But it removes the specific weight Cain has been carrying from an institutional context that was already wrong before he implemented the order." A pause. "He has been your security asset for ten chapters because he could not go home. If home is no longer a court-martial, you should ask yourself whether you want him to stay because it is good for him or because you need him."`,
+    text: `"Veyra's immunity arrangement covers the Level 3 South operation entirely. Juno's case file goes into the Iron Saints internal review process, where it will be handled as an institutional matter rather than a personal accusation against Cain specifically." They pause. "The exoneration is not justice for the seventeen people — nothing is. But it removes the specific weight Cain has been carrying from an institutional context that was already wrong before he implemented the order." A pause. "He has been your security asset all this time because he could not go home. If home is no longer a court-martial, you should ask yourself whether you want him to stay because it is good for him or because you need him."`,
     effectsOnEnter: { setFlags: ['heir_cain_offer_detailed'] },
     choices: [
       {
@@ -1280,7 +1280,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     location: 'The Betrayal Alley',
     imageKey: 'betrayal_alley',
     speaker: 'Mira',
-    text: `"The Archive recall order and the research wing arrangement are both real. I verified the document number." She is not in the Alley — she is in the corridor adjacent, where the conversation reached her. "The Phase One documentation is something I have needed for three years. The modification the Archive made is in my neurological architecture and I do not know its full extent." She is not performing distress — she is stating medical facts. "I am not going to leave without saying what I am considering. But I am considering whether staying through Chapter 11 is something I can survive, given that the Archive's enforcement division has an active recall." She looks at you. "What I need from you is honesty about whether you want me here for my benefit or yours."`,
+    text: `"The Archive recall order and the research wing arrangement are both real. I verified the document number." She is not in the Alley — she is in the corridor adjacent, where the conversation reached her. "The Phase One documentation is something I have needed for three years. The modification the Archive made is in my neurological architecture and I do not know its full extent." She is not performing distress — she is stating medical facts. "I am not going to leave without saying what I am considering. But I am considering whether going forward is something I can survive, given that the Archive's enforcement division has an active recall." She looks at you. "What I need from you is honesty about whether you want me here for my benefit or yours."`,
     effectsOnEnter: { setFlags: ['mira_wavering_ch10'] },
     choices: [
       {
@@ -1311,7 +1311,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     location: 'The Betrayal Alley',
     imageKey: 'betrayal_alley',
     speaker: 'Cain',
-    text: `"The immunity arrangement includes a formal review of the Level 3 South case. Juno's file would go to Iron Saints internal — not dismissed, reviewed." He is at the Alley's end, where the Saints corridor access runs. Not approaching the corridor — positioned near it. "I have not decided. I want to be clear about that. But the offer means the seventeen people get a documented review rather than a file Juno is holding in the hope that a jurisdiction materialises." He looks at you. "I stayed for ten chapters because you needed someone who understood the tactical situation and had no stake in using the mark for power. I still think that. I am asking whether the offer changes what I can do from inside versus outside."`,
+    text: `"The immunity arrangement includes a formal review of the Level 3 South case. Juno's file would go to Iron Saints internal — not dismissed, reviewed." He is at the Alley's end, where the Saints corridor access runs. Not approaching the corridor — positioned near it. "I have not decided. I want to be clear about that. But the offer means the seventeen people get a documented review rather than a file Juno is holding in the hope that a jurisdiction materialises." He looks at you. "I stayed all this time because you needed someone who understood the tactical situation and had no stake in using the mark for power. I still think that. I am asking whether the offer changes what I can do from inside versus outside."`,
     effectsOnEnter: { setFlags: ['cain_wavering_ch10'] },
     choices: [
       {
@@ -1365,7 +1365,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     title: 'The Memory Shelter',
     location: 'The Memory Shelter',
     imageKey: 'memory_shelter',
-    text: `The Memory Shelter is what the tunnel network's early survivors called the archive room attached to the Level 4 transit junction — a climate-controlled storage space that predates the blackout, filled with pre-collapse personal effects: photographs, written documents, items that survived because they were already underground. The camp uses it as a community space for grief work. Today it is empty except for your companions, if they are present. This is the place both of them chose for the conversations that matter. The mark is quiet here — the resonance that has been active since Chapter 9 registers the shelter as emotionally dense, not structurally significant.`,
+    text: `The Memory Shelter is what the tunnel network's early survivors called the archive room attached to the Level 4 transit junction — a climate-controlled storage space that predates the blackout, filled with pre-collapse personal effects: photographs, written documents, items that survived because they were already underground. The camp uses it as a community space for grief work. Today it is empty except for your companions, if they are present. This is the place both of them chose for the conversations that matter. The mark is quiet here — the resonance that has been active since the awakening registers the shelter as emotionally dense, not structurally significant.`,
     effectsOnEnter: { setFlags: ['memory_shelter_arrived'] },
     choices: [
       {
@@ -1429,7 +1429,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     location: 'The Memory Shelter',
     imageKey: 'memory_shelter',
     speaker: 'Mira',
-    text: `"The last nineteen entries are all about you surviving the next thing." She says it clinically, but the clinical framing is doing more work than usual. "I have a documented prediction accuracy of eighty-seven percent on mark-bearer corruption risk assessments. My personal prediction on whether you were going to make it through Chapter 9 was significantly more pessimistic than the medical assessment warranted." She is quiet for a moment. "The personal log and the medical log diverge at exactly the point the Archive would call 'over-investment.' I have been over-invested since Chapter 3. I am aware of this. It has not changed my assessment capacity." She finally looks at you directly. "It has changed everything else."`,
+    text: `"The last nineteen entries are all about you surviving the next thing." She says it clinically, but the clinical framing is doing more work than usual. "I have a documented prediction accuracy of eighty-seven percent on mark-bearer corruption risk assessments. My personal prediction on whether you were going to make it through the Relic Scar was significantly more pessimistic than the medical assessment warranted." She is quiet for a moment. "The personal log and the medical log diverge at exactly the point the Archive would call 'over-investment.' I have been over-invested since early on. I am aware of this. It has not changed my assessment capacity." She finally looks at you directly. "It has changed everything else."`,
     effectsOnEnter: { setFlags: ['mira_devotion_deep_scene', 'mira_devotion_route_unlocked'], miraTrust: 3 },
     choices: [
       {
@@ -1474,7 +1474,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     location: 'The Memory Shelter',
     imageKey: 'memory_shelter',
     speaker: 'Cain',
-    text: `"The Iron Saints taught me that loyalty was a tactical function. You stay with your unit because it is strategically correct to stay with your unit." He is quiet for a moment. "I have been trying to figure out, for ten chapters, what I am doing here. The tactical case stopped being the full answer around Chapter 5." He folds the paper one more time and puts it in his pocket. "If Chapter 11 produces a situation where a choice has to be made between your survival and something else — I want you to know my position before we are in it. Not as a transaction. As a stated position." He looks at you directly. "You are not going to die in front of me if I can prevent it."`,
+    text: `"The Iron Saints taught me that loyalty was a tactical function. You stay with your unit because it is strategically correct to stay with your unit." He is quiet for a moment. "I have been trying to figure out, for a long time, what I am doing here. The tactical case stopped being the full answer a long time ago." He folds the paper one more time and puts it in his pocket. "If what comes next produces a situation where a choice has to be made between your survival and something else — I want you to know my position before we are in it. Not as a transaction. As a stated position." He looks at you directly. "You are not going to die in front of me if I can prevent it."`,
     effectsOnEnter: { setFlags: ['cain_last_stand_route_unlocked', 'cain_last_stand_willing'], cainTrust: 3 },
     choices: [
       {
@@ -1523,7 +1523,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     title: 'What Can Be Forgiven',
     location: 'The Memory Shelter',
     imageKey: 'memory_shelter',
-    text: `The Memory Shelter holds two accounts: Mira's Archive assignment and Cain's evacuation orders. Both have been heard. Both have been given the context they needed. The mark registers the emotional weight of the shelter the same way it registered the archive overflow in Chapter 9 — as structural data with consequences. The chapter's forgiveness question is not binary. It is: what specific things can be forgiven, and what specific things need to be carried differently.`,
+    text: `The Memory Shelter holds two accounts: Mira's Archive assignment and Cain's evacuation orders. Both have been heard. Both have been given the context they needed. The mark registers the emotional weight of the shelter the same way it registered the archive overflow during the awakening — as structural data with consequences. The forgiveness question is not binary. It is: what specific things can be forgiven, and what specific things need to be carried differently.`,
     effectsOnEnter: {},
     choices: [
       {
@@ -1559,7 +1559,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     title: 'Both Given',
     location: 'The Memory Shelter',
     imageKey: 'memory_shelter',
-    text: `The shelter receives this with the particular quietness of a place that has been used for this kind of weight before. Mira's expression is the one she reserves for outcomes she did not expect and cannot immediately process. Cain's is the soldier's version of the same thing — something that is not quite relief, which would be too simple, but is structurally related to it. The mark's corruption gradient registers the emotional state as a measurable reduction in the interference pattern that has been building since Chapter 7. The bond route activates if both are at sufficient trust. The chapter continues toward its resolution.`,
+    text: `The shelter receives this with the particular quietness of a place that has been used for this kind of weight before. Mira's expression is the one she reserves for outcomes she did not expect and cannot immediately process. Cain's is the soldier's version of the same thing — something that is not quite relief, which would be too simple, but is structurally related to it. The mark's corruption gradient registers the emotional state as a measurable reduction in the interference pattern that has been building since the Library levels. The bond route activates if both are at sufficient trust. The chapter continues toward its resolution.`,
     effectsOnEnter: { corruption: -5, setFlags: ['shelter_forgiveness_complete'] },
     choices: [
       {
@@ -1623,7 +1623,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     title: 'The Crossroads',
     location: 'The Companion Crossroads',
     imageKey: 'companion_crossroads',
-    text: `The Companion Crossroads is a four-way junction in the Level 3-4 transition zone where the maintenance tunnels feed into the Archive's lower access grid. It has been a decision point for the tunnel network's internal migration routes for three years — the specific kind of place where people choose which section of the network to commit to. Today it is the chapter's central choice architecture: who stays, who goes, and whether what remains is enough to carry into Chapter 11.`,
+    text: `The Companion Crossroads is a four-way junction in the Level 3-4 transition zone where the maintenance tunnels feed into the Archive's lower access grid. It has been a decision point for the tunnel network's internal migration routes for three years — the specific kind of place where people choose which section of the network to commit to. Today it is the chapter's central choice architecture: who stays, who goes, and whether what remains is enough to carry into the descent.`,
     effectsOnEnter: { setFlags: ['companion_crossroads_arrived'] },
     choices: [
       {
@@ -1682,7 +1682,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     location: 'The Companion Crossroads',
     imageKey: 'companion_crossroads',
     speaker: 'Mira',
-    text: `"The Archive recall order is still active. The research wing offer is still available." She says this as context, not as reconsideration. "I am not going to the research wing. Not because the offer is not legitimate — it is — but because the phase one documentation will still be there after Chapter 11, and you will not be in Chapter 11 if something goes wrong with the Last Gate approach, and I am the person best positioned to manage the corruption gradient under final-approach pressure." She picks up her kit. "That is the medical assessment. The personal assessment is that I am not going to leave you in the most dangerous chapter because a research opportunity opened up. Both assessments reach the same conclusion."`,
+    text: `"The Archive recall order is still active. The research wing offer is still available." She says this as context, not as reconsideration. "I am not going to the research wing. Not because the offer is not legitimate — it is — but because the phase one documentation will still be there after the Last Gate, and you will not reach the Last Gate if something goes wrong with the final approach, and I am the person best positioned to manage the corruption gradient under final-approach pressure." She picks up her kit. "That is the medical assessment. The personal assessment is that I am not going to leave you at the most dangerous point because a research opportunity opened up. Both assessments reach the same conclusion."`,
     effectsOnEnter: { setFlags: ['mira_final_commitment'], miraTrust: 2 },
     choices: [
       {
@@ -1701,7 +1701,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     location: 'The Companion Crossroads',
     imageKey: 'companion_crossroads',
     speaker: 'Cain',
-    text: `"The immunity arrangement is still on the table." He says this the same way he says everything — directly, without emotional framing. "I am not taking it. The seventeen names are in my pocket and the case review can happen with me here as well as with me in the Saints compound. The tactical situation at the Last Gate approach requires someone who has no stake in using the mark for institutional power." He looks at the junction. "I have been that person for ten chapters. I will be that person for Chapter 11." A pause. "For what it is worth: I would stay regardless of the tactical argument. I am aware that is a change in my stated position from Chapter 1."`,
+    text: `"The immunity arrangement is still on the table." He says this the same way he says everything — directly, without emotional framing. "I am not taking it. The seventeen names are in my pocket and the case review can happen with me here as well as with me in the Saints compound. The tactical situation at the Last Gate approach requires someone who has no stake in using the mark for institutional power." He looks at the junction. "I have been that person this whole time. I will continue to be that person." A pause. "For what it is worth: I would stay regardless of the tactical argument. I am aware that is a change in my original position."`,
     effectsOnEnter: { setFlags: ['cain_final_commitment'], cainTrust: 2 },
     choices: [
       {
@@ -1796,7 +1796,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     title: 'Who Comes With You',
     location: 'The Companion Crossroads',
     imageKey: 'companion_crossroads',
-    text: `The crossroads has been navigated. The companion architecture that exits this junction — both present, one present, neither present — is the architecture that carries into the remaining locations and into Chapter 11. The Last Medicine Room requires attention if Mira is present and her medical situation is critical. The Soldier's Grave requires attention if Cain's account is not yet complete. The Place We Promised requires both companions' presence for its full resolution. The Empty Chair is where the chapter goes if neither remains.`,
+    text: `The crossroads has been navigated. The companion architecture that exits this junction — both present, one present, neither present — is the architecture that carries into the remaining locations and into the descent ahead. The Last Medicine Room requires attention if Mira is present and her medical situation is critical. The Soldier's Grave requires attention if Cain's account is not yet complete. The Place We Promised requires both companions' presence for its full resolution. The Empty Chair is where the chapter goes if neither remains.`,
     effectsOnEnter: { setFlags: ['crossroads_complete'] },
     choices: [
       {
@@ -1844,7 +1844,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     title: 'The Medicine Room',
     location: 'The Last Medicine Room',
     imageKey: 'last_medicine_room',
-    text: `The Last Medicine Room is the level 3 emergency medical storage — not Mira's clinic but the tunnel network's communal supply, last inventoried in Chapter 7 and running at a level that the Hunger War period depleted significantly. Mira is here because the Chapter 10 pressure — the Archive recall enforcement attempt, the Betrayal Alley confrontation, the Heir's manipulation — has produced a specific physiological consequence. The modification in her neurological architecture has a stress response. Under sustained pressure, it amplifies. At a certain point, the amplification requires intervention.`,
+    text: `The Last Medicine Room is the level 3 emergency medical storage — not Mira's clinic but the tunnel network's communal supply, last inventoried during the Archive wing access and running at a level that the Hunger War period depleted significantly. Mira is here because the sustained pressure — the Archive recall enforcement attempt, the Betrayal Alley confrontation, the Heir's manipulation — has produced a specific physiological consequence. The modification in her neurological architecture has a stress response. Under sustained pressure, it amplifies. At a certain point, the amplification requires intervention.`,
     effectsOnEnter: { setFlags: ['last_medicine_room_arrived'] },
     choices: [
       {
@@ -1862,7 +1862,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     location: 'The Last Medicine Room',
     imageKey: 'last_medicine_room',
     speaker: 'Mira',
-    text: `"I am going to tell you what is happening and I need you to not make it about what I disclosed in Chapter 1." She is at the supply cabinet, already making the assessment herself. "The modification's stress response produces a feedback loop with the mark's proximity when the bearer is in an elevated emotional state. The last four hours have been an elevated emotional state." She is clinically matter-of-fact about this. "The intervention requires a specific stabilisation compound. The supply room has it, or it does not." She looks at you with the one expression she doesn't try to manage. "If it does not, there are complications."`,
+    text: `"I am going to tell you what is happening and I need you to not make it about what I disclosed at the safehouse." She is at the supply cabinet, already making the assessment herself. "The modification's stress response produces a feedback loop with the mark's proximity when the bearer is in an elevated emotional state. The last four hours have been an elevated emotional state." She is clinically matter-of-fact about this. "The intervention requires a specific stabilisation compound. The supply room has it, or it does not." She looks at you with the one expression she doesn't try to manage. "If it does not, there are complications."`,
     effectsOnEnter: { setFlags: ['mira_critical_state'] },
     choices: [
       {
@@ -1937,7 +1937,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
       },
       {
         id: 'c10_medicine_success_forward',
-        text: 'Continue. The chapter has remaining locations.',
+        text: 'Continue. The remaining locations await.',
         nextNode: 'c10_soldiers_grave_arrive',
       },
     ],
@@ -1950,12 +1950,12 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     location: 'The Last Medicine Room',
     imageKey: 'last_medicine_room',
     speaker: 'Mira',
-    text: `The administration timing is off by a second in the third step. The compound partially resolves the feedback loop — not completely. "The partial administration will hold for six to eight hours." She is already recalculating, the clinical mind working the problem even while the problem is her own physiology. "It is not ideal. It is sufficient for the chapter's remaining locations. I will manage the interference." She pauses. "There is a secondary complication: the partial resolution leaves the modification's stress response in a sensitised state. The Memory Shelter's emotional register will have more effect on my coherence than usual." A clinical fact, stated as one. "I will manage."`,
+    text: `The administration timing is off by a second in the third step. The compound partially resolves the feedback loop — not completely. "The partial administration will hold for six to eight hours." She is already recalculating, the clinical mind working the problem even while the problem is her own physiology. "It is not ideal. It is sufficient for the remaining locations. I will manage the interference." She pauses. "There is a secondary complication: the partial resolution leaves the modification's stress response in a sensitised state. The Memory Shelter's emotional register will have more effect on my coherence than usual." A clinical fact, stated as one. "I will manage."`,
     effectsOnEnter: { setFlags: ['mira_partially_stabilised'], miraTrust: 1 },
     choices: [
       {
         id: 'c10_medicine_fail_forward',
-        text: 'Continue carefully. The chapter has remaining locations.',
+        text: 'Continue carefully. The remaining locations await.',
         nextNode: 'c10_soldiers_grave_arrive',
       },
     ],
@@ -1967,7 +1967,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     title: 'One Compound',
     location: 'The Last Medicine Room',
     imageKey: 'last_medicine_room',
-    text: `One unit of stabilisation compound. The chapter still has locations that will produce significant pressure. The compound can be administered now, or saved for a later point in the chapter when the pressure is higher and the need may be more acute. The question is whether the current critical state requires immediate intervention, or whether the partial-substitute analgesic complex can hold Mira through the remaining locations until a worse moment arrives.`,
+    text: `One unit of stabilisation compound. There are still locations ahead that will produce significant pressure. The compound can be administered now, or saved for a later point when the pressure is higher and the need may be more acute. The question is whether the current critical state requires immediate intervention, or whether the partial-substitute analgesic complex can hold Mira through the remaining locations until a worse moment arrives.`,
     effectsOnEnter: {},
     choices: [
       {
@@ -2066,7 +2066,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     location: "The Soldier's Grave",
     imageKey: 'soldiers_grave',
     speaker: 'Cain',
-    text: `He does not respond immediately. Something in the posture changes — not relaxation, because Cain does not relax, but a specific reduction in the readiness state he maintains even in neutral situations. "I am going to add today's date to the margin of the list," he says. Not as sentimentality. As record-keeping. He produces the piece of paper. He adds the date beside the last entry. He folds it carefully. "The record is complete to today. Whatever comes next in Chapter 11, the record is complete to today." He puts it away. "I am ready."`,
+    text: `He does not respond immediately. Something in the posture changes — not relaxation, because Cain does not relax, but a specific reduction in the readiness state he maintains even in neutral situations. "I am going to add today's date to the margin of the list," he says. Not as sentimentality. As record-keeping. He produces the piece of paper. He adds the date beside the last entry. He folds it carefully. "The record is complete to today. Whatever comes next, the record is complete to today." He puts it away. "I am ready."`,
     effectsOnEnter: { setFlags: ['cain_forgiven_complete'], cainTrust: 3, morale: 5 },
     choices: [
       {
@@ -2290,12 +2290,12 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     title: 'What They Would Give',
     location: 'The Place We Promised',
     imageKey: 'place_we_promised',
-    text: `At high trust, the Place We Promised holds something more than the chalk writing. Both companions, in their different registers, have made the same acknowledgment: the cost they are willing to pay is not tactical. It is not the result of the assignment, or the operating principle, or the trust level. It is the specific thing that arrives when a person has been through ten chapters with someone and knows, without analysis, what they would spend to prevent a specific outcome. The mark registers this as a structural configuration: two companions at maximum trust, both aware of the sacrifice routes that open from here. Chapter 11 will test whether the routes are needed.`,
+    text: `At high trust, the Place We Promised holds something more than the chalk writing. Both companions, in their different registers, have made the same acknowledgment: the cost they are willing to pay is not tactical. It is not the result of the assignment, or the operating principle, or the trust level. It is the specific thing that arrives when a person has been through everything with someone and knows, without analysis, what they would spend to prevent a specific outcome. The mark registers this as a structural configuration: two companions at maximum trust, both aware of the sacrifice routes that open from here. The descent will test whether the routes are needed.`,
     effectsOnEnter: { setFlags: ['sacrifice_routes_active', 'mira_sacrifice_willing', 'cain_last_stand_willing'] },
     choices: [
       {
         id: 'c10_sacrifice_setup_forward',
-        text: 'Continue. The chapter is nearly complete.',
+        text: 'Continue. The reckoning is nearly complete.',
         nextNode: 'c10_promise_forward',
       },
     ],
@@ -2429,12 +2429,12 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     title: 'Two Empty Chairs',
     location: 'The Empty Chair',
     imageKey: 'empty_chair',
-    text: `Both chairs. The table for three has no one at it. The specific weight of this is not the same as grief — grief has a direction, toward something that was taken. This is the weight of something that accumulated and resolved and left an absence that has the exact shape of everything that was present before it. The mark reads the room as quiet, which is accurate. The mark is fully awake and functional and has no companions in the room to register the noise of their presence. This is what full awakening in isolation looks like. Chapter 11 will begin from this position. The lone wanderer route is the chapter's hardest path and the one that requires the most of whoever is walking it.`,
+    text: `Both chairs. The table for three has no one at it. The specific weight of this is not the same as grief — grief has a direction, toward something that was taken. This is the weight of something that accumulated and resolved and left an absence that has the exact shape of everything that was present before it. The mark reads the room as quiet, which is accurate. The mark is fully awake and functional and has no companions in the room to register the noise of their presence. This is what full awakening in isolation looks like. The descent begins from this position. The lone wanderer route is the hardest path and the one that requires the most of whoever is walking it.`,
     effectsOnEnter: { setFlags: ['both_companions_gone', 'lone_wanderer_active'] },
     choices: [
       {
         id: 'c10_both_gone_wander',
-        text: 'Process this. Then prepare for Chapter 11 alone.',
+        text: 'Process this. Then prepare for the descent alone.',
         nextNode: 'c10_lone_wanderer_moment',
       },
     ],
@@ -2446,7 +2446,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     title: 'One Chair Occupied',
     location: 'The Empty Chair',
     imageKey: 'empty_chair',
-    text: `One companion remains. The empty chair is a presence in itself — specific, shaped, weighted with whoever is not in it. The remaining companion has their own relationship with the absence: Mira, if she is here, reads the empty chair with the clinical precision she applies to every loss; Cain, if he is here, looks at it with the same attention he gives the Soldier's Grave. The mark reads the reduced architecture — one present companion instead of two — as a structural change with specific implications for the Last Gate approach. Chapter 11 will calibrate to this state.`,
+    text: `One companion remains. The empty chair is a presence in itself — specific, shaped, weighted with whoever is not in it. The remaining companion has their own relationship with the absence: Mira, if she is here, reads the empty chair with the clinical precision she applies to every loss; Cain, if he is here, looks at it with the same attention he gives the Soldier's Grave. The mark reads the reduced architecture — one present companion instead of two — as a structural change with specific implications for the Last Gate approach. The descent will calibrate to this state.`,
     effectsOnEnter: { setFlags: ['single_companion_survives'] },
     choices: [
       {
@@ -2485,7 +2485,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     choices: [
       {
         id: 'c10_lone_wander_continue',
-        text: 'Accept the position. Chapter 11 begins alone.',
+        text: 'Accept the position. Forward alone.',
         nextNode: 'c10_lone_wanderer_choice',
       },
       {
@@ -2510,10 +2510,10 @@ export const CHAPTER_10_NODES: StoryNode[] = [
   {
     id: 'c10_lone_wanderer_choice',
     chapter: 'Chapter 10',
-    title: 'The Choice Before Chapter 11',
+    title: 'The Choice Before the Descent',
     location: 'The Empty Chair',
     imageKey: 'empty_chair',
-    text: `The chapter gives one last decision point: how the lone wanderer approaches Chapter 11. Not with whom — that is settled — but with what stated position. The mark without companions is different from the mark with companions. The difference is not power — the awakening produced the same operational capacity regardless of companion status. The difference is intention: what the mark is used for when there is no one present to witness the using. The chapter ends on this question, which Chapter 11 will answer.`,
+    text: `One last decision point before the descent: not with whom — that is settled — but with what stated position. The mark without companions is different from the mark with companions. The difference is not power — the awakening produced the same operational capacity regardless of companion status. The difference is intention: what the mark is used for when there is no one present to witness the using. The reckoning ends on this question, which the sub-city will answer.`,
     effectsOnEnter: {},
     choices: [
       {
@@ -2543,12 +2543,12 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     title: 'From the Chair',
     location: 'The Empty Chair',
     imageKey: 'empty_chair',
-    text: `Whatever the Empty Chair held — both companions, one, or none — the chapter's accounting is now complete. The mark reads the present configuration with the same precision it has applied since Chapter 9. The companion architecture that exits this room is the one that carries into Chapter 11, the Last Gate's final approach, and the decisions the mark will need to make there. The safehouse behind. The city ahead. Whatever is remaining of both.`,
+    text: `Whatever the Empty Chair held — both companions, one, or none — the accounting is now complete. The mark reads the present configuration with the same precision it has applied since the awakening. The companion architecture that exits this room carries into the Last Gate's final approach, and the decisions the mark will need to make there. The safehouse behind. The city ahead. Whatever is remaining of both.`,
     effectsOnEnter: {},
     choices: [
       {
         id: 'c10_chair_to_resolution',
-        text: 'Move to the chapter resolution.',
+        text: 'Take stock of what remains.',
         nextNode: 'c10_chapter_resolution',
       },
     ],
@@ -2562,7 +2562,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     title: 'After Broken Companions',
     location: 'The Companion Crossroads',
     imageKey: 'companion_crossroads',
-    text: `The chapter has produced its companion architecture. Mira: present or absent, devoted or departed, carrying the Archive's modification and her own choices with whatever weight the clinic, the shelter, the medicine room, and the chalk writing gave them. Cain: loyal or rival or gone, carrying the seventeen names and the operating principle and whatever the Soldier's Grave and the Place We Promised added to it. The mark reads the configuration and registers its specific implications for the Last Gate. Chapter 11: The City Beneath the City. The things below the Archive that the Archive was built to monitor. The chapter that resolves what the city was built on top of. Begin.`,
+    text: `The companion architecture is fixed. Mira: present or absent, devoted or departed, carrying the Archive's modification and her own choices with whatever weight the clinic, the shelter, the medicine room, and the chalk writing gave them. Cain: loyal or rival or gone, carrying the seventeen names and the operating principle and whatever the Soldier's Grave and the Place We Promised added to it. The mark reads the configuration and registers its specific implications for the Last Gate. The City Beneath the City awaits. The things below the Archive that the Archive was built to monitor. The resolution of what the city was built on top of. Begin.`,
     effectsOnEnter: { setFlags: ['chapter10_resolution_reached'] },
     choices: [
       {
@@ -2598,24 +2598,24 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     title: 'The Full Configuration',
     location: 'The Companion Crossroads',
     imageKey: 'companion_crossroads',
-    text: `Both companions. The Broken Companions chapter produced the outcome that the Archive's evaluation criteria describe as "full companion integrity at chapter close" — which is the clinical version of what it actually is: two people who chose to stay through the hardest chapter, past their own revelations, past the Heir's offers, past Veyra's ambush, past the Empty Chair, and arrived at the resolution with the relationship architecture intact. The mark's corruption gradient is lower in this configuration than in any other. The Last Gate approach with both companions present is the route the Heir's chapter notes describe as "the intended approach." Proceed to Chapter 11.`,
+    text: `Both companions. This reckoning produced the outcome that the Archive's evaluation criteria describe as "full companion integrity at chapter close" — which is the clinical version of what it actually is: two people who chose to stay through everything, past their own revelations, past the Heir's offers, past Veyra's ambush, past the Empty Chair, and arrived at the resolution with the relationship architecture intact. The mark's corruption gradient is lower in this configuration than in any other. The Last Gate approach with both companions present is the route the Heir's notes describe as "the intended approach."`,
     effectsOnEnter: { setFlags: ['chapter10_complete', 'both_companions_ch11'], corruption: -5, morale: 10 },
     choices: [
       {
         id: 'c10_resolution_both_bond',
-        text: 'The bond complete. The best outcome the chapter could produce.',
+        text: 'The bond complete. The best outcome.',
         nextNode: 'c10_secret_bond_end',
         requirements: { flags: ['secret_bond_achieved'] },
       },
       {
         id: 'c10_resolution_both_broken',
-        text: 'Chapter 10 complete. Both here, but marked by what it cost.',
+        text: 'Both here, marked by what it cost.',
         nextNode: 'c10_broken_companions_end',
         requirements: { blockedFlags: ['secret_bond_achieved'] },
       },
       {
         id: 'c10_resolution_both_end',
-        text: 'Chapter 10 complete. Chapter 11 begins.',
+        text: 'Both here. Forward.',
         nextNode: 'c10_chapter10_end',
       },
     ],
@@ -2627,18 +2627,18 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     title: 'Mira Only',
     location: 'The Companion Crossroads',
     imageKey: 'companion_crossroads',
-    text: `Mira stays. Cain is gone by one path or another — rival, departed, recalled by the Saints, or something the chapter built toward a different resolution on. The mark reads the single-companion configuration as stable but asymmetric: Mira's modified neurological architecture provides the corruption-monitoring function, which is significant; the tactical security function Cain provided requires a substitute. The Last Gate approach with Mira only is the route the Archive's evaluation criteria describe as "medically supported but tactically exposed." Mira's note in her log, added this evening: "One. That is the configuration for Chapter 11. I have made worse numbers work."`,
+    text: `Mira stays. Cain is gone by one path or another — rival, departed, recalled by the Saints, or something this reckoning built toward a different resolution on. The mark reads the single-companion configuration as stable but asymmetric: Mira's modified neurological architecture provides the corruption-monitoring function, which is significant; the tactical security function Cain provided requires a substitute. The Last Gate approach with Mira only is the route the Archive's evaluation criteria describe as "medically supported but tactically exposed." Mira's note in her log, added this evening: "One. That is the configuration going forward. I have made worse numbers work."`,
     effectsOnEnter: { setFlags: ['chapter10_complete', 'mira_only_ch11'] },
     choices: [
       {
         id: 'c10_resolution_mira_devoted',
-        text: 'Chapter 10 complete. She writes her final entry.',
+        text: 'She writes her final entry. Forward.',
         nextNode: 'c10_mira_devotion_end',
         requirements: { miraTrust: 8 },
       },
       {
         id: 'c10_resolution_mira_end',
-        text: 'Chapter 10 complete. Chapter 11 begins.',
+        text: 'Mira only. Forward.',
         nextNode: 'c10_chapter10_end',
       },
     ],
@@ -2650,24 +2650,24 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     title: 'Cain Only',
     location: 'The Companion Crossroads',
     imageKey: 'companion_crossroads',
-    text: `Cain stays. Mira is gone — to the Archive recall, to the research wing, to the leaves route, or to wherever a person goes when a chapter reaches its limit. The mark reads the single-companion configuration with a specific note: the corruption monitoring function that Mira's modification provided is absent. The tactical security function Cain provides is present and functional. The Last Gate approach with Cain only is the route the Archive's evaluation criteria describe as "tactically sound but medically unsupported." Cain's note to himself, added tonight beside the seventeen names: "One companion position. Mark-bearer configuration requires corruption monitoring adjustment. Identify substitute protocol before Chapter 11 or manage the gradient operationally." He will manage it operationally.`,
+    text: `Cain stays. Mira is gone — to the Archive recall, to the research wing, to the leaves route, or to wherever a person goes when they reach their limit. The mark reads the single-companion configuration with a specific note: the corruption monitoring function that Mira's modification provided is absent. The tactical security function Cain provides is present and functional. The Last Gate approach with Cain only is the route the Archive's evaluation criteria describe as "tactically sound but medically unsupported." Cain's note to himself, added tonight beside the seventeen names: "One companion position. Mark-bearer configuration requires corruption monitoring adjustment. Identify substitute protocol before descent or manage the gradient operationally." He will manage it operationally.`,
     effectsOnEnter: { setFlags: ['chapter10_complete', 'cain_only_ch11'] },
     choices: [
       {
         id: 'c10_resolution_cain_loyal',
-        text: 'Chapter 10 complete. He writes his tactical note.',
+        text: 'He writes his tactical note. Forward.',
         nextNode: 'c10_cain_loyalty_end',
         requirements: { cainTrust: 8 },
       },
       {
         id: 'c10_resolution_cain_rival_path',
-        text: 'Chapter 10 complete. Operational but not what it was.',
+        text: 'Operational. Not what it was. Forward.',
         nextNode: 'c10_cain_rival_end',
         requirements: { flags: ['cain_rival_path_set'] },
       },
       {
         id: 'c10_resolution_cain_end',
-        text: 'Chapter 10 complete. Chapter 11 begins.',
+        text: 'Cain only. Forward.',
         nextNode: 'c10_chapter10_end',
       },
     ],
@@ -2679,12 +2679,12 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     title: 'The Lone Wanderer Resolution',
     location: 'The Companion Crossroads',
     imageKey: 'companion_crossroads',
-    text: `No companions. The Broken Companions chapter produced the configuration that the Archive evaluation criteria do not describe — the criteria assume companion presence as a baseline. The mark reads its own state: fully awake, fully operational, no companion architecture to filter the decisions the Last Gate will require. The First Voice registers this configuration with interest. The entity below the city notes it as the first time a bearer has approached its final phase in full isolation. The Heir's note, written from their observation position: "Alone. The most dangerous configuration. Also the freest." Whether those are the same thing or opposite things is the question Chapter 11 will answer. Chapter 10 ends here.`,
+    text: `No companions. This path produced the configuration that the Archive evaluation criteria do not describe — the criteria assume companion presence as a baseline. The mark reads its own state: fully awake, fully operational, no companion architecture to filter the decisions the Last Gate will require. The First Voice registers this configuration with interest. The entity below the city notes it as the first time a bearer has approached its final phase in full isolation. The Heir's note, written from their observation position: "Alone. The most dangerous configuration. Also the freest." Whether those are the same thing or opposite things is the question the Last Gate will answer.`,
     effectsOnEnter: { setFlags: ['chapter10_complete', 'lone_wanderer_ch11'], corruption: 5 },
     choices: [
       {
         id: 'c10_resolution_alone_end',
-        text: 'Chapter 10 complete. Chapter 11 begins alone.',
+        text: 'Alone. Forward.',
         nextNode: 'c10_chapter10_end',
       },
     ],
@@ -2698,12 +2698,12 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     title: 'The Broken Companions Chapter Closes',
     location: 'The Quiet Safehouse',
     imageKey: 'quiet_safehouse',
-    text: `Chapter 10 closes in the safehouse. The table is still there. The chalk "we will fix this" is still on the Level 2-3 platform wall. The seventeen markers are still in the Level 3 South section. Mira's personal file is on the bench, or it is not. Cain's tactical maps are on the war room wall, or they have been taken down. The mark is operational. The companions — however many remain — are committed to whatever form the chapter produced. Chapter 11: The City Beneath the City. The Archive is not the bottom. Begin.`,
+    text: `The safehouse. The table is still there. The chalk "we will fix this" is still on the Level 2-3 platform wall. The seventeen markers are still in the Level 3 South section. Mira's personal file is on the bench, or it is not. Cain's tactical maps are on the war room wall, or they have been taken down. The mark is operational. The companions — however many remain — are committed to whatever form this produced. The City Beneath the City awaits. The Archive is not the bottom. Begin.`,
     effectsOnEnter: { setFlags: ['chapter10_complete'], morale: 3 },
     choices: [
       {
         id: 'c10_end_to_ch11',
-        text: 'Chapter 11 begins.',
+        text: 'Descend.',
         nextNode: 'chapter11_start',
       },
     ],
@@ -2763,7 +2763,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     location: 'The Quiet Safehouse',
     imageKey: 'quiet_safehouse',
     speaker: 'Mira',
-    text: `Chapter 10 ends with Mira at the safehouse table, writing the final entry in the personal file that started six months before the blackout. The entry reads: "Archive recall order: active, unexecuted. Research wing offer: declined. Personal log entry count: nine hundred and twelve. Subject status: operational, above expected parameters at every measured point. Assessment: the program produced the intended outcome. The outcome was not the one the Archive intended. The difference is that I am still here." She closes the file. Chapter 11 begins tomorrow. She is already calculating the corruption gradient for it.`,
+    text: `Mira at the safehouse table, writing the final entry in the personal file that started six months before the blackout. The entry reads: "Archive recall order: active, unexecuted. Research wing offer: declined. Personal log entry count: nine hundred and twelve. Subject status: operational, above expected parameters at every measured point. Assessment: the program produced the intended outcome. The outcome was not the one the Archive intended. The difference is that I am still here." She closes the file. Tomorrow they leave. She is already calculating the corruption gradient for what comes next.`,
     effectsOnEnter: { setFlags: ['mira_devotion_ch10_end', 'chapter10_complete'] },
     choices: [],
     isEnding: true,
@@ -2793,7 +2793,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     location: "Cain's War Room",
     imageKey: 'cain_war_room',
     speaker: 'Cain',
-    text: `The war room conversation resolved to: operational, not loyal. He stays through Chapter 11 because the tactical situation requires it and because leaving would produce a worse outcome for the seventeen names than remaining. He does not pretend this is the same as what it was. The tactical maps are still up. He still reports on Glass Court and Iron Saints movements. He still runs the security assessments. The four minutes are still in the accounting. The war room has two people in it who have reached the limit of what can be resolved, and both of them have decided to work from that limit rather than from anywhere easier. It is not the same chapter it was before Chapter 10. It is what Chapter 10 produced.`,
+    text: `The war room conversation resolved to: operational, not loyal. He stays because the tactical situation requires it and because leaving would produce a worse outcome for the seventeen names than remaining. He does not pretend this is the same as what it was. The tactical maps are still up. He still reports on Glass Court and Iron Saints movements. He still runs the security assessments. The four minutes are still in the accounting. The war room has two people in it who have reached the limit of what can be resolved, and both of them have decided to work from that limit rather than from anywhere easier. It is not the same partnership it was before all this. It is what all this produced.`,
     effectsOnEnter: { setFlags: ['cain_rival_ch10_end', 'chapter10_complete'] },
     choices: [],
     isEnding: true,
@@ -2823,7 +2823,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     location: 'The Quiet Safehouse',
     imageKey: 'quiet_safehouse',
     speaker: 'Cain',
-    text: `Chapter 10 ends with Cain at the war room table, adding a note to the tactical assessment for Chapter 11. The note reads: "Glass Court forward scouts — holding position, not advancing. Iron Saints remnants — inactive following Veyra's withdrawal. Archive enforcement division — one documented approach, withdrawn after intervention. Current threat level: managed." He adds, in different ink, in the margin: "Companion configuration: intact. Mark-bearer corruption gradient: within acceptable range. Assessment: the chapter produced the required outcome." He folds the tactical assessment. Tomorrow, Chapter 11. Tonight, the war room is occupied by someone who made the calculation correctly, in the specific way that has nothing to do with tactics.`,
+    text: `Cain at the war room table, adding a note to the tactical assessment. The note reads: "Glass Court forward scouts — holding position, not advancing. Iron Saints remnants — inactive following Veyra's withdrawal. Archive enforcement division — one documented approach, withdrawn after intervention. Current threat level: managed." He adds, in different ink, in the margin: "Companion configuration: intact. Mark-bearer corruption gradient: within acceptable range. Assessment: required outcome achieved." He folds the assessment. Tomorrow they descend. Tonight, the war room is occupied by someone who made the calculation correctly, in the specific way that has nothing to do with tactics.`,
     effectsOnEnter: { setFlags: ['cain_loyalty_ch10_end', 'chapter10_complete'] },
     choices: [],
     isEnding: true,
@@ -2862,10 +2862,10 @@ export const CHAPTER_10_NODES: StoryNode[] = [
   {
     id: 'c10_lone_wanderer_end',
     chapter: 'Chapter 10',
-    title: 'Alone Into Chapter 11',
+    title: 'Alone Into the Descent',
     location: 'The Empty Chair',
     imageKey: 'empty_chair',
-    text: `No companions. The mark is fully awake. The First Voice's third broadcast channel is active but not transmitting — it is waiting. The entity below the city has noted the lone configuration with what the Archive's monitoring system describes as "heightened interest." The Masked Heir's log entry: "Alone. The operating constraints that companions impose — the ethical check, the tactical oversight, the emotional anchor — are all absent." The lone wanderer carrying the power path is the specific configuration that the fourteen failed interfaces most commonly achieved before their corruption threshold events. The chapter ends on this note. Chapter 11 will determine whether the fourteen's pattern holds, or whether this bearer's lone wanderer is different.`,
+    text: `No companions. The mark is fully awake. The First Voice's third broadcast channel is active but not transmitting — it is waiting. The entity below the city has noted the lone configuration with what the Archive's monitoring system describes as "heightened interest." The Masked Heir's log entry: "Alone. The operating constraints that companions impose — the ethical check, the tactical oversight, the emotional anchor — are all absent." The lone wanderer carrying the power path is the specific configuration that the fourteen failed interfaces most commonly achieved before their corruption threshold events. The descent will determine whether the fourteen's pattern holds, or whether this bearer's lone wanderer is different.`,
     effectsOnEnter: { setFlags: ['lone_wanderer_power_end', 'chapter10_complete'] },
     choices: [],
     isEnding: true,
@@ -2879,7 +2879,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     title: 'Broken But Present',
     location: 'The Quiet Safehouse',
     imageKey: 'quiet_safehouse',
-    text: `Both companions are here. Neither is fully intact — the chapter took pieces from each relationship that the chapter's work did not completely restore. Mira's trust at a workable but not devout level. Cain's loyalty at functional but not committed. The safehouse has three chairs occupied by three people who have been through ten chapters together and arrived at a state that is honest about its specific fractures. The neutral version of the companion chapter: not the broken table, not the full bond, but the real and specific thing that ten chapters of crisis and choice produced. The Archive evaluation system has a category for this outcome. The category is: "functional." The personal file is on the bench. The tactical maps are on the wall. Chapter 11 begins tomorrow from this position.`,
+    text: `Both companions are here. Neither is fully intact — the work done here took pieces from each relationship that did not completely restore. Mira's trust at a workable but not devout level. Cain's loyalty at functional but not committed. The safehouse has three chairs occupied by three people who have been through everything together and arrived at a state that is honest about its specific fractures. Not the broken table, not the full bond, but the real and specific thing that all this time of crisis and choice produced. The Archive evaluation system has a category for this outcome. The category is: "functional." The personal file is on the bench. The tactical maps are on the wall. Tomorrow they descend from this position.`,
     effectsOnEnter: { setFlags: ['game_complete', 'broken_companions_neutral_end', 'chapter10_complete'] },
     choices: [],
     isEnding: true,
@@ -2908,7 +2908,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     location: 'The Betrayal Alley',
     imageKey: 'betrayal_alley',
     speaker: 'The Masked Heir',
-    text: `Both companions take the offers. Not because they do not care — they care, and the caring is precisely why the Heir's offers worked: the research wing is genuinely safer for Mira, the immunity arrangement is genuinely better for Cain, and the mark-bearer is the person who would have asked them to choose Chapter 11's danger over their own better options. With trust depleted enough that the choice is not a sacrifice but a calculation, both calculations resolve toward the offers. The Heir watches them leave. "You allowed them to choose their best outcome," they say. "That is not a failure of leadership. It is a specific kind of generosity." They do not say what kind. The Betrayal Alley is empty. The Last Gate approach begins alone.`,
+    text: `Both companions take the offers. Not because they do not care — they care, and the caring is precisely why the Heir's offers worked: the research wing is genuinely safer for Mira, the immunity arrangement is genuinely better for Cain, and the mark-bearer is the person who would have asked them to choose what comes next over their own better options. With trust depleted enough that the choice is not a sacrifice but a calculation, both calculations resolve toward the offers. The Heir watches them leave. "You allowed them to choose their best outcome," they say. "That is not a failure of leadership. It is a specific kind of generosity." They do not say what kind. The Betrayal Alley is empty. The Last Gate approach begins alone.`,
     effectsOnEnter: { setFlags: ['heir_manipulation_succeeds_ch10'] },
     choices: [],
     isEnding: true,
@@ -2923,7 +2923,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     location: "Mira's Hidden Clinic",
     imageKey: 'mira_hidden_clinic',
     speaker: 'Director Varr',
-    text: `The research access deal is accepted. Varr's silence is maintained. The Archive does not execute the recall order this chapter. Mira does not know the deal was made — she stays, unaware that her continued presence in the network was purchased at the cost of Archive Research Division access in Chapter 11. Varr's research in Chapter 11 requires a live mark-bearer in a vulnerable position at a specific phase of the Last Gate approach. The deal's cost is deferred. It is not cancelled. What is purchased tonight is a chapter with intact companions and an Archive researcher who has now been confirmed as a structural participant in the mark-bearer's final approach. The entity below the city notes the access arrangement as a variable it had not anticipated.`,
+    text: `The research access deal is accepted. Varr's silence is maintained. The Archive does not execute the recall order tonight. Mira does not know the deal was made — she stays, unaware that her continued presence in the network was purchased at the cost of Archive Research Division access at the Last Gate. Varr's research requires a live mark-bearer in a vulnerable position at a specific phase of the final approach. The deal's cost is deferred. It is not cancelled. What is purchased tonight is a safehouse with intact companions and an Archive researcher who has now been confirmed as a structural participant in the mark-bearer's final approach. The entity below the city notes the access arrangement as a variable it had not anticipated.`,
     effectsOnEnter: { setFlags: ['varr_deal_cost_deferred'] },
     choices: [],
     isEnding: true,
@@ -2952,7 +2952,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     title: 'The Bond',
     location: 'The Memory Shelter',
     imageKey: 'memory_shelter',
-    text: `The Archive's evaluation criteria do not have a category for this outcome. The criteria assume a mark-bearer alone at the Last Gate, or a mark-bearer with functionally loyal companions. They do not have a category for: a bearer at maximum trust with both companions, both of whom know the full picture and have chosen to stay past the point where leaving was the rational option. The Masked Heir's note: "The bond was achieved. I note it for the record and acknowledge that my separation attempt failed at all three points." The entity below the city notes it as the configuration that most closely resembles the Heir before their mark failed. The entity, which does not communicate in language, produces a signal the mark reads as recognition. The Heir, reading their own mark-reading archive, writes: "The bearer is not alone. The thing below the city noticed." Chapter 11 begins from this position. It is the best position anyone has ever approached it from.`,
+    text: `The Archive's evaluation criteria do not have a category for this outcome. The criteria assume a mark-bearer alone at the Last Gate, or a mark-bearer with functionally loyal companions. They do not have a category for: a bearer at maximum trust with both companions, both of whom know the full picture and have chosen to stay past the point where leaving was the rational option. The Masked Heir's note: "The bond was achieved. I note it for the record and acknowledge that my separation attempt failed at all three points." The entity below the city notes it as the configuration that most closely resembles the Heir before their mark failed. The entity, which does not communicate in language, produces a signal the mark reads as recognition. The Heir, reading their own mark-reading archive, writes: "The bearer is not alone. The thing below the city noticed." The descent begins from this position. It is the best position anyone has ever approached it from.`,
     effectsOnEnter: { setFlags: ['secret_bond_complete', 'chapter10_complete', 'true_ending_req_chapter10_complete'] },
     choices: [],
     isEnding: true,
