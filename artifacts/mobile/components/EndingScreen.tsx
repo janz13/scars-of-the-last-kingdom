@@ -286,11 +286,10 @@ export default function EndingScreen() {
             {isChapterEnd ? (
               <>
                 <EndingButton
-                  label="START NEW TIMELINE"
-                  icon="refresh-cw"
-                  color={accentColor}
-                  onPress={() => deleteAndReset()}
-                  primary
+                  label="MAIN MENU"
+                  icon="home"
+                  color="#3a3450"
+                  onPress={() => setScreen('mainMenu')}
                 />
                 <EndingButton
                   label="VIEW ROUTE CODEX"

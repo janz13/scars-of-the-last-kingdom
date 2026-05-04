@@ -58,6 +58,7 @@ export default function GameRoot() {
     case "factions":
     case "history":
     case "settings":
+      return <GameScreens screen={state.screen} />;
     case "ending":
       return <EndingScreen />;
     default:

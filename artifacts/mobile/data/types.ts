@@ -75,6 +75,7 @@ export type GameScreen =
   | 'history'
   | 'ending'
   | 'settings'
+  | 'developer'
   | 'chapterRoadmap'
   | 'routeCodex'
   | 'credits';
