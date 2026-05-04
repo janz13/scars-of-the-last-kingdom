@@ -242,13 +242,13 @@ export const CHAPTER_10_NODES: StoryNode[] = [
       {
         id: 'c10_cain_hear_all',
         text: '"Tell me all of it."',
-        nextNode: 'c10_cain_war_room_arrive',
+        nextNode: 'c10_safehouse_junction',
         effects: { cainTrust: 1 },
       },
       {
         id: 'c10_cain_war_room_first',
         text: '"Your war room. We should read the orders before we talk."',
-        nextNode: 'c10_cain_war_room_arrive',
+        nextNode: 'c10_safehouse_junction',
       },
     ],
   },
@@ -555,7 +555,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
       {
         id: 'c10_mira_stays_cain',
         text: 'Find Cain. His chapter is still unresolved.',
-        nextNode: 'c10_cain_war_room_arrive',
+        nextNode: 'c10_clinic_complete',
       },
       {
         id: 'c10_mira_stays_bridge',
@@ -673,7 +673,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
       {
         id: 'c10_examination_confront',
         text: 'Bring this to Cain. You understand the chain; you want his account.',
-        nextNode: 'c10_cain_confrontation',
+        nextNode: 'c10_cain_confrontation_choice',
         effects: { cainTrust: 1 },
       },
     ],
@@ -697,7 +697,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
       {
         id: 'c10_confront_accusation',
         text: '"Seventeen people died because you didn\'t stop it."',
-        nextNode: 'c10_cain_confrontation',
+        nextNode: 'c10_cain_defense',
         effects: { cainTrust: -2 },
       },
     ],
@@ -1662,6 +1662,12 @@ export const CHAPTER_10_NODES: StoryNode[] = [
         requirements: { flags: ['mira_leaving_process', 'cain_rival_path_set'] },
       },
       {
+        id: 'c10_status_bond_route',
+        text: 'The bond achieved in the shelter carries through this crossroads.',
+        nextNode: 'c10_secret_bond_path',
+        requirements: { flags: ['secret_bond_route_active'] },
+      },
+      {
         id: 'c10_status_forward',
         text: 'Move forward. The crossroads has been navigated.',
         nextNode: 'c10_crossroads_resolution',
@@ -1924,6 +1930,12 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     effectsOnEnter: { setFlags: ['mira_stabilised', 'mira_medicine_administered'], miraTrust: 3, health: 10 },
     choices: [
       {
+        id: 'c10_medicine_sacrifice_path',
+        text: 'The Archive enforcement arrives while she recovers. She absorbs it.',
+        nextNode: 'c10_mira_sacrifice_end',
+        requirements: { miraTrust: 8 },
+      },
+      {
         id: 'c10_medicine_success_forward',
         text: 'Continue. The chapter has remaining locations.',
         nextNode: 'c10_soldiers_grave_arrive',
@@ -1987,6 +1999,11 @@ export const CHAPTER_10_NODES: StoryNode[] = [
         id: 'c10_grave_approach',
         text: 'Approach. Stand with him at the markers.',
         nextNode: 'c10_grave_cain_names',
+      },
+      {
+        id: 'c10_grave_stand_witness',
+        text: 'Acknowledge the record. You understand what this wall is.',
+        nextNode: 'c10_grave_forgiveness_choice',
       },
     ],
   },
@@ -2166,6 +2183,12 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     effectsOnEnter: { setFlags: ['cain_final_choose_player'], cainTrust: 4 },
     choices: [
       {
+        id: 'c10_cain_last_stand_moment',
+        text: 'More Saints arrive. He stands his ground completely.',
+        nextNode: 'c10_cain_last_stand_end',
+        requirements: { cainTrust: 8 },
+      },
+      {
         id: 'c10_cain_chooses_promise',
         text: 'Go to the Place We Promised.',
         nextNode: 'c10_place_promised_arrive',
@@ -2195,6 +2218,11 @@ export const CHAPTER_10_NODES: StoryNode[] = [
         text: 'Stand with Cain here.',
         nextNode: 'c10_promise_cain_moment',
         requirements: { flags: ['cain_stays_ch10'] },
+      },
+      {
+        id: 'c10_betrayal_reckoning',
+        text: 'The companion here has been working against you. A reckoning.',
+        nextNode: 'c10_promise_betrayal_reveal',
       },
       {
         id: 'c10_promise_forward',
@@ -2424,7 +2452,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
       {
         id: 'c10_single_survivor_resolution',
         text: 'Move to the chapter resolution. Who is here is who is here.',
-        nextNode: 'c10_chapter_resolution',
+        nextNode: 'c10_chair_forward',
       },
     ],
   },
@@ -2459,6 +2487,16 @@ export const CHAPTER_10_NODES: StoryNode[] = [
         id: 'c10_lone_wander_continue',
         text: 'Accept the position. Chapter 11 begins alone.',
         nextNode: 'c10_lone_wanderer_choice',
+      },
+      {
+        id: 'c10_both_lost_accept',
+        text: 'Register the full cost. Both companions gone.',
+        nextNode: 'c10_both_companions_lost_end',
+      },
+      {
+        id: 'c10_empty_chair_contemplate',
+        text: 'Sit at the table. Understand what this chapter cost completely.',
+        nextNode: 'c10_empty_chair_end',
       },
       {
         id: 'c10_lone_wander_reconsider',
@@ -2564,6 +2602,18 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     effectsOnEnter: { setFlags: ['chapter10_complete', 'both_companions_ch11'], corruption: -5, morale: 10 },
     choices: [
       {
+        id: 'c10_resolution_both_bond',
+        text: 'The bond complete. The best outcome the chapter could produce.',
+        nextNode: 'c10_secret_bond_end',
+        requirements: { flags: ['secret_bond_achieved'] },
+      },
+      {
+        id: 'c10_resolution_both_broken',
+        text: 'Chapter 10 complete. Both here, but marked by what it cost.',
+        nextNode: 'c10_broken_companions_end',
+        requirements: { blockedFlags: ['secret_bond_achieved'] },
+      },
+      {
         id: 'c10_resolution_both_end',
         text: 'Chapter 10 complete. Chapter 11 begins.',
         nextNode: 'c10_chapter10_end',
@@ -2581,6 +2631,12 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     effectsOnEnter: { setFlags: ['chapter10_complete', 'mira_only_ch11'] },
     choices: [
       {
+        id: 'c10_resolution_mira_devoted',
+        text: 'Chapter 10 complete. She writes her final entry.',
+        nextNode: 'c10_mira_devotion_end',
+        requirements: { miraTrust: 8 },
+      },
+      {
         id: 'c10_resolution_mira_end',
         text: 'Chapter 10 complete. Chapter 11 begins.',
         nextNode: 'c10_chapter10_end',
@@ -2597,6 +2653,18 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     text: `Cain stays. Mira is gone — to the Archive recall, to the research wing, to the leaves route, or to wherever a person goes when a chapter reaches its limit. The mark reads the single-companion configuration with a specific note: the corruption monitoring function that Mira's modification provided is absent. The tactical security function Cain provides is present and functional. The Last Gate approach with Cain only is the route the Archive's evaluation criteria describe as "tactically sound but medically unsupported." Cain's note to himself, added tonight beside the seventeen names: "One companion position. Mark-bearer configuration requires corruption monitoring adjustment. Identify substitute protocol before Chapter 11 or manage the gradient operationally." He will manage it operationally.`,
     effectsOnEnter: { setFlags: ['chapter10_complete', 'cain_only_ch11'] },
     choices: [
+      {
+        id: 'c10_resolution_cain_loyal',
+        text: 'Chapter 10 complete. He writes his tactical note.',
+        nextNode: 'c10_cain_loyalty_end',
+        requirements: { cainTrust: 8 },
+      },
+      {
+        id: 'c10_resolution_cain_rival_path',
+        text: 'Chapter 10 complete. Operational but not what it was.',
+        nextNode: 'c10_cain_rival_end',
+        requirements: { flags: ['cain_rival_path_set'] },
+      },
       {
         id: 'c10_resolution_cain_end',
         text: 'Chapter 10 complete. Chapter 11 begins.',

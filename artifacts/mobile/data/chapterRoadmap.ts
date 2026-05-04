@@ -757,7 +757,7 @@ export const CHAPTER_ROADMAP: ChapterEntry[] = [
       'Final Chapter 1 (secret bond route priority entry)',
     ],
     status: 'complete',
-    nodeCount: 130,
+    nodeCount: 126,
   },
 
   {
