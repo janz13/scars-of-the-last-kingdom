@@ -1868,10 +1868,13 @@ export const CHAPTER_8_NODES: StoryNode[] = [
     imageKey: 'starving_bridge',
     text: `The Hunger War does not end. It finds a lower equilibrium — not peace, not resolution, but a reduction in the rate at which things are getting worse. The famine camp loses a third of its population to the Level 7 supply corridor opening. The Bone Soup Kitchen keeps running. The Burned Clinic receives enough medicine to stabilise. In twelve days, Dever finishes the irrigation. In two weeks, the bacterial culture is seeded. Six weeks after that, the Dead Orchard produces its first harvest. Two hundred people on the Bridge watched decisions being made in their name and, in some cases, instead of them. Some of them will remember that. The mark is warm. The gate card is wherever you put it. The next chapter is called The Mark Awakens, which means the next chapter is about you.`,
     effectsOnEnter: { setFlags: ['chapter8_complete'], morale: 5 },
-    choices: [],
-    isEnding: true,
-    endingId: 'ending_ch8_survived',
-    endingType: 'faction',
+    choices: [
+      {
+        id: 'c8_to_chapter9',
+        text: 'The mark is warm. Move to Chapter 9.',
+        nextNode: 'chapter9_start',
+      },
+    ],
   },
 
   // ── SUPPLEMENTAL NODES ───────────────────────────────────────────────────────

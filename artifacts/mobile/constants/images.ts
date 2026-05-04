@@ -153,6 +153,20 @@ export const BACKGROUND_IMAGES: Record<string, any> = {
   dead_orchard:          require('../assets/images/surface_ruins.png'),
   siege_tunnels:         require('../assets/images/collapsed_tunnel.png'),
   starving_bridge:       require('../assets/images/ruined_metro_station.png'),
+
+  // Chapter 9 — The Mark Awakens (placeholder art → closest existing environment)
+  // TODO: replace with dedicated Chapter 9 mark/relic pixel art
+  relic_scar:            require('../assets/images/relic_engine_room.png'),
+  machine_graveyard:     require('../assets/images/collapsed_tunnel.png'),
+  marked_shrine:         require('../assets/images/archive_ruin_wall.png'),
+  memory_storm:          require('../assets/images/archive_ruin_wall.png'),
+  pulse_engine:          require('../assets/images/relic_engine_room.png'),
+  rust_cathedral:        require('../assets/images/ruined_metro_station.png'),
+  broken_tram_core:      require('../assets/images/collapsed_tunnel.png'),
+  old_signal_tower:      require('../assets/images/surface_ruins.png'),
+  corruption_garden:     require('../assets/images/surface_ruins.png'),
+  gate_fragment_chamber: require('../assets/images/relic_engine_room.png'),
+  dream_of_before:       require('../assets/images/dark_metro_hallway.png'),
 };
 
 // ─── Gradient fallbacks & transition colors ───────────────────────────────────
@@ -485,6 +499,51 @@ export const BACKGROUND_GRADIENTS: Record<string, GradientConfig> = {
   },
   starving_bridge: {
     colors: ['#0a0a0e', '#12121c', '#0a0a0e', '#070708'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  // Chapter 9 — The Mark Awakens
+  relic_scar: {
+    colors: ['#080414', '#120624', '#1a083a', '#080414'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  machine_graveyard: {
+    colors: ['#06080a', '#0c1014', '#060a0e', '#040608'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  marked_shrine: {
+    colors: ['#0a0810', '#14101e', '#0a0814', '#06060c'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  memory_storm: {
+    colors: ['#080c1a', '#0c1430', '#060e24', '#040810'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  pulse_engine: {
+    colors: ['#06041c', '#0a0630', '#12083e', '#060418'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  rust_cathedral: {
+    colors: ['#100a04', '#1e1406', '#160e04', '#0a0702'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  broken_tram_core: {
+    colors: ['#080808', '#101010', '#080808', '#060606'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  old_signal_tower: {
+    colors: ['#0c0c10', '#16141e', '#0c0c14', '#080810'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  corruption_garden: {
+    colors: ['#040e06', '#061808', '#04100a', '#020804'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  gate_fragment_chamber: {
+    colors: ['#06040e', '#0e0820', '#160a30', '#06040c'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  dream_of_before: {
+    colors: ['#0a0a16', '#12122a', '#0c0c20', '#060610'],
     start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
   },
   // Generic fallback for any key not listed above

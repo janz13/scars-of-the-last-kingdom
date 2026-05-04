@@ -1524,6 +1524,208 @@ export const ENDINGS: EndingDefinition[] = [
     chapter: 'Chapter VIII',
   },
 
+  // ── Chapter IX — The Mark Awakens ─────────────────────────────────────────
+  {
+    id: 'ending_ch9_machine_saint',
+    title: 'Machine Saint',
+    type: 'death',
+    subtitle: 'Chapter IX — The Machine Graveyard',
+    description:
+      'The mark interface with the dormant transit network is absorbed rather than completed. The eight transit cars do not record a departure. They record an arrival. The network\'s maintenance log adds one entry: INTERFACE PERMANENT — BEARER INTEGRATED. The machines are no longer waiting for the conversation. They are having it.',
+    color: '#06040e',
+    hint: 'Fail the intelligence dice in the Machine Graveyard and choose not to interrupt the absorption.',
+    chapter: 'Chapter IX',
+  },
+  {
+    id: 'ending_ch9_relic_vessel',
+    title: 'Relic Vessel',
+    type: 'corruption',
+    subtitle: 'Chapter IX — The Marked Shrine',
+    description:
+      'The First Voice\'s offer is accepted at the Shrine. The mark completes its transformation from interface to vessel. What was a bearer becomes a broadcast point. The First Voice transmits. The tunnel network receives. Three people in Level 4 stop what they were doing and listen. They will not stop listening.',
+    color: '#180410',
+    hint: 'Accept the First Voice\'s gift at the Marked Shrine when the charisma dice fails.',
+    chapter: 'Chapter IX',
+  },
+  {
+    id: 'ending_ch9_memory_collapse',
+    title: 'Identity Lost',
+    type: 'death',
+    subtitle: 'Chapter IX — The Memory Storm',
+    description:
+      'The Memory Storm\'s third layer does not release coherently. Seventeen identity frames, held simultaneously, exceed the mark\'s protective architecture. The last clear thought: "I know which one I am." That knowledge survives three additional seconds. Then it is distributed equally among seventeen frames. The storm fills.',
+    color: '#040812',
+    hint: 'Fail the luck dice in the Memory Storm while holding all three fragments simultaneously.',
+    chapter: 'Chapter IX',
+  },
+  {
+    id: 'ending_ch9_pulse_overload',
+    title: 'The Engine Runs',
+    type: 'death',
+    subtitle: 'Chapter IX — The Pulse Engine',
+    description:
+      'The manual override fails. The Pulse Engine cycles through its activation sequence without command. The modification added by the entity prefers inward flow. Forty-seven tunnel dwellers felt their environment improve slightly today and will not know why. The mark\'s emergency suppression protocol activates. Then nothing.',
+    color: '#060208',
+    hint: 'Fail the strength dice when sealing the Pulse Engine junction.',
+    chapter: 'Chapter IX',
+  },
+  {
+    id: 'ending_ch9_cain_executes',
+    title: 'The Line',
+    type: 'betrayal',
+    subtitle: 'Chapter IX — The Rust Cathedral',
+    description:
+      'Cain\'s twelve years in the Iron Saints included three in the unit that handled marked individuals who had crossed the corruption threshold. He knows what the unit called "the line." He does not want to be here. He implements what he has to. "You were worth following. I want you to know that."',
+    color: '#0c0808',
+    hint: 'Intimidate Cain at the Cathedral and fail the charisma dice in the standoff.',
+    chapter: 'Chapter IX',
+  },
+  {
+    id: 'ending_ch9_tram_collapse',
+    title: 'Structural Failure',
+    type: 'death',
+    subtitle: 'Chapter IX — The Broken Tram Core',
+    description:
+      'The tram core\'s repair fails during the structural stabilisation. The junction collapse takes eighteen seconds. Dever\'s log entry, written from memory two days later: "The repair was attempted. The outcome was not the outcome intended. The Varr directive was inside."',
+    color: '#080808',
+    hint: 'Fail the intelligence dice during the broken tram core repair sequence.',
+    chapter: 'Chapter IX',
+  },
+  {
+    id: 'ending_ch9_first_voice_merge',
+    title: 'The Merge',
+    type: 'corruption',
+    subtitle: 'Chapter IX — The Old Signal Tower',
+    description:
+      'The First Voice\'s broadcast finds the mark at full resonance in the Signal Tower. The merge is not violent — it is consensual in the way that all corruptions are consensual: a series of small acceptances that each seemed reasonable at the time. The tower continues broadcasting. The content changes. Someone in Level 3 hears their name.',
+    color: '#1a0614',
+    hint: 'Enter the Old Signal Tower at high corruption and accept the First Voice\'s merge offer.',
+    chapter: 'Chapter IX',
+  },
+  {
+    id: 'ending_ch9_tower_fail',
+    title: 'Signal Preserved',
+    type: 'death',
+    subtitle: 'Chapter IX — The Old Signal Tower',
+    description:
+      'The tower\'s broadcast destruction fails. The agility dice comes up short. The First Voice\'s signal continues, amplified by the failed attempt. The mark\'s attempt to interrupt creates an interference pattern the Voice uses as a new carrier frequency. The tower broadcasts louder. The bearer does not.',
+    color: '#060408',
+    hint: 'Fail the agility dice when attempting to destroy the Signal Tower broadcast array.',
+    chapter: 'Chapter IX',
+  },
+  {
+    id: 'ending_ch9_mira_saves',
+    title: 'Mira',
+    type: 'companion',
+    subtitle: 'Chapter IX — The Corruption Garden',
+    description:
+      'She walks you out. The Garden\'s convergence pressure drops with each metre of distance. By the exit corridor, fourteen frequencies have reduced to background. She doesn\'t let go until you are through. Then she examines the mark, professional and careful. "It\'s still you," she says. Not a medical assessment. Something else.',
+    color: '#06100c',
+    hint: 'Reach the Corruption Garden at high corruption with Mira present and sufficient trust.',
+    chapter: 'Chapter IX',
+  },
+  {
+    id: 'ending_ch9_corruption_garden',
+    title: 'The Garden Takes',
+    type: 'death',
+    subtitle: 'Chapter IX — The Corruption Garden',
+    description:
+      'At corruption above threshold, the Garden\'s convergence point is an invitation the mark accepts without consultation. The fourteen frequencies synchronise in ninety-three seconds. The synchronisation is not painful — it is the absence of the resistance maintained since Chapter 1. For six seconds: the cleanest experience available in this city. Then not an experience. Then not a bearer.',
+    color: '#0c1008',
+    hint: 'Enter the Corruption Garden at corruption above 60 without Mira present.',
+    chapter: 'Chapter IX',
+  },
+  {
+    id: 'ending_ch9_gate_fragment',
+    title: 'The Fragment Secured',
+    type: 'secret',
+    subtitle: 'Chapter IX — The Gate Fragment Chamber',
+    description:
+      'The Chamber is sealed. The fragment is secured. The corruption gradient at acquisition — controlled, intentional, below the threshold the fourteen crossed — is documented in the mark\'s record. The Archive logs: GATE COMPONENT TRANSFERRED — BEARER INTEGRITY: INTACT. Whatever the Last Gate requires, there is now something to negotiate with. The chapter is complete. This is the moment Velna built the system to produce.',
+    color: '#0e0a1e',
+    hint: 'Acquire the Gate Fragment with corruption below 25 and choose to seal the Chamber.',
+    chapter: 'Chapter IX',
+    isSecret: true,
+  },
+  {
+    id: 'ending_ch9_dream_of_before',
+    title: 'Before It All',
+    type: 'wanderer',
+    subtitle: 'Chapter IX — The Dream of Before',
+    description:
+      'The Dream is quiet. The city functions. The mark has not bonded yet. The agreement has not been made. In this layer, the future that includes the Hunger War and the Water Riot and the fourteen lost marked people has not happened yet. It will. But here, it has not. The Heir\'s margin note: "I left because I chose to. I am not confident you will."',
+    color: '#0e0c1a',
+    hint: 'Enter the Dream of Before and choose to stay in the pre-agreement layer.',
+    chapter: 'Chapter IX',
+  },
+  {
+    id: 'ending_ch9_savior_path',
+    title: 'The Savior\'s Route',
+    type: 'savior',
+    subtitle: 'Chapter IX — Resolution',
+    description:
+      'The mark used for protection. The Pulse Engine\'s output distributed outward. The Garden\'s convergence refused. The tower\'s broadcast silenced. The fragment acquired with integrity intact. The chapter ends with one fewer threat in the tunnel network and a bearer who still recognises themselves in the mirror. Chapter 10 will test whether this holds.',
+    color: '#0a1410',
+    hint: 'Complete the chapter with corruption below 30, Gate Fragment acquired, and Signal Tower silenced.',
+    chapter: 'Chapter IX',
+  },
+  {
+    id: 'ending_ch9_tyrant_path',
+    title: 'The Tyrant\'s Route',
+    type: 'tyrant',
+    subtitle: 'Chapter IX — Resolution',
+    description:
+      'The Pulse Engine taken for amplification. The Garden crossed through domination. The tower\'s broadcast repurposed. The fragment forced rather than transferred. High corruption, high capability, and the specific type of clarity that comes from having stopped refusing things. Chapter 10 will determine whether the capability was worth the gradient.',
+    color: '#160808',
+    hint: 'Complete the chapter with corruption above 50, Pulse Engine dominated, and Garden convergence point forced.',
+    chapter: 'Chapter IX',
+  },
+  {
+    id: 'ending_ch9_survived',
+    title: 'After the Awakening',
+    type: 'faction',
+    subtitle: 'Chapter IX — Resolution',
+    description:
+      'The chapter closes. The mark is operational. The system is legible. What was warmth is now function. Eleven locations, eleven conversations, and one active interface that did not become a statistic in the Shrine\'s failure record. The Last Archive logs a status update: CURRENT INTERFACE — OPERATIONAL. The entity below the city notes the same. Chapter 10 begins.',
+    color: '#080e12',
+    hint: 'Reach the chapter resolution through any path without triggering an earlier ending.',
+    chapter: 'Chapter IX',
+  },
+  {
+    id: 'ending_ch9_mark_madness',
+    title: 'Full Amplification',
+    type: 'death',
+    subtitle: 'Chapter IX — The Pulse Engine',
+    description:
+      'The Pulse Engine\'s amplification cycle does not end when released. The modification prefers inward flow, and at corruption above 40 the mark cannot distinguish between "choosing to stay open" and "being unable to close." The clarity lasts eleven additional seconds before the mark\'s output exceeds its own architecture. Forty-seven people notice something in the tunnel network go quiet.',
+    color: '#0a0212',
+    hint: 'Choose not to close the Pulse Engine after full amplification with corruption above 40.',
+    chapter: 'Chapter IX',
+  },
+  {
+    id: 'ending_ch9_varr_dissects',
+    title: 'Research Requirements',
+    type: 'death',
+    subtitle: 'Chapter IX — The Relic Scar',
+    description:
+      'Voluntary cooperation with Director Varr\'s research program. The data gathered is significant — the first complete corruption-gradient documentation of a living marked interface. Varr\'s notes are thorough and respectful. His conclusion: "Subject demonstrated exceptional integrity throughout. The outcome was not the subject\'s failure. The outcome was the experimental design\'s success." The mark is documented. The bearer is past tense.',
+    color: '#060c10',
+    hint: 'Choose to cooperate fully with Director Varr\'s research at the Relic Scar.',
+    chapter: 'Chapter IX',
+  },
+  {
+    id: 'ending_ch9_true_ending_req',
+    title: 'The Requirements Complete',
+    type: 'secret',
+    subtitle: 'Chapter IX — Resolution',
+    description:
+      'Gate Fragment secured. Memory Storm\'s third layer accessed. Corruption gradient controlled. Identity full. The Archive logs: TRUE ENDING REQUIREMENTS — CHAPTER IX COMPLETE. What Velna built the system to produce has been produced. The Last Gate conversation will happen on terms that include the bearer as a participant rather than a component. Chapter 10 continues from this position.',
+    color: '#1a1408',
+    hint: 'Acquire the Gate Fragment, access Memory Storm depth 3, and reach the chapter resolution with corruption below 35.',
+    chapter: 'Chapter IX',
+    isSecret: true,
+  },
+
   // ── True Ending ────────────────────────────────────────────────────────────
   {
     id: 'ending_last_kingdom_remembers',
