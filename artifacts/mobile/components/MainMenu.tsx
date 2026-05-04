@@ -13,7 +13,7 @@ const _summary = getStorySummary();
 const FOOTER_STATS = `${_summary.totalNodes} NODES  ·  ${ENDINGS.length} ENDINGS  ·  ${CLASSES.length} CLASSES`;
 
 export default function MainMenu() {
-  const { hasSaveGame, continueGame, setScreen, state } = useGame();
+  const { hasActiveGame, continueGame, setScreen, state } = useGame();
   const insets = useSafeAreaInsets();
   const topPad = Platform.OS === 'web' ? 67 : insets.top;
   const botPad = Platform.OS === 'web' ? 34 : insets.bottom;
@@ -113,7 +113,7 @@ export default function MainMenu() {
             onPress={() => setScreen('characterCreator')}
           />
 
-          {hasSaveGame && (
+          {hasActiveGame && (
             <AnimatedMenuButton
               anim={nextAnim()}
               label="CONTINUE JOURNEY"

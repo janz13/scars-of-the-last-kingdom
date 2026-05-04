@@ -65,6 +65,7 @@ interface GameContextValue {
   state: GameState;
   isLoading: boolean;
   hasSaveGame: boolean;
+  hasActiveGame: boolean;
   currentNode: ReturnType<typeof getNodeById>;
   availableChoices: ReturnType<typeof getChoicesWithStatus>;
   // Core gameplay
@@ -174,6 +175,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<GameState>(INITIAL_STATE);
   const [isLoading, setIsLoading] = useState(true);
   const [hasSaveGame, setHasSaveGame] = useState(false);
+  const [hasActiveGame, setHasActiveGame] = useState(false);
   const [pendingDiceRoll, setPendingDiceRoll] = useState<PendingDiceRoll | null>(null);
   const autoSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -182,6 +184,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     (async () => {
       const [saveExists, warningSeen] = await Promise.all([hasSave(), hasSeenContentWarning()]);
       setHasSaveGame(saveExists);
+      setHasActiveGame(saveExists);
       if (!warningSeen) {
         setState((prev) => ({ ...prev, screen: 'contentWarning' }));
       }
@@ -198,6 +201,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     autoSaveTimer.current = setTimeout(() => {
       saveGame(state);
       setHasSaveGame(true);
+      setHasActiveGame(true);
     }, 1000);
 
     return () => {
@@ -414,18 +418,21 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     if (saved) {
       setState(saved);
       setHasSaveGame(true);
+      setHasActiveGame(true);
     }
   }, []);
 
   const deleteAndReset = useCallback(async () => {
     await deleteSaveStorage();
     setHasSaveGame(false);
+    setHasActiveGame(false);
     setState(INITIAL_STATE);
   }, []);
 
   const resetAllData = useCallback(async () => {
     await resetAllDataStorage();
     setHasSaveGame(false);
+    setHasActiveGame(false);
     setState(INITIAL_STATE);
   }, []);
 
@@ -551,6 +558,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const devResetToMenu = useCallback(async () => {
     await deleteSaveStorage();
     setHasSaveGame(false);
+    setHasActiveGame(false);
     setState(INITIAL_STATE);
   }, []);
 
@@ -565,6 +573,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         state,
         isLoading,
         hasSaveGame,
+        hasActiveGame,
         currentNode,
         availableChoices,
         startNewGame,

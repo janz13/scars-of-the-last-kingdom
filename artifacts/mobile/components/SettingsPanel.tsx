@@ -54,7 +54,7 @@ export default function SettingsPanel() {
     <LinearGradient colors={['#0a0a0f', '#12101a', '#0a0a0f']} style={styles.container}>
       <View style={[styles.header, { paddingTop: topPad + 10 }]}>
         <Text style={styles.title}>SETTINGS</Text>
-        <Pressable style={styles.backBtn} onPress={() => setScreen(isInGame ? 'game' : 'mainMenu')}>
+        <Pressable style={styles.backBtn} onPress={() => setScreen('mainMenu')}>
           <Feather name="x" size={22} color="#8a7d6e" />
         </Pressable>
       </View>
