@@ -922,7 +922,8 @@ export const CHAPTER_ROADMAP: ChapterEntry[] = [
       'companions_final_state', 'mark_final_state', 'city_final_state',
     ],
     routesUnlocked: ['New Game Plus — with carried flags'],
-    status: 'planned',
+    status: 'complete',
+    nodeCount: 72,
   },
 ];
 

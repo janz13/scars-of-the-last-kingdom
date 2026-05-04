@@ -211,6 +211,27 @@ export const BACKGROUND_IMAGES: Record<string, any> = {
   last_gate:               require('../assets/images/relic_engine_room.png'),
   door_of_no_return:       require('../assets/images/collapsed_tunnel.png'),
 
+  // ── Final Chapter 2 — Many Ways to End the World ────────────────────────
+  // Placeholder art mapped to closest existing environment images.
+  // TODO: Replace with dedicated ending artwork for each of the 17 final endings.
+  savior_ending:           require('../assets/images/surface_ruins.png'),
+  tyrant_ending:           require('../assets/images/glass_tower_lobby.png'),
+  iron_saints_dominion:    require('../assets/images/glass_tower_lobby.png'),
+  glass_court_ascension:   require('../assets/images/glass_tower_lobby.png'),
+  hollow_children_future:  require('../assets/images/dark_metro_hallway.png'),
+  red_choir_communion:     require('../assets/images/archive_ruin_wall.png'),
+  last_archive_revelation: require('../assets/images/archive_ruin_wall.png'),
+  mira_tomorrow:           require('../assets/images/surface_ruins.png'),
+  cain_last_stand_ending:  require('../assets/images/collapsed_tunnel.png'),
+  lone_wanderer_ending:    require('../assets/images/surface_ruins.png'),
+  corruption_god:          require('../assets/images/relic_engine_room.png'),
+  relic_machine_ending:    require('../assets/images/relic_engine_room.png'),
+  city_sealed_forever:     require('../assets/images/collapsed_tunnel.png'),
+  city_opened_wastes:      require('../assets/images/surface_ruins.png'),
+  masked_heir_ending:      require('../assets/images/archive_ruin_wall.png'),
+  secret_unity_ending:     require('../assets/images/relic_engine_room.png'),
+  secret_true_ending:      require('../assets/images/archive_ruin_wall.png'),
+
   // ── Chapter 11 — The City Beneath the City ──────────────────────────────
   // Placeholder art mapped to closest existing environment images.
   // TODO: Replace with dedicated sub-city / ancient-structure pixel art.
@@ -780,6 +801,76 @@ export const BACKGROUND_GRADIENTS: Record<string, GradientConfig> = {
   },
   door_of_no_return: {
     colors: ['#06060e', '#0a0a18', '#06060e', '#040410'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+
+  // ── Final Chapter 2 — Ending gradients ──────────────────────────────────
+  savior_ending: {
+    colors: ['#0a1a08', '#142808', '#0a1a08', '#081408'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  tyrant_ending: {
+    colors: ['#0c0c1a', '#181828', '#0c0c1a', '#080812'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  iron_saints_dominion: {
+    colors: ['#100810', '#1c0c1c', '#100810', '#0c060c'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  glass_court_ascension: {
+    colors: ['#0a1018', '#101820', '#0a1018', '#080c12'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  hollow_children_future: {
+    colors: ['#081008', '#101810', '#081008', '#060c06'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  red_choir_communion: {
+    colors: ['#1a0808', '#280c0c', '#1a0808', '#120606'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  last_archive_revelation: {
+    colors: ['#080a14', '#0c1020', '#080a14', '#06080e'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  mira_tomorrow: {
+    colors: ['#14100a', '#201808', '#14100a', '#0e0c06'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  cain_last_stand_ending: {
+    colors: ['#0c1010', '#101818', '#0c1010', '#080c0c'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  lone_wanderer_ending: {
+    colors: ['#0e0c08', '#181408', '#0e0c08', '#0a0a06'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  corruption_god: {
+    colors: ['#1a0608', '#280808', '#1a0608', '#140406'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  relic_machine_ending: {
+    colors: ['#0c0814', '#14101e', '#0c0814', '#080610'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  city_sealed_forever: {
+    colors: ['#080810', '#0e0e18', '#080810', '#06060c'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  city_opened_wastes: {
+    colors: ['#0a1018', '#10182a', '#0a1018', '#080c14'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  masked_heir_ending: {
+    colors: ['#100a18', '#18102a', '#100a18', '#0c0814'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  secret_unity_ending: {
+    colors: ['#0c0820', '#14103a', '#0c0820', '#08061a'],
+    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+  },
+  secret_true_ending: {
+    colors: ['#0a1420', '#102040', '#0a1420', '#081018'],
     start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
   },
 

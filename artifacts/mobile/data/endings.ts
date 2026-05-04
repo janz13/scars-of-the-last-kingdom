@@ -2782,6 +2782,242 @@ export const ENDINGS: EndingDefinition[] = [
     isSecret: true,
   },
 
+  // ── Final Chapter 2 — Many Ways to End the World ───────────────────────────
+  {
+    id: 'ending_fc2_secret_unity',
+    title: 'The Signal That Stays',
+    type: 'secret',
+    subtitle: 'Final Chapter 2 — The Gate Bridge',
+    description:
+      'The bearer merged with the Gate and became the permanent bridge — transmitting the full twelve-cycle record to the city through the relic network until the transmission completed. The companions\' signals are in the data. The bearer is the infrastructure now. They will outlast the factions.',
+    color: '#1a1430',
+    hint: 'Merge with the Gate via the unity path in Final Chapter 1, then transmit the full record in Final Chapter 2.',
+    chapter: 'Final Chapter 2',
+    isSecret: true,
+  },
+  {
+    id: 'ending_fc2_savior_ruined_city',
+    title: 'Savior of the Ruined City',
+    type: 'savior',
+    subtitle: 'Final Chapter 2 — The Sealed Gate',
+    description:
+      'The Gate is sealed. The city continues. The bearer walks through the city they saved — imperfect, damaged, continuing, alive. The city does not know what it cost. The mark is quiet, and quiet is what enough feels like.',
+    color: '#1a2a14',
+    hint: 'Seal the Gate with the crown of ash and return to the surface.',
+    chapter: 'Final Chapter 2',
+  },
+  {
+    id: 'ending_fc2_mira_tomorrow',
+    title: "Mira's Tomorrow",
+    type: 'companion',
+    subtitle: "Final Chapter 2 — The Surface",
+    description:
+      "Mira hands over the Archive document she has been carrying since Chapter 7. The bearer reads it. They read it together on the surface of a city that is sealed and continuing and alive. The tomorrow that starts here is real. They both know it is real.",
+    color: '#1a1814',
+    hint: 'Seal the Gate, return to the surface, and reach Mira with trust ≥ 15.',
+    chapter: 'Final Chapter 2',
+  },
+  {
+    id: 'ending_fc2_cain_last_stand',
+    title: "Cain's Last Stand",
+    type: 'companion',
+    subtitle: 'Final Chapter 2 — The Transit Hub',
+    description:
+      'Cain never leaves the perimeter he established. His last stand is in the city — protecting it with thirteen chapters of tactical experience under pressure. He chose to stay. The mark records it as the most tactical choice he ever made.',
+    color: '#141a1a',
+    hint: 'Seal the Gate, return to the surface, and reach Cain with trust ≥ 15.',
+    chapter: 'Final Chapter 2',
+  },
+  {
+    id: 'ending_fc2_city_sealed_forever',
+    title: 'City Sealed Forever',
+    type: 'wanderer',
+    subtitle: 'Final Chapter 2 — The Surface',
+    description:
+      'The bearer stays above the sealed Gate. They watch the city live in the sealed world they made and decide, season after season, that the sealing was right. The city is sealed forever. The bearer carries what the city will never know. The city was worth it.',
+    color: '#101018',
+    hint: 'Seal the Gate and choose to stay in the city as its silent witness.',
+    chapter: 'Final Chapter 2',
+  },
+  {
+    id: 'ending_fc2_lone_wanderer_final',
+    title: 'The Lone Wanderer',
+    type: 'wanderer',
+    subtitle: 'Final Chapter 2 — The Wastes',
+    description:
+      'The bearer walks through the city wall gate into the outside world. The wastes are not wastes. There are settlements, paths, people building something without the relic system. The mark is quieter here. The corruption begins, slowly, to resolve. The road is ahead.',
+    color: '#181410',
+    hint: 'Seal the Gate and walk away from the sealed city into the outside world.',
+    chapter: 'Final Chapter 2',
+  },
+  {
+    id: 'ending_fc2_tyrant_beneath_glass',
+    title: 'Tyrant Beneath the Glass',
+    type: 'corruption',
+    subtitle: 'Final Chapter 2 — The Gate Control Interface',
+    description:
+      'The Glass Court negotiated first. The bearer accepted the partnership on terms that left ultimate control with the mark\'s interface. The city reorganizes around the new authority. The tyrant is below the glass, at the Gate, controlling everything. The city is peaceful because it has a competent tyrant.',
+    color: '#141820',
+    hint: 'Control the Gate with the tyrant_throne_claimed flag and negotiate with the Glass Court.',
+    chapter: 'Final Chapter 2',
+  },
+  {
+    id: 'ending_fc2_corruption_god',
+    title: 'Corruption God',
+    type: 'corruption',
+    subtitle: 'Final Chapter 2 — The Relic Field',
+    description:
+      'The bearer is the relic field. Their consciousness permeates the city\'s infrastructure. The factions respond to the bearer without knowing who they respond to. The city has a god that was built from thirteen chapters of choice and the specific architecture of extreme corruption.',
+    color: '#200810',
+    hint: 'Control the Gate with corruption ≥ 70 and allow the expansion to complete.',
+    chapter: 'Final Chapter 2',
+  },
+  {
+    id: 'ending_fc2_corruption_final_death',
+    title: 'Consumed by the Field',
+    type: 'death',
+    subtitle: 'Final Chapter 2 — The Collapsed Interface',
+    description:
+      'The expansion exceeded what even corruption can sustain. The mark collapsed into the relic field without proper interface protocols, inverting the resonance of every node in the city. The relic field is inert. The city wakes to its first morning without the ambient hum in three hundred years.',
+    color: '#14060a',
+    hint: 'Control the Gate with corruption ≥ 90 and trigger the field collapse.',
+    chapter: 'Final Chapter 2',
+  },
+  {
+    id: 'ending_fc2_iron_saints_dominion',
+    title: 'Iron Saints Dominion',
+    type: 'faction',
+    subtitle: 'Final Chapter 2 — Under the Order',
+    description:
+      'The Order receives the Gate\'s access. The city is the most orderly it has been since the Foundation Period. Crime declines. Conflict reduces. The archive is protected. The city is better by every metric the Iron Saints recognize as valid. The bearer is the only person positioned to ask whether better and more controlled are the same thing.',
+    color: '#141014',
+    hint: 'Reach the Faction Gate with saints_gate_support active and complete the Iron Saints access protocol.',
+    chapter: 'Final Chapter 2',
+  },
+  {
+    id: 'ending_fc2_glass_court_ascension',
+    title: 'Glass Court Ascension',
+    type: 'faction',
+    subtitle: 'Final Chapter 2 — Reorganized for Prosperity',
+    description:
+      'The Court ascends. The relic field reoriented toward productive use. The Hollow Children receive fair compensation for the first time. The bearer watches the city\'s prosperity increase and knows what it cost. The ascension is real. The inequality is also real. The bearer chose this knowing both were true.',
+    color: '#1a1a10',
+    hint: 'Reach the Faction Gate with glass_gate_support active and complete the Glass Court access protocol.',
+    chapter: 'Final Chapter 2',
+  },
+  {
+    id: 'ending_fc2_red_choir_communion',
+    title: 'Red Choir Communion',
+    type: 'faction',
+    subtitle: 'Final Chapter 2 — Broadcasting',
+    description:
+      'The city hears itself for the first time. Three hundred years of cultural transmission, reflected back by the entity below, broadcast simultaneously through every relic node. Not sound — understanding. The city will argue about what it heard for a generation. The Choir considers that optimal.',
+    color: '#200a08',
+    hint: 'Reach the Faction Gate with choir_gate_support active and complete the Red Choir access protocol.',
+    chapter: 'Final Chapter 2',
+  },
+  {
+    id: 'ending_fc2_last_archive_revelation',
+    title: 'Last Archive Revelation',
+    type: 'faction',
+    subtitle: 'Final Chapter 2 — The Archive Complete',
+    description:
+      'The Archive receives its missing three hundred years. Every cycle, every Warden\'s entry, every Foundation Period document. Archivists work through the night producing the index. The revelation will be measured and thorough and accurate and the city will spend a generation processing it. The Archive was the right institution to carry this.',
+    color: '#0a101a',
+    hint: 'Reach the Faction Gate with archive_gate_support active and complete the Last Archive access protocol.',
+    chapter: 'Final Chapter 2',
+  },
+  {
+    id: 'ending_fc2_hollow_children_future',
+    title: 'Hollow Children Future',
+    type: 'faction',
+    subtitle: 'Final Chapter 2 — The Infrastructure Owned',
+    description:
+      'The maintenance generation inherits everything they maintained. The transit system. The relic network. The Gate\'s infrastructure. They do not celebrate. They document. The future they build will be the most durable thing the city has ever produced, built by the people who know how to make things last.',
+    color: '#101a14',
+    hint: 'Reach the Faction Gate with hollow_gate_support active and complete the Hollow Children access protocol.',
+    chapter: 'Final Chapter 2',
+  },
+  {
+    id: 'ending_fc2_faction_collapse',
+    title: 'The Faction Collapse',
+    type: 'betrayal',
+    subtitle: 'Final Chapter 2 — Five Fragments',
+    description:
+      'Five factions received five incomplete fragments of the Gate\'s record. Each implemented their fragment without context. The city fractured around five contradictory mandates. The Hollow Children stopped filing maintenance reports. The city will survive — it always has. But the next generation will spend their lives navigating this.',
+    color: '#140c08',
+    hint: 'Reach the faction gate path without any faction crown present.',
+    chapter: 'Final Chapter 2',
+  },
+  {
+    id: 'ending_fc2_masked_heir',
+    title: "The Masked Heir's Ending",
+    type: 'secret',
+    subtitle: 'Final Chapter 2 — The Warden Convergence',
+    description:
+      "The Heir's echo led to the Warden convergence — twelve echoes, three hundred years, the most honest account of the Gate's operation ever recorded. The bearer reads what the Wardens said to each other in the one location the system wasn't designed to access. The Heir's echo is satisfied. The record persists in the mark.",
+    color: '#1a1020',
+    hint: 'Enter the liminal space and follow the Masked Heir\'s echo to the Warden convergence.',
+    chapter: 'Final Chapter 2',
+    isSecret: true,
+  },
+  {
+    id: 'ending_fc2_relic_machine',
+    title: 'The Relic Machine',
+    type: 'corruption',
+    subtitle: 'Final Chapter 2 — The Original Architecture',
+    description:
+      'The bearer merged with the original machine, providing the dataset it has been seeking for three hundred years. Their individual consciousness distributed through the machine\'s processing layer as data. Future bearers will be assessed more accurately because of this contribution. The bearer served the system that served them.',
+    color: '#100818',
+    hint: 'Enter the liminal space or the assessment chambers and choose to merge with the original machine.',
+    chapter: 'Final Chapter 2',
+  },
+  {
+    id: 'ending_fc2_ghost_bearer',
+    title: 'Ghost Bearer',
+    type: 'death',
+    subtitle: 'Final Chapter 2 — The Liminal Space',
+    description:
+      'The bearer dissolved into the liminal space. They are the infrastructure now — in the transit timing, in the relic field\'s new harmonic, in the Hollow Children\'s anomaly logs. No one knows. No one will. The city carries the ghost of a bearer who became part of what they were trying to understand.',
+    color: '#080810',
+    hint: 'Enter the liminal space and choose dissolution.',
+    chapter: 'Final Chapter 2',
+  },
+  {
+    id: 'ending_fc2_gate_madness',
+    title: 'Gate Madness',
+    type: 'death',
+    subtitle: 'Final Chapter 2 — The Assessment Chambers',
+    description:
+      'The bearer refused all options. The assessment cycled for days, evaluating a configuration it was never designed to categorize. The prolonged evaluation had a cost. The machine continues cycling after the bearer stops. It does not have a protocol for that either.',
+    color: '#100808',
+    hint: 'Remain in the assessment chambers and refuse both the liminal exit and the machine integration.',
+    chapter: 'Final Chapter 2',
+  },
+  {
+    id: 'ending_fc2_city_opened_wastes',
+    title: 'City Opened to the Wastes',
+    type: 'wanderer',
+    subtitle: 'Final Chapter 2 — The Open Threshold',
+    description:
+      'The transfer completed. The entity rose. The Gate opened fully. The outside world is visible to the city for the first time in three hundred years. The cycle ends. What the city does with an open world is not the system\'s problem anymore. It is the city\'s.',
+    color: '#101820',
+    hint: 'Reach the Final Gate\'s true path and choose to complete the data transfer.',
+    chapter: 'Final Chapter 2',
+  },
+  {
+    id: 'ending_fc2_bearer_transcended',
+    title: 'Bearer Transcended',
+    type: 'secret',
+    subtitle: 'Final Chapter 2 — The Living Archive',
+    description:
+      'The bearer walked through the open Gate into the outside world as a living archive — transmitting twelve cycles of the city\'s history to every outside settlement in receiving range. They are not a god. They are a person carrying a library, walking through a world that needs what the library contains.',
+    color: '#1a2028',
+    hint: 'Reach the true cycle choice with clean_signal, complete_record_held, and both companions at the Gate.',
+    chapter: 'Final Chapter 2',
+    isSecret: true,
+  },
+
   // ── True Ending ────────────────────────────────────────────────────────────
   {
     id: 'ending_last_kingdom_remembers',
