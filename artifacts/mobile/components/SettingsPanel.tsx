@@ -120,15 +120,6 @@ export default function SettingsPanel() {
           <Feather name="chevron-right" size={16} color="#4a4050" />
         </Pressable>
 
-        <Pressable style={styles.navRow} onPress={() => setScreen('chapterRoadmap')}>
-          <Feather name="map" size={14} color="#4a8eaa" />
-          <View style={{ flex: 1 }}>
-            <Text style={styles.toggleLabel}>Chapter Roadmap</Text>
-            <Text style={styles.toggleDesc}>View the full 15-part story plan.</Text>
-          </View>
-          <Feather name="chevron-right" size={16} color="#4a4050" />
-        </Pressable>
-
         <Pressable style={styles.navRow} onPress={() => setScreen('credits')}>
           <Feather name="star" size={14} color="#8a7a60" />
           <View style={{ flex: 1 }}>

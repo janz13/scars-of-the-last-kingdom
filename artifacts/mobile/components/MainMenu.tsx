@@ -142,14 +142,6 @@ export default function MainMenu() {
 
           <AnimatedMenuButton
             anim={nextAnim()}
-            label="CHAPTER ROADMAP"
-            icon="map"
-            color="#4a8eaa"
-            onPress={() => setScreen('chapterRoadmap')}
-          />
-
-          <AnimatedMenuButton
-            anim={nextAnim()}
             label="CREDITS"
             icon="star"
             color="#8a7a60"
