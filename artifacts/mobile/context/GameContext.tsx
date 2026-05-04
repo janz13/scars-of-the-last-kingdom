@@ -201,7 +201,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     autoSaveTimer.current = setTimeout(() => {
       saveGame(state);
       setHasSaveGame(true);
-      setHasActiveGame(true);
+      setHasActiveGame(state.screen === 'game' || state.screen === 'ending');
     }, 1000);
 
     return () => {
@@ -265,9 +265,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       newState = applyEffects(newState, startNode.effectsOnEnter);
     }
 
-      setState(newState);
-      setHasSaveGame(true);
-      setHasActiveGame(true);
+    setState(newState);
+    setHasSaveGame(true);
+    setHasActiveGame(true);
   }, []);
 
   const makeChoice = useCallback((choiceId: string) => {
