@@ -68,7 +68,7 @@ export default function CreditsScreen() {
 
       {/* Header */}
       <View style={[styles.header, { paddingTop: topPad + 10 }]}>
-        <Pressable style={styles.backBtn} onPress={() => setScreen(hasSaveGame ? 'settings' : 'mainMenu')}>
+        <Pressable style={styles.backBtn} onPress={() => setScreen('mainMenu')}>
           <Feather name="arrow-left" size={16} color="#6a5e70" />
         </Pressable>
         <Text style={styles.headerTitle}>CREDITS</Text>

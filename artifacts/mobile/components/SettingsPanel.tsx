@@ -110,25 +110,6 @@ export default function SettingsPanel() {
 
         <View style={styles.divider} />
 
-        <Text style={styles.sectionHeader}>EXPLORE</Text>
-        <Pressable style={styles.navRow} onPress={() => setScreen('routeCodex')}>
-          <Feather name="compass" size={14} color="#1abc9c" />
-          <View style={{ flex: 1 }}>
-            <Text style={styles.toggleLabel}>Route Codex</Text>
-            <Text style={styles.toggleDesc}>Track endings, companions, factions and choices.</Text>
-          </View>
-          <Feather name="chevron-right" size={16} color="#4a4050" />
-        </Pressable>
-
-        <Pressable style={styles.navRow} onPress={() => setScreen('credits')}>
-          <Feather name="star" size={14} color="#8a7a60" />
-          <View style={{ flex: 1 }}>
-            <Text style={styles.toggleLabel}>Credits</Text>
-            <Text style={styles.toggleDesc}>Development team and version information.</Text>
-          </View>
-          <Feather name="chevron-right" size={16} color="#4a4050" />
-        </Pressable>
-
         {isInGame && (
           <>
             <View style={styles.divider} />
