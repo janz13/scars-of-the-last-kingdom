@@ -13,7 +13,7 @@ import { resolve } from 'node:path';
 const require = createRequire(import.meta.url);
 
 // Use require() to load TS modules — tsx registers the loader automatically
-const { STORY_NODES, getNodeById, getStartNodeId } = require('../../artifacts/mobile/data/story/index.ts');
+const { STORY_NODES, getNodeById, getStartNodeId } = require('../../artifacts/mobile/data/story/allNodesSync.ts');
 const { ENDINGS } = require('../../artifacts/mobile/data/endings.ts');
 
 const STORY: any[] = STORY_NODES;

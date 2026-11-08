@@ -26,6 +26,43 @@ const {
   SAVE_DEFAULTS,
 } = require('../../artifacts/mobile/logic/saveValidation.ts');
 
+const {
+  extractDestinationNodeIds,
+  extractDestinationImageKeys,
+} = require('../../artifacts/mobile/logic/imagePreloader.ts');
+
+const {
+  listSaveSlots,
+  saveGameToSlot,
+  loadGameFromSlot,
+  deleteSlot,
+} = require('../../artifacts/mobile/logic/saveSystem.ts');
+
+const {
+  getUnlockedChapters,
+  generateRouteRecap,
+  getChapterInitialState,
+  buildChapterJumpState,
+} = require('../../artifacts/mobile/logic/chapterSelect.ts');
+
+const {
+  CONDITIONAL_ENDINGS,
+  evaluateConditionalEnding,
+} = require('../../artifacts/mobile/data/conditionalEndings.ts');
+
+const {
+  PROLOGUE_NODES,
+} = require('../../artifacts/mobile/data/story/prologue.ts');
+
+const {
+  ENDINGS: STORY_ENDINGS,
+  ENDING_CATEGORIES: STORY_ENDING_CATEGORIES,
+} = require('../../artifacts/mobile/data/story/endings.ts');
+
+const {
+  getStartNodeId,
+} = require('../../artifacts/mobile/data/story/index.ts');
+
 let passedTests = 0;
 let failedTests = 0;
 
@@ -363,6 +400,316 @@ console.log('\n--- 5. Testing parseAndValidateSave ---');
   assert(migrated.valid === true, 'Legacy sparse save passes validation and migrates');
   assert(migrated.gameState?.stats.hunger === SAVE_DEFAULTS.stats.hunger, 'Fills missing hunger default');
   assert(migrated.gameState?.companions.mira.alive === true, 'Fills missing companion defaults');
+}
+
+console.log('\n--- 6. Testing imagePreloader (F-PERF-02) ---');
+
+// Test 6.1: Direct nextNode extraction
+{
+  const testChoices = [
+    { id: 'c1', text: 'Go 1', nextNode: 'node_alpha' },
+    { id: 'c2', text: 'Go 2', nextNode: 'node_beta' },
+  ];
+  const nodeIds = extractDestinationNodeIds(testChoices);
+  assert(
+    nodeIds.includes('node_alpha') && nodeIds.includes('node_beta') && nodeIds.length === 2,
+    'Extracts direct nextNode from choices'
+  );
+}
+
+// Test 6.2: nextNodeId fallback
+{
+  const testChoices = [
+    { id: 'c1', text: 'Go 1', nextNodeId: 'node_gamma' } as any,
+  ];
+  const nodeIds = extractDestinationNodeIds(testChoices);
+  assert(nodeIds.includes('node_gamma'), 'Extracts nextNodeId defensively');
+}
+
+// Test 6.3: Dice check outcome branch extraction
+{
+  const testChoices = [
+    {
+      id: 'c_dice',
+      text: 'Roll',
+      nextNode: 'fallback_node',
+      diceCheck: {
+        stat: 'strength',
+        difficulty: 10,
+        diceType: 'd20',
+        successNode: 'node_success',
+        failureNode: 'node_failure',
+        criticalSuccessNode: 'node_crit_success',
+        criticalFailureNode: 'node_crit_fail',
+      },
+    },
+  ];
+  const nodeIds = extractDestinationNodeIds(testChoices);
+  assert(
+    nodeIds.includes('node_success') &&
+    nodeIds.includes('node_failure') &&
+    nodeIds.includes('node_crit_success') &&
+    nodeIds.includes('node_crit_fail') &&
+    nodeIds.includes('fallback_node'),
+    'Extracts all 4 diceCheck outcome nodes and base nextNode'
+  );
+}
+
+// Test 6.4: Ending trigger extraction
+{
+  const testChoices = [
+    { id: 'c_end', text: 'End', nextNode: 'node_x', endingTrigger: 'ending_death_trap' },
+  ];
+  const nodeIds = extractDestinationNodeIds(testChoices);
+  assert(nodeIds.includes('ending_death_trap'), 'Extracts endingTrigger destination');
+}
+
+// Test 6.5: Hallucination __return__ sentinel
+{
+  const testChoices = [
+    { id: 'c_ret', text: 'Return', nextNode: '__return__' },
+  ];
+  const fakeState: any = { pendingReturnNodeId: 'safe_haven_hub', currentNodeId: 'halluc_node' };
+  const nodeIds = extractDestinationNodeIds(testChoices, fakeState);
+  assert(nodeIds.includes('safe_haven_hub'), 'Resolves __return__ to pendingReturnNodeId');
+}
+
+// Test 6.6: Image key extraction, deduplication, and current key exclusion
+{
+  const testChoices = [
+    { id: 'c1', text: 'Go A', nextNode: 'dest_a' },
+    { id: 'c2', text: 'Go B', nextNode: 'dest_b' },
+    { id: 'c3', text: 'Go C', nextNode: 'dest_c' },
+  ];
+  const mockNodeMap: Record<string, any> = {
+    dest_a: { id: 'dest_a', imageKey: 'ruined_metro_station' },
+    dest_b: { id: 'dest_b', imageKey: 'broken_vending_area' },
+    dest_c: { id: 'dest_c', imageKey: 'ruined_metro_station' }, // duplicate imageKey
+  };
+  const keys = extractDestinationImageKeys(
+    testChoices,
+    (id: string) => mockNodeMap[id],
+    'ruined_metro_station' // currentImageKey to exclude
+  );
+  assert(keys.length === 1 && keys[0] === 'broken_vending_area', 'Deduplicates keys and excludes current scene imageKey');
+}
+
+// Test 6.7: Malformed and missing input handling
+{
+  assert(extractDestinationNodeIds(null).length === 0, 'Handles null choices gracefully');
+  assert(extractDestinationNodeIds([]).length === 0, 'Handles empty choices gracefully');
+  assert(extractDestinationImageKeys(null).length === 0, 'Handles null choices in image keys gracefully');
+}
+
+// ─── 7. Testing multiSlotSaveSystem (F-UX-01) ─────────────────────────────
+console.log('\n--- 7. Testing multiSlotSaveSystem (F-UX-01) ---');
+
+function createTestStorage() {
+  const store = new Map<string, string>();
+  return {
+    getItem: async (key: string) => store.get(key) ?? null,
+    setItem: async (key: string, value: string) => { store.set(key, value); },
+    removeItem: async (key: string) => { store.delete(key); },
+    multiRemove: async (keys: string[]) => { keys.forEach((k) => store.delete(k)); },
+  };
+}
+
+// Test 7.1: Empty storage returns exactly 4 empty slots
+{
+  const storage = createTestStorage();
+  const slots = await listSaveSlots(storage);
+  assert(slots.length === 4, 'listSaveSlots returns exactly 4 slots');
+  assert(slots[0].slotId === 'auto' && slots[0].isEmpty === true, 'Auto slot starts empty');
+  assert(slots[1].slotId === 'slot1' && slots[1].isEmpty === true, 'Slot 1 starts empty');
+  assert(slots[2].slotId === 'slot2' && slots[2].isEmpty === true, 'Slot 2 starts empty');
+  assert(slots[3].slotId === 'slot3' && slots[3].isEmpty === true, 'Slot 3 starts empty');
+}
+
+// Test 7.2: saveGameToSlot persists state and updates metadata
+{
+  const storage = createTestStorage();
+  const state = {
+    ...SAVE_DEFAULTS,
+    character: { name: 'Kaelen', characterClass: 'blade_survivor' },
+    currentNodeId: 'chapter1_start',
+  };
+  const ok = await saveGameToSlot(state, 'slot1', storage);
+  assert(ok === true, 'saveGameToSlot returns true on success');
+  const slots = await listSaveSlots(storage);
+  const s1 = slots.find((s: any) => s.slotId === 'slot1');
+  assert(s1?.isEmpty === false, 'Slot 1 marked non-empty after save');
+  assert(s1?.characterName === 'Kaelen', 'Slot 1 metadata preserves character name');
+}
+
+// Test 7.3: loadGameFromSlot restores state accurately
+{
+  const storage = createTestStorage();
+  const state = {
+    ...SAVE_DEFAULTS,
+    character: { name: 'Alden', characterClass: 'relic_hunter' },
+    stats: { ...SAVE_DEFAULTS.stats, health: 77 },
+    currentNodeId: 'chapter2_relic_vault',
+  };
+  await saveGameToSlot(state, 'slot2', storage);
+  const loaded = await loadGameFromSlot('slot2', storage);
+  assert(loaded !== null, 'loadGameFromSlot returns non-null state');
+  assert(loaded?.stats?.health === 77, 'loadGameFromSlot restores saved health stat');
+  assert(loaded?.currentNodeId === 'chapter2_relic_vault', 'loadGameFromSlot restores currentNodeId');
+}
+
+// Test 7.4: deleteSlot removes save data and marks slot empty
+{
+  const storage = createTestStorage();
+  const state = {
+    ...SAVE_DEFAULTS,
+    character: { name: 'Mira', characterClass: 'shadow_broker' },
+  };
+  await saveGameToSlot(state, 'slot3', storage);
+  const delOk = await deleteSlot('slot3', storage);
+  assert(delOk === true, 'deleteSlot returns true');
+  const loadedAfterDelete = await loadGameFromSlot('slot3', storage);
+  assert(loadedAfterDelete === null, 'loadGameFromSlot returns null for deleted slot');
+  const slots = await listSaveSlots(storage);
+  const s3 = slots.find((s: any) => s.slotId === 'slot3');
+  assert(s3?.isEmpty === true, 'Slot 3 metadata reset to empty after delete');
+}
+
+// Test 7.5: Legacy migration migrates @scars_save_v1 into auto slot
+{
+  const storage = createTestStorage();
+  const legacyState = {
+    ...SAVE_DEFAULTS,
+    character: { name: 'Wanderer', characterClass: 'gun_scavenger' },
+    currentNodeId: 'legacy_metro_exit',
+  };
+  await storage.setItem('@scars_save_v1', JSON.stringify(legacyState));
+  const slots = await listSaveSlots(storage);
+  assert(slots[0].slotId === 'auto' && slots[0].isEmpty === false, 'Legacy save migrates into auto slot');
+  assert(slots[0].characterName === 'Wanderer', 'Migrated auto slot metadata has correct character');
+  const loadedAuto = await loadGameFromSlot('auto', storage);
+  assert(loadedAuto !== null && loadedAuto.currentNodeId === 'legacy_metro_exit', 'Loaded migrated auto save node');
+}
+
+// ─── 8. Testing prologue and survival isolation (F-CONT-01) ─────────────────
+console.log('\n--- 8. Testing prologue and survival isolation (F-CONT-01) ---');
+{
+  assert(getStartNodeId() === 'prologue_start', 'getStartNodeId returns prologue_start');
+  assert(Array.isArray(PROLOGUE_NODES) && PROLOGUE_NODES.length >= 11, 'PROLOGUE_NODES contains full 11+ node story graph');
+  const startNode = PROLOGUE_NODES.find((n: any) => n.id === 'prologue_start');
+  assert(startNode !== undefined && startNode.choices.length >= 3, 'prologue_start exists with at least 3 vignette choices');
+
+  // Survival tick isolation
+  const baseState = createBaseState();
+  const prologueState = {
+    ...baseState,
+    currentNodeId: 'prologue_start',
+    stats: { ...baseState.stats, hunger: 0, thirst: 0, health: 100 },
+  };
+  const ticked = runSurvivalTick(prologueState);
+  assert(ticked.stats.health === 100, 'Prologue node incurs 0 survival tick damage');
+  const endingInPrologue = checkSurvivalEndings({ ...prologueState, stats: { ...prologueState.stats, health: 0 } });
+  assert(endingInPrologue === null, 'Prologue node suppresses survival death endings');
+}
+
+// ─── 9. Testing chapterSelect and route recap (F-CONT-02) ───────────────────
+console.log('\n--- 9. Testing chapterSelect and route recap (F-CONT-02) ---');
+{
+  const freshUnlocked = getUnlockedChapters();
+  assert(freshUnlocked.includes('Prologue') && freshUnlocked.includes('Chapter 1'), 'Fresh game unlocks Prologue and Chapter 1');
+  const ch1Unlocked = getUnlockedChapters([], [], { chapter1_complete: true });
+  assert(ch1Unlocked.includes('Chapter 2'), 'Completing Chapter 1 unlocks Chapter 2');
+
+  const emptyRecap = generateRouteRecap([]);
+  assert(emptyRecap.includes('mark glowing on your skin'), 'Empty history generates canonical prologue recap');
+
+  const sampleHistory = [
+    { choiceText: 'Helped the trapped child' },
+    { choiceText: 'Helped the trapped child' }, // duplicate
+    { choiceText: 'Entered the ruined depot' },
+  ];
+  const recap = generateRouteRecap(sampleHistory);
+  assert(recap.includes('• Helped the trapped child') && recap.includes('• Entered the ruined depot'), 'Recap formats unique choices with bullets');
+
+  const jumpState = getChapterInitialState('Chapter 2');
+  assert(jumpState.currentNodeId === 'chapter2_start', 'Chapter 2 jump state starts at chapter2_start');
+  assert(jumpState.stats.health >= 80 && jumpState.inventory.food >= 2, 'Chapter 2 jump state grants survivable baseline supplies');
+
+  let threwInvalid = false;
+  try {
+    getChapterInitialState('Chapter 99');
+  } catch (err: any) {
+    threwInvalid = err.message.includes('Invalid chapter');
+  }
+  assert(threwInvalid, 'Invalid chapter throws descriptive error');
+}
+
+// ─── 10. Testing declarative conditional endings (F-CONT-04 & F-CONT-03) ───
+console.log('\n--- 10. Testing declarative conditional endings (F-CONT-04 & F-CONT-03) ---');
+{
+  assert(Array.isArray(CONDITIONAL_ENDINGS) && CONDITIONAL_ENDINGS.length > 0, 'CONDITIONAL_ENDINGS table is exported as non-empty array');
+  const priorities = CONDITIONAL_ENDINGS.map((e: any) => e.priority);
+  let sorted = true;
+  for (let i = 0; i < priorities.length - 1; i++) {
+    if (priorities[i] < priorities[i + 1]) sorted = false;
+  }
+  assert(sorted, 'CONDITIONAL_ENDINGS priorities are sorted descending');
+
+  // Relic awakening trigger evaluation
+  const baseState = createBaseState();
+  const highCorruptionState = { ...baseState, stats: { ...baseState.stats, corruption: 9 } };
+  const relicChoice = { endingTrigger: 'ending_relic_awakening' };
+  const relicEnding = evaluateConditionalEnding(highCorruptionState, relicChoice);
+  assert(relicEnding === 'ending_relic_awakening', 'evaluateConditionalEnding triggers ending_relic_awakening on high corruption');
+
+  const esperState = { ...baseState, character: { characterClass: 'esper' }, stats: { ...baseState.stats, corruption: 2 } };
+  const esperEnding = evaluateConditionalEnding(esperState, relicChoice);
+  assert(esperEnding === 'ending_relic_awakening', 'evaluateConditionalEnding bypasses corruption threshold for Esper class');
+
+  const normalChoice = { id: 'c_normal', text: 'Walk ahead' };
+  const noEnding = evaluateConditionalEnding(highCorruptionState, normalChoice);
+  assert(noEnding === null, 'Non-ending choice returns null');
+}
+
+// ─── 11. Testing story endings and canonical categories (F-CONT-05) ─────────
+console.log('\n--- 11. Testing story endings and canonical categories (F-CONT-05) ---');
+{
+  assert(Array.isArray(STORY_ENDINGS) && STORY_ENDINGS.length === 228, 'STORY_ENDINGS length is exactly 228');
+  assert(Array.isArray(STORY_ENDING_CATEGORIES) && STORY_ENDING_CATEGORIES.length === 8, 'STORY_ENDING_CATEGORIES array has 8 canonical categories');
+  assert(STORY_ENDING_CATEGORIES['death'] !== undefined && STORY_ENDING_CATEGORIES['secret'] !== undefined, 'STORY_ENDING_CATEGORIES supports dictionary lookup');
+
+  for (const ending of STORY_ENDINGS) {
+    assert(ending.category !== undefined, `Ending ${ending.id} has category defined`);
+    assert(ending.imageKey !== undefined, `Ending ${ending.id} has imageKey defined`);
+  }
+
+  const orphanIds = [
+    'ending_corruption_death',
+    'ending_iron_tyrant',
+    'ending_wanderer',
+    'ending_together',
+    'ending_last_archive',
+    'ending_thirteenth_signal',
+    'ending_ch3_trust_complete',
+    'ending_ch4_saints_survived',
+    'ending_ch4_veyra_pact',
+    'ending_ch4_mira_route',
+    'ending_ch5_survived',
+    'ending_ch6_survived',
+    'ending_ch7_survived',
+    'ending_ch8_survived',
+    'ending_ch9_savior_path',
+    'ending_ch9_tyrant_path',
+    'ending_ch9_survived',
+    'ending_ch9_true_ending_req',
+    'ending_fc1_gate_sealed_savior',
+    'ending_fc1_faction_gate',
+    'ending_fc1_unity_gate',
+    'ending_fc1_true_ending_path',
+  ];
+  const registeredSet = new Set(STORY_ENDINGS.map((e: any) => e.id));
+  for (const id of orphanIds) {
+    assert(registeredSet.has(id), `Orphan ending ${id} is present in STORY_ENDINGS`);
+  }
 }
 
 console.log(`\n========================================`);

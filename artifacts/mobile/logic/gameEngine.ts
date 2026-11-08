@@ -1,5 +1,6 @@
 import type { GameState, Choice, ChoiceEffects, ChoiceRequirements, Stats, Inventory, FactionRep } from '../data/types';
 import { getNodeById } from '../data/storyNodes';
+import { evaluateConditionalEnding } from '../data/conditionalEndings';
 
 // ─── HOW TO ADD NEW STAT REQUIREMENTS ─────────────────────────────────────
 // Add a new field to ChoiceRequirements in data/types.ts
@@ -270,9 +271,10 @@ export function applyEffects(state: GameState, effects?: ChoiceEffects): GameSta
 export function runSurvivalTick(state: GameState): GameState {
   const node = getNodeById(state.currentNodeId);
 
-  // No tick on endings or during hallucinations
+  // No tick on endings, during hallucinations, or in prologue
   if (node?.isEnding) return state;
   if (state.flags['halluc_active']) return state;
+  if (node?.chapter === 'Prologue' || state.currentNodeId?.startsWith('prologue')) return state;
 
   const { stats } = state;
   let healthDelta = 0;
@@ -332,6 +334,9 @@ export function runSurvivalTick(state: GameState): GameState {
 // The ending chosen reflects which stat was responsible.
 
 export function checkSurvivalEndings(state: GameState): string | null {
+  const node = getNodeById(state.currentNodeId);
+  if (node?.chapter === 'Prologue' || state.currentNodeId?.startsWith('prologue')) return null;
+
   if (state.stats.morale <= 0) return 'ending_morale_collapse';
   if (state.stats.health <= 0) {
     if (state.stats.thirst <= 0) return 'ending_dehydration';
@@ -443,14 +448,14 @@ export function getHallucinationRedirect(state: GameState): string | null {
 export function shouldTriggerEnding(state: GameState, choice: Choice): string | null {
   if (!choice.endingTrigger) return null;
 
+  const evaluated = evaluateConditionalEnding(state, choice);
+  if (evaluated) return evaluated;
+
   if (choice.endingTrigger === 'ending_relic_awakening') {
-    const projectedCorruption = state.stats.corruption + (choice.effects?.corruption || 0);
-    if (projectedCorruption >= 8 || state.character?.characterClass === 'esper') {
-      return 'ending_relic_awakening';
-    }
+    return null;
   }
 
-  return null;
+  return choice.endingTrigger;
 }
 
 // ─── getAutoRedirect ─────────────────────────────────────────────────────
@@ -488,3 +493,5 @@ export function getChoicesWithStatus(state: GameState) {
       return true;
     });
 }
+
+export { evaluateConditionalEnding };

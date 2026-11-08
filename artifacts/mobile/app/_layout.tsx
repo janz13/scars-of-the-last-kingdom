@@ -18,8 +18,8 @@ SplashScreen.preventAutoHideAsync();
 
 function RootLayoutNav() {
   return (
-    <Stack screenOptions={{ headerBackTitle: "Back" }}>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+    <Stack screenOptions={{ headerBackTitle: "Back", title: "Scars of the Last Kingdom" }}>
+      <Stack.Screen name="(tabs)" options={{ headerShown: false, title: "Scars of the Last Kingdom" }} />
     </Stack>
   );
 }

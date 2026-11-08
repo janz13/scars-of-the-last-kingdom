@@ -59,6 +59,19 @@ export default function Root({ children }: PropsWithChildren) {
         {/* ── Favicon ──────────────────────────────────────────────── */}
         <link rel="icon" type="image/png" href="./favicon.ico" />
 
+        {/* ── Open Graph & Social Cards ────────────────────────────── */}
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Scars of the Last Kingdom" />
+        <meta property="og:description" content="A dark fantasy survival visual novel RPG. Make choices. Survive the surface. Carry the mark." />
+        <meta property="og:image" content="https://janz13.github.io/scars-of-the-last-kingdom/icon-512.png" />
+        <meta property="og:url" content="https://janz13.github.io/scars-of-the-last-kingdom/" />
+
+        {/* ── Twitter Cards ─────────────────────────────────────────── */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Scars of the Last Kingdom" />
+        <meta name="twitter:description" content="A dark fantasy survival visual novel RPG. Make choices. Survive the surface. Carry the mark." />
+        <meta name="twitter:image" content="https://janz13.github.io/scars-of-the-last-kingdom/icon-512.png" />
+
         {/* ── Page metadata ─────────────────────────────────────────── */}
         <title>Scars of the Last Kingdom</title>
         <meta
@@ -167,9 +180,9 @@ export default function Root({ children }: PropsWithChildren) {
           *:focus {
             outline: none;
           }
-          *:focus-visible {
-            outline: 2px solid #9b59b6;
-            outline-offset: 2px;
+          :focus-visible, *:focus-visible {
+            outline: 2px solid #c9a84c !important;
+            outline-offset: 2px !important;
           }
 
           /* Smooth image rendering for the background art */
@@ -178,12 +191,50 @@ export default function Root({ children }: PropsWithChildren) {
             user-drag: none;
             image-rendering: auto;
           }
+
+          /* ── 1440p+ Widescreen Atmospheric Backdrop Presentation ──── */
+          @media (min-width: 1440px) {
+            body {
+              background-color: #04020a;
+              background-image:
+                radial-gradient(ellipse 70% 50% at 50% 40%, rgba(38, 16, 56, 0.42) 0%, rgba(12, 6, 20, 0.8) 60%, #04020a 100%),
+                radial-gradient(circle at 10% 20%, rgba(155, 89, 182, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(195, 155, 211, 0.06) 0%, transparent 40%);
+              background-attachment: fixed;
+              background-repeat: no-repeat;
+              background-size: cover;
+            }
+
+            #root {
+              max-width: 1920px;
+              margin: 0 auto;
+              box-shadow: 0 0 80px rgba(0, 0, 0, 0.85), 0 0 30px rgba(155, 89, 182, 0.12);
+            }
+          }
+
+          /* ── Accessibility: Prefers Reduced Motion ─────────────────── */
+          @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+              animation-duration: 0.01ms !important;
+              animation-iteration-count: 1 !important;
+              transition-duration: 0.01ms !important;
+              scroll-behavior: auto !important;
+            }
+          }
         `}</style>
 
         {/* ── Service worker registration ───────────────────────────── */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
+              if (!document.title) {
+                document.title = 'Scars of the Last Kingdom';
+              }
+              new MutationObserver(function() {
+                if (!document.title || document.title === 'index') {
+                  document.title = 'Scars of the Last Kingdom';
+                }
+              }).observe(document.querySelector('title') || document.head, { childList: true, subtree: true, characterData: true });
               if ('serviceWorker' in navigator) {
                 window.addEventListener('load', function() {
                   navigator.serviceWorker.register('./sw.js')

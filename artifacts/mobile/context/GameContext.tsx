@@ -9,12 +9,15 @@ import type {
   GameState,
   Inventory,
   RouteEntry,
+  SaveSlotId,
+  SaveSlotMetadata,
   Stats,
 } from '../data/types';
 import type { DiceResult } from '../logic/diceEngine';
 import { buildStartingStats, DEFAULT_INVENTORY, DEFAULT_STATS } from '../data/characterOptions';
-import { getNodeById, getStartNodeId } from '../data/storyNodes';
+import { getNodeById, getStartNodeId, ensureNodeLoaded } from '../data/storyNodes';
 import { ENDINGS } from '../data/endings';
+import { CHAPTER_START_NODES, buildChapterJumpState } from '../logic/chapterSelect';
 import {
   applyEffects,
   checkSurvivalEndings,
@@ -26,14 +29,18 @@ import {
 } from '../logic/gameEngine';
 import {
   deleteSave as deleteSaveStorage,
+  deleteSlot,
   hasSave,
   hasSeenContentWarning,
   importSaveData,
+  listSaveSlots,
   loadEndingsDiscovered,
   loadGame,
+  loadGameFromSlot,
   resetAllData as resetAllDataStorage,
   saveEndingsDiscovered,
   saveGame,
+  saveGameToSlot,
 } from '../logic/saveSystem';
 import { getCompanionEventTrigger } from '../logic/companionSystem';
 import { sound } from '../logic/audioEngine';
@@ -83,6 +90,7 @@ interface GameContextValue {
   // Core gameplay
   startNewGame: (character: Character) => void;
   makeChoice: (choiceId: string) => void;
+  jumpToChapter: (chapterId: string) => Promise<boolean>;
   setScreen: (screen: GameScreen) => void;
   continueGame: () => Promise<void>;
   deleteAndReset: () => Promise<void>;
@@ -95,6 +103,16 @@ interface GameContextValue {
   commitDiceRoll: (choiceId: string, result: DiceResult) => void;
   // Save notification
   saveNotification: boolean;
+  // Multi-slot save system
+  loadSlot: (slotId: SaveSlotId) => Promise<boolean>;
+  saveToSlot: (slotId: SaveSlotId) => Promise<boolean>;
+  deleteSlotData: (slotId: SaveSlotId) => Promise<boolean>;
+  getSlots: () => Promise<SaveSlotMetadata[]>;
+  quickSave: () => Promise<void>;
+  // Hotkey modal
+  showHotkeyModal: boolean;
+  setShowHotkeyModal: React.Dispatch<React.SetStateAction<boolean>>;
+  toggleHotkeyModal: () => void;
   // Developer tools
   devJumpToNode: (nodeId: string) => void;
   devSetStat: (key: keyof Stats, value: number) => void;
@@ -188,6 +206,10 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const [hasActiveGame, setHasActiveGame] = useState(false);
   const [pendingDiceRoll, setPendingDiceRoll] = useState<PendingDiceRoll | null>(null);
   const [saveNotification, setSaveNotification] = useState(false);
+  const [showHotkeyModal, setShowHotkeyModal] = useState(false);
+  const toggleHotkeyModal = useCallback(() => {
+    setShowHotkeyModal((prev) => !prev);
+  }, []);
   const autoSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // On mount, check for existing save + content warning + persisted endings
@@ -386,6 +408,25 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     });
   }, []);
 
+  const jumpToChapter = useCallback(async (chapterName: string): Promise<boolean> => {
+    const targetStartNode = CHAPTER_START_NODES[chapterName];
+    if (!targetStartNode) return false;
+
+    await ensureNodeLoaded(targetStartNode);
+
+    setState((prev) => {
+      const next = buildChapterJumpState(chapterName, prev);
+      const startNode = getNodeById(targetStartNode);
+      const resolved = startNode?.effectsOnEnter ? applyEffects(next, startNode.effectsOnEnter) : next;
+      stateRef.current = resolved;
+      void saveGameToSlot(resolved, 'auto');
+      setHasSaveGame(true);
+      setHasActiveGame(true);
+      return resolved;
+    });
+    return true;
+  }, []);
+
   const setScreen = useCallback((screen: GameScreen) => {
     setState((prev) => ({ ...prev, screen }));
     if (screen === 'game') {
@@ -483,7 +524,68 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     setPendingDiceRoll(null);
   }, []);
 
+  const loadSlot = useCallback(async (slotId: SaveSlotId): Promise<boolean> => {
+    const saved = await loadGameFromSlot(slotId);
+    if (!saved) return false;
+    if (saved.settings?.soundEnabled) {
+      sound.setSoundEnabled(true);
+      sound.startAmbient();
+    }
+    const persistedEndings = await loadEndingsDiscovered();
+    const mergedEndings = [...new Set([...saved.endingsDiscovered, ...persistedEndings])];
+    if (!saved.character) {
+      setState({ ...saved, endingsDiscovered: mergedEndings, screen: 'characterCreator' });
+      setHasSaveGame(false);
+      setHasActiveGame(false);
+      return true;
+    }
+    setState({ ...saved, endingsDiscovered: mergedEndings, screen: 'game' });
+    setHasSaveGame(true);
+    setHasActiveGame(true);
+    return true;
+  }, []);
+
+  const saveToSlot = useCallback(async (slotId: SaveSlotId): Promise<boolean> => {
+    if (!state.character) return false;
+    const ok = await saveGameToSlot(state, slotId);
+    if (ok) {
+      setHasSaveGame(true);
+      setHasActiveGame(true);
+      setSaveNotification(true);
+      setTimeout(() => setSaveNotification(false), 2200);
+    }
+    return ok;
+  }, [state]);
+
+  const deleteSlotData = useCallback(async (slotId: SaveSlotId): Promise<boolean> => {
+    const ok = await deleteSlot(slotId);
+    const slots = await listSaveSlots();
+    const anyHasSave = slots.some((s) => !s.isEmpty);
+    setHasSaveGame(anyHasSave);
+    setHasActiveGame(anyHasSave);
+    return ok;
+  }, []);
+
+  const getSlots = useCallback(async (): Promise<SaveSlotMetadata[]> => {
+    return listSaveSlots();
+  }, []);
+
+  const quickSave = useCallback(async () => {
+    if (!state.character) return;
+    sound.playSFX('diceSuccess');
+    await saveGame(state);
+    setSaveNotification(true);
+    setTimeout(() => setSaveNotification(false), 2200);
+  }, [state]);
+
   const continueGame = useCallback(async () => {
+    const slots = await listSaveSlots();
+    const nonEmpties = slots.filter((s) => !s.isEmpty);
+    if (nonEmpties.length > 0) {
+      nonEmpties.sort((a, b) => b.timestamp - a.timestamp);
+      await loadSlot(nonEmpties[0].slotId);
+      return;
+    }
     const saved = await loadGame();
     if (saved) {
       if (saved.settings?.soundEnabled) {
@@ -504,7 +606,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       setHasSaveGame(true);
       setHasActiveGame(true);
     }
-  }, []);
+  }, [loadSlot]);
 
   const deleteAndReset = useCallback(async () => {
     sound.stopAmbient();
@@ -733,6 +835,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         availableChoices,
         startNewGame,
         makeChoice,
+        jumpToChapter,
         setScreen,
         continueGame,
         deleteAndReset,
@@ -743,6 +846,14 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         initiateDiceRoll,
         commitDiceRoll,
         saveNotification,
+        loadSlot,
+        saveToSlot,
+        deleteSlotData,
+        getSlots,
+        quickSave,
+        showHotkeyModal,
+        setShowHotkeyModal,
+        toggleHotkeyModal,
         devJumpToNode,
         devSetStat,
         devSetInventory,

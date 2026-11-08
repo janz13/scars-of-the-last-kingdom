@@ -7,10 +7,14 @@
     "hello": "tsx ./src/hello.ts",
     "generate-icons": "tsx ./src/generate-icons.ts",
     "test": "tsx ./src/engine.test.ts",
+    "test:e2e": "tsx ./e2e/runAllTests.ts",
+    "test:smoke": "playwright test -c ./e2e/playwright.config.ts",
     "audit": "tsx ./src/fullAudit.mts",
+    "check-bundle": "tsx ./src/checkBundleSize.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "devDependencies": {
+    "@playwright/test": "^1.65.0",
     "@types/node": "catalog:",
     "tsx": "catalog:"
   },

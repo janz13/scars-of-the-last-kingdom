@@ -13,6 +13,8 @@ interface Props {
   diceCheck?: DiceCheck;
   onPress: () => void;
   hotkeyIndex?: number;
+  isTyping?: boolean;
+  onSkip?: () => void;
 }
 
 const RIPPLE = Platform.OS === 'android'
@@ -22,7 +24,15 @@ const RIPPLE = Platform.OS === 'android'
 const HIT_SLOP = { top: 3, bottom: 3, left: 6, right: 6 };
 
 export default function ChoiceButton({
-  text, met, reasons, flavorText, diceCheck, onPress, hotkeyIndex,
+  text,
+  met,
+  reasons,
+  flavorText,
+  diceCheck,
+  onPress,
+  hotkeyIndex,
+  isTyping,
+  onSkip,
 }: Props) {
   const { width } = useWindowDimensions();
   const isDesktop = width >= 900;
@@ -33,25 +43,55 @@ export default function ChoiceButton({
   const scaleAnim = useRef(new Animated.Value(1)).current;
 
   const onPressIn = () => {
-    if (!met) return;
+    if (!met && !isTyping) return;
     Animated.spring(scaleAnim, { toValue: 0.975, useNativeDriver: true, speed: 60, bounciness: 0 }).start();
   };
   const onPressOut = () => {
     Animated.spring(scaleAnim, { toValue: 1, useNativeDriver: true, speed: 40, bounciness: 4 }).start();
   };
 
+  const handlePress = () => {
+    if (isTyping) {
+      onSkip?.();
+      return;
+    }
+    if (met) {
+      onPress();
+    }
+  };
+
+  const diceInfoDesc = hasDice
+    ? `${DICE_STAT_LABELS[diceCheck!.stat]} check, DC ${diceCheck!.difficulty}`
+    : '';
+  const choiceAriaLabel = [
+    showHotkey ? `Choice ${hotkeyIndex}: ` : '',
+    text,
+    hasDice ? `. ${diceInfoDesc}` : '',
+    !met && reasonText ? `. Locked: ${reasonText}` : '',
+  ].filter(Boolean).join('');
+
   return (
     <Animated.View style={[styles.wrapper, { transform: [{ scale: scaleAnim }] }]}>
       <Pressable
-        onPress={met ? onPress : undefined}
+        onPress={met || isTyping ? handlePress : undefined}
         android_ripple={met ? RIPPLE : undefined}
         hitSlop={HIT_SLOP}
         onPressIn={onPressIn}
         onPressOut={onPressOut}
-        style={[
+        role="button"
+        accessibilityRole="button"
+        aria-label={choiceAriaLabel}
+        accessibilityLabel={choiceAriaLabel}
+        aria-disabled={!met}
+        accessibilityState={{ disabled: !met }}
+        tabIndex={met ? 0 : -1}
+        focusable={met}
+        {...({ dataSet: { choiceButton: 'true' } } as any)}
+        style={({ focused }: any) => [
           styles.button,
           met ? styles.buttonActive : styles.buttonLocked,
           hasDice && met && styles.buttonDice,
+          focused && styles.buttonFocused,
         ]}
       >
         {/* Left accent bar */}
@@ -59,7 +99,7 @@ export default function ChoiceButton({
           <View
             style={[
               styles.accentBar,
-              { backgroundColor: hasDice ? '#7b3fa8' : '#e67e22' },
+              { backgroundColor: hasDice ? '#b87de0' : '#e67e22' },
             ]}
           />
         )}
@@ -74,7 +114,7 @@ export default function ChoiceButton({
               </View>
             )}
             {!met && (
-              <Feather name="lock" size={12} color="#3a3045" style={styles.lockIcon} />
+              <Feather name="lock" size={12} color="#4a4058" style={styles.lockIcon} />
             )}
             {met && !hasDice && (
               <View style={styles.diamond} />
@@ -97,7 +137,7 @@ export default function ChoiceButton({
 
           {hasDice && met && (
             <View style={styles.diceInfo}>
-              <Feather name="zap" size={10} color="#7b3fa8" />
+              <Feather name="zap" size={10} color="#b87de0" />
               <Text style={styles.diceInfoText}>
                 {DICE_STAT_LABELS[diceCheck!.stat]} check · DC {diceCheck!.difficulty}
               </Text>
@@ -106,7 +146,7 @@ export default function ChoiceButton({
 
           {!met && reasonText !== '' && (
             <View style={styles.reasonRow}>
-              <Feather name="info" size={9} color="#4a3860" style={styles.reasonIcon} />
+              <Feather name="info" size={9} color="#8c829e" style={styles.reasonIcon} />
               <Text style={styles.reason}>{reasonText}</Text>
             </View>
           )}
@@ -137,6 +177,19 @@ const styles = StyleSheet.create({
   buttonLocked: {
     backgroundColor: 'rgba(8,6,14,0.7)',
     borderColor: 'rgba(40,35,50,0.5)',
+  },
+  buttonFocused: {
+    borderColor: '#c9a84c',
+    borderWidth: 2,
+    ...(Platform.OS === 'web'
+      ? {
+          outlineColor: '#c9a84c',
+          outlineStyle: 'solid',
+          outlineWidth: 2,
+          outlineOffset: 2,
+          boxShadow: '0 0 12px rgba(201, 168, 76, 0.65)',
+        }
+      : {}),
   },
   accentBar: {
     width: 3,
@@ -176,7 +229,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
   hotkeyTextLocked: {
-    color: '#5a4870',
+    color: '#a696bc',
   },
   diamond: {
     width: 5,
@@ -197,7 +250,7 @@ const styles = StyleSheet.create({
   },
   diceBadgeText: {
     fontSize: 9,
-    color: '#a060d0',
+    color: '#cca0f0',
     fontFamily: 'Inter_700Bold',
     letterSpacing: 0.5,
   },
@@ -216,12 +269,12 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter_400Regular',
   },
   textLocked: {
-    color: '#3a3045',
+    color: '#5a4870',
     fontFamily: 'Inter_400Regular',
   },
   reason: {
     fontSize: 11,
-    color: '#5a4870',
+    color: '#a696bc',
     fontFamily: 'Inter_400Regular',
     fontStyle: 'italic',
     flex: 1,
@@ -246,7 +299,7 @@ const styles = StyleSheet.create({
   },
   diceInfoText: {
     fontSize: 10,
-    color: '#7b3fa8',
+    color: '#b87de0',
     fontFamily: 'Inter_600SemiBold',
     letterSpacing: 0.8,
   },

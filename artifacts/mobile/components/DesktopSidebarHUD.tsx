@@ -88,8 +88,13 @@ function StatMeter({
   );
 }
 
-export default function DesktopSidebarHUD() {
-  const { state, currentNode, setScreen } = useGame();
+interface DesktopSidebarHUDProps {
+  onOpenHotkeys?: () => void;
+}
+
+export default function DesktopSidebarHUD({ onOpenHotkeys }: DesktopSidebarHUDProps = {}) {
+  const { state, currentNode, setScreen, setShowHotkeyModal } = useGame();
+  const handleOpenHotkeys = onOpenHotkeys ?? (() => setShowHotkeyModal?.(true));
   const { character, stats, companions, inventory, factionRep } = state;
 
   // Pulse animation for high corruption (>50)
@@ -461,14 +466,25 @@ export default function DesktopSidebarHUD() {
 
         {/* ── Keyboard Hotkeys Cheat-Sheet ─────────────────────────────── */}
         <View style={[styles.card, styles.hotkeysCard]}>
-          <View style={styles.hotkeyHeader}>
-            <Feather name="command" size={11} color="#c9a84c" />
-            <Text style={styles.hotkeysTitle}>KEYBOARD SHORTCUTS</Text>
-          </View>
+          <Pressable
+            style={({ pressed }) => [styles.hotkeyHeader, pressed && styles.hotkeyHeaderPressed]}
+            onPress={handleOpenHotkeys}
+            accessibilityRole="button"
+            accessibilityLabel="Open keyboard shortcuts cheat sheet"
+            role="button"
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, flex: 1 }}>
+              <Feather name="command" size={11} color="#c9a84c" />
+              <Text style={styles.hotkeysTitle}>KEYBOARD SHORTCUTS</Text>
+            </View>
+            <View style={styles.hotkeyHelpBadge}>
+              <Text style={styles.hotkeyHelpBadgeText}>?</Text>
+            </View>
+          </Pressable>
           <View style={styles.hotkeysGrid}>
             <View style={styles.hotkeyRow}>
               <View style={styles.keyCap}>
-                <Text style={styles.keyCapText}>1-4</Text>
+                <Text style={styles.keyCapText}>1-9</Text>
               </View>
               <Text style={styles.hotkeyLabel}>Choose</Text>
             </View>
@@ -477,28 +493,14 @@ export default function DesktopSidebarHUD() {
               <View style={styles.keyCap}>
                 <Text style={styles.keyCapText}>Space</Text>
               </View>
-              <Text style={styles.hotkeyLabel}>Roll</Text>
+              <Text style={styles.hotkeyLabel}>Roll / Skip</Text>
             </View>
 
             <View style={styles.hotkeyRow}>
               <View style={styles.keyCap}>
-                <Text style={styles.keyCapText}>I</Text>
+                <Text style={styles.keyCapText}>?</Text>
               </View>
-              <Text style={styles.hotkeyLabel}>Items</Text>
-            </View>
-
-            <View style={styles.hotkeyRow}>
-              <View style={styles.keyCap}>
-                <Text style={styles.keyCapText}>C</Text>
-              </View>
-              <Text style={styles.hotkeyLabel}>Companions</Text>
-            </View>
-
-            <View style={styles.hotkeyRow}>
-              <View style={styles.keyCap}>
-                <Text style={styles.keyCapText}>S</Text>
-              </View>
-              <Text style={styles.hotkeyLabel}>Stats</Text>
+              <Text style={styles.hotkeyLabel}>All Keys</Text>
             </View>
 
             <View style={styles.hotkeyRow}>
@@ -847,6 +849,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 5,
     marginBottom: 8,
+    borderRadius: 4,
+    paddingVertical: 2,
+  },
+  hotkeyHeaderPressed: {
+    opacity: 0.7,
+  },
+  hotkeyHelpBadge: {
+    backgroundColor: 'rgba(201, 168, 76, 0.15)',
+    borderWidth: 1,
+    borderColor: 'rgba(201, 168, 76, 0.4)',
+    borderRadius: 3,
+    paddingHorizontal: 5,
+    paddingVertical: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  hotkeyHelpBadgeText: {
+    fontSize: 9,
+    fontFamily: 'Inter_700Bold',
+    color: '#c9a84c',
   },
   hotkeysTitle: {
     fontSize: 9,

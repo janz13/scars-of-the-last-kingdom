@@ -48,5 +48,11 @@ Thumbs.db
 .cache/
 .local/
 
-# Generated audit output
+# Generated audit & test output
 scripts/audit-result.json
+audit-result.json
+test-results
+playwright-report
+blob-report
+playwright/.cache
+

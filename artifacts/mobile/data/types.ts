@@ -135,8 +135,30 @@ export interface RouteEntry {
   timestamp: number;
 }
 
+export type TextSpeed = 'slow' | 'normal' | 'fast' | 'instant';
+
+export const TYPEWRITER_SPEED_INTERVALS: Record<TextSpeed, number> = {
+  slow: 38,
+  normal: 18,
+  fast: 7,
+  instant: 0,
+};
+
+export type SaveSlotId = 'auto' | 'slot1' | 'slot2' | 'slot3';
+
+export interface SaveSlotMetadata {
+  slotId: SaveSlotId;
+  label: string;
+  timestamp: number;
+  chapter: string;
+  location: string;
+  characterName: string;
+  characterClass: string;
+  isEmpty: boolean;
+}
+
 export interface GameSettings {
-  textSpeed: 'slow' | 'normal' | 'fast';
+  textSpeed: TextSpeed;
   fontSize: 'small' | 'normal' | 'large';
   soundEnabled: boolean;
   autoSave: boolean;

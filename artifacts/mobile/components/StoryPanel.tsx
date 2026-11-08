@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
+  ActivityIndicator,
   Animated,
   Platform,
   Pressable,
@@ -20,6 +21,10 @@ import ChoiceButton from './ChoiceButton';
 import DiceRollOverlay from './DiceRollOverlay';
 import DesktopSidebarHUD from './DesktopSidebarHUD';
 import { useWebKeyboardControls } from '../hooks/useWebKeyboardControls';
+import { useChoiceImagePreloader } from '../hooks/useChoiceImagePreloader';
+import { preloadNextChapter, subscribeChapterLoaded } from '../data/story/chapterLoader';
+import { useTypewriter } from '../hooks/useTypewriter';
+import { useReducedMotion } from '../hooks/useReducedMotion';
 
 // ─── Mini stat bar ────────────────────────────────────────────────────────────
 
@@ -235,7 +240,7 @@ function ChapterBanner({ chapter }: { chapter: string }) {
 
 // ─── Main story panel ─────────────────────────────────────────────────────────
 
-export default function StoryPanel() {
+export default function StoryPanel({ onOpenHotkeys }: { onOpenHotkeys?: () => void } = {}) {
   const {
     state, currentNode, availableChoices, makeChoice, setScreen,
     pendingDiceRoll, initiateDiceRoll, commitDiceRoll, saveNotification,
@@ -243,9 +248,52 @@ export default function StoryPanel() {
   const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
   const isDesktop = width >= 900;
+  const isWidescreen = width >= 1440;
+  const reducedMotion = useReducedMotion();
+
+  // Typewriter streaming for narration and dialogue (F-UX-02)
+  const {
+    displayedNarration,
+    displayedDialogue,
+    isTyping,
+    skip: skipTypewriter,
+  } = useTypewriter({
+    text: currentNode?.text ?? '',
+    dialogue: currentNode?.dialogue,
+    textSpeed: state.settings.textSpeed,
+    reducedMotion,
+  });
+
+  // Listen to keyboard skip event from useWebKeyboardControls (Space / Enter)
+  useEffect(() => {
+    if (Platform.OS !== 'web' || typeof window === 'undefined') return;
+    const handleSkip = () => {
+      skipTypewriter();
+    };
+    window.addEventListener('story-typewriter-skip', handleSkip);
+    return () => window.removeEventListener('story-typewriter-skip', handleSkip);
+  }, [skipTypewriter]);
 
   // Mount web keyboard hotkeys
   useWebKeyboardControls();
+
+  // Preload next scene image assets for available choices (F-PERF-02)
+  useChoiceImagePreloader(availableChoices, state, currentNode?.imageKey);
+
+  // Automatically preload next sequential chapter
+  useEffect(() => {
+    if (currentNode?.chapter) {
+      preloadNextChapter(currentNode.chapter);
+    }
+  }, [currentNode?.chapter]);
+
+  // Re-render when an unloaded chapter completes loading
+  const [, setChapterTick] = useState(0);
+  useEffect(() => {
+    return subscribeChapterLoaded(() => {
+      setChapterTick((t) => t + 1);
+    });
+  }, []);
 
   const topPad = Platform.OS === 'web' ? (isDesktop ? 16 : 44) : insets.top;
   const botPad = Platform.OS === 'web' ? (isDesktop ? 16 : 24) : insets.bottom;
@@ -277,26 +325,28 @@ export default function StoryPanel() {
     if (prevNodeId.current === currentNode.id) return;
     prevNodeId.current = currentNode.id;
 
-    titleFade.setValue(0);
-    titleSlide.setValue(14);
-    Animated.parallel([
-      Animated.timing(titleFade, { toValue: 1, duration: 500, delay: 140, useNativeDriver: true }),
-      Animated.timing(titleSlide, { toValue: 0, duration: 400, delay: 140, useNativeDriver: true }),
-    ]).start();
+    if (reducedMotion) {
+      titleFade.setValue(1);
+      titleSlide.setValue(0);
+    } else {
+      titleFade.setValue(0);
+      titleSlide.setValue(14);
+      Animated.parallel([
+        Animated.timing(titleFade, { toValue: 1, duration: 500, delay: 140, useNativeDriver: true }),
+        Animated.timing(titleSlide, { toValue: 0, duration: 400, delay: 140, useNativeDriver: true }),
+      ]).start();
+    }
 
     return () => {
       if (bannerTimeoutRef.current) clearTimeout(bannerTimeoutRef.current);
     };
-  }, [currentNode?.id, currentNode?.chapter]);
+  }, [currentNode?.id, currentNode?.chapter, reducedMotion]);
 
   if (!currentNode) {
     return (
-      <BackgroundPanel imageKey="default" sceneKey="error">
-        <View style={styles.errorState}>
-          <Text style={styles.errorText}>Story node not found.</Text>
-          <Pressable onPress={() => setScreen('mainMenu')}>
-            <Text style={styles.errorLink}>Return to menu</Text>
-          </Pressable>
+      <BackgroundPanel imageKey="default" sceneKey="loading">
+        <View style={styles.loading}>
+          <ActivityIndicator color="#9b59b6" size="large" />
         </View>
       </BackgroundPanel>
     );
@@ -319,12 +369,20 @@ export default function StoryPanel() {
   const renderStoryColumn = (isDesktopView: boolean) => (
     <>
       {/* ── Story section ─────────────────────────────────────── */}
-      <View style={[
-        styles.storySection,
-        isDesktopView && styles.desktopStorySection,
-        isHallucination && styles.hallucinationSection,
-        isCompanionEvent && { backgroundColor: currentNode.speaker === 'Cain' ? 'rgba(40,20,0,0.28)' : 'rgba(30,0,40,0.22)' },
-      ]}>
+      <Pressable
+        onPress={isTyping ? skipTypewriter : undefined}
+        role="region"
+        aria-label="Story Narrative"
+        aria-live="polite"
+        accessibilityRole={"region" as any}
+        accessibilityLabel="Story Narrative"
+        style={[
+          styles.storySection,
+          isDesktopView && styles.desktopStorySection,
+          isHallucination && styles.hallucinationSection,
+          isCompanionEvent && { backgroundColor: currentNode.speaker === 'Cain' ? 'rgba(40,20,0,0.28)' : 'rgba(30,0,40,0.22)' },
+        ]}
+      >
         <Text style={[
           styles.breadcrumb,
           isHallucination && styles.hallucinationBreadcrumb,
@@ -355,14 +413,18 @@ export default function StoryPanel() {
         )}
 
         <Text style={[styles.narration, isHallucination && styles.hallucinationNarration, { fontSize: narrationFontSize, lineHeight: narrationLineHeight }]}>
-          {currentNode.text}
+          {displayedNarration}
+          {isTyping && !currentNode.dialogue && (
+            <Text style={styles.typewriterCursor}> ▍</Text>
+          )}
         </Text>
 
         {currentNode.dialogue && (
           <View style={[styles.dialogueBox, isHallucination && styles.hallucinationDialogueBox]}>
             <Text style={styles.dialogueOpenQuote}>{'\u201C'}</Text>
             <Text style={[styles.dialogue, isHallucination && styles.hallucinationDialogue, { fontSize: dialogueFontSize, lineHeight: dialogueLineHeight }]}>
-              {currentNode.dialogue}
+              {displayedDialogue}
+              {isTyping && <Text style={styles.typewriterCursor}> ▍</Text>}
             </Text>
           </View>
         )}
@@ -384,7 +446,7 @@ export default function StoryPanel() {
             )}
           </View>
         )}
-      </View>
+      </Pressable>
 
       {/* ── Survival warning strip ─────────────────────────────── */}
       {!isEndingNode && !isHallucination && !isCompanionEvent && (
@@ -433,6 +495,8 @@ export default function StoryPanel() {
                 flavorText={choice.flavorText}
                 diceCheck={choice.diceCheck}
                 hotkeyIndex={isDesktopView ? index + 1 : undefined}
+                isTyping={isTyping}
+                onSkip={skipTypewriter}
                 onPress={() => {
                   if (choice.diceCheck) {
                     initiateDiceRoll(choice.id);
@@ -473,7 +537,7 @@ export default function StoryPanel() {
             <View style={styles.desktopLayout}>
               {/* Left persistent desktop sidebar HUD */}
               <View style={styles.desktopSidebar}>
-                <DesktopSidebarHUD />
+                <DesktopSidebarHUD onOpenHotkeys={onOpenHotkeys} />
               </View>
 
               {/* Centered story / choices column */}
@@ -736,6 +800,11 @@ const styles = StyleSheet.create({
     shadowRadius: 12,
   },
 
+  loading: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   errorState: {
     flex: 1,
     alignItems: 'center',
@@ -762,7 +831,7 @@ const styles = StyleSheet.create({
   breadcrumb: {
     fontSize: 9,
     letterSpacing: 2.5,
-    color: '#4a4058',
+    color: '#8c829e',
     fontFamily: 'Inter_600SemiBold',
     marginBottom: 14,
     textTransform: 'uppercase',
@@ -796,7 +865,7 @@ const styles = StyleSheet.create({
   },
   speakerText: {
     fontSize: 10,
-    color: '#9b59b6',
+    color: '#ba7fd4',
     fontFamily: 'Inter_600SemiBold',
     letterSpacing: 2.5,
     textTransform: 'uppercase',
@@ -808,6 +877,10 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter_400Regular',
     marginBottom: 16,
     letterSpacing: 0.15,
+  },
+  typewriterCursor: {
+    color: '#c9a84c',
+    opacity: 0.85,
   },
   hallucinationNarration: {
     color: '#d4b8e0',
@@ -895,7 +968,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(195,155,211,0.35)',
   },
   noChoices: {
-    color: '#4a4058',
+    color: '#8c829e',
     fontSize: 13,
     fontFamily: 'Inter_400Regular',
     fontStyle: 'italic',
@@ -920,7 +993,7 @@ const styles = StyleSheet.create({
   },
   terminalText: {
     fontSize: 12,
-    color: '#5a5068',
+    color: '#968b9f',
     fontFamily: 'Inter_400Regular',
     fontStyle: 'italic',
     textAlign: 'center',

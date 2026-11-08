@@ -1,17 +1,21 @@
 import React, { useMemo, useState } from 'react';
 import {
+  Image,
+  Modal,
   Platform,
   Pressable,
   ScrollView,
   StyleSheet,
   Text,
+  useWindowDimensions,
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useGame } from '../context/GameContext';
-import { ENDINGS, ENDING_CATEGORIES } from '../data/endings';
+import { ENDINGS, ENDING_CATEGORIES, CANONICAL_CATEGORIES, EndingDefinition } from '../data/story/endings';
+import { getBackgroundImage, getBackgroundGradient } from '../constants/images';
 import { BACKGROUNDS, CLASSES } from '../data/characterOptions';
 
 // ─── Palette ──────────────────────────────────────────────────────────────────
@@ -462,7 +466,11 @@ function FactionsTab() {
 function EndingsTab() {
   const { state } = useGame();
   const { endingsDiscovered, character } = state;
-  const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+  const { width } = useWindowDimensions();
+  const isWidescreen = width >= 1440;
+
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [inspectedEnding, setInspectedEnding] = useState<EndingDefinition | null>(null);
 
   const discoveredSet = useMemo(() => new Set(endingsDiscovered), [endingsDiscovered]);
 
@@ -470,60 +478,10 @@ function EndingsTab() {
   const discoveredCount = ENDINGS.filter((e) => discoveredSet.has(e.id)).length;
   const pct = totalEndings > 0 ? Math.round((discoveredCount / totalEndings) * 100) : 0;
 
-  // Replay value hints
-  const replayHints = useMemo(() => {
-    const hints: string[] = [];
-
-    if (discoveredCount === 0) {
-      hints.push('Start your first run to begin tracking endings.');
-    }
-
-    const ch1Endings = ENDINGS.filter((e) => e.chapter === 'Chapter I');
-    const ch1Discovered = ch1Endings.filter((e) => discoveredSet.has(e.id));
-    if (ch1Endings.length > 0 && ch1Discovered.length < ch1Endings.length) {
-      hints.push(`You have not yet discovered all Chapter I endings (${ch1Discovered.length}/${ch1Endings.length} found).`);
-    }
-
-    const secretEndings = ENDINGS.filter((e) => e.isSecret);
-    const secretDiscovered = secretEndings.filter((e) => discoveredSet.has(e.id));
-    if (secretDiscovered.length < secretEndings.length) {
-      hints.push('Some endings are hidden. Investigate every anomaly. Question the obvious.');
-    }
-
-    const needsClass = [
-      { endingId: 'ending_thirteenth_signal', classes: ['esper', 'relic_hunter'], label: 'Esper or Relic Hunter' },
-    ];
-    needsClass.forEach(({ endingId, classes, label }) => {
-      const ending = ENDINGS.find((e) => e.id === endingId);
-      const found  = discoveredSet.has(endingId);
-      if (ending && !found) {
-        const currentClass = character?.characterClass;
-        if (!currentClass || !classes.includes(currentClass)) {
-          hints.push(`Some routes require a different class. Try ${label} for a different perspective.`);
-        }
-      }
-    });
-
-    const needsBg = [
-      { endingId: 'ending_last_archive', backgrounds: ['forgotten_scholar'], label: 'Forgotten Scholar' },
-    ];
-    needsBg.forEach(({ endingId, backgrounds, label }) => {
-      const ending = ENDINGS.find((e) => e.id === endingId);
-      const found  = discoveredSet.has(endingId);
-      if (ending && !found) {
-        const currentBg = character?.background;
-        if (!currentBg || !backgrounds.includes(currentBg)) {
-          hints.push(`Some routes open differently with a ${label} background.`);
-        }
-      }
-    });
-
-    if (discoveredCount === totalEndings) {
-      hints.push('All endings discovered. You have seen everything this story has to offer.');
-    }
-
-    return hints;
-  }, [endingsDiscovered, character, discoveredCount]);
+  const filteredEndings = useMemo(() => {
+    if (selectedCategory === 'all') return ENDINGS;
+    return ENDINGS.filter((e) => e.category === selectedCategory);
+  }, [selectedCategory]);
 
   return (
     <ScrollView style={styles.tabScroll} contentContainerStyle={styles.tabContent} showsVerticalScrollIndicator={false}>
@@ -547,113 +505,183 @@ function EndingsTab() {
         />
       </Card>
 
-      {/* Replay value hints */}
-      {replayHints.length > 0 && (
-        <Card style={{ borderColor: GOLD + '33' }}>
-          <View style={styles.hintHeader}>
-            <Feather name="refresh-cw" size={12} color={GOLD} />
-            <Text style={[styles.cardEyebrow, { color: GOLD, marginBottom: 0, marginLeft: 6 }]}>REPLAY VALUE</Text>
-          </View>
-          {replayHints.map((hint, i) => (
-            <View key={i} style={styles.hintRow}>
-              <Text style={styles.hintBullet}>›</Text>
-              <Text style={styles.hintText}>{hint}</Text>
-            </View>
-          ))}
-        </Card>
-      )}
-
-      {/* Category groups */}
-      {ENDING_CATEGORIES.map((cat) => {
-        const catEndings     = ENDINGS.filter((e) => cat.types.includes(e.type));
-        const catDiscovered  = catEndings.filter((e) => discoveredSet.has(e.id));
-        const isExpanded     = expandedCategory === cat.id;
-        const allFound       = catEndings.length > 0 && catDiscovered.length === catEndings.length;
-
-        return (
-          <View key={cat.id}>
+      {/* Category filter tabs */}
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.categoryFilterScroll}
+        contentContainerStyle={styles.categoryFilterContent}
+      >
+        <Pressable
+          style={[styles.categoryPill, selectedCategory === 'all' && styles.categoryPillActive]}
+          onPress={() => setSelectedCategory('all')}
+        >
+          <Text style={[styles.categoryPillText, selectedCategory === 'all' && styles.categoryPillTextActive]}>
+            ALL ({totalEndings})
+          </Text>
+        </Pressable>
+        {CANONICAL_CATEGORIES.map((cat) => {
+          const count = ENDINGS.filter((e) => e.category === cat.id).length;
+          const foundCount = ENDINGS.filter((e) => e.category === cat.id && discoveredSet.has(e.id)).length;
+          const isActive = selectedCategory === cat.id;
+          return (
             <Pressable
-              style={[styles.catHeader, { borderColor: cat.color + '44' }]}
-              onPress={() => setExpandedCategory(isExpanded ? null : cat.id)}
+              key={cat.id}
+              style={[
+                styles.categoryPill,
+                isActive && { backgroundColor: cat.color + '26', borderColor: cat.color },
+              ]}
+              onPress={() => setSelectedCategory(cat.id)}
             >
-              <View style={[styles.catIcon, { backgroundColor: cat.color + '22', borderColor: cat.color + '44' }]}>
-                <Feather name={cat.icon as any} size={12} color={cat.color} />
-              </View>
-              <View style={{ flex: 1 }}>
-                <Text style={[styles.catLabel, { color: cat.color }]}>{cat.label}</Text>
-                <Text style={styles.catDesc}>{cat.description}</Text>
-              </View>
-              <View style={styles.catBadgeWrap}>
-                <Text style={[styles.catBadge, { color: allFound ? GOLD : MUTED }]}>
-                  {catDiscovered.length}/{catEndings.length}
-                </Text>
-                <Feather
-                  name={isExpanded ? 'chevron-up' : 'chevron-down'}
-                  size={14}
-                  color={MUTED}
-                  style={{ marginTop: 2 }}
-                />
-              </View>
+              <Feather name={cat.icon as any} size={11} color={isActive ? cat.color : MUTED} style={{ marginRight: 4 }} />
+              <Text style={[styles.categoryPillText, isActive && { color: cat.color }]}>
+                {cat.label.replace(' Endings', '').toUpperCase()} ({foundCount}/{count})
+              </Text>
             </Pressable>
+          );
+        })}
+      </ScrollView>
 
-            {isExpanded && catEndings.map((ending) => {
-              const found    = discoveredSet.has(ending.id);
-              const redacted = ending.isSecret && !found;
+      {/* Responsive Gallery Grid: 2 columns on mobile/tablet (<1440px), 4 columns on widescreen (>=1440px) */}
+      <View style={styles.galleryGrid}>
+        {filteredEndings.map((ending) => {
+          const isFound = discoveredSet.has(ending.id);
+          const bgImage = ending.imageKey ? getBackgroundImage(ending.imageKey) : null;
+          const fallbackGrad = getBackgroundGradient(ending.imageKey || ending.category);
 
-              return (
-                <View
-                  key={ending.id}
-                  style={[
-                    styles.endingCard,
-                    { borderLeftColor: found ? ending.color : '#2a2a3a', opacity: found ? 1 : 0.6 },
-                  ]}
-                >
-                  <View style={styles.endingCardHeader}>
-                    <View style={{ flex: 1 }}>
-                      <Text style={[styles.endingTitle, { color: found ? ending.color : MUTED }]}>
-                        {redacted ? '???  Unknown Ending' : ending.title}
-                      </Text>
-                      <Text style={styles.endingSubtitle}>
-                        {redacted ? 'Discover this ending to reveal its name.' : ending.subtitle}
-                      </Text>
-                    </View>
-                    {found && (
-                      <View style={styles.foundBadge}>
-                        <Feather name="check" size={10} color={GREEN} />
-                        <Text style={styles.foundBadgeText}>FOUND</Text>
+          return (
+            <Pressable
+              key={ending.id}
+              style={[
+                styles.thumbnailCard,
+                { width: isWidescreen ? '23.5%' : '48%' },
+                isFound ? { borderColor: ending.color + '55' } : styles.thumbnailCardLocked,
+              ]}
+              onPress={() => setInspectedEnding(ending)}
+            >
+              <View style={styles.thumbnailArtContainer}>
+                {isFound && bgImage ? (
+                  <Image source={bgImage} style={styles.thumbnailImage} resizeMode="cover" />
+                ) : (
+                  <LinearGradient
+                    colors={(isFound ? fallbackGrad.colors : ['#141320', '#0a0a10']) as any}
+                    style={styles.thumbnailImage}
+                  >
+                    {!isFound && (
+                      <View style={styles.lockedSilhouetteOverlay}>
+                        <Feather name="lock" size={20} color="#554d60" />
                       </View>
                     )}
-                    {!found && (
-                      <View style={styles.lockedBadge}>
-                        <Feather name="lock" size={10} color={MUTED} />
-                        <Text style={styles.lockedBadgeText}>LOCKED</Text>
-                      </View>
-                    )}
+                  </LinearGradient>
+                )}
+
+                {/* Badges */}
+                <View style={styles.thumbnailBadgeRow}>
+                  <View style={[styles.categoryTag, { backgroundColor: ending.color + 'cc' }]}>
+                    <Text style={styles.categoryTagText}>{ending.category.toUpperCase()}</Text>
                   </View>
-
-                  {found ? (
-                    <>
-                      <Text style={styles.endingDesc}>{ending.description}</Text>
-                      <View style={[styles.hintBox, { borderColor: ending.color + '33' }]}>
-                        <Feather name="info" size={10} color={ending.color} />
-                        <Text style={[styles.hintBoxText, { color: ending.color + 'cc' }]}>
-                          {ending.hint}
-                        </Text>
-                      </View>
-                    </>
+                  {isFound ? (
+                    <View style={styles.foundMiniBadge}>
+                      <Feather name="check" size={8} color="#27ae60" />
+                      <Text style={styles.foundMiniBadgeText}>FOUND</Text>
+                    </View>
                   ) : (
-                    <Text style={styles.endingDesc}>
-                      {redacted
-                        ? '??? ??? ??? ??? ???  Play through different paths to find hidden endings.'
-                        : 'This ending has not been discovered yet. Each run reveals new possibilities.'}
-                    </Text>
+                    <View style={styles.lockedMiniBadge}>
+                      <Feather name="lock" size={8} color="#8a7d6e" />
+                      <Text style={styles.lockedMiniBadgeText}>LOCKED</Text>
+                    </View>
                   )}
                 </View>
-              );
-            })}
+              </View>
+
+              <View style={styles.thumbnailMeta}>
+                <Text style={[styles.thumbnailTitle, { color: isFound ? ending.color : '#7a7080' }]} numberOfLines={1}>
+                  {!isFound && ending.isSecret ? '???  Unknown Ending' : ending.title}
+                </Text>
+                <Text style={styles.thumbnailSubtitle} numberOfLines={1}>
+                  {ending.chapter} · {isFound || !ending.isSecret ? ending.subtitle : 'Hidden Pathway'}
+                </Text>
+              </View>
+            </Pressable>
+          );
+        })}
+      </View>
+
+      {/* Detail inspection modal on tap */}
+      {inspectedEnding && (
+        <Modal
+          visible={true}
+          transparent={true}
+          animationType="fade"
+          onRequestClose={() => setInspectedEnding(null)}
+        >
+          <View style={styles.modalBackdrop}>
+            <Pressable style={StyleSheet.absoluteFill} onPress={() => setInspectedEnding(null)} />
+            <View style={[styles.modalCard, { borderColor: inspectedEnding.color + '88' }]}>
+              <View style={styles.modalHeader}>
+                <View style={{ flex: 1 }}>
+                  <Text style={[styles.modalCategory, { color: inspectedEnding.color }]}>
+                    {inspectedEnding.category.toUpperCase()} · {inspectedEnding.chapter}
+                  </Text>
+                  <Text style={styles.modalTitle}>
+                    {discoveredSet.has(inspectedEnding.id) || !inspectedEnding.isSecret
+                      ? inspectedEnding.title
+                      : '???  Unknown Ending'}
+                  </Text>
+                  <Text style={styles.modalSubtitle}>{inspectedEnding.subtitle}</Text>
+                </View>
+                <Pressable style={styles.modalCloseBtn} onPress={() => setInspectedEnding(null)}>
+                  <Feather name="x" size={20} color={TEXT} />
+                </Pressable>
+              </View>
+
+              <View style={styles.modalArtContainer}>
+                {discoveredSet.has(inspectedEnding.id) && inspectedEnding.imageKey && getBackgroundImage(inspectedEnding.imageKey) ? (
+                  <Image source={getBackgroundImage(inspectedEnding.imageKey)} style={styles.modalImage} resizeMode="cover" />
+                ) : (
+                  <LinearGradient
+                    colors={
+                      (discoveredSet.has(inspectedEnding.id)
+                        ? getBackgroundGradient(inspectedEnding.imageKey || inspectedEnding.category).colors
+                        : ['#161524', '#090910']) as any
+                    }
+                    style={styles.modalImage}
+                  >
+                    {!discoveredSet.has(inspectedEnding.id) && (
+                      <View style={styles.modalLockedOverlay}>
+                        <Feather name="lock" size={36} color="#6a5e50" />
+                        <Text style={styles.modalLockedNotice}>UNDISCOVERED ENDING</Text>
+                      </View>
+                    )}
+                  </LinearGradient>
+                )}
+              </View>
+
+              <ScrollView style={styles.modalBodyScroll}>
+                {discoveredSet.has(inspectedEnding.id) ? (
+                  <>
+                    <Text style={styles.modalDesc}>{inspectedEnding.description}</Text>
+                    <View style={[styles.hintBox, { borderColor: inspectedEnding.color + '44' }]}>
+                      <Feather name="info" size={12} color={inspectedEnding.color} />
+                      <Text style={[styles.hintBoxText, { color: inspectedEnding.color }]}>
+                        {inspectedEnding.hint}
+                      </Text>
+                    </View>
+                  </>
+                ) : (
+                  <View style={styles.lockedGuideBox}>
+                    <Text style={styles.lockedGuideText}>
+                      {inspectedEnding.isSecret
+                        ? 'This ending is shrouded in secrecy. Investigate anomalous signals and unexplored choices to uncover it.'
+                        : inspectedEnding.hint || 'Continue your journey through different branches to unlock this conclusion.'}
+                    </Text>
+                  </View>
+                )}
+              </ScrollView>
+            </View>
           </View>
-        );
-      })}
+        </Modal>
+      )}
     </ScrollView>
   );
 }
@@ -1474,5 +1502,232 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: TEXT,
     fontFamily: 'Inter_400Regular',
+  },
+
+  // Category filter tabs
+  categoryFilterScroll: {
+    marginVertical: 4,
+  },
+  categoryFilterContent: {
+    flexDirection: 'row',
+    gap: 8,
+    paddingVertical: 4,
+  },
+  categoryPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: BORDER,
+    backgroundColor: CARD,
+    borderRadius: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
+  categoryPillActive: {
+    borderColor: ACCENT,
+    backgroundColor: ACCENT + '22',
+  },
+  categoryPillText: {
+    fontSize: 10,
+    letterSpacing: 1,
+    color: MUTED,
+    fontFamily: 'Inter_600SemiBold',
+  },
+  categoryPillTextActive: {
+    color: ACCENT,
+  },
+
+  // Responsive Gallery Grid
+  galleryGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+    marginTop: 4,
+  },
+  thumbnailCard: {
+    backgroundColor: CARD,
+    borderWidth: 1,
+    borderRadius: 6,
+    overflow: 'hidden',
+    marginBottom: 4,
+  },
+  thumbnailCardLocked: {
+    borderColor: BORDER,
+    opacity: 0.8,
+  },
+  thumbnailArtContainer: {
+    height: 100,
+    position: 'relative',
+    backgroundColor: '#0a0a12',
+    overflow: 'hidden',
+  },
+  thumbnailImage: {
+    width: '100%',
+    height: '100%',
+  },
+  lockedSilhouetteOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#0c0a1499',
+  },
+  thumbnailBadgeRow: {
+    position: 'absolute',
+    top: 6,
+    left: 6,
+    right: 6,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  categoryTag: {
+    borderRadius: 3,
+    paddingHorizontal: 5,
+    paddingVertical: 2,
+  },
+  categoryTagText: {
+    fontSize: 8,
+    letterSpacing: 1,
+    color: '#ffffff',
+    fontFamily: 'Inter_700Bold',
+  },
+  foundMiniBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 2,
+    backgroundColor: '#0d2010cc',
+    borderRadius: 3,
+    paddingHorizontal: 4,
+    paddingVertical: 2,
+    borderWidth: 1,
+    borderColor: GREEN + '66',
+  },
+  foundMiniBadgeText: {
+    fontSize: 7,
+    letterSpacing: 1,
+    color: GREEN,
+    fontFamily: 'Inter_700Bold',
+  },
+  lockedMiniBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 2,
+    backgroundColor: '#16141ecc',
+    borderRadius: 3,
+    paddingHorizontal: 4,
+    paddingVertical: 2,
+    borderWidth: 1,
+    borderColor: BORDER,
+  },
+  lockedMiniBadgeText: {
+    fontSize: 7,
+    letterSpacing: 1,
+    color: MUTED,
+    fontFamily: 'Inter_700Bold',
+  },
+  thumbnailMeta: {
+    padding: 8,
+  },
+  thumbnailTitle: {
+    fontSize: 11,
+    fontFamily: 'Inter_700Bold',
+    marginBottom: 2,
+  },
+  thumbnailSubtitle: {
+    fontSize: 9,
+    color: MUTED,
+    fontFamily: 'Inter_400Regular',
+  },
+
+  // Modal inspection
+  modalBackdrop: {
+    flex: 1,
+    backgroundColor: '#000000aa',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+  },
+  modalCard: {
+    width: '100%',
+    maxWidth: 540,
+    maxHeight: '85%',
+    backgroundColor: CARD,
+    borderRadius: 8,
+    borderWidth: 1,
+    overflow: 'hidden',
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: BORDER,
+  },
+  modalCategory: {
+    fontSize: 9,
+    letterSpacing: 2,
+    fontFamily: 'Inter_700Bold',
+    marginBottom: 4,
+  },
+  modalTitle: {
+    fontSize: 16,
+    color: TEXT,
+    fontFamily: 'Inter_700Bold',
+    marginBottom: 2,
+  },
+  modalSubtitle: {
+    fontSize: 11,
+    color: MUTED,
+    fontFamily: 'Inter_400Regular',
+    fontStyle: 'italic',
+  },
+  modalCloseBtn: {
+    padding: 4,
+  },
+  modalArtContainer: {
+    height: 180,
+    backgroundColor: '#08080f',
+    position: 'relative',
+  },
+  modalImage: {
+    width: '100%',
+    height: '100%',
+  },
+  modalLockedOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+  },
+  modalLockedNotice: {
+    fontSize: 10,
+    letterSpacing: 2,
+    color: MUTED,
+    fontFamily: 'Inter_700Bold',
+  },
+  modalBodyScroll: {
+    padding: 16,
+    maxHeight: 240,
+  },
+  modalDesc: {
+    fontSize: 13,
+    color: TEXT,
+    fontFamily: 'Inter_400Regular',
+    lineHeight: 20,
+    marginBottom: 12,
+  },
+  lockedGuideBox: {
+    padding: 12,
+    backgroundColor: '#0e0d16',
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: BORDER,
+  },
+  lockedGuideText: {
+    fontSize: 12,
+    color: MUTED,
+    fontFamily: 'Inter_400Regular',
+    lineHeight: 18,
+    fontStyle: 'italic',
   },
 });

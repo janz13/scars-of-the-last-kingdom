@@ -12,6 +12,7 @@ import { Feather } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useGame } from '../context/GameContext';
 import { CHAPTER_ROADMAP, ChapterEntry } from '../data/chapterRoadmap';
+import { generateRouteRecap, getUnlockedChapters } from '../logic/chapterSelect';
 
 const ACCENT = '#9b59b6';
 const ACCENT_ORANGE = '#e67e22';
@@ -59,30 +60,47 @@ function BulletList({ items, color }: { items: string[]; color: string }) {
 function ChapterCard({
   entry,
   isExpanded,
+  isUnlocked,
   onToggle,
+  onJump,
 }: {
   entry: ChapterEntry;
   isExpanded: boolean;
+  isUnlocked: boolean;
   onToggle: () => void;
+  onJump: () => void;
 }) {
   const isComplete = entry.status === 'complete';
-  const statusColor = isComplete ? COMPLETE_COLOR : PLANNED_COLOR;
-  const borderColor = isComplete ? COMPLETE_COLOR + '55' : BORDER;
+  const borderColor = isUnlocked ? (isComplete ? COMPLETE_COLOR + '55' : ACCENT + '55') : BORDER;
 
   return (
-    <View style={[styles.card, { borderColor }]}>
+    <View style={[styles.card, { borderColor, opacity: isUnlocked ? 1 : 0.75 }]}>
       <Pressable style={styles.cardHeader} onPress={onToggle}>
         <View style={styles.cardHeaderLeft}>
           <View style={styles.partRow}>
-            <Text style={[styles.partNumber, { color: isComplete ? COMPLETE_COLOR : ACCENT }]}>
+            <Text style={[styles.partNumber, { color: isUnlocked ? (isComplete ? COMPLETE_COLOR : ACCENT) : MUTED }]}>
               {entry.partNumber.toUpperCase()}
             </Text>
+
+            {isUnlocked ? (
+              <View style={styles.unlockedBadge}>
+                <Feather name="check-circle" size={10} color={COMPLETE_COLOR} />
+                <Text style={styles.unlockedText}>UNLOCKED</Text>
+              </View>
+            ) : (
+              <View style={styles.lockedBadge}>
+                <Feather name="lock" size={10} color={MUTED} />
+                <Text style={styles.lockedBadgeText}>LOCKED</Text>
+              </View>
+            )}
+
             {isComplete && (
               <View style={styles.completeBadge}>
                 <Feather name="check" size={10} color={COMPLETE_COLOR} />
                 <Text style={styles.completeText}>COMPLETE</Text>
               </View>
             )}
+
             {entry.nodeCount !== undefined && (
               <Text style={styles.nodeCount}>{entry.nodeCount} nodes</Text>
             )}
@@ -90,17 +108,41 @@ function ChapterCard({
           <Text style={styles.cardTitle}>{entry.title}</Text>
           <Text style={styles.cardSubtitle}>"{entry.subtitle}"</Text>
         </View>
-        <Feather
-          name={isExpanded ? 'chevron-up' : 'chevron-down'}
-          size={16}
-          color={MUTED}
-          style={styles.chevron}
-        />
+
+        <View style={styles.headerRightControls}>
+          {isUnlocked && (
+            <Pressable
+              style={styles.jumpBtnHeader}
+              onPress={(e) => {
+                e.stopPropagation?.();
+                onJump();
+              }}
+            >
+              <Feather name="play" size={12} color="#27ae60" />
+              <Text style={styles.jumpBtnHeaderText}>PLAY</Text>
+            </Pressable>
+          )}
+          <Feather
+            name={isExpanded ? 'chevron-up' : 'chevron-down'}
+            size={16}
+            color={MUTED}
+            style={styles.chevron}
+          />
+        </View>
       </Pressable>
 
       {isExpanded && (
         <View style={styles.cardBody}>
           <View style={styles.divider} />
+
+          {isUnlocked && (
+            <View style={styles.jumpActionRow}>
+              <Pressable style={styles.jumpBtnFull} onPress={onJump}>
+                <Feather name="play-circle" size={14} color="#27ae60" />
+                <Text style={styles.jumpBtnFullText}>JUMP TO CHAPTER</Text>
+              </Pressable>
+            </View>
+          )}
 
           <Text style={styles.summaryText}>{entry.summary}</Text>
 
@@ -145,7 +187,7 @@ function ChapterCard({
 }
 
 export default function ChapterRoadmapScreen() {
-  const { setScreen } = useGame();
+  const { state, jumpToChapter, setScreen } = useGame();
   const insets = useSafeAreaInsets();
   const topPad = Platform.OS === 'web' ? 67 : insets.top;
   const botPad = Platform.OS === 'web' ? 34 : insets.bottom;
@@ -157,6 +199,9 @@ export default function ChapterRoadmapScreen() {
   const totalEndings = CHAPTER_ROADMAP.reduce((s, c) => s + c.possibleEndings.length, 0);
   const completeCount = CHAPTER_ROADMAP.filter((c) => c.status === 'complete').length;
 
+  const unlockedChapters = getUnlockedChapters(state);
+  const recapText = generateRouteRecap(state.routeHistory);
+
   const filtered =
     filterStatus === 'all'
       ? CHAPTER_ROADMAP
@@ -166,12 +211,19 @@ export default function ChapterRoadmapScreen() {
     setExpandedId((prev) => (prev === id ? null : id));
   }
 
+  async function handleJump(chapterName: string) {
+    const success = await jumpToChapter(chapterName);
+    if (success) {
+      setScreen('game');
+    }
+  }
+
   return (
     <LinearGradient colors={[BG, '#12101a', BG]} style={styles.container}>
       <View style={[styles.header, { paddingTop: topPad + 10 }]}>
         <View>
           <Text style={styles.headerEyebrow}>SCARS OF THE LAST KINGDOM</Text>
-          <Text style={styles.headerTitle}>CHAPTER ROADMAP</Text>
+          <Text style={styles.headerTitle}>CHAPTER SELECT & ROADMAP</Text>
         </View>
         <Pressable style={styles.backBtn} onPress={() => setScreen('mainMenu')}>
           <Feather name="x" size={22} color="#8a7d6e" />
@@ -185,8 +237,8 @@ export default function ChapterRoadmapScreen() {
         </View>
         <View style={styles.statDivider} />
         <View style={styles.statBox}>
-          <Text style={[styles.statValue, { color: COMPLETE_COLOR }]}>{completeCount}</Text>
-          <Text style={styles.statLabel}>COMPLETE</Text>
+          <Text style={[styles.statValue, { color: COMPLETE_COLOR }]}>{unlockedChapters.length}</Text>
+          <Text style={styles.statLabel}>UNLOCKED</Text>
         </View>
         <View style={styles.statDivider} />
         <View style={styles.statBox}>
@@ -198,6 +250,15 @@ export default function ChapterRoadmapScreen() {
           <Text style={[styles.statValue, { color: '#c0392b' }]}>{totalEndings}</Text>
           <Text style={styles.statLabel}>ENDINGS</Text>
         </View>
+      </View>
+
+      {/* "Previously on..." Narrative Recap Banner */}
+      <View style={styles.recapContainer}>
+        <View style={styles.recapHeader}>
+          <Feather name="rewind" size={13} color="#e67e22" />
+          <Text style={styles.recapTitle}>PREVIOUSLY ON...</Text>
+        </View>
+        <Text style={styles.recapText}>{recapText}</Text>
       </View>
 
       <View style={styles.filterRow}>
@@ -227,7 +288,9 @@ export default function ChapterRoadmapScreen() {
             key={entry.id}
             entry={entry}
             isExpanded={expandedId === entry.id}
+            isUnlocked={unlockedChapters.includes(entry.partNumber)}
             onToggle={() => toggle(entry.id)}
+            onJump={() => handleJump(entry.partNumber)}
           />
         ))}
 
@@ -288,6 +351,35 @@ const styles = StyleSheet.create({
   },
   statDivider: { width: 1, backgroundColor: BORDER, marginVertical: 8 },
 
+  recapContainer: {
+    marginHorizontal: 16,
+    marginTop: 12,
+    marginBottom: 4,
+    padding: 12,
+    backgroundColor: '#12101a',
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: '#e67e2244',
+  },
+  recapHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginBottom: 6,
+  },
+  recapTitle: {
+    fontSize: 10,
+    letterSpacing: 2,
+    color: '#e67e22',
+    fontFamily: 'Inter_700Bold',
+  },
+  recapText: {
+    fontSize: 12,
+    color: TEXT,
+    lineHeight: 18,
+    fontFamily: 'Inter_400Regular',
+  },
+
   filterRow: {
     flexDirection: 'row',
     gap: 8,
@@ -331,6 +423,28 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   cardHeaderLeft: { flex: 1 },
+  headerRightControls: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  jumpBtnHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 4,
+    backgroundColor: '#0d2010',
+    borderWidth: 1,
+    borderColor: '#27ae6066',
+  },
+  jumpBtnHeaderText: {
+    fontSize: 9,
+    fontFamily: 'Inter_700Bold',
+    letterSpacing: 1,
+    color: '#27ae60',
+  },
   partRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -341,6 +455,40 @@ const styles = StyleSheet.create({
     fontSize: 10,
     letterSpacing: 2,
     fontFamily: 'Inter_700Bold',
+  },
+  unlockedBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 3,
+    backgroundColor: '#0d2010',
+    borderRadius: 3,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderWidth: 1,
+    borderColor: COMPLETE_COLOR + '44',
+  },
+  unlockedText: {
+    fontSize: 8,
+    letterSpacing: 1,
+    color: COMPLETE_COLOR,
+    fontFamily: 'Inter_600SemiBold',
+  },
+  lockedBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 3,
+    backgroundColor: '#16141a',
+    borderRadius: 3,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderWidth: 1,
+    borderColor: BORDER,
+  },
+  lockedBadgeText: {
+    fontSize: 8,
+    letterSpacing: 1,
+    color: MUTED,
+    fontFamily: 'Inter_600SemiBold',
   },
   completeBadge: {
     flexDirection: 'row',
@@ -381,6 +529,26 @@ const styles = StyleSheet.create({
 
   cardBody: { paddingHorizontal: 16, paddingBottom: 16 },
   divider: { height: 1, backgroundColor: BORDER, marginBottom: 14 },
+  jumpActionRow: {
+    marginBottom: 14,
+  },
+  jumpBtnFull: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    paddingVertical: 10,
+    backgroundColor: '#0d2010',
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: '#27ae6088',
+  },
+  jumpBtnFullText: {
+    fontSize: 11,
+    letterSpacing: 2,
+    color: '#27ae60',
+    fontFamily: 'Inter_700Bold',
+  },
   summaryText: {
     fontSize: 13,
     color: TEXT,

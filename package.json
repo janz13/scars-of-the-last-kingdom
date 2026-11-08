@@ -5,7 +5,10 @@
   "scripts": {
     "build": "pnpm run typecheck && pnpm -r --if-present run build",
     "typecheck": "pnpm -r --filter @workspace/mobile --filter @workspace/scripts run typecheck",
-    "test": "pnpm --filter @workspace/scripts test"
+    "test": "pnpm --filter @workspace/scripts test",
+    "test:e2e": "pnpm --filter @workspace/scripts test:e2e",
+    "check-bundle": "pnpm --filter @workspace/scripts check-bundle",
+    "lighthouse": "lhci autorun --config=./lighthouserc.json"
   },
   "private": true,
   "devDependencies": {

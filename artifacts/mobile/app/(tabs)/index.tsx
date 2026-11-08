@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useCallback } from "react";
 import { View, Text, StyleSheet, ActivityIndicator, StatusBar } from "react-native";
 import { useGame } from "@/context/GameContext";
 
@@ -17,6 +17,7 @@ import SettingsPanel from "@/components/SettingsPanel";
 import ChapterRoadmapScreen from "@/components/ChapterRoadmapScreen";
 import RouteCodexScreen from "@/components/RouteCodexScreen";
 import CreditsScreen from "@/components/CreditsScreen";
+import HotkeyCheatSheetModal from "@/components/HotkeyCheatSheetModal";
 import { useWebKeyboardControls } from "@/hooks/useWebKeyboardControls";
 
 function LoadingScreen() {
@@ -36,20 +37,47 @@ function UnknownScreen({ screen }: { screen: string }) {
 }
 
 export default function GameRoot() {
-  const { state, isLoading } = useGame();
+  const { state, isLoading, showHotkeyModal, setShowHotkeyModal, toggleHotkeyModal } = useGame();
+  const [isHotkeyModalVisible, setIsHotkeyModalVisible] = useState(false);
 
-  // Dark status bar for Android (light text on dark background)
+  const isModalActive = isHotkeyModalVisible || showHotkeyModal;
+
+  const handleToggleHotkeyModal = useCallback(() => {
+    setIsHotkeyModalVisible((prev) => !prev);
+    toggleHotkeyModal();
+  }, [toggleHotkeyModal]);
+
+  const handleCloseHotkeyModal = useCallback(() => {
+    setIsHotkeyModalVisible(false);
+    setShowHotkeyModal(false);
+  }, [setShowHotkeyModal]);
+
+  // Mount web keyboard controls at root level so hotkeys work everywhere
+  useWebKeyboardControls(handleToggleHotkeyModal, isModalActive, handleCloseHotkeyModal);
+
+  React.useEffect(() => {
+    if (typeof document !== "undefined" && !document.title) {
+      document.title = "Scars of the Last Kingdom";
+    }
+  }, []);
+
   return (
     <>
       <StatusBar barStyle="light-content" backgroundColor="#04020a" />
-      {isLoading ? <LoadingScreen /> : (
-        <ScreenRouter screen={state.screen} />
+      {isLoading ? (
+        <LoadingScreen />
+      ) : (
+        <ScreenRouter screen={state.screen} onOpenHotkeys={handleToggleHotkeyModal} />
       )}
+      <HotkeyCheatSheetModal
+        visible={isModalActive}
+        onClose={handleCloseHotkeyModal}
+      />
     </>
   );
 }
 
-function ScreenRouter({ screen }: { screen: string }) {
+function ScreenRouter({ screen, onOpenHotkeys }: { screen: string; onOpenHotkeys?: () => void }) {
   switch (screen) {
     case "splash":
       return <SplashScreen />;
@@ -72,7 +100,7 @@ function ScreenRouter({ screen }: { screen: string }) {
     case "factions":
     case "history":
     case "settings":
-      return <GameScreens screen={screen} />;
+      return <GameScreens screen={screen} onOpenHotkeys={onOpenHotkeys} />;
     case "ending":
       return <EndingScreen />;
     default:
@@ -80,17 +108,16 @@ function ScreenRouter({ screen }: { screen: string }) {
   }
 }
 
-function GameScreens({ screen }: { screen: string }) {
-  useWebKeyboardControls();
+function GameScreens({ screen, onOpenHotkeys }: { screen: string; onOpenHotkeys?: () => void }) {
   switch (screen) {
-    case "game":      return <StoryPanel />;
+    case "game":      return <StoryPanel onOpenHotkeys={onOpenHotkeys} />;
     case "stats":     return <StatsPanel />;
     case "inventory": return <InventoryPanel />;
     case "companions":return <CompanionPanel />;
     case "factions":  return <FactionPanel />;
     case "history":   return <HistoryPanel />;
     case "settings":  return <SettingsPanel />;
-    default:          return <StoryPanel />;
+    default:          return <StoryPanel onOpenHotkeys={onOpenHotkeys} />;
   }
 }
 

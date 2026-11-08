@@ -45,4 +45,5 @@ export {
   DICE_OUTCOME_NODES,
   getNodeById,
   getStartNodeId,
+  ensureNodeLoaded,
 } from './story/index';

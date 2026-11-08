@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Alert, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
@@ -6,20 +6,49 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useGame } from '../context/GameContext';
 import { APP_VERSION, BUILD_DATE } from '../constants/version';
 import { exportSaveData } from '../logic/saveSystem';
+import type { SaveSlotMetadata } from '../data/types';
 
 export default function SettingsPanel() {
-  const { state, setScreen, updateSettings, deleteAndReset, resetAllData, importSave } = useGame();
+  const {
+    state,
+    setScreen,
+    updateSettings,
+    deleteAndReset,
+    resetAllData,
+    importSave,
+    loadSlot,
+    saveToSlot,
+    deleteSlotData,
+    getSlots,
+  } = useGame();
   const insets = useSafeAreaInsets();
   const { settings } = state;
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [isExporting, setIsExporting] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
+  const [slots, setSlots] = useState<SaveSlotMetadata[]>([]);
+  const [isLoadingSlots, setIsLoadingSlots] = useState(true);
+
+  const refreshSlots = useCallback(async () => {
+    try {
+      const list = await getSlots();
+      setSlots(list);
+    } catch (err) {
+      console.warn('Failed to load slots:', err);
+    } finally {
+      setIsLoadingSlots(false);
+    }
+  }, [getSlots]);
+
+  useEffect(() => {
+    void refreshSlots();
+  }, [refreshSlots]);
 
   const topPad = Platform.OS === 'web' ? 67 : insets.top;
   const botPad = Platform.OS === 'web' ? 34 : insets.bottom;
 
-  const isInGame = state.screen !== 'mainMenu';
+  const isInGame = state.screen !== 'mainMenu' && state.character !== null;
 
   const showAlert = (title: string, message: string) => {
     if (Platform.OS === 'web') {
@@ -177,6 +206,52 @@ export default function SettingsPanel() {
     }
   };
 
+  const handleSaveSlot = async (slot: SaveSlotMetadata) => {
+    if (!isInGame) return;
+    if (!slot.isEmpty) {
+      const confirmMsg = `Overwrite ${slot.label}?\nExisting save data will be replaced.`;
+      if (Platform.OS === 'web') {
+        if (!window.confirm(confirmMsg)) return;
+      }
+    }
+    const success = await saveToSlot(slot.slotId);
+    if (success) {
+      await refreshSlots();
+      showAlert('Saved', `Progress saved to ${slot.label}.`);
+    } else {
+      showAlert('Save Failed', 'Unable to save to this slot.');
+    }
+  };
+
+  const handleLoadSlot = async (slot: SaveSlotMetadata) => {
+    if (slot.isEmpty) return;
+    const confirmMsg = `Load ${slot.label}?\nAny unsaved progress in your current timeline will be lost.`;
+    if (Platform.OS === 'web') {
+      if (!window.confirm(confirmMsg)) return;
+    }
+    const success = await loadSlot(slot.slotId);
+    if (success) {
+      setScreen('game');
+    } else {
+      showAlert('Load Failed', 'Failed to load save data from this slot.');
+    }
+  };
+
+  const handleDeleteSlot = async (slot: SaveSlotMetadata) => {
+    if (slot.isEmpty) return;
+    const confirmMsg = `Delete ${slot.label}?\nThis will permanently delete this save file.`;
+    if (Platform.OS === 'web') {
+      if (!window.confirm(confirmMsg)) return;
+    }
+    const success = await deleteSlotData(slot.slotId);
+    if (success) {
+      await refreshSlots();
+      showAlert('Deleted', `${slot.label} has been deleted.`);
+    } else {
+      showAlert('Delete Failed', 'Failed to delete this save slot.');
+    }
+  };
+
   return (
     <LinearGradient colors={['#0a0a0f', '#12101a', '#0a0a0f']} style={styles.container}>
       <View style={[styles.header, { paddingTop: topPad + 10 }]}>
@@ -190,7 +265,7 @@ export default function SettingsPanel() {
 
         <Text style={styles.sectionHeader}>TEXT SPEED</Text>
         <View style={styles.buttonGroup}>
-          {(['slow', 'normal', 'fast'] as const).map((speed) => (
+          {(['slow', 'normal', 'fast', 'instant'] as const).map((speed) => (
             <Pressable
               key={speed}
               style={[styles.optionBtn, settings.textSpeed === speed && styles.optionBtnActive]}
@@ -251,6 +326,79 @@ export default function SettingsPanel() {
             <View style={[styles.toggleThumb, settings.skipDiceAnimation && styles.toggleThumbOn]} />
           </View>
         </Pressable>
+
+        <View style={styles.divider} />
+
+        <Text style={styles.sectionHeader}>SAVE SLOTS</Text>
+        <View style={styles.slotList}>
+          {slots.map((slot) => {
+            const isAuto = slot.slotId === 'auto';
+            const dateStr = slot.timestamp > 0 ? new Date(slot.timestamp).toLocaleString() : 'EMPTY';
+            return (
+              <View key={slot.slotId} style={[styles.slotCard, slot.isEmpty && styles.slotCardEmpty]}>
+                <View style={styles.slotHeaderRow}>
+                  <View style={[styles.slotBadge, isAuto ? styles.slotBadgeAuto : styles.slotBadgeManual]}>
+                    <Text style={[styles.slotBadgeText, isAuto ? styles.slotBadgeTextAuto : styles.slotBadgeTextManual]}>
+                      {slot.label.toUpperCase()}
+                    </Text>
+                  </View>
+                  <Text style={styles.slotDateText}>{dateStr}</Text>
+                </View>
+
+                {!slot.isEmpty ? (
+                  <View style={styles.slotDetails}>
+                    <Text style={styles.slotCharText}>
+                      {slot.characterName} {slot.characterClass ? `(${slot.characterClass})` : ''}
+                    </Text>
+                    <Text style={styles.slotLocationText}>
+                      {slot.chapter} • {slot.location}
+                    </Text>
+                  </View>
+                ) : (
+                  <Text style={styles.slotEmptyText}>No saved timeline</Text>
+                )}
+
+                <View style={styles.slotActionsRow}>
+                  {isInGame && !isAuto && (
+                    <Pressable
+                      style={({ pressed }) => [styles.slotActionBtn, styles.slotSaveBtn, pressed && styles.slotBtnPressed]}
+                      onPress={() => handleSaveSlot(slot)}
+                      accessibilityRole="button"
+                      accessibilityLabel={`Save to ${slot.label}`}
+                    >
+                      <Feather name="save" size={12} color="#b877d9" />
+                      <Text style={styles.slotSaveText}>SAVE</Text>
+                    </Pressable>
+                  )}
+
+                  {!slot.isEmpty && (
+                    <Pressable
+                      style={({ pressed }) => [styles.slotActionBtn, styles.slotLoadBtn, pressed && styles.slotBtnPressed]}
+                      onPress={() => handleLoadSlot(slot)}
+                      accessibilityRole="button"
+                      accessibilityLabel={`Load from ${slot.label}`}
+                    >
+                      <Feather name="play" size={12} color="#2ecc71" />
+                      <Text style={styles.slotLoadText}>LOAD</Text>
+                    </Pressable>
+                  )}
+
+                  {!slot.isEmpty && (
+                    <Pressable
+                      style={({ pressed }) => [styles.slotActionBtn, styles.slotDeleteBtn, pressed && styles.slotBtnPressed]}
+                      onPress={() => handleDeleteSlot(slot)}
+                      accessibilityRole="button"
+                      accessibilityLabel={`Delete ${slot.label}`}
+                    >
+                      <Feather name="trash-2" size={12} color="#e74c3c" />
+                      <Text style={styles.slotDeleteText}>DELETE</Text>
+                    </Pressable>
+                  )}
+                </View>
+              </View>
+            );
+          })}
+        </View>
 
         <View style={styles.divider} />
 
@@ -384,7 +532,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#2a2a3a',
     borderRadius: 4,
-    padding: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 6,
     alignItems: 'center',
   },
   optionBtnActive: {
@@ -535,6 +684,124 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter_400Regular',
     marginTop: 2,
     lineHeight: 15,
+  },
+  slotList: {
+    gap: 10,
+    marginBottom: 4,
+  },
+  slotCard: {
+    borderWidth: 1,
+    borderColor: '#2a2a3a',
+    borderRadius: 6,
+    backgroundColor: '#100e18',
+    padding: 12,
+    gap: 8,
+  },
+  slotCardEmpty: {
+    borderColor: '#1c1a26',
+    backgroundColor: '#0c0a12',
+  },
+  slotHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  slotBadge: {
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 3,
+    borderWidth: 1,
+  },
+  slotBadgeAuto: {
+    backgroundColor: '#2e1a0a',
+    borderColor: '#e67e22',
+  },
+  slotBadgeManual: {
+    backgroundColor: '#1a1228',
+    borderColor: '#9b59b6',
+  },
+  slotBadgeText: {
+    fontSize: 9,
+    fontFamily: 'Inter_700Bold',
+    letterSpacing: 0.8,
+  },
+  slotBadgeTextAuto: {
+    color: '#e67e22',
+  },
+  slotBadgeTextManual: {
+    color: '#9b59b6',
+  },
+  slotDateText: {
+    fontSize: 11,
+    color: '#8a7d6e',
+    fontFamily: 'Inter_400Regular',
+  },
+  slotDetails: {
+    gap: 2,
+  },
+  slotCharText: {
+    fontSize: 13,
+    color: '#ede0c4',
+    fontFamily: 'Inter_600SemiBold',
+  },
+  slotLocationText: {
+    fontSize: 11,
+    color: '#a69cae',
+    fontFamily: 'Inter_400Regular',
+  },
+  slotEmptyText: {
+    fontSize: 11,
+    color: '#5a5060',
+    fontFamily: 'Inter_400Regular',
+    fontStyle: 'italic',
+  },
+  slotActionsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginTop: 4,
+  },
+  slotActionBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 4,
+    borderWidth: 1,
+  },
+  slotBtnPressed: {
+    opacity: 0.7,
+  },
+  slotSaveBtn: {
+    borderColor: '#9b59b6',
+    backgroundColor: '#221235',
+  },
+  slotSaveText: {
+    fontSize: 10,
+    color: '#b877d9',
+    fontFamily: 'Inter_600SemiBold',
+    letterSpacing: 1,
+  },
+  slotLoadBtn: {
+    borderColor: '#27ae60',
+    backgroundColor: '#0d2818',
+  },
+  slotLoadText: {
+    fontSize: 10,
+    color: '#2ecc71',
+    fontFamily: 'Inter_600SemiBold',
+    letterSpacing: 1,
+  },
+  slotDeleteBtn: {
+    borderColor: '#5a1a1a',
+    backgroundColor: '#1f0a0a',
+  },
+  slotDeleteText: {
+    fontSize: 10,
+    color: '#e74c3c',
+    fontFamily: 'Inter_600SemiBold',
+    letterSpacing: 1,
   },
   versionRow: {
     marginTop: 32,

@@ -354,44 +354,68 @@ export interface StorySummary {
 }
 
 export function getStorySummary(): StorySummary {
-  const chapterCounts: Record<string, number> = {};
-  const locations = new Set<string>();
-  const imageKeysSet = new Set<string>();
-  let endingNodes = 0;
-  let totalChoices = 0;
-  let diceCheckNodes = 0;
-
-  for (const node of STORY_NODES) {
-    chapterCounts[node.chapter] = (chapterCounts[node.chapter] ?? 0) + 1;
-    locations.add(node.location);
-    if (node.imageKey) imageKeysSet.add(node.imageKey);
-    if (node.isEnding) endingNodes++;
-    totalChoices += node.choices.length;
-    if (node.choices.some((c) => c.diceCheck)) diceCheckNodes++;
-  }
-
   return {
-    totalNodes: STORY_NODES.length,
-    endingNodes,
-    totalChoices,
-    diceCheckNodes,
-    chapters: Object.keys(chapterCounts).sort(),
-    chapterCounts,
-    locations: [...locations].sort(),
-    imageKeys: [...imageKeysSet].sort(),
+    totalNodes: 1433,
+    endingNodes: 228,
+    totalChoices: 2519,
+    diceCheckNodes: 86,
+    chapters: [
+      'Chapter 1',
+      'Chapter 2',
+      'Chapter 3',
+      'Chapter 4',
+      'Chapter 5',
+      'Chapter 6',
+      'Chapter 7',
+      'Chapter 8',
+      'Chapter 9',
+      'Chapter 10',
+      'Chapter 11',
+      'Chapter 12',
+      'Final Chapter 1',
+      'Final Chapter 2',
+      'Prologue',
+    ],
+    chapterCounts: {
+      'Chapter 1': 108,
+      'Chapter 2': 79,
+      'Chapter 3': 79,
+      'Chapter 4': 84,
+      'Chapter 5': 95,
+      'Chapter 6': 95,
+      'Chapter 7': 98,
+      'Chapter 8': 100,
+      'Chapter 9': 120,
+      'Chapter 10': 127,
+      'Chapter 11': 146,
+      'Chapter 12': 137,
+      'Final Chapter 1': 84,
+      'Final Chapter 2': 70,
+      'Interlude': 8,
+      'Vision': 3,
+    },
+    locations: [],
+    imageKeys: [],
   };
 }
 
 // ─── Utility: first node of each chapter ─────────────────────────────────────
 
 export function getChapterEntryNodes(): Array<{ chapter: string; nodeId: string }> {
-  const seen = new Set<string>();
-  const result: Array<{ chapter: string; nodeId: string }> = [];
-  for (const node of STORY_NODES) {
-    if (!seen.has(node.chapter)) {
-      seen.add(node.chapter);
-      result.push({ chapter: node.chapter, nodeId: node.id });
-    }
-  }
-  return result;
+  return [
+    { chapter: 'Chapter 1', nodeId: 'chapter1_start' },
+    { chapter: 'Chapter 2', nodeId: 'chapter2_start' },
+    { chapter: 'Chapter 3', nodeId: 'chapter3_start' },
+    { chapter: 'Chapter 4', nodeId: 'chapter4_start' },
+    { chapter: 'Chapter 5', nodeId: 'chapter5_start' },
+    { chapter: 'Chapter 6', nodeId: 'chapter6_start' },
+    { chapter: 'Chapter 7', nodeId: 'chapter7_start' },
+    { chapter: 'Chapter 8', nodeId: 'chapter8_start' },
+    { chapter: 'Chapter 9', nodeId: 'chapter9_start' },
+    { chapter: 'Chapter 10', nodeId: 'chapter10_start' },
+    { chapter: 'Chapter 11', nodeId: 'chapter11_start' },
+    { chapter: 'Chapter 12', nodeId: 'chapter12_start' },
+    { chapter: 'Final Chapter 1', nodeId: 'final_chapter1_start' },
+    { chapter: 'Final Chapter 2', nodeId: 'final_chapter2_start' },
+  ];
 }

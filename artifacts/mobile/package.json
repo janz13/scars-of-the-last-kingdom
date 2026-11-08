@@ -5,14 +5,12 @@
   "main": "expo-router/entry",
   "scripts": {
     "dev": "pnpm exec expo start --web --port 8081",
-    "dev:replit": "EXPO_PACKAGER_PROXY_URL=https://$REPLIT_EXPO_DEV_DOMAIN EXPO_PUBLIC_DOMAIN=$REPLIT_DEV_DOMAIN EXPO_PUBLIC_REPL_ID=$REPL_ID REACT_NATIVE_PACKAGER_HOSTNAME=$REPLIT_DEV_DOMAIN pnpm exec expo start --localhost --web --port $PORT",
     "build:web": "npx expo export --platform web",
-    "build": "pnpm run build:web && node scripts/build.js",
+    "build": "pnpm run build:web",
     "build:android": "npx expo prebuild --platform android --clean",
     "android:studio": "npx expo prebuild --platform android --clean && echo Open artifacts/mobile/android in Android Studio",
     "android:emulator": "npx expo run:android",
     "android:device": "npx expo run:android --device",
-    "serve": "node server/serve.js",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "android": "expo run:android",
     "ios": "expo run:ios"
