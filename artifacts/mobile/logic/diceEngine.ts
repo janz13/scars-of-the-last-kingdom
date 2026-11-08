@@ -18,14 +18,13 @@ export interface DiceResult {
 
 // Map a 0–100 stat value to a D&D-style modifier (−4 to +5)
 export function getStatModifier(statValue: number): number {
-  if (statValue <= 10) return -4;
-  if (statValue <= 20) return -3;
-  if (statValue <= 30) return -2;
-  if (statValue <= 40) return -1;
-  if (statValue <= 55) return 0;
-  if (statValue <= 65) return 1;
-  if (statValue <= 75) return 2;
-  if (statValue <= 85) return 3;
+  if (statValue <= 3) return -3;
+  if (statValue <= 5) return -2;
+  if (statValue <= 7) return -1;
+  if (statValue <= 9) return 0;
+  if (statValue <= 12) return 1;
+  if (statValue <= 16) return 2;
+  if (statValue <= 22) return 3;
   return 4;
 }
 

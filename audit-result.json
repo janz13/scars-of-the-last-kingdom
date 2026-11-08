@@ -1,0 +1,395 @@
+{
+  "stats": {
+    "totalChapters": 16,
+    "totalStoryNodes": 1433,
+    "totalEndings": 228,
+    "totalFlags": 2073,
+    "totalChoices": 2519,
+    "diceCheckNodes": 86,
+    "chapterCounts": {
+      "Chapter 1": 108,
+      "Chapter 2": 79,
+      "Chapter 3": 79,
+      "Chapter 4": 84,
+      "Chapter 5": 95,
+      "Chapter 6": 95,
+      "Chapter 7": 98,
+      "Chapter 8": 100,
+      "Chapter 9": 120,
+      "Chapter 10": 127,
+      "Chapter 11": 146,
+      "Chapter 12": 137,
+      "Final Chapter 1": 84,
+      "Final Chapter 2": 70,
+      "Vision": 3,
+      "Interlude": 8
+    },
+    "endingTypes": {
+      "death": 66,
+      "sacrifice": 8,
+      "betrayal": 29,
+      "corruption": 27,
+      "companion": 15,
+      "wanderer": 32,
+      "faction": 27,
+      "secret": 14,
+      "tyrant": 5,
+      "savior": 5
+    },
+    "majorRoutes": [
+      "Iron Saints",
+      "Glass Court",
+      "Hollow Children",
+      "Red Choir",
+      "Last Archive",
+      "Solo/Wanderer",
+      "Companion (Mira)",
+      "Companion (Cain)"
+    ],
+    "imageKeys": [
+      "archive_ruin_wall",
+      "archive_siege",
+      "archive_tribunal",
+      "ascension_elevator",
+      "ashen_square",
+      "barracks_of_ash",
+      "betrayal_alley",
+      "black_market_alley",
+      "blackout_core",
+      "blackout_record_chamber",
+      "bloodlit_underpass",
+      "bone_platform",
+      "bone_soup_kitchen",
+      "bone_turnstile",
+      "broken_aqueduct",
+      "broken_bridge_camp",
+      "broken_observatory",
+      "broken_throne",
+      "broken_tram_core",
+      "broken_vending_area",
+      "burned_clinic",
+      "burning_market",
+      "cain_last_stand_ending",
+      "cain_war_room",
+      "candle_market",
+      "chalk_map_wall",
+      "chapel_of_chains",
+      "choir_broadcast_point",
+      "choir_nest",
+      "city_opened_wastes",
+      "city_sealed_forever",
+      "citywide_battlefield",
+      "collapsed_tunnel",
+      "companion_crossroads",
+      "companion_threshold",
+      "confession_hall",
+      "corruption_garden",
+      "corruption_god",
+      "corruption_mirror",
+      "council_chamber",
+      "cracked_observatory",
+      "crimson_relay",
+      "dark_metro_hallway",
+      "dead_orchard",
+      "deep_archive",
+      "descent_stair",
+      "door_of_no_return",
+      "door_without_name",
+      "dream_of_before",
+      "drowned_choir_hall",
+      "dust_library",
+      "echo_chamber",
+      "empty_chair",
+      "empty_ration_square",
+      "examine_mark",
+      "execution_plaza",
+      "experiment_ward",
+      "faction_hall",
+      "famine_camp",
+      "final_metro_line",
+      "first_gate",
+      "flooded_platform",
+      "forbidden_stacks",
+      "forgotten_platform",
+      "gate_antechamber",
+      "gate_fragment_chamber",
+      "glass_barricade",
+      "glass_court_ascension",
+      "glass_gate",
+      "glass_tower_gate",
+      "glass_tower_lobby",
+      "grain_vault",
+      "hidden_clinic",
+      "hollow_children_future",
+      "hollow_children_hideout",
+      "hollow_lecture_hall",
+      "hunger_gallery",
+      "infected_nursery",
+      "ink_chapel",
+      "iron_checkpoint",
+      "iron_saints_checkpoint",
+      "iron_saints_dominion",
+      "last_archive_door",
+      "last_archive_revelation",
+      "last_gate",
+      "last_medicine_room",
+      "lone_wanderer_ending",
+      "machine_graveyard",
+      "machine_nursery",
+      "marked_shrine",
+      "masked_heir_ending",
+      "memory_shelter",
+      "memory_storm",
+      "memory_vault",
+      "memory_wall",
+      "mira_hidden_clinic",
+      "mira_tomorrow",
+      "mirror_ballroom",
+      "nameless_housing_block",
+      "nursery_of_knives",
+      "old_government_vault",
+      "old_signal_tower",
+      "orchid_clinic",
+      "place_we_promised",
+      "prison_carts",
+      "private_auction_hall",
+      "pulse_engine",
+      "pulse_tower",
+      "purification_yard",
+      "quiet_safehouse",
+      "rat_king_gate",
+      "red_chapel",
+      "red_choir_chamber",
+      "red_choir_communion",
+      "red_choir_march",
+      "relic_engine_room",
+      "relic_machine_ending",
+      "relic_map_room",
+      "relic_scar",
+      "relic_transit_line",
+      "ruined_metro_station",
+      "ruined_street",
+      "rust_cathedral",
+      "saint_front",
+      "saint_furnace",
+      "saints_patrol",
+      "savior_ending",
+      "scavenger_front",
+      "sealed_engine",
+      "secret_true_ending",
+      "secret_unity_ending",
+      "servant_quarters",
+      "siege_tunnels",
+      "silent_ward",
+      "singing_hospital",
+      "sky_garden",
+      "sleeping_server",
+      "soldiers_grave",
+      "starving_bridge",
+      "sub_city_gate",
+      "surface_dawn",
+      "surface_night",
+      "surface_ruins",
+      "tunnel_camp",
+      "tyrant_ending",
+      "underworld_district",
+      "vein_market",
+      "war_council",
+      "war_shrine",
+      "water_riot",
+      "white_atrium"
+    ]
+  },
+  "errors": [],
+  "warnings": [
+    {
+      "severity": "warning",
+      "category": "story-unreachable",
+      "location": "ending_starvation",
+      "message": "Node \"ending_starvation\" is not reachable from start via any choice path"
+    },
+    {
+      "severity": "warning",
+      "category": "story-unreachable",
+      "location": "ending_metro_death",
+      "message": "Node \"ending_metro_death\" is not reachable from start via any choice path"
+    },
+    {
+      "severity": "warning",
+      "category": "story-unreachable",
+      "location": "ending_cain_betrayal",
+      "message": "Node \"ending_cain_betrayal\" is not reachable from start via any choice path"
+    },
+    {
+      "severity": "warning",
+      "category": "story-unreachable",
+      "location": "ending_relic_awakening",
+      "message": "Node \"ending_relic_awakening\" is not reachable from start via any choice path"
+    },
+    {
+      "severity": "warning",
+      "category": "story-missing-chapter",
+      "location": "Prologue",
+      "message": "Chapter \"Prologue\" has no story nodes"
+    }
+  ],
+  "infos": [
+    {
+      "severity": "info",
+      "category": "story-orphan-ending-data",
+      "location": "ending_corruption_death",
+      "message": "ENDINGS entry \"ending_corruption_death\" is never triggered by any story node"
+    },
+    {
+      "severity": "info",
+      "category": "story-orphan-ending-data",
+      "location": "ending_iron_tyrant",
+      "message": "ENDINGS entry \"ending_iron_tyrant\" is never triggered by any story node"
+    },
+    {
+      "severity": "info",
+      "category": "story-orphan-ending-data",
+      "location": "ending_wanderer",
+      "message": "ENDINGS entry \"ending_wanderer\" is never triggered by any story node"
+    },
+    {
+      "severity": "info",
+      "category": "story-orphan-ending-data",
+      "location": "ending_together",
+      "message": "ENDINGS entry \"ending_together\" is never triggered by any story node"
+    },
+    {
+      "severity": "info",
+      "category": "story-orphan-ending-data",
+      "location": "ending_last_archive",
+      "message": "ENDINGS entry \"ending_last_archive\" is never triggered by any story node"
+    },
+    {
+      "severity": "info",
+      "category": "story-orphan-ending-data",
+      "location": "ending_thirteenth_signal",
+      "message": "ENDINGS entry \"ending_thirteenth_signal\" is never triggered by any story node"
+    },
+    {
+      "severity": "info",
+      "category": "story-orphan-ending-data",
+      "location": "ending_ch3_trust_complete",
+      "message": "ENDINGS entry \"ending_ch3_trust_complete\" is never triggered by any story node"
+    },
+    {
+      "severity": "info",
+      "category": "story-orphan-ending-data",
+      "location": "ending_ch4_saints_survived",
+      "message": "ENDINGS entry \"ending_ch4_saints_survived\" is never triggered by any story node"
+    },
+    {
+      "severity": "info",
+      "category": "story-orphan-ending-data",
+      "location": "ending_ch4_veyra_pact",
+      "message": "ENDINGS entry \"ending_ch4_veyra_pact\" is never triggered by any story node"
+    },
+    {
+      "severity": "info",
+      "category": "story-orphan-ending-data",
+      "location": "ending_ch4_mira_route",
+      "message": "ENDINGS entry \"ending_ch4_mira_route\" is never triggered by any story node"
+    },
+    {
+      "severity": "info",
+      "category": "story-orphan-ending-data",
+      "location": "ending_ch5_survived",
+      "message": "ENDINGS entry \"ending_ch5_survived\" is never triggered by any story node"
+    },
+    {
+      "severity": "info",
+      "category": "story-orphan-ending-data",
+      "location": "ending_ch6_survived",
+      "message": "ENDINGS entry \"ending_ch6_survived\" is never triggered by any story node"
+    },
+    {
+      "severity": "info",
+      "category": "story-orphan-ending-data",
+      "location": "ending_ch7_survived",
+      "message": "ENDINGS entry \"ending_ch7_survived\" is never triggered by any story node"
+    },
+    {
+      "severity": "info",
+      "category": "story-orphan-ending-data",
+      "location": "ending_ch8_survived",
+      "message": "ENDINGS entry \"ending_ch8_survived\" is never triggered by any story node"
+    },
+    {
+      "severity": "info",
+      "category": "story-orphan-ending-data",
+      "location": "ending_ch9_savior_path",
+      "message": "ENDINGS entry \"ending_ch9_savior_path\" is never triggered by any story node"
+    },
+    {
+      "severity": "info",
+      "category": "story-orphan-ending-data",
+      "location": "ending_ch9_tyrant_path",
+      "message": "ENDINGS entry \"ending_ch9_tyrant_path\" is never triggered by any story node"
+    },
+    {
+      "severity": "info",
+      "category": "story-orphan-ending-data",
+      "location": "ending_ch9_survived",
+      "message": "ENDINGS entry \"ending_ch9_survived\" is never triggered by any story node"
+    },
+    {
+      "severity": "info",
+      "category": "story-orphan-ending-data",
+      "location": "ending_ch9_true_ending_req",
+      "message": "ENDINGS entry \"ending_ch9_true_ending_req\" is never triggered by any story node"
+    },
+    {
+      "severity": "info",
+      "category": "story-orphan-ending-data",
+      "location": "ending_fc1_gate_sealed_savior",
+      "message": "ENDINGS entry \"ending_fc1_gate_sealed_savior\" is never triggered by any story node"
+    },
+    {
+      "severity": "info",
+      "category": "story-orphan-ending-data",
+      "location": "ending_fc1_faction_gate",
+      "message": "ENDINGS entry \"ending_fc1_faction_gate\" is never triggered by any story node"
+    },
+    {
+      "severity": "info",
+      "category": "story-orphan-ending-data",
+      "location": "ending_fc1_unity_gate",
+      "message": "ENDINGS entry \"ending_fc1_unity_gate\" is never triggered by any story node"
+    },
+    {
+      "severity": "info",
+      "category": "story-orphan-ending-data",
+      "location": "ending_fc1_true_ending_path",
+      "message": "ENDINGS entry \"ending_fc1_true_ending_path\" is never triggered by any story node"
+    },
+    {
+      "severity": "info",
+      "category": "faction-route",
+      "location": "iron_saints_registered",
+      "message": "Expected faction flag \"iron_saints_registered\" not found in story data"
+    },
+    {
+      "severity": "info",
+      "category": "faction-route",
+      "location": "glass_court_invited",
+      "message": "Expected faction flag \"glass_court_invited\" not found in story data"
+    },
+    {
+      "severity": "info",
+      "category": "faction-route",
+      "location": "red_choir_initiated",
+      "message": "Expected faction flag \"red_choir_initiated\" not found in story data"
+    },
+    {
+      "severity": "info",
+      "category": "faction-route",
+      "location": "last_archive_found",
+      "message": "Expected faction flag \"last_archive_found\" not found in story data"
+    }
+  ],
+  "timestamp": "2026-05-05T13:38:53.491Z"
+}

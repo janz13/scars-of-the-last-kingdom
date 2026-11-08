@@ -14,7 +14,7 @@
  * The old cache is deleted automatically on the next activate event.
  */
 
-const CACHE_VERSION = 'sotlk-v2';
+const CACHE_VERSION = 'sotlk-v3';
 
 /**
  * App shell — cached on install so the game boots offline.
@@ -23,6 +23,9 @@ const SHELL_ASSETS = [
   '/',
   '/manifest.json',
   '/icon.png',
+  '/icon-192.png',
+  '/icon-512.png',
+  '/apple-touch-icon.png',
   '/favicon.ico',
   '/privacy-policy.html',
 ];

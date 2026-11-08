@@ -1,0 +1,10 @@
+const r = require('../../audit-result.json');
+console.log('Errors:', r.errors.length);
+console.log('Warnings:', r.warnings.length);
+console.log('Infos:', r.infos.length);
+const wc = {};
+r.warnings.forEach(w => { wc[w.category] = (wc[w.category] || 0) + 1; });
+console.log('Warning categories:', JSON.stringify(wc));
+const ic = {};
+r.infos.forEach(i => { ic[i.category] = (ic[i.category] || 0) + 1; });
+console.log('Info categories:', JSON.stringify(ic));

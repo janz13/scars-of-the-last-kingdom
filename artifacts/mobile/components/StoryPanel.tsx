@@ -7,15 +7,19 @@ import {
   StyleSheet,
   Text,
   View,
+  useWindowDimensions,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
 import { useGame } from '../context/GameContext';
+import SaveNotification from './SaveNotification';
 import { getSurvivalWarnings } from '../logic/gameEngine';
 import type { SurvivalWarning, SurvivalWarningSeverity, SurvivalWarningType } from '../logic/gameEngine';
 import BackgroundPanel from './BackgroundPanel';
 import ChoiceButton from './ChoiceButton';
 import DiceRollOverlay from './DiceRollOverlay';
+import DesktopSidebarHUD from './DesktopSidebarHUD';
+import { useWebKeyboardControls } from '../hooks/useWebKeyboardControls';
 
 // ─── Mini stat bar ────────────────────────────────────────────────────────────
 
@@ -234,12 +238,24 @@ function ChapterBanner({ chapter }: { chapter: string }) {
 export default function StoryPanel() {
   const {
     state, currentNode, availableChoices, makeChoice, setScreen,
-    pendingDiceRoll, initiateDiceRoll, commitDiceRoll,
+    pendingDiceRoll, initiateDiceRoll, commitDiceRoll, saveNotification,
   } = useGame();
   const insets = useSafeAreaInsets();
+  const { width } = useWindowDimensions();
+  const isDesktop = width >= 900;
+
+  // Mount web keyboard hotkeys
+  useWebKeyboardControls();
 
   const topPad = Platform.OS === 'web' ? 67 : insets.top;
   const botPad = Platform.OS === 'web' ? 34 : insets.bottom;
+
+  // Font size scaling based on user setting
+  const fontScale = state.settings.fontSize;
+  const narrationFontSize = fontScale === 'small' ? 14 : fontScale === 'large' ? 19 : 16.5;
+  const narrationLineHeight = fontScale === 'small' ? 23 : fontScale === 'large' ? 31 : 28;
+  const dialogueFontSize = fontScale === 'small' ? 13 : fontScale === 'large' ? 17 : 15.5;
+  const dialogueLineHeight = fontScale === 'small' ? 21 : fontScale === 'large' ? 27 : 25;
 
   const titleFade = useRef(new Animated.Value(1)).current;
   const titleSlide = useRef(new Animated.Value(0)).current;
@@ -300,6 +316,150 @@ export default function StoryPanel() {
   // Compute survival warnings from the current game state
   const survivalWarnings = getSurvivalWarnings(state);
 
+  const renderStoryColumn = (isDesktopView: boolean) => (
+    <>
+      {/* ── Story section ─────────────────────────────────────── */}
+      <View style={[
+        styles.storySection,
+        isDesktopView && styles.desktopStorySection,
+        isHallucination && styles.hallucinationSection,
+        isCompanionEvent && { backgroundColor: currentNode.speaker === 'Cain' ? 'rgba(40,20,0,0.28)' : 'rgba(30,0,40,0.22)' },
+      ]}>
+        <Text style={[
+          styles.breadcrumb,
+          isHallucination && styles.hallucinationBreadcrumb,
+          isCompanionEvent && { color: currentNode.speaker === 'Cain' ? 'rgba(230,126,34,0.55)' : 'rgba(155,89,182,0.55)', letterSpacing: 3 },
+        ]}>
+          {currentNode.chapter.toUpperCase()}
+          {'  ›  '}
+          {currentNode.location.toUpperCase()}
+        </Text>
+
+        <Animated.View style={{ opacity: titleFade, transform: [{ translateY: titleSlide }] }}>
+          <Text style={[
+            styles.nodeTitle,
+            isDesktopView && styles.desktopNodeTitle,
+            isHallucination && styles.hallucinationTitle,
+            isCompanionEvent && { color: currentNode.speaker === 'Cain' ? '#f0a050' : '#c39bd3', letterSpacing: 0.5 },
+          ]}>
+            {currentNode.title}
+          </Text>
+        </Animated.View>
+
+        {currentNode.speaker && (
+          <View style={styles.speakerBadge}>
+            <View style={styles.speakerLine} />
+            <Text style={styles.speakerText}>{currentNode.speaker}</Text>
+            <View style={styles.speakerLine} />
+          </View>
+        )}
+
+        <Text style={[styles.narration, isHallucination && styles.hallucinationNarration, { fontSize: narrationFontSize, lineHeight: narrationLineHeight }]}>
+          {currentNode.text}
+        </Text>
+
+        {currentNode.dialogue && (
+          <View style={[styles.dialogueBox, isHallucination && styles.hallucinationDialogueBox]}>
+            <Text style={styles.dialogueOpenQuote}>{'\u201C'}</Text>
+            <Text style={[styles.dialogue, isHallucination && styles.hallucinationDialogue, { fontSize: dialogueFontSize, lineHeight: dialogueLineHeight }]}>
+              {currentNode.dialogue}
+            </Text>
+          </View>
+        )}
+
+        {!isHallucination && !isCompanionEvent && (state.companions.mira.present && state.companions.mira.alive ||
+          state.companions.cain.present && state.companions.cain.alive) && (
+          <View style={styles.companionStrip}>
+            {state.companions.mira.present && state.companions.mira.alive && (
+              <View style={[styles.companionTag, { borderColor: 'rgba(155,89,182,0.25)' }]}>
+                <View style={[styles.companionDot, { backgroundColor: '#9b59b6' }]} />
+                <Text style={styles.companionName}>MIRA</Text>
+              </View>
+            )}
+            {state.companions.cain.present && state.companions.cain.alive && (
+              <View style={[styles.companionTag, { borderColor: 'rgba(230,126,34,0.25)' }]}>
+                <View style={[styles.companionDot, { backgroundColor: '#e67e22' }]} />
+                <Text style={styles.companionName}>CAIN</Text>
+              </View>
+            )}
+          </View>
+        )}
+      </View>
+
+      {/* ── Survival warning strip ─────────────────────────────── */}
+      {!isEndingNode && !isHallucination && !isCompanionEvent && (
+        <SurvivalWarningStrip warnings={survivalWarnings} />
+      )}
+
+      {/* ── Choices glass panel ────────────────────────────────── */}
+      <View style={[
+        styles.choicesPanel,
+        isDesktopView && styles.desktopChoicesPanel,
+        isHallucination && styles.hallucinationChoicesPanel,
+        isCompanionEvent && { backgroundColor: currentNode.speaker === 'Cain' ? 'rgba(40,20,0,0.92)' : 'rgba(25,10,35,0.92)' },
+      ]}>
+        <View style={[
+          styles.choicesTopAccent,
+          isHallucination && styles.hallucinationTopAccent,
+          isCompanionEvent && { backgroundColor: currentNode.speaker === 'Cain' ? 'rgba(230,126,34,0.45)' : 'rgba(155,89,182,0.35)' },
+        ]} />
+
+        {isTerminalNode && (
+          <View style={styles.terminalNode}>
+            <View style={styles.terminalDivider}>
+              <View style={styles.terminalLine} />
+              <Feather name="bookmark" size={12} color="#6a5e70" />
+              <View style={styles.terminalLine} />
+            </View>
+            <Text style={styles.terminalText}>
+              The story continues…
+            </Text>
+            <Pressable style={styles.returnBtn} onPress={() => setScreen('mainMenu')}>
+              <Text style={styles.returnBtnText}>RETURN TO MAIN MENU</Text>
+              <Feather name="arrow-right" size={12} color="#9b59b6" />
+            </Pressable>
+          </View>
+        )}
+
+        {!isTerminalNode && !isEndingNode && (
+          <>
+            {availableChoices.map(({ choice, met, reasons }, index) => (
+              <ChoiceButton
+                key={choice.id}
+                choiceId={choice.id}
+                text={choice.text}
+                met={met}
+                reasons={reasons}
+                flavorText={choice.flavorText}
+                diceCheck={choice.diceCheck}
+                hotkeyIndex={isDesktopView ? index + 1 : undefined}
+                onPress={() => {
+                  if (choice.diceCheck) {
+                    initiateDiceRoll(choice.id);
+                  } else {
+                    makeChoice(choice.id);
+                  }
+                }}
+              />
+            ))}
+            {availableChoices.length === 0 && (
+              <Text style={styles.noChoices}>
+                No available choices. Check your stats and inventory.
+              </Text>
+            )}
+          </>
+        )}
+
+        {!isHallucination && (
+          <Pressable style={styles.menuBtn} onPress={() => setScreen('settings')}>
+            <Feather name="menu" size={11} color="#3a3048" />
+            <Text style={styles.menuBtnText}>MENU</Text>
+          </Pressable>
+        )}
+      </View>
+    </>
+  );
+
   return (
     <>
       <BackgroundPanel
@@ -308,166 +468,60 @@ export default function StoryPanel() {
         overlayOpacity={isHallucination ? 0.88 : isCompanionEvent ? 0.84 : 0.78}
         fadeDuration={isHallucination ? 600 : isCompanionEvent ? 500 : 420}
       >
-        <View style={styles.container}>
-          <View style={{ paddingTop: topPad }}>
-            <StatBar
-              health={state.stats.health}
-              maxHealth={state.stats.maxHealth}
-              hunger={state.stats.hunger}
-              thirst={state.stats.thirst}
-              morale={state.stats.morale}
-              corruption={state.stats.corruption}
-              onStats={() => setScreen('stats')}
-              onInventory={() => setScreen('inventory')}
-              onCompanions={() => setScreen('companions')}
-              onFactions={() => setScreen('factions')}
-              onHistory={() => setScreen('history')}
-            />
-          </View>
+        <View style={[styles.container, isDesktop && styles.desktopContainer]}>
+          {isDesktop ? (
+            <View style={styles.desktopLayout}>
+              {/* Left persistent desktop sidebar HUD */}
+              <View style={styles.desktopSidebar}>
+                <DesktopSidebarHUD />
+              </View>
 
-          <ScrollView
-            style={styles.scroll}
-            contentContainerStyle={[styles.scrollContent, { paddingBottom: botPad + 20 }]}
-            showsVerticalScrollIndicator={false}
-            keyboardShouldPersistTaps="handled"
-            overScrollMode="auto"
-          >
-            {/* ── Story section ─────────────────────────────────────── */}
-            <View style={[
-              styles.storySection,
-              isHallucination && styles.hallucinationSection,
-              isCompanionEvent && { backgroundColor: currentNode.speaker === 'Cain' ? 'rgba(40,20,0,0.28)' : 'rgba(30,0,40,0.22)' },
-            ]}>
-              <Text style={[
-                styles.breadcrumb,
-                isHallucination && styles.hallucinationBreadcrumb,
-                isCompanionEvent && { color: currentNode.speaker === 'Cain' ? 'rgba(230,126,34,0.55)' : 'rgba(155,89,182,0.55)', letterSpacing: 3 },
-              ]}>
-                {currentNode.chapter.toUpperCase()}
-                {'  ›  '}
-                {currentNode.location.toUpperCase()}
-              </Text>
-
-              <Animated.View style={{ opacity: titleFade, transform: [{ translateY: titleSlide }] }}>
-                <Text style={[
-                  styles.nodeTitle,
-                  isHallucination && styles.hallucinationTitle,
-                  isCompanionEvent && { color: currentNode.speaker === 'Cain' ? '#f0a050' : '#c39bd3', letterSpacing: 0.5 },
-                ]}>
-                  {currentNode.title}
-                </Text>
-              </Animated.View>
-
-              {currentNode.speaker && (
-                <View style={styles.speakerBadge}>
-                  <View style={styles.speakerLine} />
-                  <Text style={styles.speakerText}>{currentNode.speaker}</Text>
-                  <View style={styles.speakerLine} />
-                </View>
-              )}
-
-              <Text style={[styles.narration, isHallucination && styles.hallucinationNarration]}>
-                {currentNode.text}
-              </Text>
-
-              {currentNode.dialogue && (
-                <View style={[styles.dialogueBox, isHallucination && styles.hallucinationDialogueBox]}>
-                  <Text style={styles.dialogueOpenQuote}>{'\u201C'}</Text>
-                  <Text style={[styles.dialogue, isHallucination && styles.hallucinationDialogue]}>
-                    {currentNode.dialogue}
-                  </Text>
-                </View>
-              )}
-
-              {!isHallucination && !isCompanionEvent && (state.companions.mira.present && state.companions.mira.alive ||
-                state.companions.cain.present && state.companions.cain.alive) && (
-                <View style={styles.companionStrip}>
-                  {state.companions.mira.present && state.companions.mira.alive && (
-                    <View style={[styles.companionTag, { borderColor: 'rgba(155,89,182,0.25)' }]}>
-                      <View style={[styles.companionDot, { backgroundColor: '#9b59b6' }]} />
-                      <Text style={styles.companionName}>MIRA</Text>
-                    </View>
-                  )}
-                  {state.companions.cain.present && state.companions.cain.alive && (
-                    <View style={[styles.companionTag, { borderColor: 'rgba(230,126,34,0.25)' }]}>
-                      <View style={[styles.companionDot, { backgroundColor: '#e67e22' }]} />
-                      <Text style={styles.companionName}>CAIN</Text>
-                    </View>
-                  )}
-                </View>
-              )}
+              {/* Centered story / choices column */}
+              <View style={styles.desktopStoryColumn}>
+                <ScrollView
+                  style={styles.scroll}
+                  contentContainerStyle={[
+                    styles.scrollContent,
+                    styles.desktopScrollContent,
+                    { paddingBottom: botPad + 30 },
+                  ]}
+                  showsVerticalScrollIndicator={false}
+                  keyboardShouldPersistTaps="handled"
+                  overScrollMode="auto"
+                >
+                  {renderStoryColumn(true)}
+                </ScrollView>
+              </View>
             </View>
+          ) : (
+            <>
+              <View style={{ paddingTop: topPad }}>
+                <StatBar
+                  health={state.stats.health}
+                  maxHealth={state.stats.maxHealth}
+                  hunger={state.stats.hunger}
+                  thirst={state.stats.thirst}
+                  morale={state.stats.morale}
+                  corruption={state.stats.corruption}
+                  onStats={() => setScreen('stats')}
+                  onInventory={() => setScreen('inventory')}
+                  onCompanions={() => setScreen('companions')}
+                  onFactions={() => setScreen('factions')}
+                  onHistory={() => setScreen('history')}
+                />
+              </View>
 
-            {/* ── Survival warning strip ─────────────────────────────── */}
-            {!isEndingNode && !isHallucination && !isCompanionEvent && (
-              <SurvivalWarningStrip warnings={survivalWarnings} />
-            )}
-
-            {/* ── Choices glass panel ────────────────────────────────── */}
-            <View style={[
-              styles.choicesPanel,
-              isHallucination && styles.hallucinationChoicesPanel,
-              isCompanionEvent && { backgroundColor: currentNode.speaker === 'Cain' ? 'rgba(40,20,0,0.92)' : 'rgba(25,10,35,0.92)' },
-            ]}>
-              <View style={[
-                styles.choicesTopAccent,
-                isHallucination && styles.hallucinationTopAccent,
-                isCompanionEvent && { backgroundColor: currentNode.speaker === 'Cain' ? 'rgba(230,126,34,0.45)' : 'rgba(155,89,182,0.35)' },
-              ]} />
-
-              {isTerminalNode && (
-                <View style={styles.terminalNode}>
-                  <View style={styles.terminalDivider}>
-                    <View style={styles.terminalLine} />
-                    <Feather name="bookmark" size={12} color="#6a5e70" />
-                    <View style={styles.terminalLine} />
-                  </View>
-                  <Text style={styles.terminalText}>
-                    To be continued — Chapter 2: The Descent
-                  </Text>
-                  <Pressable style={styles.returnBtn} onPress={() => setScreen('mainMenu')}>
-                    <Text style={styles.returnBtnText}>RETURN TO MAIN MENU</Text>
-                    <Feather name="arrow-right" size={12} color="#9b59b6" />
-                  </Pressable>
-                </View>
-              )}
-
-              {!isTerminalNode && !isEndingNode && (
-                <>
-                  {availableChoices.map(({ choice, met, reasons }) => (
-                    <ChoiceButton
-                      key={choice.id}
-                      choiceId={choice.id}
-                      text={choice.text}
-                      met={met}
-                      reasons={reasons}
-                      flavorText={choice.flavorText}
-                      diceCheck={choice.diceCheck}
-                      onPress={() => {
-                        if (choice.diceCheck) {
-                          initiateDiceRoll(choice.id);
-                        } else {
-                          makeChoice(choice.id);
-                        }
-                      }}
-                    />
-                  ))}
-                  {availableChoices.length === 0 && (
-                    <Text style={styles.noChoices}>
-                      No available choices. Check your stats and inventory.
-                    </Text>
-                  )}
-                </>
-              )}
-
-              {!isHallucination && (
-                <Pressable style={styles.menuBtn} onPress={() => setScreen('settings')}>
-                  <Feather name="menu" size={11} color="#3a3048" />
-                  <Text style={styles.menuBtnText}>MENU</Text>
-                </Pressable>
-              )}
-            </View>
-          </ScrollView>
+              <ScrollView
+                style={styles.scroll}
+                contentContainerStyle={[styles.scrollContent, { paddingBottom: botPad + 20 }]}
+                showsVerticalScrollIndicator={false}
+                keyboardShouldPersistTaps="handled"
+                overScrollMode="auto"
+              >
+                {renderStoryColumn(false)}
+              </ScrollView>
+            </>
+          )}
         </View>
 
         {showBanner && <ChapterBanner key={currentNode.chapter} chapter={currentNode.chapter} />}
@@ -481,6 +535,8 @@ export default function StoryPanel() {
           onCommit={(result) => commitDiceRoll(pendingDiceRoll.choiceId, result)}
         />
       )}
+
+      <SaveNotification visible={saveNotification} />
     </>
   );
 }
@@ -611,6 +667,74 @@ const bannerStyles = StyleSheet.create({
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
+  desktopContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    height: '100%',
+  },
+  desktopLayout: {
+    flexDirection: 'row',
+    width: '100%',
+    maxWidth: 1240,
+    height: '100%',
+    paddingHorizontal: 24,
+    paddingVertical: 18,
+    gap: 24,
+    alignSelf: 'center',
+  },
+  desktopSidebar: {
+    width: 320,
+    height: '100%',
+    borderRadius: 8,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: 'rgba(155, 89, 182, 0.25)',
+    backgroundColor: 'rgba(12, 10, 20, 0.9)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.5,
+    shadowRadius: 16,
+  },
+  desktopStoryColumn: {
+    flex: 1,
+    height: '100%',
+    maxWidth: 860,
+  },
+  desktopScrollContent: {
+    gap: 16,
+    paddingTop: 8,
+  },
+  desktopStorySection: {
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: 'rgba(155, 89, 182, 0.22)',
+    backgroundColor: 'rgba(14, 12, 24, 0.92)',
+    paddingHorizontal: 36,
+    paddingTop: 32,
+    paddingBottom: 28,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.4,
+    shadowRadius: 12,
+  },
+  desktopNodeTitle: {
+    fontSize: 23,
+    lineHeight: 30,
+  },
+  desktopChoicesPanel: {
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: 'rgba(155, 89, 182, 0.22)',
+    backgroundColor: 'rgba(14, 12, 24, 0.94)',
+    paddingHorizontal: 28,
+    paddingVertical: 22,
+    marginTop: 0,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.4,
+    shadowRadius: 12,
+  },
 
   errorState: {
     flex: 1,
@@ -628,9 +752,9 @@ const styles = StyleSheet.create({
 
   storySection: {
     flex: 1,
-    paddingHorizontal: 22,
-    paddingTop: 26,
-    paddingBottom: 20,
+    paddingHorizontal: 24,
+    paddingTop: 28,
+    paddingBottom: 22,
   },
   hallucinationSection: {
     backgroundColor: 'rgba(30,0,50,0.25)',
@@ -678,25 +802,27 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
   },
   narration: {
-    fontSize: 16,
+    fontSize: 16.5,
     color: '#c4a880',
-    lineHeight: 27,
+    lineHeight: 28,
     fontFamily: 'Inter_400Regular',
     marginBottom: 16,
+    letterSpacing: 0.15,
   },
   hallucinationNarration: {
     color: '#d4b8e0',
     fontStyle: 'italic',
-    lineHeight: 28,
+    lineHeight: 29,
+    letterSpacing: 0.2,
   },
   dialogueBox: {
     backgroundColor: 'rgba(155,89,182,0.06)',
-    borderLeftWidth: 2,
-    borderLeftColor: 'rgba(155,89,182,0.32)',
-    paddingLeft: 16,
-    paddingRight: 12,
-    paddingTop: 14,
-    paddingBottom: 12,
+    borderLeftWidth: 2.5,
+    borderLeftColor: 'rgba(155,89,182,0.35)',
+    paddingLeft: 18,
+    paddingRight: 14,
+    paddingTop: 16,
+    paddingBottom: 14,
     marginBottom: 16,
     borderRadius: 2,
     position: 'relative',
@@ -713,11 +839,12 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   dialogue: {
-    fontSize: 15,
+    fontSize: 15.5,
     color: '#e8d5b0',
-    lineHeight: 24,
+    lineHeight: 25,
     fontFamily: 'Inter_400Regular',
     fontStyle: 'italic',
+    letterSpacing: 0.1,
   },
   hallucinationDialogue: {
     color: '#e0c8f0',
@@ -749,10 +876,10 @@ const styles = StyleSheet.create({
   // ── Choices panel ────────────────────────────────────────────────────────
 
   choicesPanel: {
-    backgroundColor: 'rgba(5,3,14,0.95)',
+    backgroundColor: 'rgba(5,3,14,0.96)',
     borderTopWidth: 1,
-    borderTopColor: 'rgba(155,89,182,0.1)',
-    paddingHorizontal: 14,
+    borderTopColor: 'rgba(155,89,182,0.12)',
+    paddingHorizontal: 16,
     paddingBottom: 4,
   },
   hallucinationChoicesPanel: {

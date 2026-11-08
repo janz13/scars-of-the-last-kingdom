@@ -89,6 +89,25 @@ export default function DiceRollOverlay({ diceCheck, choiceText, state, onCommit
     };
   }, []);
 
+  // Web keyboard advance listener for Space / Enter
+  useEffect(() => {
+    if (Platform.OS !== 'web' || typeof window === 'undefined') return;
+
+    const handleAdvance = (e: Event) => {
+      e.preventDefault();
+      if (phase === 'revealed') {
+        onCommit(result);
+      } else {
+        if (tickRef.current) clearTimeout(tickRef.current);
+        setDisplayNum(result.roll);
+        setPhase('revealed');
+      }
+    };
+
+    window.addEventListener('dice-roll-advance', handleAdvance);
+    return () => window.removeEventListener('dice-roll-advance', handleAdvance);
+  }, [phase, result, onCommit]);
+
   // ── Luck reroll ────────────────────────────────────────────────────────────
   function handleLuckReroll() {
     if (rerolling) return;
@@ -122,6 +141,8 @@ export default function DiceRollOverlay({ diceCheck, choiceText, state, onCommit
   const modSign = result.modifier >= 0 ? '+' : '';
   const label = DICE_STAT_LABELS[diceCheck.stat];
   const fullStat = DICE_STAT_FULL[diceCheck.stat];
+  const isSuccess = result.outcome === 'success' || result.outcome === 'criticalSuccess';
+  const isCrit = result.outcome === 'criticalSuccess' || result.outcome === 'criticalFailure';
 
   return (
     <Animated.View style={[styles.backdrop, { opacity: opacityAnim }]}>
@@ -129,8 +150,8 @@ export default function DiceRollOverlay({ diceCheck, choiceText, state, onCommit
 
         {/* ── Header ── */}
         <View style={styles.header}>
-          <View style={styles.diceTypeBadge}>
-            <Text style={styles.diceTypeText}>{diceCheck.diceType.toUpperCase()}</Text>
+          <View style={[styles.diceTypeBadge, { borderColor: `${color}40` }]}>
+            <Text style={[styles.diceTypeText, { color }]}>{diceCheck.diceType.toUpperCase()}</Text>
           </View>
           <Text style={styles.statLabel}>{fullStat.toUpperCase()} CHECK</Text>
           <Text style={styles.dcLabel}>DC {diceCheck.difficulty}</Text>
@@ -142,6 +163,9 @@ export default function DiceRollOverlay({ diceCheck, choiceText, state, onCommit
         {/* ── Dice face ── */}
         <View style={styles.diceArea}>
           <Animated.View style={[styles.diceFace, { borderColor: color, transform: [{ scale: scaleAnim }] }]}>
+            {phase === 'revealed' && isSuccess && (
+              <View style={[styles.diceGlow, { backgroundColor: color }]} />
+            )}
             <Text style={[styles.diceNumber, { color }]}>{displayNum}</Text>
           </Animated.View>
         </View>
@@ -164,6 +188,9 @@ export default function DiceRollOverlay({ diceCheck, choiceText, state, onCommit
               <Text style={[styles.outcomeText, { color }]}>
                 {outcomeLabel(result.outcome)}
               </Text>
+              {isCrit && (
+                <Feather name="zap" size={10} color={color} style={{ marginLeft: 4 }} />
+              )}
             </View>
 
             {/* Stat info */}
@@ -289,6 +316,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'rgba(155,89,182,0.06)',
+    overflow: 'hidden',
+  },
+  diceGlow: {
+    position: 'absolute',
+    width: 140,
+    height: 140,
+    borderRadius: 70,
+    opacity: 0.12,
+    alignSelf: 'center',
   },
   diceNumber: {
     fontSize: 44,
@@ -322,6 +358,8 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     paddingHorizontal: 16,
     paddingVertical: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   outcomeText: {
     fontSize: 13,

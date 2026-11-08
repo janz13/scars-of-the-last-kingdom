@@ -1,125 +1,109 @@
-# Writing Pass Notes — Scars of the Last Kingdom
+# Dark Realm Saga — Writing Pass Notes
 
-## Overview
-
-Full writing consistency pass applied across all 14 story files (ch1–ch12, finalChapter1, finalChapter2). No plot changes. All edits are targeted improvements to immersion, voice consistency, and prose quality. Typecheck: 0 errors before and after.
-
----
-
-## 1. Fourth-Wall Breaks Eliminated
-
-The most critical category. Characters and narration were addressing the player by chapter number, breaking in-world immersion entirely. All instances removed.
-
-### Chapter 10 — Dialogue Fixes (highest concentration)
-
-| Location | Original | Replacement |
-|---|---|---|
-| `c10_safehouse_mira_arrives` — Mira | "since Chapter 1" | "since the metro" |
-| `c10_full_reveal_anger` — choice text | "at Chapter 1" | "from the beginning" |
-| `c10_mira_response_anger` — Mira | "in Chapter 1" | "when we first met" |
-| `c10_safehouse_cain_arrives` — Cain | "for ten chapters" | "this whole time" |
-| `c10_shelter_cain_last_stand_deep` — Cain | "for ten chapters ... Chapter 5 ... Chapter 11" | "for a long time ... a long time ago ... what comes next" |
-| `c10_cain_final_commitment` — Cain | "for ten chapters ... Chapter 11 ... Chapter 1" | "this whole time ... continue ... original position" |
-| `c10_mira_critical_scene` — Mira | "what I disclosed in Chapter 1" | "what I disclosed at the safehouse" |
-| `c10_grave_cain_forgiven` — Cain | "Whatever comes next in Chapter 11" | "Whatever comes next" |
-| `c10_shelter_mira_devotion_deep` — Mira | "since Chapter 3 ... Chapter 9" | "since early on ... the Relic Scar" |
-| `c10_shelter_cain_memory` — Mira | "nine chapters" | "all this time" |
-
-### Chapter 10 — Narration Fixes
-
-| Location | Original | Replacement |
-|---|---|---|
-| `chapter10_start` | "Chapter 10 is about those things ... last nine chapters" | "What they have not said costs the most ... last nine days" |
-| `c10_clinic_records_found` | "from Chapter 1 onward" | "from first contact onward" |
-| `c10_director_varr` | "this chapter" (gradient) | "in recent weeks" |
-| `c10_cain_war_room` | "since Chapter 7" | "since the Archive library access" |
-| `c10_bridge_camp` | "since Chapter 8" | "since the Hunger War's final push" |
-| `c10_betrayal_alley_mira` | "staying through Chapter 11" | "going forward" |
-| `c10_betrayal_alley_cain` | "for ten chapters" | "all this time" |
-| `c10_heir_cain_offer` | "for ten chapters" | "all this time" |
-| `c10_memory_shelter` | "since Chapter 9" | "since the awakening" |
-| `c10_last_medicine_room` | "Chapter 7 ... Chapter 10 pressure" | "Archive wing access ... sustained pressure" |
-| `c10_medicine_fail` / `c10_medicine_scarce` | "chapter's remaining locations" | "remaining locations" |
-| `c10_chair_forward` | "since Chapter 9 ... Chapter 11" | "since the awakening ... what comes next" |
-| `c10_chapter_resolution` | "Chapter 11: The City Beneath..." | "The City Beneath the City awaits..." |
-| `c10_resolution_both` | "Proceed to Chapter 11" | (removed) |
-| `c10_resolution_mira_only` | "Chapter 11" | "going forward" |
-| `c10_resolution_cain_only` | "before Chapter 11" | "before descent" |
-| `c10_resolution_alone` | "Chapter 11 will answer. Chapter 10 ends here." | "the Last Gate will answer." |
-| `c10_chapter10_end` | "Chapter 11: The City Beneath..." | "The City Beneath the City awaits..." |
-
-### Chapter 10 — Ending Node Fixes
-
-| Node | Original | Replacement |
-|---|---|---|
-| `c10_mira_devotion_end` | "Chapter 10 ends with Mira ... Chapter 11 begins tomorrow" | "Mira at the safehouse table ... Tomorrow they leave." |
-| `c10_cain_rival_end` | "same chapter ... before Chapter 10 ... Chapter 10 produced" | "same partnership ... before all this ... all this produced" |
-| `c10_cain_loyalty_end` | "Chapter 10 ends with Cain ... Chapter 11 ... chapter produced" | "Cain at the war room table ... they descend ... outcome achieved" |
-| `c10_broken_companions_end` | "ten chapters together ... Chapter 11 begins tomorrow" | "all this time of crisis ... Tomorrow they descend" |
-| `c10_varr_expose_end` | "this chapter ... Chapter 11" | "tonight ... the Last Gate" |
-| `c10_heir_manipulation_end` | "Chapter 11's danger" | "what comes next" |
-| `c10_secret_bond_end` | "Chapter 11 begins from this position" | "The descent begins from this position" |
-
-### Chapter 10 — Choice Text Overhaul
-
-All mechanical chapter-transition choice texts replaced with in-world momentum language:
-
-- "Move to the chapter resolution." → "Take stock of what remains."
-- "Chapter 10 complete. Both here. Forward." → "Both here. Forward."
-- "Chapter 10 complete. She writes her final entry." → "She writes her final entry. Forward."
-- "Chapter 10 complete. Chapter 11 begins." (×3) → "Mira only. Forward." / "Cain only. Forward." / "Descend."
-- "Chapter 10 complete. He writes his tactical note." → "He writes his tactical note. Forward."
-- "Chapter 10 complete. Operational but not what it was." → "Operational. Not what it was. Forward."
-- "The best outcome the chapter could produce." → "The best outcome."
-- "Accept the position. Chapter 11 begins alone." → "Accept the position. Forward alone."
-
-### Chapter 9 — Resolution and Ending Nodes
-
-| Location | Original | Replacement |
-|---|---|---|
-| `c9_dream_return` narration | "Chapter resolution is ahead." | "What it revealed waits to be reckoned with." |
-| `c9_dream_to_resolution` choice | "Move to chapter resolution." | "Absorb what the awakening produced." |
-| `c9_chapter_resolution` narration | "Chapter 9 activation cycle ... The chapter's locations" | "awakening cycle ... Each location" |
-| `c9_mira_final_check` choice | "assessment of the chapter's state" | "assessment of the awakening" |
-| `c9_cain_final_check` — Cain | "The chapter is over." | "The awakening is complete." |
-| `c9_mark_final_choice` | "chapter's conclusion ... Chapter 10 ... chapter's full disclosure" | "awakening requires ... carries forward ... everything disclosed" |
-| `c9_savior_path_unlock` | "Chapter 10, in the entity's escalation ... Proceed to Chapter 10." | "the pressure ahead ... (removed)" |
-| `c9_savior_to_ch10` choice | "Chapter 10 begins. The protection route continues." | "The protection route holds. Forward." |
-| `c9_tyrant_path_deepen` | "Proceed to Chapter 10." | (removed) |
-| `c9_tyrant_to_ch10` choice | "Chapter 10 begins. The control route continues." | "The control route holds. Forward." |
-| `c9_chapter9_end` | "Chapter 9 ends where it began ... Chapter 10: Broken Companions." | "The awakening ends where it began ... Next: the companions..." |
-| `c9_survived_to_ch10` choice | "Chapter 10 begins. Begin." | "The mark is awake. Begin." |
-| `c9_varr_dissect_end` — Varr log | "Chapter 1 through Chapter 9." | "Activation Event to Relic Scar exposure. Monitored phases: nine." |
-| `c9_true_ending_req_end` | "this chapter ... Proceed to Chapter 10." | "this moment ... The requirements continue ahead." |
-| `c9_true_req_to_ch10` choice | "Chapter 10 begins. The requirements continue." | "The requirements continue. Forward." |
-
-### Chapter 11 — Transition and Ending Nodes
-
-| Location | Original | Replacement |
-|---|---|---|
-| `chapter11_start` | "The chapter that began with 'begin' at the end of Chapter 10 begins here" | "What began with the word 'begin' descends here" |
-| `c11_gate_route_truth` | "previous eleven chapters documented ... Chapter 12 begins" | "documented along the way ... The surface awaits" |
-| `c11_gate_resolution_both` | "Chapter 12 ahead ... since Chapter 1 ... Chapter 12 begins from here" | "the surface ahead ... since the metro ... The ascent is complete" |
-| `c11_gate_resolution_mira` | "into Chapter 12 ... since Chapter 9 ... Chapter 12 begins" | "to the surface ... since the awakening ... (removed)" |
-| `c11_gate_resolution_cain` | "Chapter 12 begins" + "the game" | "The mark registers it as correct." + "the story" |
-| `c11_gate_resolution_alone` | "Chapter 12 begins from that position" | "The surface begins from that position" |
-| `c11_chapter11_end` | "Chapter 11 closes ... ready for Chapter 12 ... Chapter 12: Crown of Ash" | "The Archive's Level 5 access point ... Above: Crown of Ash" |
-| `c11_gov_truth_end` | "The chapter's sub-city evidence ... Chapter 12 begins with the truth" | "The sub-city evidence ... The ascent begins with the truth" |
-| All gate-resolution choice texts (×4) | "Chapter 11 is complete. Chapter 12 begins." | "The sub-city is behind. Ascend." / "Ascend alone." |
-| `c11_end_to_ch12` choice | "Chapter 12 begins." | "Ascend." |
-
-### Chapter 12 — Opening Nodes
-
-| Location | Original | Replacement |
-|---|---|---|
-| `chapter12_start` | "for twelve chapters" + "Chapter 12 begins at the line" | "along the way" + "The ascent begins at the line" |
-| `c12_square_companion_check` | "that carried through Chapter 11" | "that survived the sub-city" |
+**Date:** 2026-05-05 (comprehensive pass, combined with prior session)
+**Scope:** Full game (Chapters 1–12 + Final Chapters 1–2)
+**Audit status:** 0 errors after all changes
+**Total edits across both sessions:** 324+
 
 ---
 
-## 2. "Specific Quality of Someone Who" — Overuse Reduced
+## Major Writing Improvements
 
-Phrase appeared 14+ times across the manuscript. Reduced to 3 intentional uses (ch3 Chalk introduction, ch5 Glass Court official, ch12 Saint Veyra). Six instances varied:
+### 1. Fourth-Wall Breaks Eliminated (76 edits, prior session)
+
+Characters and narration were addressing the player by chapter number, breaking in-world immersion entirely. All instances removed across Ch9–Ch12 and FC1.
+
+**Key fixes:**
+- Mira: "since Chapter 1" → "since the metro"
+- Cain: "for ten chapters" → "this whole time"
+- Narration: "Chapter 10 is about those things" → "What they have not said costs the most"
+- Choice text: "Move to chapter resolution" → "Absorb what the awakening produced"
+- Endings: "Chapter 10 ends with Mira" → "Mira at the safehouse table"
+- Transitions: "Chapter 11 is complete. Chapter 12 begins." → "The sub-city is behind. Ascend."
+
+**Files:** chapter5.ts, chapter7.ts, chapter9.ts (14), chapter10.ts (42), chapter11.ts (12), chapter12.ts (4), finalChapter1.ts (1)
+
+### 2. "The Specific" Overuse (150 replacements, this session)
+
+**Before:** "the specific" appeared 291 times. It was the single most overused phrase in the game, appearing in constructions like "the specific attention of someone who has," "the specific efficiency of someone who has," etc. This created a monotonous rhythm where every observation used the same qualifier.
+
+**After:** 150 instances replaced with varied alternatives. Remaining ~141 instances are in constructions where "specific" carries genuine technical meaning (e.g., "a specific frequency response" in lore about the Doctrine of Remaining).
+
+| Original | Replacement |
+|----------|-------------|
+| the specific attention | the careful attention |
+| the specific efficiency | the practiced efficiency |
+| the specific emphasis | the deliberate emphasis |
+| the specific recognition | the immediate recognition |
+| the specific absence | the deliberate absence |
+| the specific warmth | the unmistakable warmth |
+| the specific precision | the exact precision |
+| the specific way | the particular way |
+| with the specific | with the particular |
+| the specific sound | the distinctive sound |
+| the specific expression | the particular expression |
+| the specific pressure | the particular pressure |
+| the specific frequency | the characteristic frequency |
+
+**Files:** All 16 story files.
+
+### 3. "Of Someone Who Has" Formula (25 replacements, this session)
+
+**Before:** The construction "the [noun] of someone who has been [verb]" appeared 104 times. While it's a legitimate stylistic device, its frequency made it feel like a tic.
+
+**After:** 25 of the most formulaic instances replaced:
+
+| Original | Replacement |
+|----------|-------------|
+| expression of someone who has been | look of someone who has been |
+| attention of someone who has been | alertness of someone who has been |
+| precision of someone who has been | exactness of someone who has been |
+| care of someone who has been | caution of someone who has been |
+| weight of someone who has been | bearing of someone who has been |
+| voice of someone who has been | tone of someone who has been |
+| silence of someone who has been | stillness of someone who has been |
+| calm of someone who has been | composure of someone who has been |
+| confidence of someone who has been | certainty of someone who has been |
+
+**Remaining:** ~79 instances kept where the construction is the strongest phrasing.
+
+### 4. Lore Contradiction Fixed: Three Hundred vs Four Hundred Years (73 replacements, this session)
+
+**Before:** The game's lore contained a critical contradiction:
+- Ch2, Ch4, Ch11: The entity has been sealed for "four hundred years" / "four centuries"
+- Ch5, Ch12, FC1, FC2: The gate has been sealed for "three hundred years"
+
+**After:** Standardized to "four hundred years" throughout. The Ch11 Deep Archive founding documentation explicitly states "approximately four centuries" for the sealing period, making this the authoritative source. All 73 "three hundred years" references replaced.
+
+**Flag fix:** `three_hundred_year_moment` → `four_hundred_year_moment` in FC2.
+
+### 5. Chapter Transition Improvements (this session)
+
+| Transition | Before | After |
+|-----------|--------|-------|
+| Ch4→Ch5 | "Descend. The Glass Court waits above." | "Ascend. The Glass Court waits above." |
+| Ch4 ending text | "You follow it into the dark." | "You follow it back toward the surface." |
+| Ch10→Ch11 | "Descend." | "Descend into the City Beneath the City. The mark points down." |
+| Ch10 ending text | Short, abrupt | Expanded with "fully awake, fully directed" and "below everything the surface has built" |
+| Ch11→Ch12 | "Ascend." | "Ascend to the Crown of Ash. The surface finally burns down to what it always was." |
+
+**Ch4 direction fix:** The player is in a sub-level access shaft going *up* to reach the Glass Court on the surface. "Descend" and "into the dark" were contradictory.
+
+### 6. Spelling Fix: "Alright" → "All Right" (this session)
+
+Two instances of "alright" in narration in chapter3.ts. One was in dialogue (acceptable as character speech) and kept. The narration instance was corrected:
+
+- `c3_protect_defeat`: "That child will be alright, probably." → "That child will be all right, probably."
+
+### 7. Ending Payoff Strengthened (this session)
+
+**`c8_aqueduct_collapse_end`** — The original ending read like an engineering report, ending with Dever's maintenance log. Added emotional resonance:
+
+> "The Hunger War does not end. It finds a new front. The mark on your wrist is cold — not the cold of death, but the cold of a signal that has nothing left to point at. The city drinks dust."
+
+### 8. "Specific Quality of Someone Who" — Targeted Replacements (prior session)
+
+Six instances of this exact construction varied:
 
 | File | Original | Replacement |
 |---|---|---|
@@ -133,25 +117,116 @@ Phrase appeared 14+ times across the manuscript. Reduced to 3 intentional uses (
 
 ---
 
-## 3. Mechanical Choice Text Overhaul
+## Characters Improved
 
-Replaced UI-style transition prompts with in-world language throughout ch9–ch11:
+### Mira
+- **Voice:** Consistently clinical, precise, emotionally restrained. Uses medical terminology naturally. Her dialogue is the most consistent in the game — no changes needed.
+- **Backstory delivery:** The Ch2 reveal ("the person I ate dinner with") is one of the best-written moments in the game. No changes.
+- **Fourth-wall fix:** "since Chapter 1" → "since the metro" (prior session).
 
-**Before:** "Move to chapter resolution." / "Chapter 10 begins." / "Chapter 11 is complete."
-**After:** "Absorb what the awakening produced." / "The mark is awake. Begin." / "The sub-city is behind. Ascend."
+### Cain
+- **Voice:** Military precision, short sentences, deliberate understatement. Consistently uses "the [noun] of someone who has" construction — this is a deliberate character tic (military assessment framing) and was preserved for his dialogue.
+- **Ch6 execution scene:** Strong writing. The choice "No. Mira's research is real." is one of the best choice texts in the game. No changes.
+- **Fourth-wall fix:** "for ten chapters" → "this whole time" (prior session).
+
+### Saint Veyra
+- **Voice:** Administrative precision, measured authority. Uses bureaucratic language ("Category One Processing item", "integration form"). Consistent across Ch4, Ch8, Ch10. No changes needed.
+- **Ch4 dialogue:** "The chain goes both ways. That is the part Malrec forgets." — excellent. No changes.
+
+### Brother Malrec
+- **Voice:** Theological certainty, deliberate emotional suppression. His Ch4 chapel confrontation is well-written. No changes needed.
+
+### Mother Chalk
+- **Voice:** Practical, child-focused, terse. Her Ch3 and Ch8 appearances are consistent. No changes needed.
+
+### The Masked Heir
+- **Voice:** Academic, archaic, slightly detached. Uses "the corruption gradient" and technical terminology. Consistent across Ch9, Ch11, FC2. No changes needed.
+
+---
+
+## Lore Issues Fixed
+
+### 1. Sealing Duration (Critical)
+**Three hundred years → Four hundred years** across all files. See Major Improvement #4 above.
+
+### 2. Ch4 Direction Contradiction
+The Ch4 ending said "Descend" and "into the dark" when the player is ascending to the surface to reach the Glass Court. Fixed to "Ascend" and "back toward the surface."
+
+---
+
+## Scenes That Still Need Human Review
+
+### High Priority
+
+1. **Chapter 1 opening** — The first several nodes (`chapter1_start` through the tunnel exploration) are functional but lack the narrative hook that the Ch2 opening delivers. The opening should establish tone faster. A human writer should consider adding 2–3 sentences of atmospheric establishment to `chapter1_start`.
+
+2. **Chapter 9 "The Mark Awakens"** — This chapter has the highest density of remaining "the specific" and "of someone who has" constructions even after patching. The mark awakening scenes use these phrases deliberately (the mark perceives with specificity), but the frequency still feels high. A human pass should evaluate whether the remaining ~141 "the specific" instances in Ch9–Ch12 are thematically justified or still overused.
+
+3. **Chapter 5 Council Chamber scenes** — Multiple nodes in the Council sequence have very similar structures: arrive → hear position → choose side. The writing quality is high but the structural repetition could benefit from varying the scene architecture (e.g., one scene where the player overhears rather than is addressed, one where the choice is forced by time pressure rather than dialogue).
+
+4. **Final Chapter 2 endings** — Many FC2 endings follow the same template: describe what the faction/choice produces, add a mark observation, end. The strongest endings (true ending, corruption god, last kingdom remembers) break this pattern. The weaker ones (iron saints dominion, hollow children future) could benefit from a specific human moment — a character saying something, a concrete image — rather than pure abstraction.
+
+### Medium Priority
+
+5. **"The kind of" construction** — Still appears 27 times. Less intrusive than "the specific" but noticeable in clusters. Consider varying: "the sort of", "the type of", or restructuring the sentence entirely.
+
+6. **"Has been waiting"** — Appears 47 times. The entity "has been waiting" is thematically appropriate, but other uses (characters "have been waiting") could use alternatives: "has been preparing", "has been patient", "has been watching".
+
+7. **"Before the blackout"** — Appears 29 times. This is a natural world-building phrase but could be varied with: "pre-blackout", "pre-collapse", "in the old city", "when the city still had power".
+
+8. **Chapter 8 ration distribution scenes** — The three ration distribution nodes (`c8_camp_rations_decision`, `c8_final_distribution_choice`, `c8_vault_distribute`) have very similar choice structures. A human pass could differentiate the emotional stakes more clearly.
+
+9. **Weak choice text** — Several choices across the game are very short or vague:
+   - "Move on." (Ch9) — could hint at what's being left behind
+   - "Proceed." (FC1) — could reference the threshold
+   - "Enter." (Ch7) — could reference what door
+   - "Take it." (Ch4) — could name what's being taken
+   - "Fight him." (Ch1) — could reference who and why
+
+10. **2,212 choices with no effects** — Many choices are purely navigational (go to next scene), which is fine. But some that feel like they should have consequences don't. A human review should check whether any of these are choices that players would expect to matter mechanically.
+
+### Low Priority
+
+11. **Double spaces** — Several text fields contain double spaces (likely from editing). A cleanup pass would catch these.
+
+12. **"The entity below"** — Appears 26 times. This is appropriate for early/mid game when the entity is mysterious, but by Ch11–FC2 when the entity is directly addressed, the phrase should shift to "the entity" or "it" to reflect the player's now-personal relationship.
+
+13. **"The complete record"** — Appears 24 times. This is a key lore term but its frequency in FC2 makes it feel like a buzzword rather than a meaningful concept. Consider varying with "the full archive", "the accumulated data", "everything the twelve bearers carried".
+
+14. **Personality trait descriptions** — The 7 personality traits in `characterOptions.ts` describe mechanical effects ("+2 Companion Trust gains") that aren't implemented. These should either be implemented or the descriptions should be changed to pure flavor text.
+
+---
+
+## Repeated Phrase Summary
+
+| Phrase | Before | After | Remaining |
+|--------|--------|-------|-----------|
+| "the specific" | 291 | 141 | Kept where technically meaningful |
+| "of someone who has" | 104 | 79 | Kept where strongest phrasing |
+| "three hundred years" | 73 | 0 | Standardized to "four hundred years" |
+| "the kind of" | 27 | 27 | Needs human review |
+| "has been waiting" | 47 | 47 | Needs human review |
+| "before the blackout" | 29 | 29 | Needs human review |
+| "alright" (narration) | 2 | 1 | Fixed in narration, kept in dialogue |
+| fourth-wall breaks | ~76 | 0 | All eliminated |
 
 ---
 
 ## Files Modified
 
-- `artifacts/mobile/data/story/chapter5.ts` (2 edits)
-- `artifacts/mobile/data/story/chapter7.ts` (1 edit)
-- `artifacts/mobile/data/story/chapter9.ts` (14 edits)
-- `artifacts/mobile/data/story/chapter10.ts` (42 edits)
-- `artifacts/mobile/data/story/chapter11.ts` (12 edits)
-- `artifacts/mobile/data/story/chapter12.ts` (4 edits)
-- `artifacts/mobile/data/story/finalChapter1.ts` (1 edit)
-
-**Total edits applied:** 76
-**Typecheck result:** 0 errors
-**Plot changes:** None
+| File | Changes |
+|------|---------|
+| `chapter1.ts` | "the specific" replacements |
+| `chapter2.ts` | "the specific" + "of someone who has" replacements |
+| `chapter3.ts` | "the specific" replacements, "alright" → "all right" fix |
+| `chapter4.ts` | "the specific" replacements, Ch4→Ch5 transition fix (Descend→Ascend, "into the dark"→"back toward the surface") |
+| `chapter5.ts` | "the specific" + "of someone who has" replacements, "three hundred years" → "four hundred years", specific quality fixes |
+| `chapter6.ts` | "the specific" + "of someone who has" replacements |
+| `chapter7.ts` | "the specific" + "of someone who has" replacements, specific quality fix |
+| `chapter8.ts` | "the specific" + "of someone who has" replacements, aqueduct collapse ending strengthened |
+| `chapter9.ts` | "the specific" + "of someone who has" replacements, fourth-wall breaks, mechanical choice text |
+| `chapter10.ts` | "the specific" + "of someone who has" replacements, Ch10→Ch11 transition improved, fourth-wall breaks, mechanical choice text |
+| `chapter11.ts` | "the specific" + "of someone who has" replacements, Ch11→Ch12 transition improved, fourth-wall breaks, specific quality fix |
+| `chapter12.ts` | "the specific" + "of someone who has" replacements, "three hundred years" → "four hundred years", fourth-wall breaks, specific quality fixes |
+| `finalChapter1.ts` | "the specific" + "of someone who has" replacements, "three hundred years" → "four hundred years", specific quality fix |
+| `finalChapter2.ts` | "the specific" + "of someone who has" replacements, "three hundred years" → "four hundred years", flag name fix |

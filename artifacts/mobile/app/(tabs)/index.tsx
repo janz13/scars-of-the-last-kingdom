@@ -1,7 +1,8 @@
 import React from "react";
-import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
+import { View, Text, StyleSheet, ActivityIndicator, StatusBar } from "react-native";
 import { useGame } from "@/context/GameContext";
 
+import SplashScreen from "@/components/SplashScreen";
 import ContentWarningScreen from "@/components/ContentWarningScreen";
 import MainMenu from "@/components/MainMenu";
 import CharacterCreator from "@/components/CharacterCreator";
@@ -16,6 +17,7 @@ import SettingsPanel from "@/components/SettingsPanel";
 import ChapterRoadmapScreen from "@/components/ChapterRoadmapScreen";
 import RouteCodexScreen from "@/components/RouteCodexScreen";
 import CreditsScreen from "@/components/CreditsScreen";
+import { useWebKeyboardControls } from "@/hooks/useWebKeyboardControls";
 
 function LoadingScreen() {
   return (
@@ -36,9 +38,21 @@ function UnknownScreen({ screen }: { screen: string }) {
 export default function GameRoot() {
   const { state, isLoading } = useGame();
 
-  if (isLoading) return <LoadingScreen />;
+  // Dark status bar for Android (light text on dark background)
+  return (
+    <>
+      <StatusBar barStyle="light-content" backgroundColor="#04020a" />
+      {isLoading ? <LoadingScreen /> : (
+        <ScreenRouter screen={state.screen} />
+      )}
+    </>
+  );
+}
 
-  switch (state.screen) {
+function ScreenRouter({ screen }: { screen: string }) {
+  switch (screen) {
+    case "splash":
+      return <SplashScreen />;
     case "contentWarning":
       return <ContentWarningScreen />;
     case "mainMenu":
@@ -58,15 +72,16 @@ export default function GameRoot() {
     case "factions":
     case "history":
     case "settings":
-      return <GameScreens screen={state.screen} />;
+      return <GameScreens screen={screen} />;
     case "ending":
       return <EndingScreen />;
     default:
-      return <UnknownScreen screen={state.screen} />;
+      return <UnknownScreen screen={screen} />;
   }
 }
 
 function GameScreens({ screen }: { screen: string }) {
+  useWebKeyboardControls();
   switch (screen) {
     case "game":      return <StoryPanel />;
     case "stats":     return <StatsPanel />;

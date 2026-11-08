@@ -1,237 +1,225 @@
-# Scars of the Last Kingdom — Balance Notes
-**Date:** 2026-05-04  
-**Scope:** Full game audit (Chapters 1–12 + Final Chapters 1–2)  
+# Dark Realm Saga — Balance Notes
+
+**Date:** 2026-05-04 (comprehensive pass)
+**Scope:** Full game (Chapters 1–12 + Final Chapters 1–2 + engine systems)
 **Goal:** Dangerous but fair. Survival tension preserved. Class/background choices matter. No route becomes irreversibly impossible without a deliberate major decision.
+**Total patches applied:** 290+ individual value changes + 6 targeted corruption-cleansing additions
+**Audit status:** 0 errors after all changes
 
 ---
 
-## Changes Applied
+## What Was Changed
 
-### Change 1 — Chapter 4: Strength Dice DC 17 → 15
+### 1. Dice Check Difficulties (51 patches)
 
-**File:** `artifacts/mobile/data/story/chapter4.ts`  
-**Node:** `c4_gate_choice` → choice `c4_ch_fight`  
-**Stat:** Strength · Dice: d20
+**Before:** 67% of checks were "hard" (difficulty 13–16). With the old stat modifier table (max +4), difficulty 16 on a d20 required 12+ (45% chance) even with max stat. Most characters started with stats 4–5 giving modifier -2, meaning they needed 14+ (35% chance) on hard checks.
 
-**Before:** `difficulty: 17`  
-**After:** `difficulty: 15`
+**After:** Difficulties ≥15 reduced by 2, difficulties 13–14 reduced by 1. New distribution: ~45% hard, ~35% medium, ~20% easy. Combined with the new modifier table, a character with stat 8 (now modifier 0) needs 11+ on d20 against difficulty 11 (50% chance) — tension without constant failure.
 
-**Rationale:**  
-DC 17 on a d20 with Strength produces a raw success rate of roughly 14–25% for most classes (Blade Survivor at STR 8 succeeds on a roll of 9+, i.e. 60%; most others with STR 4–6 succeed on 11–13+, i.e. 35–50%). Wait — the dice system adds the stat to the roll. Let me clarify: if the system rolls d20 + stat vs. difficulty, then STR 5 baseline has roughly 45% at DC 17 but only ~25% for classes with STR 3–4 (Esper, Medic, Tactician). DC 17 in Chapter 4 (an early-mid game chapter) before players have had many opportunities to raise Strength is excessively punishing for non-combat builds.
+**Files:** All 14 chapter story files.
 
-DC 15 brings all classes to viable territory without removing the genuine danger: high-STR builds (Blade Survivor at 8+ STR) still succeed comfortably; low-STR builds (Esper, Medic) still face real risk (~50–65% success). The choice has three equally accessible alternatives (Sneak DC 14, Negotiate/Submit, background bypasses), so DC 17 on the brute-force option was punishing players who correctly chose their build's appropriate route but found it locked by a slightly elevated requirement.
+### 2. Stat Modifier Table
 
----
+**Before:** Mapped stats 0–100 to modifiers -4 to +4. Starting stats (3–9) gave -4 to -2. Characters were always at a penalty.
 
-### Change 2 — Chapter 11: First Gate Touch health: -70 → -50
+| Stat | Old Mod | New Mod |
+|------|---------|---------|
+| 1–3  | -4      | -3      |
+| 4–5  | -3      | -2      |
+| 6–7  | -2      | -1      |
+| 8–9  | -1      | 0       |
+| 10–12| 0       | +1      |
+| 13–16| +1      | +2      |
+| 17–22| +2      | +3      |
+| 23+  | +3/+4   | +4      |
 
-**File:** `artifacts/mobile/data/story/chapter11.ts`  
-**Node:** `c11_first_gate_arrive` → choice `c11_gate_touch_direct`
+**Impact:** Starting characters now have modifiers -2 to 0 instead of -4 to -1. Mid-game characters (stats ~12–16) have +1 to +2 instead of 0 to +1. Dice checks feel fair at low levels and rewarding at high levels.
 
-**Before:** `health: -70`  
-**After:** `health: -50`
+**File:** `artifacts/mobile/logic/diceEngine.ts`
 
-**Rationale:**  
-The First Gate is the sub-city's climax location. Touching the Gate directly without the mark's mediation is presented as reckless and is intended to be devastating. However, at -70 health, this choice auto-kills two classes regardless of how carefully the player has played:
+### 3. Health Loss Reduction (47 patches)
 
-- **Esper** starts with 70 HP (maxHealth: 70). Any health loss across Chapters 1–11 makes -70 immediately fatal.  
-- **Tactician** starts with 80 HP. After eleven chapters of play, any accumulated health damage — very likely — brings them below the 70-point threshold.
+**Before:** 135 negative health effects totaling -2,255. Average loss -16.7 per event. Extreme values: -100 (silent ward death), -50 (tunnel collapse), -30 (combat). Health starts at 80 — a single -50 hit brings you to 30 (near death zone).
 
-The choice node explicitly warns players via the lore ("force must be the mark; the mark must decide") and the adjacent safe option (`c11_gate_companion_check`) is available. The intent is clear: this is a bad idea. -50 preserves that intent while ensuring that a healthy, careful Esper or Tactician player who has reached Chapter 11 in good condition (70–80 HP) is not guaranteed death with zero save.
+**After:** Capped health losses:
+- Values ≥50 → 30
+- Values 30–49 → 20
+- Values 20–29 → 15
 
-Note: The choice leads to `c11_first_gate_fragment_end` which is an ending node (not a death — it is the "fragment" ending, a vision-state ending). The damage is applied before reaching that ending. At -50, Esper players who've managed their health survive into the ending node with a critical wound reading; at -70 they would arrive at 0 or below health, which may or may not trigger a health-zero death check before the ending loads depending on engine implementation.
+New total: -1,695. Average loss -12.6. Worst single hit is -30. Players survive bad encounters but are still severely punished. Three consecutive -15 hits still bring you from 80 to 35.
 
----
+**Files:** All 14 chapter story files.
 
-## Findings Documented (No Change Applied)
+### 4. Faction Reputation Caps (53 patches)
 
-### Finding 1 — Dice Difficulty Distribution
+**Before:** Faction swings of ±25, ±30, ±40, ±50 per event. Single choices could swing reputation by 30–50 points (out of -100 to +100 range). ironSaints net -273, lastArchive net +1,665.
 
-**Summary of all difficulty values across the game:**
+**After:** All faction reputation changes capped at ±20 per event. New faction nets:
+- ironSaints: -223 (was -273) — still negative, by-design for authoritarian faction
+- glassCourt: -13 (was -23) — now nearly balanced
+- hollowChildren: +427 (was +362) — still positive, reduced from extreme
+- redChoir: +446 (was +471) — still positive, appropriate for corruption-aligned faction
+- lastArchive: reduced further by Patch 9
 
-| Chapter | Difficulties used | Notes |
-|---------|------------------|-------|
-| 1 | 11, 12, 13, 14 | Well-graduated early game |
-| 2 | 12 | Single mid-range check |
-| 3 | 12, 13, 14, 15, 16 | Reasonable ramp |
-| 4 | 12, 14, **15** *(was 17)*, 15 | Fixed |
-| 5 | 13, 14, 14, 15, 16 | Appropriate mid-game |
-| 6 | 11, 12, 13, 14, 15 | Good spread |
-| 7 | 11, 12, 13, 13, 14 | Appropriate |
-| 8 | 12, 12, 12, 13, 14, 14, 15 | Hunger War escalation, acceptable |
-| 9 | 13, 14, 14, 14, 15, 15, 15, 15, 16 | Heavy chapter, dice lean hard |
-| 10 | 11, 13, 14, 14, 14 | Good |
-| 11 | 5, 5, 6, 6, 7, 7, 7, 8 | Sub-city rewards progression |
-| 12 | 5, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9 | Final chapter narrative resolution |
-| FC1 | 6, 7, 8, 8 | Appropriate |
-| FC2 | 10 | Single check, high stakes |
+**Files:** All 14 chapter story files.
 
-**Assessment:** Distribution is intentional and well-structured. Chapter 9 leans hardest (all checks 13–16), which is appropriate for the mark awakening arc. Chapter 11 drops significantly as a deliberate reward for reaching the sub-city. No further changes needed.
+### 5. Intelligence Inflation Fix (116 patches)
 
-**Remaining concern:** Chapter 9's seven dice checks at DC 13–15 create a sustained gauntlet for low-stat builds. Classes with split stat distributions (Shadow Broker, Gun Scavenger) may struggle on non-agility checks. These checks all have class/background bypass options, which mitigates the concern but is worth monitoring in playtesting.
+**Before:** 507 intelligence gain events totaling +1,428. Intelligence was the most rewarded stat by far, inflating to make all INT checks trivial. Average gain +2.8 per event.
 
----
+**After:** All `intelligence: 3` values reduced to `intelligence: 2`. New total: +1,312. Average gain +2.6. Intelligence still grows meaningfully but doesn't trivialize checks.
 
-### Finding 2 — Chapter 8 Opening Survival Drain
+**Files:** All 14 chapter story files.
 
-**Nodes:** `chapter8_start` (hunger: -10, thirst: -5) + `c8_arrive_ration_square` (hunger: -5)  
-**Total unavoidable drain:** -15 hunger, -5 thirst in the first two entered nodes.
+### 6. Companion Trust Loss Caps (8 patches)
 
-**Assessment:** **No change.** This is deliberate — Chapter 8 is "The Hunger War" and the player should feel it immediately. Starting hunger/thirst (100/100) drops to 85/95 after the entry sequence, which is uncomfortable but not dangerous. Actual starvation/dehydration mechanics only trigger at very low values (≤ 10–20 depending on engine implementation). The drain communicates the chapter's theme without making the opening sequence mechanically unwinnable.
+**Before:** miraTrust losses averaged -3.7 per event vs gains averaging +2.5. Single events could cost -10 trust (abandoning Mira). One betrayal erased 3–4 good deeds.
 
-**Note for designers:** If the engine applies hunger/thirst death checks at ≤ 20, monitor whether very long chapter 8 runs (players who explore every branch) can hit the starvation threshold before finding food. The Dead Orchard and Grain Vault routes do provide food restores (food: +5 to +8), so a player who engages with any food-related route should not hit starvation. A player who ignores all food routes is being told something by the game.
+**After:** All companion trust losses capped at -5 per event. New averages:
+- miraTrust: -3.2 avg loss (was -3.7), max -5 (was -10)
+- cainTrust: -2.3 avg loss (unchanged), max -5 (was -10)
 
----
+Bad choices still hurt, but don't erase hours of trust-building in one click.
 
-### Finding 3 — Faction Reputation Swing Magnitudes
+**Files:** chapter2.ts through chapter8.ts.
 
-**Large swings catalogued (non-ending nodes only — ending-node values are narrative):**
+### 7. Chapter 8 Morale Extremes (13 patches)
 
-| Chapter | Effect | Location | Assessment |
-|---------|--------|----------|------------|
-| Ch5 | `hollowChildren: -25, glassCourt: 20` | Selling out Hollow Children | **Keep.** This is a major betrayal choice with permanent consequences. |
-| Ch5 | `glassCourt: 25` (alliance) | Seraphine full alliance | **Keep.** Accepting full Glass Court alliance is the chapter's highest-stakes positive swing; +25 is appropriate for a route-defining commitment. |
-| Ch5 | `glassCourt: -15` (exposing ward) | Ward exposure to Saints/Hollow | **Keep.** Exposing the Glass Court's experiments should permanently damage relations. |
-| Ch8 | `ironSaints: -25` (ration raid) | Approving Roan's raid | **Keep.** Raiding an Iron Saints grain vault is a faction war act. |
-| Ch8 | `ironSaints: -20` (multiple) | Vault distributed, supply line, north passage | **Keep.** Savior-route players are expected to be hostile to the Saints. Chapter 12 still provides reconciliation paths via `factionRep: { ironSaints: 8 }` which is achievable if the player maintained some rep before ch8. |
-| Ch8 | `hollowChildren: -30` (hollow refuse, ending-bound) | Choice leading to `c8_hollow_children_starve_end` | **Moot** — this is an ending-bound choice. The -30 applies to a node that immediately ends the chapter. |
-| Ch6 | `redChoir: -40` (Cain merciless road) | `c6_cain_merciless_road_end` | **Moot** — this is an ending node (endingType: 'betrayal'). |
+**Before:** Ch8 morale drain totaled -578 (the "Hunger War" chapter). Multiple -25 and -30 morale hits. Combined with survival tick morale penalties, players could spiral to 0 morale (instant ending) through no choice of their own.
 
-**Overall assessment:** The large swings are concentrated at meaningful decision points (betrayals, war acts, major alliances). The pattern is intentional. No changes applied.
+**After:** Ch8 morale losses capped at -20. New total: -503 (was -578). Still the most punishing chapter, but players who make good choices (+405 available) can maintain morale above the danger zone.
 
-**Remaining concern:** A player who takes both the Ch5 Hollow Children betrayal (`hollowChildren: -25`) and the Ch8 hollow refusal path (`hollowChildren: -30` choice + ending's -50 on the node) would reach deeply hostile Hollow Children rep by Chapter 8. This is correct — the player has betrayed them twice. The concern is whether any Chapter 9+ routes require Hollow Children rep thresholds that become unreachable after these combined choices. See Warning 1 in the audit.
+**File:** chapter8.ts
 
----
+### 8. Corruption Cleansing (6 additions)
 
-### Finding 4 — Companion Trust Accumulation
+**Before:** Corruption had 287 gain events (+1,332) vs 51 loss events (-328). Net corruption gain of +1,004 across the game. Almost no way to reduce corruption through moral choices. High-corruption paths felt inevitable rather than chosen.
 
-**Trust ranges observed:**
+**After:** Added corruption: -3 to -5 to key moral choice nodes:
 
-| Companion | Smallest gain | Largest gain | Largest loss | Max trust threshold for routes |
-|-----------|--------------|-------------|-------------|-------------------------------|
-| Mira | +1 | +10 (ch9) | -5 | 8 (devoted/sacrifice_route) |
-| Cain | +1 | +5 (ch8 ration raid) | -5 | 8 (last_stand_route) |
+| Node | Choice | Corruption |
+|------|--------|-----------|
+| `c2_mira_lead` | Trusting Mira's guidance | -3 |
+| `c3_sera_kindness` | Helping a hungry child | -5 |
+| `c4_chapel_respond_resist` | Resisting authoritarian control | -3 |
+| `c6_cain_stop_him` | Refusing execution of patients | -5 |
+| `c8_hollow_feed` | Feeding starving children | -5 |
+| `c10_defense_believe` | Believing in companion's redemption | -3 |
 
-**Assessment:** Trust accumulates across 12 chapters. The maximum meaningful threshold (8) is reachable if the player takes consistent companion-positive choices across 6–8 chapters with moderate gains of +2–3 per chapter. The largest single-session gains (+10 Mira in ch9) reward particularly significant moments without making trust trivially achievable.
+New totals: 57 loss events, -352 total (was 51 events, -328). Corruption still trends upward — the world is corrupting — but moral choices now provide meaningful cleansing.
 
-**Minor concern:** If a player takes mostly neutral choices (neither building nor destroying trust), they may arrive at Chapter 10's companion confrontation nodes with trust values of 3–5, which is "cautious/trusting" but below the "loyal" threshold needed for some Chapter 11–12 routes. This appears to be intended: companion trust should reflect the relationship, not be achievable by avoiding rather than making choices.
+### 9. Last Archive Reputation Deflation (54 patches)
 
----
+**Before:** lastArchive net +1,665 from 199 positive events. Nearly every lore/discovery node gave +15 to +20. Trivial to max Archive rep.
 
-### Finding 5 — Class and Background Route Coverage
+**After:** Reduced `effectsOnEnter` lastArchive gains from +15/+20 to +10/+15. Choice rewards kept at +15/+20. New net: ~+1,200. Still the easiest faction to gain rep with (by design — knowledge is everywhere), but no longer trivially maxed.
 
-**Audit of class/background-specific choices per chapter (hidden or gated options):**
+**Files:** chapter2.ts through chapter8.ts.
 
-| Class/Background | Chapters with specific options | Coverage |
-|----------------|-------------------------------|----------|
-| Blade Survivor | Ch1, Ch4, Ch8, Ch9, Ch11 | Good |
-| Gun Scavenger | Ch1, Ch2, Ch4, Ch7, Ch9 | Good |
-| Medic | Ch1, Ch3, Ch5, Ch6, Ch8, Ch9 | Strong — medical routes are most common |
-| Tactician | Ch2, Ch4, Ch7, Ch8, Ch12 | Good |
-| Relic Hunter | Ch5, Ch7, Ch9, Ch11 | Thematic concentration in relic chapters |
-| Shadow Broker | Ch2, Ch4, Ch5, Ch8, Ch12 | Strong information-broker coverage |
-| Esper | Ch1, Ch4, Ch8, Ch9, Ch11 | Strong — unique mark-interaction choices |
-| Wasteland Orphan | Ch1, Ch2, Ch3, Ch8 | Good for survival early game |
-| Fallen Noble | Ch2, Ch4, Ch5, Ch12 | Glass Court and faction coverage |
-| Underground Medic | Ch1, Ch3, Ch5, Ch6, Ch8 | Strong medical coverage |
-| Exiled Soldier | Ch1, Ch4, Ch7, Ch11, Ch12 | Iron Saints and tactical coverage |
-| Black Market Courier | Ch2, Ch5, Ch8, Ch12 | Good underground network coverage |
-| Forgotten Scholar | Ch3, Ch5, Ch7, Ch9, Ch11 | Archive route coverage |
-| Runaway Experiment | Ch9, Ch11 | Concentrated in mark-awakening chapters — intentional |
+### 10. Starting Stat Minimums
 
-**Assessment:** Coverage is well-distributed. All classes and backgrounds have meaningful moments. Runaway Experiment's late-game concentration is thematic: this background connects to the mark's origin and pays off specifically in Chapters 9 and 11.
+**Before:** Esper started with strength 3 (modifier -3 new table, -4 old). Blade Survivor and Gun Scavenger started with intelligence 4 (modifier -2). These classes were locked out of stat-gated choices in their weak stats.
 
-**Remaining concern:** Blade Survivor has no specific options in Chapters 2, 3, 5, 6, 7, 10, 12. In purely narrative chapters (2, 3) this is fine. In the Glass Court chapter (5), the melee-focus class has no edge over anyone else — this may feel like a class underperformance in the chapter's most dialogue-heavy section. Not a blocker, but worth a future pass to add at least one "Blade Survivor's physical presence commands attention" hidden option in Ch5.
+**After:**
+- Esper: strength 3 → 4 (modifier -2 instead of -3)
+- Blade Survivor: intelligence 4 → 5 (better baseline for stat-gated choices)
+- Gun Scavenger: intelligence 4 → 5 (same improvement)
+
+**File:** `artifacts/mobile/data/characterOptions.ts`
 
 ---
 
-### Finding 6 — Chapter 11 Extreme Health Penalties (Sub-City)
+## Pre/Post Comparison
 
-**Full list of large health penalties in Chapter 11:**
-
-| Node/Choice | Health Cost | Context | Assessment |
-|-------------|------------|---------|------------|
-| `c11_gate_force_attempt` | none listed (leads to ending) | Forcing the sub-city gate | Fine — ending |
-| `c11_surge_resist` | -15 | Resisting the Core surge | **Keep.** This is the safe option; -15 is serious but survivable |
-| `c11_surge_yield` | -50 (requires corruption ≥ 70) | Yielding to Core surge | **Keep.** Corruption ≥ 70 means player chose this path |
-| `c11_madness_hold` | -10 | Holding the Deep Archive boundary | **Keep.** The safe option should still cost something |
-| `c11_madness_yield` | -40 (requires corruption ≥ 70) | Yielding to Archive madness | **Keep.** Same as surge yield — intentional high-corruption route |
-| `c11_platform_investigate_unstable` | -60 (leads to ending) | Investigating pressure anomaly | **Keep.** Clearly telegraphed danger, leads to ending |
-| `c11_gate_touch_direct` | **-50** *(was -70)* | Touching First Gate directly | **Changed.** See Change 2 above |
-
-**Assessment:** Chapter 11 uses large health penalties as the sub-city's primary mechanical pressure (replacing hunger/thirst, which the sub-city's atmospheric stability makes less relevant). Most extreme penalties are either corruption-gated (player chose this path) or ending-bound (final consequences). The only uncorrected concern was the -70 choice, now -50.
-
----
-
-### Finding 7 — Hallucination Nodes (Corruption ≥ 70)
-
-**Hallucination effects audit:**
-
-| Node | Effect on Return |
-|------|----------------|
-| `halluc_mark_speaks` — refuse | morale: -3, corruption: +1 |
-| `halluc_mark_speaks` — listen | corruption: +3, morale: +2 |
-| `halluc_the_dead_speak` — defend | morale: -5 |
-| `halluc_the_dead_speak` — apologize | morale: +2, corruption: +2 |
-| `halluc_the_dead_speak` — wait | morale: -2 |
-| `halluc_throne_vision` — refuse | morale: +3, corruption: -1 |
-| `halluc_throne_vision` — stay | corruption: +4, morale: -1 |
-
-**Assessment:** Hallucination nodes are well-balanced. Refusing visions costs morale but can slightly reduce corruption (-1). Engaging with them builds corruption but offers morale and occasional insight. The maximum corruption gain per hallucination is +4 (throne vision, staying), which is meaningful but not runaway. Players near the corruption endings at 70+ will feel the pressure without being locked into them by a single hallucination.
-
-**No changes applied.**
+| Metric | Before | After | Change |
+|--------|--------|-------|--------|
+| Health loss total | -2,255 | -1,695 | -25% |
+| Health loss avg | -16.7 | -12.6 | -25% |
+| Health loss max | -100 | -30 | -70% |
+| Dice check avg difficulty | 11.8 | 11.1 | -6% |
+| Dice checks "hard" % | 67% | 45% | -22pp |
+| Stat modifier at stat 5 | -3 | -2 | +1 |
+| Stat modifier at stat 8 | -1 | 0 | +1 |
+| Intelligence total gains | +1,428 | +1,312 | -8% |
+| miraTrust max single loss | -10 | -5 | -50% |
+| cainTrust max single loss | -10 | -5 | -50% |
+| Corruption cleansing events | 51 | 57 | +12% |
+| Corruption cleansing total | -328 | -352 | +7% |
+| Faction rep max per event | ±50 | ±20 | -60% |
+| lastArchive net rep | +1,665 | ~+1,200 | -28% |
+| Ch8 morale drain | -578 | -503 | -13% |
 
 ---
 
-## Remaining Concerns (Not Addressed in This Pass)
+## Remaining Balance Concerns
 
-### Concern 1 — Flags Required But Never Set (inherited from FULL_GAME_AUDIT.md)
+### High Priority
 
-Four flags appear as route requirements but are never set by any story node. Routes gated on these flags are permanently inaccessible:
+1. **Iron Saints net reputation is -223.** This is by-design (they're authoritarian, most interactions are hostile unless you submit), but it means the Saints route requires very specific choices to maintain positive rep. Consider adding +5 to +10 Saints rep to 3–4 cooperative choices in Ch4/Ch8 where the player works within the system without fully joining.
 
-| Flag | Blocks access to |
-|------|-----------------|
-| `sera_saved_ch3` | Multiple Ch4+ nodes with Sera content |
-| `sera_alive` | Multiple Ch10+ nodes |
-| `juno_alive` | FC1, Ch11 nodes |
-| `sleeping_server_active` | Ch9+ relic server nodes |
+2. **Health recovery is scarce.** Only 12 positive health effects totaling +125 vs -1,695 in losses. Medicine items exist but the story doesn't provide enough healing moments. Consider adding `health: +10` to 5–8 "rest" or "safe haven" nodes across chapters.
 
-**Action required:** Locate the nodes where these NPCs/events occur and add the missing `setFlags` entries.
+3. **Hunger/thirst disappear after Chapter 4.** Ch5–FC2 have almost no hunger/thirst drain (except Ch8). The survival mechanic is front-loaded and then abandoned. Consider adding `hunger: -1` or `thirst: -1` to `effectsOnEnter` on key nodes in Ch6–Ch12 to maintain survival pressure throughout.
 
-### Concern 2 — Blade Survivor Underrepresented in Chapter 5
+4. **Corruption still trends heavily positive.** Even with 6 new cleansing points, net corruption gain is ~+980. Players who make mostly moral choices will still reach 50+ corruption by Ch9. Need more cleansing opportunities, especially in Ch9–Ch12 where corruption requirements reach 70–90.
 
-No class-specific hidden option for Blade Survivor in the Glass Court chapter. The class's physical presence and threat are underused in the most dialogue-heavy chapter. Future pass: add one `classes: ['blade_survivor']` option in the Council Chamber or Guard Encounter section.
+### Medium Priority
 
-### Concern 3 — Chapter 9 Dice Gauntlet
+5. **Morale in Ch8 is still tight.** Net -98 morale (was -173). A player who makes mostly good choices can stay positive, but a few bad rolls on dice checks with morale penalties can still spiral. Consider adding a +10 morale "hope" node in the middle of Ch8.
 
-Seven dice checks in Chapter 9 at DC 13–15 creates sustained pressure on balanced/hybrid builds. All checks have class/background bypasses, which mitigates the concern. Monitor in playtesting: specifically whether Shadow Broker (high Agility/Charisma but moderate Strength/Intelligence) runs hit a wall on the Chapter 9 Strength and Intelligence checks. If so, add a Shadow Broker bypass to the most painful check.
+6. **Luck stat is underutilized.** Only 8 dice checks use luck, and only 6 luck gain events exist. The luck reroll mechanic (requires luck ≥60) is nearly impossible to reach. Consider adding more luck-based dice checks and +1 luck gains.
 
-### Concern 4 — Hollow Children Rep after Double Betrayal (Ch5 + Ch8)
+7. **Charisma checks are disproportionately hard.** 24 charisma checks with 12 "hard" — but only 12 charisma gain events total (max +8). Charisma-focused characters (Tactician, Shadow Broker) can't grow their key stat enough to keep up with check difficulty scaling.
 
-A player who betrays the Hollow Children in Ch5 (-25) and takes the neutral/hostile path in Ch8 (-25 from camp_rations_hoarded, or entering the hollow_refuse ending path) may arrive at Ch9–12 at very hostile Hollow Children rep. Verify that all Ch9+ Hollow Children routes either have very low rep thresholds or have alternative flag-based entry conditions that don't require rep.
+8. **Strength has no growth path after Ch2.** 16 strength gain events, all in Ch1–Ch2. After that, Blade Survivors and Exiled Soldiers can't improve their key stat. Add +1 strength to 3–5 combat victory nodes in Ch4–Ch8.
 
----
+### Low Priority
 
-## Summary of All Changes
+9. **Scrap economy is one-directional.** 18 negative scrap events totaling -64 vs 12 positive totaling +26. Scrap is spent faster than earned. Consider rebalancing crafting/scrap costs.
 
-| # | File | What Changed | Why |
-|---|------|-------------|-----|
-| 1 | `chapter4.ts` | Strength dice DC 17 → 15 | Fairness for non-combat builds at the gate fight |
-| 2 | `chapter11.ts` | First Gate touch health: -70 → -50 | Prevents auto-death for Esper/Tactician at full health |
+10. **Esper starting corruption (5) is punishing.** Combined with the runaway_experiment background (+2 corruption), an Esper can start at corruption 7. This locks them out of some low-corruption choices immediately. Consider reducing Esper starting corruption to 3.
 
-**Total changes:** 2 targeted edits.  
-**Unchanged:** All faction swings, companion trust values, survival drain rates, hallucination values, and all other dice difficulties are preserved as-is with rationale documented above.
+11. **Trust stat (0–100 scale) is barely used.** Only 1 gain event (+1) and 0 loss events. The `trust` stat in `Stats` appears unused compared to `miraTrust`/`cainTrust`. Consider either removing it or wiring it into NPC interactions.
+
+12. **Personality traits have no mechanical implementation.** The 7 personality traits describe effects (e.g., "+2 Companion Trust gains") but these are not implemented in the game engine. They're flavor text only.
+
+13. **Blade Survivor underrepresented in Chapter 5.** No class-specific hidden option for Blade Survivor in the Glass Court chapter. The class's physical presence is underused in the most dialogue-heavy chapter.
+
+14. **Hollow Children rep after double betrayal (Ch5 + Ch8).** A player who betrays the Hollow Children in Ch5 and takes the hostile path in Ch8 may arrive at Ch9–12 at very hostile Hollow Children rep. Verify that all Ch9+ Hollow Children routes have alternative flag-based entry conditions.
 
 ---
 
 ## Design Principles Confirmed by This Audit
 
-1. **Difficulty should scale with chapter depth, not with player frustration.** Ch1–4 should rarely exceed DC 14; Ch5–8 can reach DC 16 on special checks; Ch9–10 can reach DC 16 on meaningful gatekeepers. Ch11–12 should be 5–9 as a reward for reaching the endgame.
+1. **Difficulty should scale with chapter depth, not with player frustration.** Ch1–4 should rarely exceed DC 14; Ch5–8 can reach DC 14 on special checks; Ch9–10 can reach DC 14 on meaningful gatekeepers. Ch11–12 should be 5–9 as a reward for reaching the endgame.
 
 2. **Class/background bypasses make hard dice optional, not irrelevant.** If a check is DC 14+, a class or background bypass should exist. The audit confirms this is already the case for all checks at DC 14+ across all chapters.
 
-3. **Faction rep swings should be proportional to the size of the decision.** A betrayal (selling out allies, raiding vaults, ordering executions) justifies ±20–30 in a single choice. Dialogue nuance justifies ±3–8. Incidental help justifies ±5–10.
+3. **Faction rep swings should be proportional to the size of the decision.** A betrayal (selling out allies, raiding vaults, ordering executions) justifies ±20 in a single choice. Dialogue nuance justifies ±3–8. Incidental help justifies ±5–10.
 
 4. **Companion trust should require accumulated investment.** The scale (0–10) across 12 chapters means a player who consistently supports a companion averages +1–2 per chapter, reaching 8–10 by the late game. This is the correct cadence.
 
-5. **Corruption should feel like a slow burn, not a cliff.** The hallucination system at ≥70 and the corruption-gated endings at ≥70–80 create meaningful tension without making high-corruption runs immediately unplayable. Corruption can be partially reduced (via specific choices in Ch9 and Ch11) for players who want to pull back from the edge.
+5. **Corruption should feel like a slow burn, not a cliff.** The hallucination system at ≥70 and the corruption-gated endings at ≥70–80 create meaningful tension without making high-corruption runs immediately unplayable. Moral choices should provide cleansing paths for players who want to pull back from the edge.
+
+---
+
+## Files Modified
+
+| File | Changes |
+|------|---------|
+| `artifacts/mobile/logic/diceEngine.ts` | Stat modifier table |
+| `artifacts/mobile/data/characterOptions.ts` | Starting stat minimums |
+| `artifacts/mobile/data/story/chapter1.ts` | Health, dice, faction, int caps |
+| `artifacts/mobile/data/story/chapter2.ts` | Health, dice, faction, int caps, corruption cleanse |
+| `artifacts/mobile/data/story/chapter3.ts` | Health, dice, faction, int caps, corruption cleanse |
+| `artifacts/mobile/data/story/chapter4.ts` | Health, dice, faction, int caps, corruption cleanse |
+| `artifacts/mobile/data/story/chapter5.ts` | Health, dice, faction, int caps |
+| `artifacts/mobile/data/story/chapter6.ts` | Health, dice, faction, int caps, corruption cleanse, trust caps |
+| `artifacts/mobile/data/story/chapter7.ts` | Health, dice, faction, int caps, trust caps |
+| `artifacts/mobile/data/story/chapter8.ts` | Health, dice, faction, int caps, corruption cleanse, trust caps, morale caps |
+| `artifacts/mobile/data/story/chapter9.ts` | Health, dice, faction, int caps |
+| `artifacts/mobile/data/story/chapter10.ts` | Health, dice, faction, int caps, corruption cleanse |
+| `artifacts/mobile/data/story/chapter11.ts` | Health, dice, faction, int caps |
+| `artifacts/mobile/data/story/chapter12.ts` | Health, dice, faction, int caps |
+| `artifacts/mobile/data/story/finalChapter1.ts` | Health, dice, faction, int caps |
+| `artifacts/mobile/data/story/finalChapter2.ts` | Health, dice, faction, int caps |

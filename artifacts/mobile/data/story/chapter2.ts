@@ -153,6 +153,12 @@ export const CHAPTER_2_NODES: StoryNode[] = [
         effects: { thirst: -1 },
       },
       {
+        id: 'c2_patrol_risk',
+        text: 'Move east through the open streets. Risk the patrol routes.',
+        nextNode: 'c2_patrol_spotted',
+        effects: { ironSaints: -1 },
+      },
+      {
         id: 'c2_survivor_rubble',
         text: 'There\'s someone alive in the rubble to your right. A civilian.',
         nextNode: 'c2_survivor_encounter',
@@ -349,7 +355,7 @@ export const CHAPTER_2_NODES: StoryNode[] = [
     title: 'What They Left Behind',
     location: 'City Surface — Rubble Field',
     imageKey: 'ruined_street',
-    text: 'A woman, perhaps forty, pinned under a support beam that is definitely not the worst thing that has happened to her recently. She looks at you with the particular expression of someone who has already made peace with dying and finds being found by a stranger surprising and a little inconvenient. She has food — you can see a sealed pack just out of her reach. She also has information. The Saints took her children east, two days ago, toward the checkpoint grid.',
+    text: 'A woman, perhaps forty, pinned under a support beam that is definitely not the worst thing that has happened to her recently. She looks at you with the particular face of someone who has already made peace with dying and finds being found by a stranger surprising and a little inconvenient. She has food — you can see a sealed pack just out of her reach. She also has information. The Saints took her children east, two days ago, toward the checkpoint grid.',
     effectsOnEnter: {},
     choices: [
       {
@@ -392,7 +398,7 @@ export const CHAPTER_2_NODES: StoryNode[] = [
     speaker: 'Mira',
     text: 'Mira walks differently on the surface than she does in the tunnels. Down there she was deliberate, measured. Up here she navigates rubble fields like she\'s remembering something she tried to stop knowing — corner by corner, her eyes reading the street names on the few signs still upright.',
     dialogue: 'The clinic is on Noran Street. Or it was. Pre-blackout it was a voluntary health center. I worked there for two years. If anyone kept it running, it would be the staff who lived in the district. There\'s no guarantee. But the building was reinforced concrete — it\'s probably still standing.',
-    effectsOnEnter: { miraTrust: 1 },
+    effectsOnEnter: { miraTrust: 1, corruption: -3 },
     choices: [
       {
         id: 'c2_mira_ask_how_she_knows',
@@ -541,7 +547,7 @@ export const CHAPTER_2_NODES: StoryNode[] = [
         id: 'c2_papers_mira_shot',
         text: 'The soldier grabs Mira. You run. She doesn\'t.',
         nextNode: 'c2_ending_mira_dies_checkpoint',
-        effects: { morale: -5, corruption: 2, miraTrust: -10 },
+        effects: { morale: -5, corruption: 2, miraTrust: -5 },
       },
     ],
   },
@@ -1680,7 +1686,7 @@ export const CHAPTER_2_NODES: StoryNode[] = [
     location: 'Red Choir Territory — Founder\'s Alcove',
     imageKey: 'choir_broadcast_point',
     speaker: 'The Founder',
-    text: 'The Founder is smaller than you expected, older. A person who carries the particular weight of someone who has been told they are significant and is no longer sure what that means. They look at the mark on your wrist and their expression is grief-adjacent — not for you, but for something that predates you.',
+    text: 'The Founder is smaller than you expected, older. A person who carries the particular bearing of someone who has been told they are significant and is no longer sure what that means. They look at the mark on your wrist and their expression is grief-adjacent — not for you, but for something that predates you.',
     dialogue: 'I heard the Archive\'s signal on the night of the blackout. Everyone who hears it becomes something. The ones who understand it become a different something. I\'ve been trying to help people understand it. You are the first I\'ve met who the signal already knows. That means you don\'t need me. I\'m glad you came anyway.',
     effectsOnEnter: { lastArchive: 12, morale: 2, setFlags: ['c2_founder_met', 'c2_founder_words_heard'] },
     choices: [
@@ -1785,7 +1791,7 @@ export const CHAPTER_2_NODES: StoryNode[] = [
     speaker: 'The Keeper',
     text: 'The keeper — she gives no name, offers no background, says simply "I kept it" — leads you into the sub-grade room. The cache has been here since before the blackout. Pre-collapse containers, sealed, holding materials from the Archive\'s own collection.',
     dialogue: 'I worked for the Archive for eleven years. Researcher in the pre-collapse cataloguing project. When the blackout happened and the Archive sealed, I came up here with what I could carry. I\'ve been placing the symbols for two years, waiting for someone whose mark would respond to them. You are the fourth person to find the trail. The first two didn\'t have a mark. The third had one but it was dimmer than yours, and they stopped answering three months ago.',
-    effectsOnEnter: { food: 3, water: 2, medicine: 2, lastArchive: 15, setFlags: ['c2_keeper_story_heard'] },
+    effectsOnEnter: { food: 3, water: 2, medicine: 2, lastArchive: 10, setFlags: ['c2_keeper_story_heard'] },
     choices: [
       {
         id: 'c2_archive_read_documents',
@@ -1808,7 +1814,7 @@ export const CHAPTER_2_NODES: StoryNode[] = [
     location: 'Sub-Grade Hidden Room',
     imageKey: 'archive_ruin_wall',
     text: 'The documents are pre-collapse internal Archive communications. What you learn in the reading: the Archive has known about the mark for longer than the city has existed. The blackout was not the first time the marks appeared — there were documented cases in records going back four hundred years, always in proximity to the Archive\'s physical location, always correlated with a specific infrastructure activation event. The Archive\'s response in each prior case was documentation and containment. This is the first time the marks appeared in sufficient numbers to constitute what the documents call a threshold event.',
-    effectsOnEnter: { lastArchive: 20, morale: -2, setFlags: ['c2_archive_historical_known', 'c2_threshold_event_known'] },
+    effectsOnEnter: { lastArchive: 10, morale: -2, setFlags: ['c2_archive_historical_known', 'c2_threshold_event_known'] },
     choices: [
       {
         id: 'c2_archive_ask_threshold',
@@ -1856,7 +1862,7 @@ export const CHAPTER_2_NODES: StoryNode[] = [
     location: 'Sub-Grade Hidden Room — Inner Section',
     imageKey: 'archive_ruin_wall',
     text: 'The mark responds to the site the way it responds to Archive infrastructure — with that deep internal pulse that isn\'t quite pain and isn\'t quite pleasure. But here the response is different from the metro relays or the Glass Court instruments. It\'s quieter. More specific. As if the mark recognizes a pattern left here by the other mark-bearers who sat in this room — a residue of whatever they were, or became. The keeper watches you with the expression of someone recording a result she\'s been waiting for.',
-    effectsOnEnter: { corruption: 2, lastArchive: 15, setFlags: ['c2_mark_recognized_site'] },
+    effectsOnEnter: { corruption: 2, lastArchive: 10, setFlags: ['c2_mark_recognized_site'] },
     choices: [
       {
         id: 'c2_archive_ask_messenger',
@@ -1881,7 +1887,7 @@ export const CHAPTER_2_NODES: StoryNode[] = [
     speaker: 'The Keeper',
     text: 'The keeper is quiet for a long moment after you ask. Then she opens the notebook to a page she\'s kept blank except for one line of coordinates and a symbol you\'ve never seen before — not from the Archive\'s vocabulary, not from the mark\'s sigil. Something older.',
     dialogue: 'The third voice in those annotations — the one that stops mid-sentence — was a woman named Velna. She worked Archive restoration, sublevel access. She went into the Archive the old way, through a pre-collapse access point that isn\'t the main door. She sent me three messages after going in. Then nothing. The coordinates are for the access point. I\'ve kept them because I believe she went somewhere and I believe someone bearing the mark at your activation level is the reason she went. This is not a safe thing I\'m giving you.',
-    effectsOnEnter: { lastArchive: 25, setFlags: ['c2_secret_archive_access_known', 'c2_velna_known'] },
+    effectsOnEnter: { lastArchive: 10, setFlags: ['c2_secret_archive_access_known', 'c2_velna_known'] },
     choices: [
       {
         id: 'c2_archive_take_coordinates',
@@ -1994,7 +2000,7 @@ export const CHAPTER_2_NODES: StoryNode[] = [
       {
         id: 'c2_descend_to_ch3',
         text: 'Descend. The city beneath the city is waiting.',
-        nextNode: 'station_junction',
+        nextNode: 'chapter3_start',
       },
     ],
   },
@@ -2067,7 +2073,7 @@ export const CHAPTER_2_NODES: StoryNode[] = [
     title: 'The Wand Does Not Miss',
     location: 'Western Department Store — Basement',
     imageKey: 'black_market_alley',
-    text: 'The mark blazes at exactly the wrong moment. The Saints\' wand operator pivots in your direction with the automatic movement of someone who has been trained to move exactly this way in exactly this situation. The market empties around you in the twelve seconds before the soldiers close the distance, everyone else becoming the absence of people while you stand in the middle of it holding a light you cannot put out. The Saints\' report for District 4-West, filed that evening, notes one Category One manifestation neutralized and one underground market disrupted. Both are listed as successful outcomes.',
+    text: 'The mark blazes at exactly the wrong moment. The Saints\' wand operator pivots in your direction with the automatic motion of someone who has been trained to move exactly this way in exactly this situation. The market empties around you in the twelve seconds before the soldiers close the distance, everyone else becoming the absence of people while you stand in the middle of it holding a light you cannot put out. The Saints\' report for District 4-West, filed that evening, notes one Category One manifestation neutralized and one underground market disrupted. Both are listed as successful outcomes.',
     effectsOnEnter: { setFlags: ['c2_died_market_raid'] },
     choices: [],
     isEnding: true,
@@ -2138,7 +2144,7 @@ export const CHAPTER_2_NODES: StoryNode[] = [
     location: 'City Surface — Archive Secondary Access Point',
     imageKey: 'archive_ruin_wall',
     text: 'The coordinates lead to a maintenance access point that isn\'t on any map made after the blackout, in a sub-basement of a building that collapsed to everything except the foundation level. The door is Archive design: the same symbol vocabulary as the main door, but smaller, older, less ceremonial. It responds to the mark immediately — no hesitation, no additional key, just the mark against the plate and the sound of seals releasing that have been sealed for longer than the city has been a city. Velna\'s last message is written on the wall just inside: "It\'s larger than I expected. I\'m going further." This is the way in that the factions don\'t know about. Whatever it costs, it is the right door.',
-    effectsOnEnter: { lastArchive: 30, setFlags: ['c2_secret_archive_entered', 'c2_velna_trail_found', 'found_archive_door'] },
+    effectsOnEnter: { lastArchive: 10, setFlags: ['c2_secret_archive_entered', 'c2_velna_trail_found', 'found_archive_door'] },
     choices: [],
     isEnding: true,
     endingType: 'secret',

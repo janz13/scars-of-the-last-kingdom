@@ -1,20 +1,147 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Alert, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useGame } from '../context/GameContext';
-import { APP_VERSION } from '../constants/version';
+import { APP_VERSION, BUILD_DATE } from '../constants/version';
+import { exportSaveData } from '../logic/saveSystem';
 
 export default function SettingsPanel() {
-  const { state, setScreen, updateSettings, deleteAndReset, resetAllData } = useGame();
+  const { state, setScreen, updateSettings, deleteAndReset, resetAllData, importSave } = useGame();
   const insets = useSafeAreaInsets();
   const { settings } = state;
+
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [isExporting, setIsExporting] = useState(false);
+  const [isImporting, setIsImporting] = useState(false);
 
   const topPad = Platform.OS === 'web' ? 67 : insets.top;
   const botPad = Platform.OS === 'web' ? 34 : insets.bottom;
 
   const isInGame = state.screen !== 'mainMenu';
+
+  const showAlert = (title: string, message: string) => {
+    if (Platform.OS === 'web') {
+      window.alert(`${title}\n\n${message}`);
+    } else {
+      Alert.alert(title, message);
+    }
+  };
+
+  const handleExportSave = async () => {
+    if (isExporting) return;
+    setIsExporting(true);
+    try {
+      const result = await exportSaveData();
+      if (result.success) {
+        showAlert(
+          'Export Successful',
+          'Save file "scars-of-the-last-kingdom-save.json" has been exported and downloaded.'
+        );
+      } else {
+        showAlert('Export Failed', result.error || 'Failed to export save data.');
+      }
+    } catch (err) {
+      showAlert('Export Failed', err instanceof Error ? err.message : 'An error occurred during export.');
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsImporting(true);
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+      try {
+        const content = event.target?.result;
+        if (typeof content !== 'string') {
+          showAlert('Import Failed', 'Unable to read the save file content.');
+          return;
+        }
+
+        const success = await importSave(content);
+        if (success) {
+          showAlert(
+            'Import Successful',
+            'Save file and endings imported successfully! Your progress has been restored.'
+          );
+        } else {
+          showAlert(
+            'Import Failed',
+            'The selected file is not a valid save file. Please select a valid scars-of-the-last-kingdom-save.json file.'
+          );
+        }
+      } catch (err) {
+        showAlert(
+          'Import Failed',
+          err instanceof Error ? err.message : 'An unexpected error occurred during import.'
+        );
+      } finally {
+        setIsImporting(false);
+        if (e.target) {
+          e.target.value = '';
+        }
+      }
+    };
+
+    reader.onerror = () => {
+      showAlert('Import Failed', 'Failed to read the selected file.');
+      setIsImporting(false);
+      if (e.target) {
+        e.target.value = '';
+      }
+    };
+
+    reader.readAsText(file);
+  };
+
+  const handleImportClick = () => {
+    if (Platform.OS === 'web') {
+      if (fileInputRef.current) {
+        fileInputRef.current.click();
+      } else if (typeof document !== 'undefined') {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.json,application/json';
+        input.style.display = 'none';
+        input.onchange = (ev: Event) => {
+          const target = ev.target as HTMLInputElement;
+          const file = target.files?.[0];
+          if (!file) {
+            if (document.body.contains(input)) document.body.removeChild(input);
+            return;
+          }
+          setIsImporting(true);
+          const reader = new FileReader();
+          reader.onload = async (event) => {
+            try {
+              const content = event.target?.result;
+              if (typeof content === 'string') {
+                const success = await importSave(content);
+                if (success) {
+                  showAlert('Import Successful', 'Save file and endings imported successfully! Your progress has been restored.');
+                } else {
+                  showAlert('Import Failed', 'The selected file is not a valid save file.');
+                }
+              }
+            } finally {
+              setIsImporting(false);
+              if (document.body.contains(input)) document.body.removeChild(input);
+            }
+          };
+          reader.readAsText(file);
+        };
+        document.body.appendChild(input);
+        input.click();
+      }
+    } else {
+      showAlert('Save Import', 'Save file import is currently only supported in web browsers.');
+    }
+  };
 
   const confirmResetSave = () => {
     if (Platform.OS === 'web') {
@@ -54,7 +181,7 @@ export default function SettingsPanel() {
     <LinearGradient colors={['#0a0a0f', '#12101a', '#0a0a0f']} style={styles.container}>
       <View style={[styles.header, { paddingTop: topPad + 10 }]}>
         <Text style={styles.title}>SETTINGS</Text>
-        <Pressable style={styles.backBtn} onPress={() => setScreen('mainMenu')}>
+        <Pressable style={styles.backBtn} onPress={() => setScreen(state.character ? 'game' : 'mainMenu')}>
           <Feather name="x" size={22} color="#8a7d6e" />
         </Pressable>
       </View>
@@ -71,6 +198,23 @@ export default function SettingsPanel() {
             >
               <Text style={[styles.optionText, settings.textSpeed === speed && styles.optionTextActive]}>
                 {speed.toUpperCase()}
+              </Text>
+            </Pressable>
+          ))}
+        </View>
+
+        <View style={styles.divider} />
+
+        <Text style={styles.sectionHeader}>FONT SIZE</Text>
+        <View style={styles.buttonGroup}>
+          {(['small', 'normal', 'large'] as const).map((size) => (
+            <Pressable
+              key={size}
+              style={[styles.optionBtn, state.settings.fontSize === size && styles.optionBtnActive]}
+              onPress={() => updateSettings({ fontSize: size })}
+            >
+              <Text style={[styles.optionText, state.settings.fontSize === size && styles.optionTextActive]}>
+                {size.toUpperCase()}
               </Text>
             </Pressable>
           ))}
@@ -110,9 +254,55 @@ export default function SettingsPanel() {
 
         <View style={styles.divider} />
 
+        {Platform.OS === 'web' && (
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".json,application/json"
+            style={{ display: 'none' }}
+            onChange={handleFileChange}
+          />
+        )}
+
+        <Text style={styles.sectionHeader}>SAVE DATA PORTABILITY</Text>
+        <Text style={styles.portabilityDesc}>
+          Export a JSON backup of your progress and discovered endings, or import an existing save file.
+        </Text>
+
+        <View style={styles.portabilityGroup}>
+          <Pressable
+            style={[styles.portabilityBtn, isExporting && styles.portabilityBtnDisabled]}
+            onPress={handleExportSave}
+            disabled={isExporting}
+          >
+            <Feather name="download" size={15} color="#d4af37" />
+            <View style={{ flex: 1 }}>
+              <Text style={styles.portabilityBtnTitle}>Export Save File</Text>
+              <Text style={styles.portabilityBtnDesc}>
+                {isExporting ? 'Exporting...' : 'Download scars-of-the-last-kingdom-save.json'}
+              </Text>
+            </View>
+          </Pressable>
+
+          <Pressable
+            style={[styles.portabilityBtn, isImporting && styles.portabilityBtnDisabled]}
+            onPress={handleImportClick}
+            disabled={isImporting}
+          >
+            <Feather name="upload" size={15} color="#4a9eff" />
+            <View style={{ flex: 1 }}>
+              <Text style={styles.portabilityBtnTitle}>Import Save File</Text>
+              <Text style={styles.portabilityBtnDesc}>
+                {isImporting ? 'Importing...' : 'Restore journey and discovered endings from .json file'}
+              </Text>
+            </View>
+          </Pressable>
+        </View>
+
+        <View style={styles.divider} />
+
         {isInGame && (
           <>
-            <View style={styles.divider} />
             <Text style={styles.sectionHeader}>NAVIGATION</Text>
             <Pressable style={styles.menuBtn} onPress={() => setScreen('mainMenu')}>
               <Feather name="home" size={14} color="#9b59b6" />
@@ -123,14 +313,19 @@ export default function SettingsPanel() {
             <Text style={styles.sectionHeader}>DANGER ZONE</Text>
             <Pressable style={styles.dangerBtn} onPress={confirmResetSave}>
               <Feather name="delete" size={14} color="#c0392b" />
-              <Text style={styles.dangerText}>Reset Current Save</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.dangerText}>Reset Current Save</Text>
+                <Text style={styles.dangerDesc}>Delete your current playthrough and return to the main menu.</Text>
+              </View>
             </Pressable>
             <View style={{ height: 10 }} />
             <Pressable style={[styles.dangerBtn, styles.dangerBtnSevere]} onPress={confirmResetAll}>
               <Feather name="trash-2" size={14} color="#7a0e0e" />
-              <Text style={[styles.dangerText, styles.dangerTextSevere]}>Reset All Data</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={[styles.dangerText, styles.dangerTextSevere]}>Reset All Data</Text>
+                <Text style={styles.dangerDescSevere}>Wipe all saves, discovered endings, and every playthrough record. This cannot be undone.</Text>
+              </View>
             </Pressable>
-            <Text style={styles.dangerNote}>Reset All Data wipes discovered endings and all progress.</Text>
           </>
         )}
 
@@ -140,15 +335,18 @@ export default function SettingsPanel() {
             <Text style={styles.sectionHeader}>DANGER ZONE</Text>
             <Pressable style={[styles.dangerBtn, styles.dangerBtnSevere]} onPress={confirmResetAll}>
               <Feather name="trash-2" size={14} color="#7a0e0e" />
-              <Text style={[styles.dangerText, styles.dangerTextSevere]}>Reset All Data</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={[styles.dangerText, styles.dangerTextSevere]}>Reset All Data</Text>
+                <Text style={styles.dangerDescSevere}>Wipes all saves, discovered endings, and every playthrough record. This cannot be undone.</Text>
+              </View>
             </Pressable>
-            <Text style={styles.dangerNote}>Wipes all saves, discovered endings, and every playthrough record.</Text>
           </>
         )}
 
         {/* Version footer */}
         <View style={styles.versionRow}>
           <Text style={styles.versionText}>{APP_VERSION}</Text>
+          <Text style={styles.buildDateText}>{BUILD_DATE}</Text>
         </View>
       </ScrollView>
     </LinearGradient>
@@ -282,12 +480,61 @@ const styles = StyleSheet.create({
   dangerTextSevere: {
     color: '#7a0e0e',
   },
+  dangerDesc: {
+    fontSize: 11,
+    color: '#6a4040',
+    fontFamily: 'Inter_400Regular',
+    marginTop: 2,
+    lineHeight: 16,
+  },
+  dangerDescSevere: {
+    fontSize: 11,
+    color: '#4a2020',
+    fontFamily: 'Inter_400Regular',
+    marginTop: 2,
+    lineHeight: 16,
+  },
   dangerNote: {
     fontSize: 11,
     color: '#3a2020',
     fontFamily: 'Inter_400Regular',
     marginTop: 8,
     lineHeight: 16,
+  },
+  portabilityDesc: {
+    fontSize: 11,
+    color: '#8a7d6e',
+    fontFamily: 'Inter_400Regular',
+    marginBottom: 12,
+    lineHeight: 16,
+  },
+  portabilityGroup: {
+    gap: 10,
+  },
+  portabilityBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    borderWidth: 1,
+    borderColor: '#2a2a3a',
+    borderRadius: 4,
+    padding: 14,
+    backgroundColor: '#12121c',
+  },
+  portabilityBtnDisabled: {
+    opacity: 0.6,
+  },
+  portabilityBtnTitle: {
+    fontSize: 13,
+    color: '#d4c5a9',
+    fontFamily: 'Inter_500Medium',
+  },
+  portabilityBtnDesc: {
+    fontSize: 11,
+    color: '#6a5e50',
+    fontFamily: 'Inter_400Regular',
+    marginTop: 2,
+    lineHeight: 15,
   },
   versionRow: {
     marginTop: 32,
@@ -301,5 +548,12 @@ const styles = StyleSheet.create({
     color: '#2a2038',
     fontFamily: 'Inter_400Regular',
     letterSpacing: 1,
+  },
+  buildDateText: {
+    fontSize: 9,
+    color: '#1e1a2a',
+    fontFamily: 'Inter_400Regular',
+    letterSpacing: 0.5,
+    marginTop: 2,
   },
 });

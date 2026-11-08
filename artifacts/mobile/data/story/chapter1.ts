@@ -579,7 +579,7 @@ export const CHAPTER_1_NODES: StoryNode[] = [
         effects: { morale: -1 },
         diceCheck: {
           stat: 'strength',
-          difficulty: 13,
+          difficulty: 12,
           diceType: 'd20',
           successNode: 'cain_hostile_confrontation',
           failureNode: 'dice_force_door_fail',
@@ -587,7 +587,7 @@ export const CHAPTER_1_NODES: StoryNode[] = [
           criticalSuccessEffects: { scrap: 2, morale: 2, strength: 1 },
           criticalFailureNode: 'dice_force_door_crit_fail',
           failureEffects: { health: -15, morale: -3 },
-          criticalFailureEffects: { health: -25, morale: -8 },
+          criticalFailureEffects: { health: -15, morale: -8 },
         },
       },
       {
@@ -706,7 +706,7 @@ export const CHAPTER_1_NODES: StoryNode[] = [
         text: 'Fight him.',
         nextNode: 'station_junction',
         requirements: { strength: 7 },
-        effects: { health: -20, cainTrust: -3, setFlags: ['fought_cain'] },
+        effects: { health: -15, cainTrust: -3, setFlags: ['fought_cain'] },
         flavorText: 'Requires: Strength 7 or higher',
       },
       {
@@ -1545,7 +1545,7 @@ export const CHAPTER_1_NODES: StoryNode[] = [
         flavorText: 'Requires: Strength 7 or higher',
         diceCheck: {
           stat: 'strength',
-          difficulty: 14,
+          difficulty: 13,
           diceType: 'd20',
           successNode: 'tunnel_flood_survive',
           failureNode: 'dice_tunnel_flood_fail',
@@ -1553,7 +1553,7 @@ export const CHAPTER_1_NODES: StoryNode[] = [
           criticalSuccessEffects: { health: 5, strength: 1, morale: 2 },
           criticalFailureNode: 'dice_tunnel_flood_crit_fail',
           failureEffects: { health: -15, morale: -3 },
-          criticalFailureEffects: { health: -30, morale: -10 },
+          criticalFailureEffects: { health: -20, morale: -10 },
         },
       },
       {
@@ -1687,13 +1687,13 @@ export const CHAPTER_1_NODES: StoryNode[] = [
         id: 'throw_yourself_through',
         text: 'Throw yourself through and hope the math works out.',
         nextNode: 'tunnel_brace_success',
-        effects: { health: -25, morale: -1 },
+        effects: { health: -15, morale: -1 },
       },
       {
         id: 'too_slow_collapse',
         text: 'You don\'t move fast enough.',
         nextNode: 'ending_buried_tunnel',
-        effects: { health: -50 },
+        effects: { health: -30 },
       },
     ],
   },
@@ -1787,7 +1787,7 @@ export const CHAPTER_1_NODES: StoryNode[] = [
     title: 'Close Work',
     location: 'Metro Concourse — East Corridor',
     imageKey: 'ruined_metro_station',
-    text: 'The fight is ugly and fast the way real fights are — no elegance, just pressure and proximity and the specific kind of violence that ends things quickly. They scatter. Two run. One doesn\'t. When the dust settles, the woman is on her feet, bleeding from a cut on her palm where she gripped something she shouldn\'t have. She looks at you with the focused attention of someone recalibrating.',
+    text: 'The fight is ugly and fast the way real fights are — no elegance, just pressure and proximity and the particular kind of violence that ends things quickly. They scatter. Two run. One doesn\'t. When the dust settles, the woman is on her feet, bleeding from a cut on her palm where she gripped something she shouldn\'t have. She looks at you with the focused attention of someone recalibrating.',
     effectsOnEnter: { morale: 1, setFlags: ['fought_scavengers'] },
     choices: [
       {
@@ -1865,7 +1865,7 @@ export const CHAPTER_1_NODES: StoryNode[] = [
     title: 'The Choice You Made',
     location: 'Metro Concourse — East Corridor',
     imageKey: 'dark_metro_hallway',
-    text: 'You watch them drag her north — toward the deeper maintenance levels, where the Saints don\'t bother to patrol. She doesn\'t scream. She calculates. Her eyes find yours one more time, reading your stillness. Then she\'s gone around the corner, and you\'re alone with the specific quiet of a corridor after something that can\'t be undone.',
+    text: 'You watch them drag her north — toward the deeper maintenance levels, where the Saints don\'t bother to patrol. She doesn\'t scream. She calculates. Her eyes find yours one more time, reading your stillness. Then she\'s gone around the corner, and you\'re alone with the particular quiet of a corridor after something that can\'t be undone.',
     effectsOnEnter: { morale: -3, setFlags: ['watched_mira_taken', 'mira_scavenger_scene'] },
     choices: [
       {
@@ -1897,7 +1897,7 @@ export const CHAPTER_1_NODES: StoryNode[] = [
         text: 'Force the door. One impact, committed.',
         nextNode: 'mira_rescued_safe',
         requirements: { strength: 7 },
-        effects: { health: -20 },
+        effects: { health: -15 },
         flavorText: 'Requires: Strength 7 or higher',
       },
       {
@@ -2068,7 +2068,7 @@ export const CHAPTER_1_NODES: StoryNode[] = [
     title: 'Something Is Watching',
     location: 'Maintenance Tunnels — Sublevel 5',
     imageKey: 'dark_metro_hallway',
-    text: 'You feel it before you see it — the specific quality of being observed by something that knows how to be invisible. Then, at the tunnel\'s edge, you catch it: a pair of eyes at chest height. A child. Still as a carved figure. When you look directly, they don\'t run. They watch you watch them. The tunnel behind them isn\'t empty.',
+    text: 'You feel it before you see it — the particular quality of being observed by something that knows how to be invisible. Then, at the tunnel\'s edge, you catch it: a pair of eyes at chest height. A child. Still as a carved figure. When you look directly, they don\'t run. They watch you watch them. The tunnel behind them isn\'t empty.',
     effectsOnEnter: { setFlags: ['noticed_hollow_watchers'] },
     choices: [
       {
@@ -2266,7 +2266,7 @@ export const CHAPTER_1_NODES: StoryNode[] = [
     location: 'Collapsed Stairwell — Emergency Exit 9-B',
     imageKey: 'collapsed_tunnel',
     text: 'You don\'t have the strength or the agility. But you have desperation, which has carried people further than either. It takes forty minutes of cuts and effort and blood before you pull yourself through — and the grey light above burns your dark-adjusted eyes like something punitive.',
-    effectsOnEnter: { health: -20, hunger: -2, thirst: -2, morale: 1, setFlags: ['surface_premature', 'reached_surface'] },
+    effectsOnEnter: { health: -15, hunger: -2, thirst: -2, morale: 1, setFlags: ['surface_premature', 'reached_surface'] },
     choices: [
       {
         id: 'move_clear_of_exit',
@@ -2298,7 +2298,7 @@ export const CHAPTER_1_NODES: StoryNode[] = [
         text: 'Run for the nearest collapse gap. Don\'t look back.',
         nextNode: 'saints_escape',
         requirements: { agility: 8 },
-        effects: { health: -20, ironSaints: -5 },
+        effects: { health: -15, ironSaints: -5 },
         flavorText: 'Requires: Agility 8 or higher',
       },
       {
@@ -2306,7 +2306,7 @@ export const CHAPTER_1_NODES: StoryNode[] = [
         text: 'Fight your way back to the metro entrance.',
         nextNode: 'saints_escape',
         requirements: { strength: 8, ammo: 3 },
-        effects: { health: -30, ammo: -3, ironSaints: -10 },
+        effects: { health: -20, ammo: -3, ironSaints: -10 },
         flavorText: 'Requires: Strength 8 + 3 Ammo',
       },
       {
@@ -2355,7 +2355,7 @@ export const CHAPTER_1_NODES: StoryNode[] = [
         id: 'cloth_mask_attempt',
         text: 'Cover your face with cloth and move.',
         nextNode: 'tunnel_junction_inner',
-        effects: { health: -25, morale: -1, setFlags: ['survived_ash_storm'] },
+        effects: { health: -15, morale: -1, setFlags: ['survived_ash_storm'] },
       },
       {
         id: 'too_far_in_ash',
@@ -2394,7 +2394,7 @@ export const CHAPTER_1_NODES: StoryNode[] = [
           criticalSuccessEffects: { intelligence: 1, scrap: 1, lastArchive: 3 },
           criticalFailureNode: 'dice_passage_force_crit_fail',
           failureEffects: { health: -10 },
-          criticalFailureEffects: { health: -20, corruption: 2 },
+          criticalFailureEffects: { health: -15, corruption: 2 },
         },
       },
       {
@@ -2536,7 +2536,7 @@ export const CHAPTER_1_NODES: StoryNode[] = [
         text: 'Fight your way back to the antechamber.',
         nextNode: 'glass_court_ambush',
         requirements: { strength: 6, ammo: 2 },
-        effects: { ammo: -2, health: -20 },
+        effects: { ammo: -2, health: -15 },
         flavorText: 'Requires: Strength 6 + 2 Ammo',
       },
       {
@@ -2548,7 +2548,7 @@ export const CHAPTER_1_NODES: StoryNode[] = [
         flavorText: 'Requires: Charisma 7 or higher',
         diceCheck: {
           stat: 'charisma',
-          difficulty: 13,
+          difficulty: 12,
           diceType: 'd20',
           successNode: 'glass_court_ambush',
           failureNode: 'dice_glass_court_negotiate_fail',
@@ -2788,7 +2788,7 @@ export const CHAPTER_1_NODES: StoryNode[] = [
     location: 'Metro Concourse',
     imageKey: 'ruined_metro_station',
     text: 'The signal tries to complete itself through you. You aren\'t the conduit it needed — not yet, not enough. The mark goes from violet to white to something past visible light. Emergency fixtures burst in sequence down the corridor as you collapse. When you come back, you\'re on the floor. The mark has grown — now reaching past your wrist, tracing the veins of your forearm in faint luminescent lines.',
-    effectsOnEnter: { health: -25, corruption: 4, morale: -3, setFlags: ['mark_expanded', 'mark_uncontrolled', 'examined_mark'] },
+    effectsOnEnter: { health: -15, corruption: 4, morale: -3, setFlags: ['mark_expanded', 'mark_uncontrolled', 'examined_mark'] },
     choices: [
       {
         id: 'get_up_and_survive',
@@ -3008,10 +3008,10 @@ export const CHAPTER_1_NODES: StoryNode[] = [
   {
     id: 'ending_mira_abandoned',
     chapter: 'Chapter 1',
-    title: 'The Specific Weight',
+    title: 'the unmistakable weight',
     location: 'Maintenance Level — Sealed Room',
     imageKey: 'dark_metro_hallway',
-    text: 'You hear the sounds through the sealed door and understand, too late, what it costs to hesitate. By the time you find another way through, the maintenance room is quiet in the way rooms get quiet after. Her medical bag is on the floor. Her hands are folded. She arranged it herself, in her last useful moment — thinking of order, thinking of something past herself. You leave carrying the specific weight of a choice that has no undoing. The Archive is still down there. The mark still pulses. Neither of them care about what you left behind in this room.',
+    text: 'You hear the sounds through the sealed door and understand, too late, what it costs to hesitate. By the time you find another way through, the maintenance room is quiet in the way rooms get quiet after. Her medical bag is on the floor. Her hands are folded. She arranged it herself, in her last useful moment — thinking of order, thinking of something past herself. You leave carrying the unmistakable weight of a choice that has no undoing. The Archive is still down there. The mark still pulses. Neither of them care about what you left behind in this room.',
     effectsOnEnter: { setFlags: ['mira_died_abandoned'] },
     choices: [],
     isEnding: true,

@@ -100,7 +100,7 @@
     "extra": {
       "buildTarget": "android",
       "gameVersion": "1.0.0",
-      "chapters": 2
+      "chapters": 14
     }
   }
 }

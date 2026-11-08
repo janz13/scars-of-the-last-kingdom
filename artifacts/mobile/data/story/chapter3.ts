@@ -92,7 +92,7 @@ export const CHAPTER_3_NODES: StoryNode[] = [
     title: 'Signs of the Hollow Children',
     location: 'Deep Tunnels — Approach Corridor',
     imageKey: 'collapsed_tunnel',
-    text: `You find the first trap at knee height — a taut wire strung across the passage, connected to a bundle of salvaged tin cans. You disarm it without triggering it. The second is more sophisticated: a pressure plate, poorly disguised but effective in the dark. Children built these. Children who have been defending this passage long enough to iterate on their designs. You step over the plate. The sound ahead is clearer now — voices, low and deliberate, and the specific quality of silence that means someone has heard you and stopped talking.`,
+    text: `You find the first trap at knee height — a taut wire strung across the passage, connected to a bundle of salvaged tin cans. You disarm it without triggering it. The second is more sophisticated: a pressure plate, poorly disguised but effective in the dark. Children built these. Children who have been defending this passage long enough to iterate on their designs. You step over the plate. The sound ahead is clearer now — voices, low and deliberate, and the particular quality of silence that means someone has heard you and stopped talking.`,
     effectsOnEnter: {},
     choices: [
       {
@@ -251,7 +251,7 @@ export const CHAPTER_3_NODES: StoryNode[] = [
         nextNode: 'c3_turnstile_passed',
         diceCheck: {
           stat: 'agility',
-          difficulty: 13,
+          difficulty: 12,
           diceType: 'd20',
           successNode: 'c3_turnstile_passed',
           failureNode: 'c3_turnstile_caught',
@@ -403,7 +403,7 @@ export const CHAPTER_3_NODES: StoryNode[] = [
         nextNode: 'c3_market_steal_success',
         diceCheck: {
           stat: 'luck',
-          difficulty: 14,
+          difficulty: 13,
           diceType: 'd20',
           successNode: 'c3_market_steal_success',
           failureNode: 'c3_market_steal_caught',
@@ -459,7 +459,7 @@ export const CHAPTER_3_NODES: StoryNode[] = [
         id: 'c3_refuse_market_debt',
         text: 'Refuse. This system has no authority over you.',
         nextNode: 'c3_end_market_lynching',
-        effects: { hollowChildren: -30 },
+        effects: { hollowChildren: -20 },
       },
     ],
   },
@@ -563,7 +563,7 @@ export const CHAPTER_3_NODES: StoryNode[] = [
     title: 'Sera',
     location: 'The Candle Market — Corner',
     imageKey: 'candle_market',
-    text: `The girl's name is Sera. Eight years old, possibly nine — malnutrition compresses the apparent age. She is watching the food stalls with the specific focused attention of someone whose body has been overriding their thoughts for a while. She is not begging. That distinction is important here: the Hollow Children don't beg because Mother Chalk says begging teaches the wrong lesson. Sera is waiting. For something that might not come. She looks at you with the sideways wariness of someone who has learned that adults who notice you don't always mean well by noticing.`,
+    text: `The girl's name is Sera. Eight years old, possibly nine — malnutrition compresses the apparent age. She is watching the food stalls with the particular focused attention of someone whose body has been overriding their thoughts for a while. She is not begging. That distinction is important here: the Hollow Children don't beg because Mother Chalk says begging teaches the wrong lesson. Sera is waiting. For something that might not come. She looks at you with the sideways wariness of someone who has learned that adults who notice you don't always mean well by noticing.`,
     effectsOnEnter: {},
     choices: [
       {
@@ -600,7 +600,7 @@ export const CHAPTER_3_NODES: StoryNode[] = [
     location: 'The Candle Market — Corner',
     imageKey: 'candle_market',
     text: `Sera eats with the controlled desperation of someone who has learned not to eat too fast because eating too fast after not eating comes with consequences. She doesn't say thank you immediately. She says: "Are you the one with the mark on their wrist?" When you confirm, she says: "Mother Chalk will want to see you." She has already been told to watch for you. She has been watching all afternoon. The hunger was real. The assignment was also real. Sera is eight years old and already understands how information has value. The Hollow Children start early.`,
-    effectsOnEnter: { setFlags: ['sera_helped'] },
+    effectsOnEnter: { corruption: -5, setFlags: ['sera_helped', 'sera_saved_ch3', 'sera_alive'] },
     choices: [
       {
         id: 'c3_follow_sera_lead',
@@ -688,7 +688,7 @@ export const CHAPTER_3_NODES: StoryNode[] = [
         text: '[Forgotten Scholar] Cross-reference against pre-collapse notation systems you studied.',
         nextNode: 'c3_mother_chalk_summons',
         requirements: { backgrounds: ['forgotten_scholar'] },
-        effects: { lastArchive: 12, intelligence: 3, setFlags: ['scholar_symbols_read'] },
+        effects: { lastArchive: 12, intelligence: 2, setFlags: ['scholar_symbols_read'] },
         isHidden: true,
       },
       {
@@ -737,7 +737,7 @@ export const CHAPTER_3_NODES: StoryNode[] = [
     title: 'Mother Chalk',
     location: 'The Chalk Map Wall — Inner Chamber',
     imageKey: 'chalk_map_wall',
-    text: `She is not what you expected. Mother Chalk is sixteen — seventeen at most — with chalk-white dust in her hair that gave the name its meaning and eyes that have the specific quality of someone who stopped being surprised by people a long time ago. She runs two hundred children across six sub-levels. She has been doing it since she was fourteen. She looks at your mark the way an engineer looks at an instrument reading: carefully, without sentiment. "The symbols on the wall," she says. "You reacted to them. The mark did. I've been waiting for someone whose mark still works." She pauses. "I have a problem I need a marked person to help with. And I have things you need. Let's discuss fairness."`,
+    text: `She is not what you expected. Mother Chalk is sixteen — seventeen at most — with chalk-white dust in her hair that gave the name its meaning and eyes that have the particular quality of someone who stopped being surprised by people a long time ago. She runs two hundred children across six sub-levels. She has been doing it since she was fourteen. She looks at your mark the way an engineer looks at an instrument reading: carefully, without sentiment. "The symbols on the wall," she says. "You reacted to them. The mark did. I've been waiting for someone whose mark still works." She pauses. "I have a problem I need a marked person to help with. And I have things you need. Let's discuss fairness."`,
     effectsOnEnter: { setFlags: ['mother_chalk_met'] },
     choices: [
       {
@@ -817,7 +817,7 @@ export const CHAPTER_3_NODES: StoryNode[] = [
     location: 'Deep Tunnels — Departure Passage',
     imageKey: 'collapsed_tunnel',
     text: `You leave through the bone turnstile with the layout of the Hollow Children's network in your head and the smell of their candle market still on your clothes. Cain walks beside you and says nothing because he already knows what you are doing. Mira is three steps behind, staying there on principle. The Iron Saints checkpoint at Junction 4-C is twenty minutes east. The Glass Court has a data-buy operation at Junction 4-F. You have exactly the kind of information that makes people in either location very interested in meeting with you.`,
-    effectsOnEnter: { hollowChildren: -25, miraTrust: -5, setFlags: ['hollow_children_betrayed'] },
+    effectsOnEnter: { hollowChildren: -20, miraTrust: -5, setFlags: ['hollow_children_betrayed'] },
     choices: [
       {
         id: 'c3_betray_to_iron_saints',
@@ -859,7 +859,7 @@ export const CHAPTER_3_NODES: StoryNode[] = [
         id: 'c3_warn_hollow_children',
         text: 'Warn the Hollow Children before the Saints move.',
         nextNode: 'c3_end_iron_saints_captured',
-        effects: { hollowChildren: 15, ironSaints: -25 },
+        effects: { hollowChildren: 15, ironSaints: -20 },
       },
     ],
   },
@@ -941,7 +941,7 @@ export const CHAPTER_3_NODES: StoryNode[] = [
         nextNode: 'c3_flooded_cross_success',
         diceCheck: {
           stat: 'strength',
-          difficulty: 15,
+          difficulty: 13,
           diceType: 'd20',
           successNode: 'c3_flooded_cross_success',
           failureNode: 'c3_flooded_cross_fail',
@@ -971,7 +971,7 @@ export const CHAPTER_3_NODES: StoryNode[] = [
         nextNode: 'c3_flooded_cross_success',
         diceCheck: {
           stat: 'strength',
-          difficulty: 15,
+          difficulty: 13,
           diceType: 'd20',
           successNode: 'c3_flooded_cross_success',
           failureNode: 'c3_flooded_cross_fail',
@@ -1004,7 +1004,7 @@ export const CHAPTER_3_NODES: StoryNode[] = [
     location: 'The Flooded Platform — Collapse Point',
     imageKey: 'flooded_platform',
     text: `The platform edge crumbles exactly when you're depending on it. The sound is three things in sequence: the crack, the give, and your own intake of breath as the support disappears. You hit the water at the deep point — black, cold, disorienting. The chemical tang is worse when you're submerged. Mira is already moving on the platform above. Cain grabs for a handhold on the far wall. You are in the water and the water is deep and the current is there even when you can't see it.`,
-    effectsOnEnter: { health: -20 },
+    effectsOnEnter: { health: -15 },
     choices: [
       {
         id: 'c3_fight_the_current',
@@ -1016,7 +1016,7 @@ export const CHAPTER_3_NODES: StoryNode[] = [
         id: 'c3_find_the_bottom',
         text: 'Find the bottom and push up.',
         nextNode: 'c3_end_platform_drowned',
-        effects: { health: -20 },
+        effects: { health: -15 },
       },
     ],
   },
@@ -1062,7 +1062,7 @@ export const CHAPTER_3_NODES: StoryNode[] = [
         id: 'c3_abandon_mira_water',
         text: 'The current will take her and you can\'t follow. Keep moving to the far side.',
         nextNode: 'c3_mira_left_behind',
-        effects: { miraTrust: -10, morale: -5, hollowChildren: -5 },
+        effects: { miraTrust: -5, morale: -5, hollowChildren: -5 },
       },
     ],
   },
@@ -1091,7 +1091,7 @@ export const CHAPTER_3_NODES: StoryNode[] = [
     location: 'The Flooded Platform — Far Side',
     imageKey: 'flooded_platform',
     text: `You reach the far side. The crossing took everything it was going to take. You don't look back immediately. When you do, the platform behind you is empty and the water is flat. Cain is watching the surface of the water with the expression he uses for problems that have already been solved. He doesn't say anything. The mark on your wrist pulses twice, irregularly, which it has never done before. Whatever it's tracking, it's tracking something that has changed. The Rat King's gate is ahead. The city has a way of making you keep moving whether you want to or not.`,
-    effectsOnEnter: { setFlags: ['mira_abandoned_platform'], miraTrust: -10 },
+    effectsOnEnter: { setFlags: ['mira_abandoned_platform'], miraTrust: -5 },
     choices: [
       {
         id: 'c3_continue_without_mira',
@@ -1123,7 +1123,7 @@ export const CHAPTER_3_NODES: StoryNode[] = [
     title: 'The Nursery of Knives',
     location: 'The Nursery of Knives — Entry Passage',
     imageKey: 'nursery_of_knives',
-    text: `The passage earned its name not from violence but from the Hollow Children's youngest cohort, who live here and whose primary occupation is making things sharp. Knives. Hooks. Points. Tools, primarily, but tools with an edge. The air smells of metal shavings and the specific kind of quiet that young children make when they are doing something careful and focused. The traps here are the best in the network — Lio mentioned them before the market, and now you're inside them. The children stop what they are doing and watch you move. This is the test before the Rat King's gate.`,
+    text: `The passage earned its name not from violence but from the Hollow Children's youngest cohort, who live here and whose primary occupation is making things sharp. Knives. Hooks. Points. Tools, primarily, but tools with an edge. The air smells of metal shavings and the particular kind of quiet that young children make when they are doing something careful and focused. The traps here are the best in the network — Lio mentioned them before the market, and now you're inside them. The children stop what they are doing and watch you move. This is the test before the Rat King's gate.`,
     effectsOnEnter: {},
     choices: [
       {
@@ -1217,7 +1217,7 @@ export const CHAPTER_3_NODES: StoryNode[] = [
     location: 'The Nursery of Knives — Trap Zone',
     imageKey: 'nursery_of_knives',
     text: `The spring bracket deploys. It is designed to stop, not kill — the children use it to catch rather than harm — but at speed, the impact is significant enough to count. You end up on the floor with a cut along your forearm from the secondary wire and the children watching without expression. Mira is at your side in two seconds with the antiseptic. The children watch that too. A child with a ledger writes something down. The trap is reset within ninety seconds. The children move back to their work. They are not angry. They are merely precise about what information they collect.`,
-    effectsOnEnter: { health: -20, medicine: -1 },
+    effectsOnEnter: { health: -15, medicine: -1 },
     choices: [
       {
         id: 'c3_accept_trap_hit',
@@ -1229,7 +1229,7 @@ export const CHAPTER_3_NODES: StoryNode[] = [
         id: 'c3_rage_at_trap',
         text: 'Tear the trap mechanism apart. This is dangerous and they should know it.',
         nextNode: 'c3_end_nursery_trap',
-        effects: { hollowChildren: -25, miraTrust: -3 },
+        effects: { hollowChildren: -20, miraTrust: -3 },
       },
     ],
   },
@@ -1288,7 +1288,7 @@ export const CHAPTER_3_NODES: StoryNode[] = [
         nextNode: 'c3_protect_victory',
         diceCheck: {
           stat: 'strength',
-          difficulty: 16,
+          difficulty: 14,
           diceType: 'd20',
           successNode: 'c3_protect_victory',
           failureNode: 'c3_protect_defeat',
@@ -1341,8 +1341,8 @@ export const CHAPTER_3_NODES: StoryNode[] = [
     title: 'Overwhelmed',
     location: 'The Nursery Passage — Patrol Zone',
     imageKey: 'nursery_of_knives',
-    text: `Four Saints against one marked person is not an evenly matched engagement. You buy the children six seconds — enough for two of them to run. The third is too small and too slow. The Saints are not cruel to the child; they log them as recovered contact and assign a temporary holding protocol that means a Saints care facility and a registration and no more Nursery of Knives. You are in the logs as Category Escalated. The tunnel network behind you is now actively monitored. Mira pulls you away from the Saints' perimeter. The child they took watches over a Saint's shoulder as you leave. That child will be alright, probably. That thought is doing most of the work right now.`,
-    effectsOnEnter: { health: -20, hollowChildren: -10, morale: -3 },
+    text: `Four Saints against one marked person is not an evenly matched engagement. You buy the children six seconds — enough for two of them to run. The third is too small and too slow. The Saints are not cruel to the child; they log them as recovered contact and assign a temporary holding protocol that means a Saints care facility and a registration and no more Nursery of Knives. You are in the logs as Category Escalated. The tunnel network behind you is now actively monitored. Mira pulls you away from the Saints' perimeter. The child they took watches over a Saint's shoulder as you leave. That child will be all right, probably. That thought is doing most of the work right now.`,
+    effectsOnEnter: { health: -15, hollowChildren: -10, morale: -3 },
     choices: [
       {
         id: 'c3_retreat_after_defeat',
@@ -1353,7 +1353,7 @@ export const CHAPTER_3_NODES: StoryNode[] = [
         id: 'c3_pursue_after_defeat',
         text: 'Try to follow the Saints and recover the child.',
         nextNode: 'c3_end_saints_overwhelmed',
-        effects: { health: -20, miraTrust: 2 },
+        effects: { health: -15, miraTrust: 2 },
       },
     ],
   },
@@ -1430,7 +1430,7 @@ export const CHAPTER_3_NODES: StoryNode[] = [
     title: 'The Rat King\'s Toll Gate',
     location: 'The Rat King\'s Toll Gate — Entry',
     imageKey: 'rat_king_gate',
-    text: `The gate is a fortified tunnel junction: welded steel doors, two guards with the specific look of people who are comfortable with violence as a professional tool. The Rat King is not present — his name is a title, not a description, though the person who holds it has been holding it for three years and the details are instructive. A large man who was a tunnel maintenance foreman before the Blackout and who pivoted his workforce into a transit control operation with the methodical competence that suggests the personality type hasn't changed, just the product. The guards relay your presence. You wait. The gate slides open.`,
+    text: `The gate is a fortified tunnel junction: welded steel doors, two guards with the particular look of people who are comfortable with violence as a professional tool. The Rat King is not present — his name is a title, not a description, though the person who holds it has been holding it for three years and the details are instructive. A large man who was a tunnel maintenance foreman before the Blackout and who pivoted his workforce into a transit control operation with the methodical competence that suggests the personality type hasn't changed, just the product. The guards relay your presence. You wait. The gate slides open.`,
     effectsOnEnter: { thirst: -1 },
     choices: [
       {
@@ -1476,7 +1476,7 @@ export const CHAPTER_3_NODES: StoryNode[] = [
         nextNode: 'c3_bluff_success',
         diceCheck: {
           stat: 'charisma',
-          difficulty: 14,
+          difficulty: 13,
           diceType: 'd20',
           successNode: 'c3_bluff_success',
           failureNode: 'c3_bluff_fail',
@@ -1537,7 +1537,7 @@ export const CHAPTER_3_NODES: StoryNode[] = [
         nextNode: 'c3_bluff_success',
         diceCheck: {
           stat: 'charisma',
-          difficulty: 14,
+          difficulty: 13,
           diceType: 'd20',
           successNode: 'c3_bluff_success',
           failureNode: 'c3_bluff_fail',
@@ -1686,7 +1686,7 @@ export const CHAPTER_3_NODES: StoryNode[] = [
     title: 'What It Costs to Stop',
     location: 'The Hidden Clinic — Rest Bay',
     imageKey: 'hidden_clinic',
-    text: `Two days. Vel works. You give what you have and Vel makes it stretch with the economy of someone who has been doing this with not enough for a long time. Mira sleeps for sixteen hours the first day — properly, not the threshold sleep you travel on — and wakes up on the second day different in the specific way that rest makes people different. She doesn't say thank you again. She says: "I didn't realise." Three words. From Mira, that's a chapter. The mark on your wrist is quiet for the first time since the descent. Even it seems to understand that some things require stopping.`,
+    text: `Two days. Vel works. You give what you have and Vel makes it stretch with the economy of someone who has been doing this with not enough for a long time. Mira sleeps for sixteen hours the first day — properly, not the threshold sleep you travel on — and wakes up on the second day different in the particular way that rest makes people different. She doesn't say thank you again. She says: "I didn't realise." Three words. From Mira, that's a chapter. The mark on your wrist is quiet for the first time since the descent. Even it seems to understand that some things require stopping.`,
     effectsOnEnter: { setFlags: ['mira_clinic_survived'] },
     choices: [
       {
@@ -1763,7 +1763,7 @@ export const CHAPTER_3_NODES: StoryNode[] = [
         text: '[Esper] Open yourself to the broadcast. Don\'t filter — receive it directly.',
         nextNode: 'c3_relic_pulse_choice',
         requirements: { classes: ['esper'] },
-        effects: { corruption: 8, intelligence: 3, lastArchive: 15, setFlags: ['esper_engine_communion'] },
+        effects: { corruption: 8, intelligence: 2, lastArchive: 15, setFlags: ['esper_engine_communion'] },
         isHidden: true,
       },
       {
@@ -1800,7 +1800,7 @@ export const CHAPTER_3_NODES: StoryNode[] = [
         id: 'c3_controlled_bridge',
         text: 'Partial bridge — take what information comes through and close before it takes hold.',
         nextNode: 'c3_resist_signal_node',
-        effects: { corruption: 5, intelligence: 3, lastArchive: 20, setFlags: ['engine_partial_bridge'] },
+        effects: { corruption: 5, intelligence: 2, lastArchive: 15, setFlags: ['engine_partial_bridge'] },
       },
     ],
   },
@@ -1826,7 +1826,7 @@ export const CHAPTER_3_NODES: StoryNode[] = [
     location: 'The Relic Engine Room — Disconnected',
     imageKey: 'relic_engine_room',
     text: `The disconnection is not painless but it is possible. The mark cools. The engine's broadcast narrows but doesn't stop — it is still running, still waiting, but you are no longer the direct receiver. What passed through in the partial bridge is useful: coordinates, encoded in a format that matches the Last Archive door symbols, pointing to something deeper than the sub-level system. The archive beneath the archive. The engine was installed by the people who built the chalk map symbols — the same people Patch identified. The engine is pointing you toward the Door Without a Handle. You were going there anyway. Now you know why.`,
-    effectsOnEnter: { lastArchive: 20, setFlags: ['relic_engine_resisted'] },
+    effectsOnEnter: { lastArchive: 10, setFlags: ['relic_engine_resisted'] },
     choices: [
       {
         id: 'c3_use_orphan_secret',
@@ -1927,7 +1927,7 @@ export const CHAPTER_3_NODES: StoryNode[] = [
     title: 'What Waits',
     location: 'The Door Without a Handle — Against the Surface',
     imageKey: 'relic_engine_room',
-    text: `The door's surface is warm. Not engine-warm — the specific warmth of something that has been waiting at body temperature for a long time. The symbols in the lower corner glow faint gold as the mark approaches. They are not the same as the engine's frequency. They are older. The mark was designed for the engine. The door was designed for whatever made the mark. The distinction is significant and the implications are extensive and you are standing in a sub-tunnel with wet boots and insufficient food and a decision to make about how much of this weight you can carry forward. Mother Chalk's chalk mark is still on your sleeve. Lio's passage rights are still in effect. The Hollow Children are still above you.`,
+    text: `The door's surface is warm. Not engine-warm — the unmistakable warmth of something that has been waiting at body temperature for a long time. The symbols in the lower corner glow faint gold as the mark approaches. They are not the same as the engine's frequency. They are older. The mark was designed for the engine. The door was designed for whatever made the mark. The distinction is significant and the implications are extensive and you are standing in a sub-tunnel with wet boots and insufficient food and a decision to make about how much of this weight you can carry forward. Mother Chalk's chalk mark is still on your sleeve. Lio's passage rights are still in effect. The Hollow Children are still above you.`,
     effectsOnEnter: {},
     choices: [
       {
@@ -1959,7 +1959,7 @@ export const CHAPTER_3_NODES: StoryNode[] = [
     location: 'The Chalk Map Wall — Inner Chamber',
     imageKey: 'chalk_map_wall',
     text: `Mother Chalk listens to your full account without interruption. When you finish, she is quiet for a long time. Longer than usual. Lio is in the corner, running his knife across the whetstone in the rhythm she recognises as his thinking rhythm. Then she says: "The Door Without a Handle has been there since before we arrived. The engine has been running since before we arrived. Two hundred children have been living three levels above something that was designed for a person with a wrist mark, and nobody sent us that person for two years." She stands up. "The Hollow Children are in. What do you need?" This is what a faction looks like when it decides. Not a meeting — a declaration. The chalk map on the wall gains a new marking in the lower right corner: the symbol for alliance.`,
-    effectsOnEnter: { hollowChildren: 25, setFlags: ['hollow_children_faction_ally'] },
+    effectsOnEnter: { hollowChildren: 20, setFlags: ['hollow_children_faction_ally'] },
     choices: [
       {
         id: 'c3_accept_hollow_alliance',
@@ -2015,10 +2015,13 @@ export const CHAPTER_3_NODES: StoryNode[] = [
       lastArchive: 5,
       morale: 3,
     },
-    choices: [],
-    isEnding: true,
-    endingType: 'faction',
-    endingId: 'ending_ch3_trust_complete',
+    choices: [
+      {
+        id: 'c3_continue_to_ch4',
+        text: 'Follow the mark deeper. The surface has more to show you.',
+        nextNode: 'chapter4_start',
+      },
+    ],
   },
 
 ];

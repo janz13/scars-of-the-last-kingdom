@@ -98,7 +98,7 @@ export const CHAPTER_4_NODES: StoryNode[] = [
         nextNode: 'c4_checkpoint_sneak_attempt',
         diceCheck: {
           stat: 'agility',
-          difficulty: 14,
+          difficulty: 13,
           diceType: 'd20',
           successNode: 'c4_checkpoint_cleared',
           failureNode: 'c4_checkpoint_captured',
@@ -126,7 +126,7 @@ export const CHAPTER_4_NODES: StoryNode[] = [
         nextNode: 'c4_checkpoint_fight_attempt',
         diceCheck: {
           stat: 'strength',
-          difficulty: 15,
+          difficulty: 13,
           diceType: 'd20',
           successNode: 'c4_checkpoint_cleared',
           failureNode: 'c4_checkpoint_captured',
@@ -371,7 +371,7 @@ export const CHAPTER_4_NODES: StoryNode[] = [
     imageKey: 'chapel_of_chains',
     speaker: 'Brother Malrec',
     text: `Malrec turns to look at you fully for the first time. His expression does not change, which is itself a kind of reaction — the deliberate absence of emotion from a face that has been trained to hold nothing the speaker hasn't decided to give. The congregation is very still. "The unbound thing speaks," he says. His voice is conversational. "It always does. That is the nature of unbound things — they confuse speech with thought, and thought with consequence." He makes a small motion with his hand. The two guards who were at the back of the Chapel are now at the front. "Accountability," he says, "is the first chain. You will find it is more comfortable than the alternative."`,
-    effectsOnEnter: { setFlags: ['malrec_marked_you'] },
+    effectsOnEnter: { corruption: -3, setFlags: ['malrec_marked_you'] },
     choices: [
       {
         id: 'c4_resist_back_down',
@@ -557,6 +557,11 @@ export const CHAPTER_4_NODES: StoryNode[] = [
         requirements: { miraPresent: true },
         effects: { miraTrust: 1 },
       },
+      {
+        id: 'c4_leave_to_shrine',
+        text: 'The War Shrine. The oldest part of the settlement. Something is there.',
+        nextNode: 'c4_shrine_arrive',
+      },
     ],
   },
 
@@ -603,7 +608,7 @@ export const CHAPTER_4_NODES: StoryNode[] = [
     title: 'The Chalk Children in Grey',
     location: 'Purification Yard — Processing Grid',
     imageKey: 'purification_yard',
-    text: `You move through the processing grid slowly enough to seem compliant and quickly enough to see what you need to see. The Hollow Children are organised — even under Saints authority, even stripped of their chalk markers — in the specific way that Mother Chalk's people organise: oldest at the perimeter, youngest at the centre, information passing sideways in small gestures rather than words. One of the older ones — a girl, fifteen, wearing the chalk dust in her hair the way they wear it as a marker of status — meets your eyes. She holds them. She makes a very small motion with three fingers: the Hollow Children acknowledgement signal that Lio showed you. She is waiting to see if you respond correctly.`,
+    text: `You move through the processing grid slowly enough to seem compliant and quickly enough to see what you need to see. The Hollow Children are organised — even under Saints authority, even stripped of their chalk markers — in the particular way that Mother Chalk's people organise: oldest at the perimeter, youngest at the centre, information passing sideways in small gestures rather than words. One of the older ones — a girl, fifteen, wearing the chalk dust in her hair the way they wear it as a marker of status — meets your eyes. She holds them. She makes a very small motion with three fingers: the Hollow Children acknowledgement signal that Lio showed you. She is waiting to see if you respond correctly.`,
     effectsOnEnter: {},
     choices: [
       {
@@ -739,13 +744,20 @@ export const CHAPTER_4_NODES: StoryNode[] = [
     location: 'Purification Yard — Purification Station',
     imageKey: 'purification_yard',
     text: `The immersion lasts ninety seconds. The priest counts aloud. You count separately. Your counts diverge at forty-five because at forty-five the harmonic frequency reaches your mark and the mark's response is not suppression — it is argument. The chain-frequencies and the mark's resonance dispute each other in the material of your wrist and the argument is conducted in the medium of pain. At seventy seconds, the corruption recedes. You can feel it recede the way you feel a tooth pulled: the absence is correct but the space it leaves is terrible. At ninety seconds, the priest says "Complete." You lift your wrist. The mark is dimmer. Smaller. Something was burned away with the corruption. Something adjacent. Toma was right about that.`,
-    effectsOnEnter: { corruption: -25, health: -20, setFlags: ['purification_survived'] },
+    effectsOnEnter: { corruption: -25, health: -15, setFlags: ['purification_survived'] },
     choices: [
       {
         id: 'c4_purify_survived',
         text: 'You survived. Account for what was lost and move.',
         nextNode: 'c4_yard_purification_aftermath',
         effects: { morale: -5 },
+      },
+      {
+        id: 'c4_purify_overburn',
+        text: 'The corruption resists. The harmonic frequency climbs past the threshold. The chain takes too much.',
+        nextNode: 'c4_purification_overburn_end',
+        requirements: { corruption: 60 },
+        isHidden: true,
       },
     ],
   },
@@ -781,7 +793,7 @@ export const CHAPTER_4_NODES: StoryNode[] = [
     location: 'Purification Yard — Command Platform',
     imageKey: 'purification_yard',
     speaker: 'Saint Veyra',
-    text: `She arrives at the Yard in the time it would take someone to walk from the Confession Hall at a deliberate pace, which suggests she was already on her way before the message was sent, which suggests she has been monitoring the situation for some time. She is not what the title implies — she does not wear iron decoratively, she wears it functionally, and the function is visible in how the Yard reorganises around her presence without anyone giving an order. She looks at you across the processing grid with the specific attention of someone who has been briefed. "The marked individual," she says. Her voice carries without effort. "Come with me to the Confession Hall. I have three questions for you, and the answers will determine the shape of the next several days." She turns and walks before you respond. She expects compliance the way a wall expects gravity.`,
+    text: `She arrives at the Yard in the time it would take someone to walk from the Confession Hall at a deliberate pace, which suggests she was already on her way before the message was sent, which suggests she has been monitoring the situation for some time. She is not what the title implies — she does not wear iron decoratively, she wears it functionally, and the function is visible in how the Yard reorganises around her presence without anyone giving an order. She looks at you across the processing grid with the careful alertness of someone who has been briefed. "The marked individual," she says. Her voice carries without effort. "Come with me to the Confession Hall. I have three questions for you, and the answers will determine the shape of the next several days." She turns and walks before you respond. She expects compliance the way a wall expects gravity.`,
     effectsOnEnter: { setFlags: ['veyra_summons_player'] },
     choices: [
       {
@@ -873,7 +885,7 @@ export const CHAPTER_4_NODES: StoryNode[] = [
     title: 'Unit Six',
     location: 'Barracks of Ash — Equipment Rack',
     imageKey: 'barracks_of_ash',
-    text: `The equipment rack holds seventeen weapons, each stored in a specific position based on a numbering system pressed into the rack itself. Cain is standing in front of position six. He is not moving. The numbering system is the same one the Iron Saints used before they were the Iron Saints, when they were the Reconstruction Corps — three years ago. When they were the organisation Cain left. Position six was his. You don't know that yet — you know it from how he is standing. He stands the way people stand in front of the thing they walked away from: with the specific weight of that decision still in his posture.`,
+    text: `The equipment rack holds seventeen weapons, each stored in a specific position based on a numbering system pressed into the rack itself. Cain is standing in front of position six. He is not moving. The numbering system is the same one the Iron Saints used before they were the Iron Saints, when they were the Reconstruction Corps — three years ago. When they were the organisation Cain left. Position six was his. You don't know that yet — you know it from how he is standing. He stands the way people stand in front of the thing they walked away from: with the particular weight of that decision still in his posture.`,
     effectsOnEnter: { setFlags: ['cain_military_past_active'] },
     choices: [
       {
@@ -1088,6 +1100,13 @@ export const CHAPTER_4_NODES: StoryNode[] = [
         requirements: { miraPresent: true },
         effects: { miraTrust: 1 },
       },
+      {
+        id: 'c4_intel_escape_now',
+        text: 'You have enough. Leave the settlement now — before the shift change catches you.',
+        nextNode: 'c4_infiltrate_success',
+        requirements: { flags: ['infiltrate_route'] },
+        effects: { ironSaints: -10 },
+      },
     ],
   },
 
@@ -1099,7 +1118,7 @@ export const CHAPTER_4_NODES: StoryNode[] = [
     title: 'The Confession Hall',
     location: 'Confession Hall — Entrance',
     imageKey: 'confession_hall',
-    text: `The Confession Hall uses what was the station master's office: three rooms knocked into one, the original furniture replaced with iron seats arranged in the configuration of evaluation rather than conversation. Light comes from arc-lamps behind frosted panels that make the illumination sourceless and total — there are no shadows in this room, which is either a design choice or a feature. Veyra is already there. She arrived first. This is a pattern, you understand now: she is always already in the room you enter. She is reading from a ledger — your ledger, the one Malrec started — and she does not look up when you enter. She finishes the page first. Then she closes it. Then she looks at you with the full attention of someone who has been preparing this attention for longer than you have been in the room.`,
+    text: `The Confession Hall uses what was the station master's office: three rooms knocked into one, the original furniture replaced with iron seats arranged in the configuration of evaluation rather than conversation. Light comes from arc-lamps behind frosted panels that make the illumination sourceless and total — there are no shadows in this room, which is either a design choice or a feature. Veyra is already there. She arrived first. This is a pattern, you understand now: she is always already in the room you enter. She is reading from a ledger — your ledger, the one Malrec started — and she does not look up when you enter. She finishes the page first. Then she closes it. Then she looks at you with the full alertness of someone who has been preparing this attention for longer than you have been in the room.`,
     effectsOnEnter: { setFlags: ['confession_hall_reached'] },
     choices: [
       {
@@ -1124,7 +1143,7 @@ export const CHAPTER_4_NODES: StoryNode[] = [
     location: 'Confession Hall — Main Room',
     imageKey: 'confession_hall',
     speaker: 'Saint Veyra',
-    text: `She is forty-something and she carries herself like the weight of forty-something has been worked into something useful. The chain she wears is functional, not decorative: one link through the left cuff, connected to a small iron ring she uses as a writing anchor. Her brand is visible — three years old, the scar fully integrated into her forearm. She speaks without preamble. "Three questions. You will answer or you will not. I will evaluate accordingly." She does not consult the ledger again. "First: Why are you carrying a mark at saturation level three when the Last Archive standard for voluntary registration is saturation level one? Second: What do you know about what the mark is transmitting, and to whom? Third: What will you give the Iron Saints in exchange for the specific kind of survival you require from this settlement?" She waits. She does not add anything. The questions are complete.`,
+    text: `She is forty-something and she carries herself like the weight of forty-something has been worked into something useful. The chain she wears is functional, not decorative: one link through the left cuff, connected to a small iron ring she uses as a writing anchor. Her brand is visible — three years old, the scar fully integrated into her forearm. She speaks without preamble. "Three questions. You will answer or you will not. I will evaluate accordingly." She does not consult the ledger again. "First: Why are you carrying a mark at saturation level three when the Last Archive standard for voluntary registration is saturation level one? Second: What do you know about what the mark is transmitting, and to whom? Third: What will you give the Iron Saints in exchange for the particular kind of survival you require from this settlement?" She waits. She does not add anything. The questions are complete.`,
     dialogue: 'What will you give the Iron Saints in exchange for the survival you require?',
     effectsOnEnter: { setFlags: ['veyra_met'] },
     choices: [
@@ -1202,7 +1221,7 @@ export const CHAPTER_4_NODES: StoryNode[] = [
         id: 'c4_join_sign_form',
         text: 'Sign it. The chain is useful when you are holding the other end.',
         nextNode: 'c4_saints_join_complete',
-        effects: { ironSaints: 25, setFlags: ['formally_joined_saints', 'chapter4_saint_route'] },
+        effects: { ironSaints: 20, setFlags: ['formally_joined_saints', 'chapter4_saint_route'] },
       },
       {
         id: 'c4_join_ask_delay',
@@ -1257,7 +1276,7 @@ export const CHAPTER_4_NODES: StoryNode[] = [
     title: 'The Mark\'s Demonstration',
     location: 'Confession Hall — Main Room',
     imageKey: 'confession_hall',
-    text: `You pull back your sleeve. The mark at its current saturation is visible in a room this well-lit — not glowing, but distinct, the corruption having deepened its colour to something that looks carved rather than painted. Veyra does not move. She watches it with the specific stillness of someone who has read about this and is now seeing the document in person. "The transmission range," you say, "at current saturation, is at least two hundred metres. I've been suppressing it through deliberate focus. At the Furnace, in close proximity to the harmonic structure, it would transmit in full. Whatever the mark is carrying — whatever the Order has been trying to prevent — would transmit at maximum amplitude." You meet her eyes. "That's your negotiating position, and mine."`,
+    text: `You pull back your sleeve. The mark at its current saturation is visible in a room this well-lit — not glowing, but distinct, the corruption having deepened its colour to something that looks carved rather than painted. Veyra does not move. She watches it with the particular stillness of someone who has read about this and is now seeing the document in person. "The transmission range," you say, "at current saturation, is at least two hundred metres. I've been suppressing it through deliberate focus. At the Furnace, in close proximity to the harmonic structure, it would transmit in full. Whatever the mark is carrying — whatever the Order has been trying to prevent — would transmit at maximum amplitude." You meet her eyes. "That's your negotiating position, and mine."`,
     effectsOnEnter: { setFlags: ['mark_negotiation_active'] },
     choices: [
       {
@@ -1278,7 +1297,7 @@ export const CHAPTER_4_NODES: StoryNode[] = [
         nextNode: 'c4_veyra_pact',
         diceCheck: {
           stat: 'charisma',
-          difficulty: 15,
+          difficulty: 13,
           diceType: 'd20',
           successNode: 'c4_veyra_pact',
           failureNode: 'c4_furnace_arrive',
@@ -1316,8 +1335,8 @@ export const CHAPTER_4_NODES: StoryNode[] = [
     speaker: 'Saint Veyra',
     text: `Veyra's expression does not change. She writes something in the ledger. "The Last Archive agent. Name and location." You tell her. She writes. She stamps the form with a chain-and-flame seal. "The integration evaluation for the marked individual is amended: provisional integration, asset status, pending Archive contact retrieval." She slides your evaluation copy across. It has a new designation at the top. Your name, and below it: PROVISIONAL ASSET. The word PROVISIONAL does a lot of work in that sentence. Outside the Confession Hall, within the hour, you will hear the sound of the Prison Carts moving. You will not go to the window. You already know what you will see.`,
     effectsOnEnter: {
-      ironSaints: 30,
-      miraTrust: -10,
+      ironSaints: 20,
+      miraTrust: -5,
       setFlags: ['mira_betrayed', 'mira_delivered_to_saints', 'mira_trust_broken'],
     },
     choices: [
@@ -1341,7 +1360,7 @@ export const CHAPTER_4_NODES: StoryNode[] = [
     title: 'After',
     location: 'Confession Hall — Exit',
     imageKey: 'confession_hall',
-    text: `The settlement continues around you in exactly the way it continued before. The Iron Saints' efficiency is its own kind of comfort — nothing stops, nothing changes, everything proceeds according to the schedule that was already in place before you arrived and will continue after you leave. The provisional asset designation gives you a registration band on your left wrist: white, to distinguish it from the chain-link brand. You have access. You have safety of the specific kind that comes from being useful. Mira is in the system now. In the chain. You chose that. The mark on your wrist is very quiet. You are not sure what that means. You are not sure you want to find out.`,
+    text: `The settlement continues around you in exactly the way it continued before. The Iron Saints' efficiency is its own kind of comfort — nothing stops, nothing changes, everything proceeds according to the schedule that was already in place before you arrived and will continue after you leave. The provisional asset designation gives you a registration band on your left wrist: white, to distinguish it from the chain-link brand. You have access. You have safety of the particular kind that comes from being useful. Mira is in the system now. In the chain. You chose that. The mark on your wrist is very quiet. You are not sure what that means. You are not sure you want to find out.`,
     effectsOnEnter: { setFlags: ['mira_betrayal_complete'] },
     choices: [
       {
@@ -1385,6 +1404,12 @@ export const CHAPTER_4_NODES: StoryNode[] = [
         nextNode: 'c4_furnace_mark_pulse',
         effects: { corruption: 2 },
       },
+      {
+        id: 'c4_furn_watch_from_ledge',
+        text: 'Find the observation ledge. Watch what happens before acting.',
+        nextNode: 'c4_furnace_execution_witness',
+        effects: { morale: -2 },
+      },
     ],
   },
 
@@ -1394,7 +1419,7 @@ export const CHAPTER_4_NODES: StoryNode[] = [
     title: 'The Platform',
     location: 'Saint Furnace — Central Platform',
     imageKey: 'saint_furnace',
-    text: `You reach the first guard position at the platform edge. Six people standing in a line that has been arranged with the specific neatness of people who have been stood in lines before. Toma is third. His eyes track you without turning his head — a practised stillness. Beside him: a woman whose corruption mark is visible even from here, spread across her neck and jaw like a flood map. A man who cannot be more than twenty, whose fear is the specific fear of someone who did not know what they were being charged with when they were charged. Two Hollow Children adults — older, calm with the calm of people who have made their peace. And at the far end, a figure sitting cross-legged on the platform in some state of meditative acceptance that belongs to a different situation entirely.`,
+    text: `You reach the first guard position at the platform edge. Six people standing in a line that has been arranged with the particular neatness of people who have been stood in lines before. Toma is third. His eyes track you without turning his head — a practised stillness. Beside him: a woman whose corruption mark is visible even from here, spread across her neck and jaw like a flood map. A man who cannot be more than twenty, whose fear is the specific fear of someone who did not know what they were being charged with when they were charged. Two Hollow Children adults — older, calm with the calm of people who have made their peace. And at the far end, a figure sitting cross-legged on the platform in some state of meditative acceptance that belongs to a different situation entirely.`,
     effectsOnEnter: { setFlags: ['furnace_platform_reached'] },
     choices: [
       {
@@ -1423,7 +1448,7 @@ export const CHAPTER_4_NODES: StoryNode[] = [
     location: 'Saint Furnace — South Entrance',
     imageKey: 'saint_furnace',
     speaker: 'The Bellkeeper',
-    text: `She enters from the south, which puts the arc-lamp light directly behind her. She is tall and moves in the specific way that relic-touched people sometimes move: too carefully, as if each step is a decision, as if she is navigating something the rest of the room cannot see. She carries a bell on a chain — old, iron, with a crack in the casting that has been repaired with a different metal. When she rings it, the harmonic array responds — every chain in the room shivers, and the mark on your wrist flares with sudden heat. She does not ring it for ceremony. She rings it to take inventory. Her eyes cross the room and find your wrist with the precision of a compass finding north. She says, in a voice lower than her frame suggests: "One who carries. I have been listening for the tone of that mark for two years." She comes toward you. The guards do not stop her because the guards are afraid of her.`,
+    text: `She enters from the south, which puts the arc-lamp light directly behind her. She is tall and moves in the particular way that relic-touched people sometimes move: too carefully, as if each step is a decision, as if she is navigating something the rest of the room cannot see. She carries a bell on a chain — old, iron, with a crack in the casting that has been repaired with a different metal. When she rings it, the harmonic array responds — every chain in the room shivers, and the mark on your wrist flares with sudden heat. She does not ring it for ceremony. She rings it to take inventory. Her eyes cross the room and find your wrist with the precision of a compass finding north. She says, in a voice lower than her frame suggests: "One who carries. I have been listening for the tone of that mark for two years." She comes toward you. The guards do not stop her because the guards are afraid of her.`,
     effectsOnEnter: { setFlags: ['bellkeeper_met'] },
     choices: [
       {
@@ -1481,7 +1506,7 @@ export const CHAPTER_4_NODES: StoryNode[] = [
         nextNode: 'c4_furnace_toma_saved',
         diceCheck: {
           stat: 'agility',
-          difficulty: 15,
+          difficulty: 13,
           diceType: 'd20',
           successNode: 'c4_furnace_toma_saved',
           failureNode: 'c4_furnace_mark_fails',
@@ -1529,7 +1554,7 @@ export const CHAPTER_4_NODES: StoryNode[] = [
     text: `The break happens at the ninth chain from the north — you know this because the sound it makes is specific, a harmonic collapse that propagates through the entire array in the same way a fracture propagates through glass: total, immediate, irreversible. Every chain goes slack. Every arc-lamp in the Furnace flickers and three go dark. The vibration frequency drops to zero and the absence of it is louder than the sound was. The six prisoners on the platform are unrestrained now — the cuffs used a linked mechanism. Toma is already moving. He reaches you and takes your arm and says, in a voice that has been waiting two years to be used: "I know what the mark transmitted. I know where it went. We need to leave this building before I tell you, because they will know it transmitted and they will come for the source."`,
     dialogue: 'I know what it transmitted. We need to leave this building.',
     effectsOnEnter: {
-      ironSaints: -30,
+      ironSaints: -20,
       corruption: 5,
       setFlags: ['furnace_broken', 'toma_knows_transmission', 'chapter4_furnace_route'],
     },
@@ -1549,14 +1574,14 @@ export const CHAPTER_4_NODES: StoryNode[] = [
     title: 'Not Enough',
     location: 'Saint Furnace — Central Platform',
     imageKey: 'saint_furnace',
-    text: `The mark pushes but the array holds. You can feel it — the resistance of something built specifically to resist exactly this. The Doctrine of Remaining, encoded in iron and chain across thirty metres of ceiling and wall, is suppressing the mark's output at the frequency band the transmission requires. The mark is trying. You are trying. It is not enough, and the reinforcement from the Barracks arrives in the silence of the trying: nine soldiers, Malrec at the front, the specific expression on his face of someone whose procedural scenario has just confirmed itself.`,
+    text: `The mark pushes but the array holds. You can feel it — the resistance of something built specifically to resist exactly this. The Doctrine of Remaining, encoded in iron and chain across thirty metres of ceiling and wall, is suppressing the mark's output at the frequency band the transmission requires. The mark is trying. You are trying. It is not enough, and the reinforcement from the Barracks arrives in the silence of the trying: nine soldiers, Malrec at the front, the particular expression on his face of someone whose procedural scenario has just confirmed itself.`,
     effectsOnEnter: { corruption: 3, health: -8, setFlags: ['furnace_intervention_failed'] },
     choices: [
       {
         id: 'c4_fail_surrender',
         text: 'Stop. Surrender. You are nine-to-one and the mark is depleted.',
         nextNode: 'c4_malrec_verdict_node',
-        effects: { health: -5, ironSaints: -25 },
+        effects: { health: -5, ironSaints: -20 },
       },
       {
         id: 'c4_fail_ask_bellkeeper',
@@ -1607,7 +1632,7 @@ export const CHAPTER_4_NODES: StoryNode[] = [
         nextNode: 'c4_furnace_toma_saved',
         diceCheck: {
           stat: 'agility',
-          difficulty: 13,
+          difficulty: 12,
           diceType: 'd20',
           successNode: 'c4_furnace_toma_saved',
           failureNode: 'c4_malrec_verdict_node',
@@ -1676,6 +1701,12 @@ export const CHAPTER_4_NODES: StoryNode[] = [
         nextNode: 'c4_carts_mira_found',
         effects: { intelligence: 1 },
       },
+      {
+        id: 'c4_carts_surrender',
+        text: 'Step into the processing line. Let them register you. You are too tired to keep fighting.',
+        nextNode: 'c4_chains_forever_end',
+        effects: { morale: -10 },
+      },
     ],
   },
 
@@ -1686,7 +1717,7 @@ export const CHAPTER_4_NODES: StoryNode[] = [
     location: 'Prison Carts — Second Cart',
     imageKey: 'prison_carts',
     speaker: 'Mira',
-    text: `She sees you before you reach the cart. She has already assessed the guard positions, the mesh tensioning, and the lock mechanism before you say anything. She speaks quietly through the mesh. "The lock is a three-point iron-bar system. Standard Saints detention model. It can be manipulated from the outside with a flat instrument at the second bar junction — I've been watching the guard who does the processing rounds and he uses a bolt plate. Three seconds per junction." She pauses. "I also have the access code for the platform junction. I memorised it when they processed me." She looks at you with the specific expression of someone monitoring their own trust. "I need to know: did you choose to be here, or did they bring you?"`,
+    text: `She sees you before you reach the cart. She has already assessed the guard positions, the mesh tensioning, and the lock mechanism before you say anything. She speaks quietly through the mesh. "The lock is a three-point iron-bar system. Standard Saints detention model. It can be manipulated from the outside with a flat instrument at the second bar junction — I've been watching the guard who does the processing rounds and he uses a bolt plate. Three seconds per junction." She pauses. "I also have the access code for the platform junction. I memorised it when they processed me." She looks at you with the particular expression of someone monitoring their own trust. "I need to know: did you choose to be here, or did they bring you?"`,
     dialogue: 'I need to know: did you choose to be here, or did they bring you?',
     effectsOnEnter: { setFlags: ['mira_found'] },
     choices: [
@@ -1965,7 +1996,7 @@ export const CHAPTER_4_NODES: StoryNode[] = [
     speaker: 'The Bellkeeper',
     text: `She speaks slowly, with long pauses, the way relic-touched people often speak — as if receiving information at a pace she cannot control. "The mark is an anchor. Toma told you it carries a memory forward. That is correct but incomplete. The memory it carries is not an event. It is a direction. The mark knows where it is trying to transmit to. The shore." She rings the bell again. The relic in your hand — the metro disc — vibrates in response. "The Last Kingdom did not fall. It was moved. Moved to a specific location in the metro network, wrapped in the same harmonic structure as the chains in this building but inverted — designed to receive rather than suppress." She pauses. "The Iron Saints are suppressing something they found by accident. They are very afraid of what would happen if it received its signal." She looks at you. "I am not afraid. I have been waiting two years to meet someone who could send it."`,
     dialogue: 'The Last Kingdom was moved. The chain here suppresses the signal meant to reach it.',
-    effectsOnEnter: { setFlags: ['mark_destination_known', 'last_kingdom_theory'], lastArchive: 15 },
+    effectsOnEnter: { setFlags: ['mark_destination_known', 'last_kingdom_theory'], lastArchive: 10 },
     choices: [
       {
         id: 'c4_relic_challenge_veyra',
@@ -1984,7 +2015,15 @@ export const CHAPTER_4_NODES: StoryNode[] = [
         text: '[Forgotten Scholar] This connects everything. The proscribed doctrine. The shore. You know what this means.',
         nextNode: 'c4_scholar_route_end',
         requirements: { backgrounds: ['forgotten_scholar'] },
-        effects: { setFlags: ['scholar_full_picture'], lastArchive: 20 },
+        effects: { setFlags: ['scholar_full_picture'], lastArchive: 15 },
+        isHidden: true,
+      },
+      {
+        id: 'c4_relic_absorb_disc',
+        text: 'Hold the disc and the mark together. Let them resonate. See what the Bellkeeper was waiting for.',
+        nextNode: 'c4_bellkeeper_claimed_end',
+        requirements: { flags: ['metro_disc_acquired'], corruption: 40 },
+        effects: { corruption: 15 },
         isHidden: true,
       },
     ],
@@ -2005,7 +2044,7 @@ export const CHAPTER_4_NODES: StoryNode[] = [
         nextNode: 'c4_challenge_veyra_dice',
         diceCheck: {
           stat: 'charisma',
-          difficulty: 16,
+          difficulty: 14,
           diceType: 'd20',
           successNode: 'c4_challenge_veyra_win',
           failureNode: 'c4_challenge_veyra_lose',
@@ -2055,7 +2094,7 @@ export const CHAPTER_4_NODES: StoryNode[] = [
     imageKey: 'war_shrine',
     speaker: 'Saint Veyra',
     text: `She listens. She considers. She says: "The chain law challenge is insufficient. The evidence is partial and the interpretation is speculative." She does not say it unkindly. "The marked individual is to be remanded to the purification protocol under standard Category One processing. The argument you made will be noted in the record. If the review committee agrees with your interpretation, your documentation will be updated posthumously." She signals the guards. Her expression does not change. She is not cruel. She is orderly. The distinction has never felt less meaningful.`,
-    effectsOnEnter: { setFlags: ['veyra_challenge_failed'], ironSaints: -25, morale: -5 },
+    effectsOnEnter: { setFlags: ['veyra_challenge_failed'], ironSaints: -20, morale: -5 },
     choices: [
       {
         id: 'c4_lose_last_bell',
@@ -2083,7 +2122,7 @@ export const CHAPTER_4_NODES: StoryNode[] = [
     location: 'Confession Hall — After Registration',
     imageKey: 'confession_hall',
     text: `The Iron Saints process your full integration in forty minutes. The paperwork, the brand confirmation, the chain-certification, the operational briefing that describes your first assignment as "mark-suppression support on Eastern Archive approach." You are given a room in the Barracks, an equipment allocation, and a name in the ledger. The name the ledger uses is not your name. It is your registration number. This is the same for every Saint. Veyra shakes your hand when the processing is complete. "The chain holds those who hold each other," she says. It is the Order's greeting. You say it back. The mark on your wrist has not quieted. The mark is patient. You are an Iron Saint now, and the mark is patient.`,
-    effectsOnEnter: { ironSaints: 30, setFlags: ['game_complete', 'iron_saint_full', 'chapter4_saint_route'] },
+    effectsOnEnter: { ironSaints: 20, setFlags: ['game_complete', 'iron_saint_full', 'chapter4_saint_route'] },
     choices: [],
     isEnding: true,
     endingType: 'faction',
@@ -2111,7 +2150,7 @@ export const CHAPTER_4_NODES: StoryNode[] = [
     location: 'War Shrine — Relic Alcove',
     imageKey: 'war_shrine',
     text: `The doctrine Orin showed you and the Bellkeeper confirmed and Toma contextualised resolves into a single picture that the Last Archive has apparently been managing in pieces, carefully, because the complete picture is the kind of thing that requires the same category of response as the Blackout itself. The marks, the shore, the Last Kingdom relocated — these are not metaphors. They are coordinates. You have three of the four required to triangulate the location. The fourth is in the Archive that Mira's former colleagues are guarding, which means the next step of this road requires going back to a door that did not open for you yet but will. The Bellkeeper sees you leave. She rings the bell once: the Hollow Children's three-tone acknowledgement, translated into iron. You are registered. You are findable. The road ahead has more of these moments, and each one matters.`,
-    effectsOnEnter: { lastArchive: 20, setFlags: ['chapter4_scholar_route', 'last_kingdom_coords_partial'] },
+    effectsOnEnter: { lastArchive: 10, setFlags: ['chapter4_scholar_route', 'last_kingdom_coords_partial'] },
     choices: [],
     isEnding: true,
     endingType: 'secret',
@@ -2172,7 +2211,7 @@ export const CHAPTER_4_NODES: StoryNode[] = [
     location: 'Barracks of Ash — Enrollment Desk',
     imageKey: 'barracks_of_ash',
     text: `Cain signs the re-enlistment form with the same deliberateness he applies to everything. The desk soldier processes him in silence — they were clearly expecting this, or expecting someone who had left and returned, which amounts to the same protocol. His Unit Six position is reinstated. His operational status is updated. He places his hand on your shoulder and says, in the voice of someone who has made every part of this decision: "I told them where to find you. I'm sorry about that. I'm not sorry about what I got for it." The Iron Saints' retrieval team is efficient. They have had practice.`,
-    effectsOnEnter: { setFlags: ['cain_defect_complete'], cainTrust: -10 },
+    effectsOnEnter: { setFlags: ['cain_defect_complete'], cainTrust: -5 },
     choices: [],
     isEnding: true,
     endingType: 'betrayal',
@@ -2231,16 +2270,19 @@ export const CHAPTER_4_NODES: StoryNode[] = [
     title: 'Saints in Iron — After',
     location: 'Sub-Level Access — Below the Settlement',
     imageKey: 'collapsed_tunnel',
-    text: `The access shaft takes you down six metres below the settlement's footprint. Down here the Iron Saints' arc-lights do not reach and the Doctrine of Remaining's frequency dampening is thin enough that the mark can breathe. You stop and let it breathe. What you carry out of the Saints' settlement: Toma, if you found him. Mira, if you freed her. The Hollow Children's coordinates, if they gave them. A relic that belongs to your story. A doctrine that has been proscribed for a reason. And an understanding of what the Iron Saints are — not monsters, not villains, not even wrong in every particular. An order that found a genuine power it could not understand and built a theology around suppressing it, because suppression was the only tool they had. Saint Veyra runs a clean administration. Brother Malrec writes careful ledgers. The Bellkeeper's bell is still ringing, somewhere above you. The Last Kingdom is waiting, somewhere below. The mark holds its direction. You follow it into the dark.`,
+    text: `The access shaft takes you down six metres below the settlement's footprint. Down here the Iron Saints' arc-lights do not reach and the Doctrine of Remaining's frequency dampening is thin enough that the mark can breathe. You stop and let it breathe. What you carry out of the Saints' settlement: Toma, if you found him. Mira, if you freed her. The Hollow Children's coordinates, if they gave them. A relic that belongs to your story. A doctrine that has been proscribed for a reason. And an understanding of what the Iron Saints are — not monsters, not villains, not even wrong in every particular. An order that found a genuine power it could not understand and built a theology around suppressing it, because suppression was the only tool they had. Saint Veyra runs a clean administration. Brother Malrec writes careful ledgers. The Bellkeeper's bell is still ringing, somewhere above you. The Last Kingdom is waiting, somewhere below. The mark holds its direction. You follow it back toward the surface.`,
     effectsOnEnter: {
       setFlags: ['chapter4_complete'],
       ironSaints: 5,
       lastArchive: 5,
       morale: 3,
     },
-    choices: [],
-    isEnding: true,
-    endingType: 'faction',
-    endingId: 'ending_ch4_saints_survived',
+    choices: [
+      {
+        id: 'c4_continue_to_ch5',
+        text: 'Ascend. The Glass Court waits above.',
+        nextNode: 'chapter5_start',
+      },
+    ],
   },
 ];

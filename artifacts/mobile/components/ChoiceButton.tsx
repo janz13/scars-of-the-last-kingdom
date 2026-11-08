@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Animated, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Animated, Platform, Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import type { DiceCheck } from '../data/types';
 import { DICE_STAT_LABELS } from '../logic/diceEngine';
@@ -12,6 +12,7 @@ interface Props {
   flavorText?: string;
   diceCheck?: DiceCheck;
   onPress: () => void;
+  hotkeyIndex?: number;
 }
 
 const RIPPLE = Platform.OS === 'android'
@@ -21,9 +22,13 @@ const RIPPLE = Platform.OS === 'android'
 const HIT_SLOP = { top: 3, bottom: 3, left: 6, right: 6 };
 
 export default function ChoiceButton({
-  text, met, reasons, flavorText, diceCheck, onPress,
+  text, met, reasons, flavorText, diceCheck, onPress, hotkeyIndex,
 }: Props) {
-  const reasonText = reasons.length > 0 ? reasons[0] : (flavorText ?? '');
+  const { width } = useWindowDimensions();
+  const isDesktop = width >= 900;
+  const showHotkey = isDesktop && hotkeyIndex !== undefined;
+
+  const reasonText = reasons.length > 0 ? reasons.join(' · ') : (flavorText ?? '');
   const hasDice = Boolean(diceCheck);
   const scaleAnim = useRef(new Animated.Value(1)).current;
 
@@ -61,6 +66,13 @@ export default function ChoiceButton({
 
         <View style={styles.inner}>
           <View style={styles.row}>
+            {showHotkey && (
+              <View style={[styles.hotkeyBadge, !met && styles.hotkeyBadgeLocked]}>
+                <Text style={[styles.hotkeyText, !met && styles.hotkeyTextLocked]}>
+                  [{hotkeyIndex}]
+                </Text>
+              </View>
+            )}
             {!met && (
               <Feather name="lock" size={12} color="#3a3045" style={styles.lockIcon} />
             )}
@@ -93,7 +105,10 @@ export default function ChoiceButton({
           )}
 
           {!met && reasonText !== '' && (
-            <Text style={styles.reason}>{reasonText}</Text>
+            <View style={styles.reasonRow}>
+              <Feather name="info" size={9} color="#4a3860" style={styles.reasonIcon} />
+              <Text style={styles.reason}>{reasonText}</Text>
+            </View>
           )}
         </View>
       </Pressable>
@@ -138,6 +153,31 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 10,
   },
+  hotkeyBadge: {
+    backgroundColor: 'rgba(201,168,76,0.12)',
+    borderWidth: 1,
+    borderColor: 'rgba(201,168,76,0.4)',
+    borderRadius: 3,
+    paddingHorizontal: 4,
+    paddingVertical: 1,
+    marginRight: 2,
+    flexShrink: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  hotkeyBadgeLocked: {
+    backgroundColor: 'rgba(30,25,40,0.5)',
+    borderColor: 'rgba(70,55,90,0.35)',
+  },
+  hotkeyText: {
+    fontSize: 10,
+    fontFamily: 'Inter_700Bold',
+    color: '#c9a84c',
+    letterSpacing: 0.5,
+  },
+  hotkeyTextLocked: {
+    color: '#5a4870',
+  },
   diamond: {
     width: 5,
     height: 5,
@@ -181,11 +221,21 @@ const styles = StyleSheet.create({
   },
   reason: {
     fontSize: 11,
-    color: '#4a3860',
-    marginTop: 6,
-    marginLeft: 15,
+    color: '#5a4870',
     fontFamily: 'Inter_400Regular',
     fontStyle: 'italic',
+    flex: 1,
+  },
+  reasonRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 5,
+    marginTop: 6,
+    marginLeft: 15,
+  },
+  reasonIcon: {
+    marginTop: 1,
+    flexShrink: 0,
   },
   diceInfo: {
     flexDirection: 'row',

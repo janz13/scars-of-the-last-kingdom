@@ -64,6 +64,7 @@ export type EndingType =
   | 'wanderer';
 
 export type GameScreen =
+  | 'splash'
   | 'contentWarning'
   | 'mainMenu'
   | 'characterCreator'
@@ -136,6 +137,7 @@ export interface RouteEntry {
 
 export interface GameSettings {
   textSpeed: 'slow' | 'normal' | 'fast';
+  fontSize: 'small' | 'normal' | 'large';
   soundEnabled: boolean;
   autoSave: boolean;
   skipDiceAnimation: boolean;

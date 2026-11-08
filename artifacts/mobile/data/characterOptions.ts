@@ -82,7 +82,7 @@ export const CLASSES: ClassOption[] = [
     name: 'Blade Survivor',
     description: 'You fight with whatever\'s at hand. You\'ve learned that close is safer than far.',
     playstyle: 'High Strength. Best at direct confrontation and survival.',
-    statBase: { maxHealth: 100, health: 100, strength: 8, agility: 5, intelligence: 4, charisma: 4, luck: 5, corruption: 0 },
+    statBase: { maxHealth: 100, health: 100, strength: 8, agility: 5, intelligence: 5, charisma: 4, luck: 5, corruption: 0 },
     startingInventory: { food: 1, water: 1, medicine: 0, scrap: 2, ammo: 0, relics: 0, reputation: 0 },
   },
   {
@@ -90,7 +90,7 @@ export const CLASSES: ClassOption[] = [
     name: 'Gun Scavenger',
     description: 'Distance is life. You keep your options and your exits open.',
     playstyle: 'High Agility and Luck. Best at ranged options and scavenging.',
-    statBase: { maxHealth: 85, health: 85, strength: 5, agility: 8, intelligence: 4, charisma: 4, luck: 7, corruption: 0 },
+    statBase: { maxHealth: 85, health: 85, strength: 5, agility: 8, intelligence: 5, charisma: 4, luck: 7, corruption: 0 },
     startingInventory: { food: 1, water: 1, medicine: 0, scrap: 1, ammo: 3, relics: 0, reputation: 0 },
   },
   {
@@ -130,7 +130,7 @@ export const CLASSES: ClassOption[] = [
     name: 'Esper / Psychic Mutant',
     description: 'The mark chose you before the blackout. You have been hearing it for years.',
     playstyle: 'Highest Intelligence. Unique relic interactions. High starting Corruption. High risk, high power.',
-    statBase: { maxHealth: 70, health: 70, strength: 3, agility: 5, intelligence: 9, charisma: 5, luck: 6, corruption: 5 },
+    statBase: { maxHealth: 70, health: 70, strength: 4, agility: 5, intelligence: 9, charisma: 5, luck: 6, corruption: 5 },
     startingInventory: { food: 0, water: 1, medicine: 0, scrap: 1, ammo: 0, relics: 2, reputation: 0 },
   },
 ];

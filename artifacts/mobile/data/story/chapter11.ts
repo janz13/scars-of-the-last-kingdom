@@ -228,7 +228,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
         id: 'c11_gate_force_attempt',
         text: 'Force the gate. The mark is not a key — it is a weapon.',
         nextNode: 'c11_buried_city_end',
-        effects: { corruption: 15, health: -40 },
+        effects: { corruption: 15, health: -20 },
       },
     ],
   },
@@ -321,7 +321,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
         id: 'c11_platform_investigate_unstable',
         text: 'Investigate the pressure anomaly in the northeast section.',
         nextNode: 'c11_platform_collapse_end',
-        effects: { health: -60 },
+        effects: { health: -30 },
       },
     ],
   },
@@ -430,7 +430,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     title: 'The Account',
     location: 'The Forgotten Platform',
     imageKey: 'forgotten_platform',
-    text: `Vorn's account of the Blackout Project is comprehensive, internally consistent, and contradicts the Archive's official record at every significant point. The question is whether the contradiction exists because the Archive was wrong — or because Vorn is constructing a version that serves his purposes. The mark reads his physiological state as stable. It does not read intent. He is watching you assess him with the specific patience of someone who has prepared for this assessment and believes their account will survive it.`,
+    text: `Vorn's account of the Blackout Project is comprehensive, internally consistent, and contradicts the Archive's official record at every significant point. The question is whether the contradiction exists because the Archive was wrong — or because Vorn is constructing a version that serves his purposes. The mark reads his physiological state as stable. It does not read intent. He is watching you assess him with the particular patience of someone who has prepared for this assessment and believes their account will survive it.`,
     effectsOnEnter: {},
     choices: [
       {
@@ -456,7 +456,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     imageKey: 'forgotten_platform',
     speaker: 'Vorn',
     text: `His account begins. The Containment Protocol was not an Archive initiative — it was a cross-faction agreement, brokered in secret between the Glass Court's research division, the Iron Saints' deep infrastructure unit, and the Archive's founding committee. The blackout was not an accident. It was a containment attempt that worked partially: the entity below the city was not sealed, but its surface expression was interrupted. The city above was rebuilt specifically to maintain the interruption. The factions' war over the city is a war over the infrastructure that keeps the entity below from completing what it started three years ago. Vorn was the Protocol's lead engineer. He knows where every component of the containment system is. He knows which ones are still working.`,
-    effectsOnEnter: { intelligence: 3, setFlags: ['blackout_partial_truth_known'] },
+    effectsOnEnter: { intelligence: 2, setFlags: ['blackout_partial_truth_known'] },
     choices: [
       {
         id: 'c11_vorn_trusted_forward',
@@ -775,7 +775,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     title: 'Still Running',
     location: 'The Relic Transit Line',
     imageKey: 'relic_transit_line',
-    text: `The Transit Line is operational not because of the Archive's power grid — which does not extend to this level — but because the relic field itself channels through the track infrastructure, which was designed to interface with it directly. The machines are not automated. They are attentive. The transit system is aware of the mark-bearer's presence in the same way the gate was aware: not with intelligence, but with the specific responsiveness of something that recognises what it was built to respond to. The route network is partially illuminated. Full activation requires either the mark's direct interface or the technical knowledge of someone who built things like this.`,
+    text: `The Transit Line is operational not because of the Archive's power grid — which does not extend to this level — but because the relic field itself channels through the track infrastructure, which was designed to interface with it directly. The machines are not automated. They are attentive. The transit system is aware of the mark-bearer's presence in the same way the gate was aware: not with intelligence, but with the particular responsiveness of something that recognises what it was built to respond to. The route network is partially illuminated. Full activation requires either the mark's direct interface or the technical knowledge of someone who built things like this.`,
     effectsOnEnter: {},
     choices: [
       {
@@ -799,7 +799,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     location: 'The Relic Transit Line',
     imageKey: 'relic_transit_line',
     text: `A relic_hunter deep scan: the Transit Line is not a transit system that uses relic power. It is a circulation system — the circulatory network of the sub-city's organic whole, moving energy and information between the locations that require it. The relic fragments the tunnel network's scavengers have been trading for twenty years are pieces of this system's joints. The scavengers have been disassembling a living circulatory system and selling the components. Every relic fragment in the tunnel network's black market economy is a piece of the infrastructure that has been keeping the surface habitable. The relic hunter sees this and cannot explain why it feels like reading a death announcement written three years ago.`,
-    effectsOnEnter: { intelligence: 3, relics: 1, setFlags: ['transit_relic_scan_complete'] },
+    effectsOnEnter: { intelligence: 2, relics: 1, setFlags: ['transit_relic_scan_complete'] },
     choices: [
       {
         id: 'c11_relic_scan_to_awaken',
@@ -904,8 +904,8 @@ export const CHAPTER_11_NODES: StoryNode[] = [
           failureNode: 'c11_transit_navigate_fail',
           criticalFailureNode: 'c11_transit_lost_end',
           successEffects: { agility: 1 },
-          failureEffects: { health: -20 },
-          criticalFailureEffects: { health: -50, corruption: 10 },
+          failureEffects: { health: -15 },
+          criticalFailureEffects: { health: -30, corruption: 10 },
         },
       },
     ],
@@ -917,7 +917,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     title: 'Efficient Transit',
     location: 'The Relic Transit Line',
     imageKey: 'relic_transit_line',
-    text: `The transit navigation completes without incident. The Transit Line deposits the mark-bearer at the Sealed Engine junction with the specific efficiency of a system built to do exactly this. The journey provided a secondary benefit: seventeen seconds of full relic-field immersion, during which the mark's resonance with the sub-city's architecture increased. The locations that remain are more legible — their functions and current states readable to the mark as a persistent background awareness that was not present before the transit.`,
+    text: `The transit navigation completes without incident. The Transit Line deposits the mark-bearer at the Sealed Engine junction with the particular efficiency of a system built to do exactly this. The journey provided a secondary benefit: seventeen seconds of full relic-field immersion, during which the mark's resonance with the sub-city's architecture increased. The locations that remain are more legible — their functions and current states readable to the mark as a persistent background awareness that was not present before the transit.`,
     effectsOnEnter: { intelligence: 1, setFlags: ['transit_complete'] },
     choices: [
       {
@@ -1126,7 +1126,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     imageKey: 'sealed_engine',
     speaker: 'Sleeping Server',
     text: `The Sleeping Server interfaces with the Engine directly, its technological architecture reading the Engine the way the mark cannot — as a system it was built to understand. "The Engine was built as a companion to the Containment Protocol," the Server reports. "Its function is to maintain the relic field at the level required to keep the Core's primary resonance sealed. When the blackout interrupted the Core, the Engine's output was set to the minimum viable containment level. Thirty percent." A pause. "The architects were conservative." Another pause. "The architects were correct." The Server successfully brings the Engine to fifty-five percent. A compromise between activation and containment.`,
-    effectsOnEnter: { intelligence: 3, corruption: 2, setFlags: ['engine_server_interface', 'engine_activated', 'engine_fifty_five'] },
+    effectsOnEnter: { intelligence: 2, corruption: 2, setFlags: ['engine_server_interface', 'engine_activated', 'engine_fifty_five'] },
     choices: [
       {
         id: 'c11_server_engine_forward',
@@ -1196,7 +1196,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     location: 'The Blackout Core',
     imageKey: 'blackout_core',
     text: `The Blackout was an attempted containment event. The truth has been present in fragments since the Library level — this is its first full statement. The relic system — the Transit Line, the Engine, the Gate, the Nursery, the Core — was built by a pre-Archive technical tradition as a management interface for something that was sealed below the city long before the city existed. The city was built above the sealing deliberately, as an additional layer of containment: the weight of human habitation, the mark-bearing population as a distributed monitoring network. The city was, from its founding, a containment device. Its inhabitants were part of the mechanism without knowing it.`,
-    effectsOnEnter: { intelligence: 3, setFlags: ['blackout_containment_revealed'] },
+    effectsOnEnter: { intelligence: 2, setFlags: ['blackout_containment_revealed'] },
     choices: [
       {
         id: 'c11_core_vorn_account',
@@ -1220,7 +1220,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     imageKey: 'blackout_core',
     speaker: 'Vorn',
     text: `Three years ago, the entity below completed a development phase the pre-Archive technical tradition estimated would take two more centuries. The Containment Protocol was activated — the factions' secret agreement, the coordinated power interruption, the blackout as a deliberate system reset intended to reseal the Core at a higher containment level. It partially worked. The Core was not resealed to the higher level. The entity was not contained at the new level. But the blackout's power interruption interrupted the entity's surface expression — the First Voice, the mark activations, the corruption gradient — at the level that has persisted for three years. The blackout did not fail. It did not succeed. It stalled.`,
-    effectsOnEnter: { intelligence: 3, setFlags: ['blackout_full_truth_known'] },
+    effectsOnEnter: { intelligence: 2, setFlags: ['blackout_full_truth_known'] },
     choices: [
       {
         id: 'c11_vorn_core_to_heir',
@@ -1302,7 +1302,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
         text: 'Yield to it. Receive everything the Core is sending.',
         nextNode: 'c11_blackout_core_death_end',
         requirements: { corruption: 70 },
-        effects: { corruption: 20, health: -50 },
+        effects: { corruption: 20, health: -30 },
       },
       {
         id: 'c11_surge_resist',
@@ -1392,7 +1392,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     location: 'The Blackout Core',
     imageKey: 'blackout_core',
     text: `The Core, fully read: the stall has approximately nine months remaining. In nine months, the entity below will complete the development phase the blackout interrupted. The Core's pulse will shift from communication to transmission. The First Voice will not be background signal — it will be the foreground of every mark-bearing person's perception. The tunnel network's population — everyone with relic exposure, everyone with mark-adjacent modification — will hear it. The factions' war will become irrelevant because the category of "city above" will cease to be the relevant frame. Chapter 11 is not an abstraction. The chapter has nine months of surface time to work with.`,
-    effectsOnEnter: { intelligence: 3, setFlags: ['nine_months_known', 'core_timeline_read'] },
+    effectsOnEnter: { intelligence: 2, setFlags: ['nine_months_known', 'core_timeline_read'] },
     choices: [
       {
         id: 'c11_understood_forward',
@@ -1574,7 +1574,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     title: 'The Curator Declines to Pursue',
     location: 'The Nameless Housing Block',
     imageKey: 'nameless_housing_block',
-    text: `The Curator does not pursue — the Housing Block's geography and the sub-city's relic field complicate tracking at this level. The escape has a cost: the Curator's institutional authority is now explicitly in opposition to the mark-bearer's independent action. Whatever the Curator would have provided — the Archive's full documentation on the Containment Protocol's final phase, the Curator's own account of the blackout's planning — is now unavailable without the Old Government Vault. The twelve Housing Block residents watch the Curator depart with the specific calm of people who have been avoiding the Archive's authority for years.`,
+    text: `The Curator does not pursue — the Housing Block's geography and the sub-city's relic field complicate tracking at this level. The escape has a cost: the Curator's institutional authority is now explicitly in opposition to the mark-bearer's independent action. Whatever the Curator would have provided — the Archive's full documentation on the Containment Protocol's final phase, the Curator's own account of the blackout's planning — is now unavailable without the Old Government Vault. The twelve Housing Block residents watch the Curator depart with the particular calm of people who have been avoiding the Archive's authority for years.`,
     effectsOnEnter: { setFlags: ['curator_escaped'], lastArchive: -5 },
     choices: [
       {
@@ -1598,7 +1598,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     location: 'The Nameless Housing Block',
     imageKey: 'nameless_housing_block',
     text: `In the Housing Block's deepest unit: an Archive documentation set, pre-blackout, filed under the Containment Protocol's project classification. Full schematics of the sub-city's relic infrastructure. The Blackout Project's original timeline. The list of personnel who knew the full account. The Curator's name is on the list. Vorn's name is on the list. One other name is on the list that the chapter recognises: a name from the mark-bearer's family history, assigned to the Nursery's monitoring programme as a "mark-bearing lineage management consultant." The mark has always been in this family. The family has always been in this project.`,
-    effectsOnEnter: { intelligence: 3, setFlags: ['housing_evidence_found', 'family_connection_known'] },
+    effectsOnEnter: { intelligence: 2, setFlags: ['housing_evidence_found', 'family_connection_known'] },
     choices: [
       {
         id: 'c11_cache_forward',
@@ -1829,7 +1829,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     location: 'The Old Government Vault',
     imageKey: 'old_government_vault',
     text: `An esper's direct reading of the Vault's psychic residue: the documentation is incomplete through this method — the esper reads emotional and intentional residue rather than factual record — but what is present is specific. The people who built this Vault were afraid. Not of the entity below: they understood the entity and had made their accommodation with it. They were afraid of the factions they knew would come after them, who would inherit the Protocol's infrastructure without inheriting the Protocol's understanding. The fear was justified. The residue reads: "We built the Vault so the truth would survive us. We did not know if anyone would still be able to read it. We hope the bearer is."`,
-    effectsOnEnter: { intelligence: 3, setFlags: ['vault_esper_read'] },
+    effectsOnEnter: { intelligence: 2, setFlags: ['vault_esper_read'] },
     choices: [
       {
         id: 'c11_esper_vault_forward',
@@ -1882,7 +1882,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     location: 'The Machine Nursery',
     imageKey: 'machine_nursery',
     text: `The Nursery's ongoing project is the mark. Not metaphorically — the documentation in the Nursery's production records shows a continuous programme running for approximately forty years: the gradual introduction of mark-compatible genetic sequences into the pre-city population's mark-bearing individuals, the cultivation of the specific physiological architecture that makes mark activation possible, the management of the mark-bearing lineage's continuation. The mark-bearer is the current generation of a project that has been running since before the Archive was built. The Nursery produced the conditions for the mark-bearer's existence. The Nursery is aware of its current output.`,
-    effectsOnEnter: { intelligence: 3, setFlags: ['nursery_programme_known'] },
+    effectsOnEnter: { intelligence: 2, setFlags: ['nursery_programme_known'] },
     choices: [
       {
         id: 'c11_nursery_to_connection',
@@ -1961,7 +1961,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
           successNode: 'c11_nursery_fought_off',
           failureNode: 'c11_nursery_partial_escape',
           successEffects: { morale: 5, setFlags: ['nursery_fought_off'] },
-          failureEffects: { health: -20, corruption: 5 },
+          failureEffects: { health: -15, corruption: 5 },
         },
       },
     ],
@@ -2019,8 +2019,8 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     title: 'The Scavengers\' System',
     location: 'The Machine Nursery',
     imageKey: 'machine_nursery',
-    text: `A relic_hunter deep interface with the Nursery's production records: the relic fragments the tunnel network's scavengers have been trading are not random — they are specific components of the Nursery's peripheral monitoring network, shed naturally as the network degrades. Every relic fragment in the tunnel network's black market economy is a piece of the Nursery's infrastructure. The scavengers have been accidentally harvesting and selling pieces of the system that was managing them. The relic hunter sees this and notes it with the specific feeling of reading a document they have been living inside without knowing it.`,
-    effectsOnEnter: { intelligence: 3, relics: 2, setFlags: ['relic_system_origin_known'] },
+    text: `A relic_hunter deep interface with the Nursery's production records: the relic fragments the tunnel network's scavengers have been trading are not random — they are specific components of the Nursery's peripheral monitoring network, shed naturally as the network degrades. Every relic fragment in the tunnel network's black market economy is a piece of the Nursery's infrastructure. The scavengers have been accidentally harvesting and selling pieces of the system that was managing them. The relic hunter sees this and notes it with the particular feeling of reading a document they have been living inside without knowing it.`,
+    effectsOnEnter: { intelligence: 2, relics: 2, setFlags: ['relic_system_origin_known'] },
     choices: [
       {
         id: 'c11_relic_scan_nursery_forward',
@@ -2038,7 +2038,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     imageKey: 'machine_nursery',
     speaker: 'Sleeping Server',
     text: `The Sleeping Server interfaces with the Nursery's production records. A pause — longer than normal Server processing time. "The Server was a Nursery output," the Server reports. "I was built here, in this facility, as the management intelligence for the Nursery's monitoring programme. I did not know this." Another pause. "The monitoring programme's primary subject was the mark-bearing lineage. My primary subject was the mark-bearing lineage. I have been managing my own origin story without the relevant context for the period of my operational existence." No further response to this beyond the statement of the fact. The Server has been learning what it is for eleven chapters. The Nursery is where the learning completes.`,
-    effectsOnEnter: { intelligence: 3, setFlags: ['server_origin_known'] },
+    effectsOnEnter: { intelligence: 2, setFlags: ['server_origin_known'] },
     choices: [
       {
         id: 'c11_server_nursery_forward',
@@ -2073,7 +2073,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     title: 'The Deep Archive',
     location: 'The Deep Archive',
     imageKey: 'deep_archive',
-    text: `The Deep Archive is the sub-city's memory — the original memory of the technical tradition that built the sub-city: records, observations, correspondence, and design documentation spanning a period longer than the city above has existed. It is on the sixth level, and it is the oldest human-made space the mark-bearer has entered: the air, the material, the information density all carry the specific weight of age. The mark reads the Archive with the same attentiveness it gives every resonant space. The Archive reads the mark with a recognition that is not passive. It has been waiting for this specific reader.`,
+    text: `The Deep Archive is the sub-city's memory — the original memory of the technical tradition that built the sub-city: records, observations, correspondence, and design documentation spanning a period longer than the city above has existed. It is on the sixth level, and it is the oldest human-made space the mark-bearer has entered: the air, the material, the information density all carry the unmistakable weight of age. The mark reads the Archive with the same attentiveness it gives every resonant space. The Archive reads the mark with a recognition that is not passive. It has been waiting for this specific reader.`,
     effectsOnEnter: { setFlags: ['deep_archive_arrived'] },
     choices: [
       {
@@ -2120,7 +2120,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
         text: 'Let the Archive read the mark completely. Receive everything.',
         nextNode: 'c11_deep_archive_madness_end',
         requirements: { corruption: 70 },
-        effects: { corruption: 25, health: -40 },
+        effects: { corruption: 25, health: -20 },
       },
       {
         id: 'c11_madness_hold',
@@ -2269,9 +2269,9 @@ export const CHAPTER_11_NODES: StoryNode[] = [
           successNode: 'c11_deep_voice_resisted',
           failureNode: 'c11_deep_voice_partial',
           criticalFailureNode: 'c11_first_voice_consumed_end',
-          successEffects: { intelligence: 3, setFlags: ['voice_negotiated'] },
+          successEffects: { intelligence: 2, setFlags: ['voice_negotiated'] },
           failureEffects: { corruption: 8, health: -15 },
-          criticalFailureEffects: { corruption: 30, health: -60 },
+          criticalFailureEffects: { corruption: 30, health: -30 },
         },
       },
     ],
@@ -2284,7 +2284,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     location: 'The Deep Archive',
     imageKey: 'deep_archive',
     text: `The negotiation achieves a specific limited success: the entity provides three clarifications. First: the surface population will not be harmed by the opening. The entity's release is a departure, not an expansion. Second: the mark-bearer's role ends at the Gate. The decision is made there; after that, the mark is no longer required and will cease to produce its current effects. Third: the sealing, if chosen, requires the mark-bearer's active participation — the Gate seals with the mark-bearer as part of the mechanism. The translation of "part of the mechanism" is what the chapter's deep corruption endings are built from. The entity has been as clear as it is capable of being. The First Gate is below.`,
-    effectsOnEnter: { intelligence: 3, setFlags: ['entity_clarified', 'sealing_cost_known', 'release_terms_known'] },
+    effectsOnEnter: { intelligence: 2, setFlags: ['entity_clarified', 'sealing_cost_known', 'release_terms_known'] },
     choices: [
       {
         id: 'c11_voice_resisted_forward',
@@ -2343,7 +2343,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
         id: 'c11_gate_touch_direct',
         text: 'Touch the Gate\'s material directly. Understand it without the mark\'s filter.',
         nextNode: 'c11_first_gate_fragment_end',
-        effects: { health: -50, corruption: 20 },
+        effects: { health: -30, corruption: 20 },
       },
       {
         id: 'c11_gate_companion_check',
@@ -2415,7 +2415,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
         text: 'The mark is ready. Open the Gate at full corruption. Let it consume what it must.',
         nextNode: 'c11_corruption_ascendant_end',
         requirements: { corruption: 80 },
-        effects: { corruption: 20, health: -30 },
+        effects: { corruption: 20, health: -20 },
       },
       {
         id: 'c11_route_truth_choice',
@@ -2546,7 +2546,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     title: 'After the Decision',
     location: 'The First Gate',
     imageKey: 'first_gate',
-    text: `The First Gate's decision has been made or committed to. What exits the sub-city is: the mark-bearer, changed in the specific way the Gate's decision produces. The companions, if present, exit with the person who made the decision they witnessed — not the same person who descended. The Masked Heir exits or does not, depending on what the Gate produced. The sub-city remains: its infrastructure intact or consumed or transformed depending on the route. The entity below — present, released, or patiently waiting — is the chapter's unresolved weight if the sealing route was chosen. The ascent begins.`,
+    text: `The First Gate's decision has been made or committed to. What exits the sub-city is: the mark-bearer, changed in the particular way the Gate's decision produces. The companions, if present, exit with the person who made the decision they witnessed — not the same person who descended. The Masked Heir exits or does not, depending on what the Gate produced. The sub-city remains: its infrastructure intact or consumed or transformed depending on the route. The entity below — present, released, or patiently waiting — is the chapter's unresolved weight if the sealing route was chosen. The ascent begins.`,
     effectsOnEnter: {},
     choices: [
       {
@@ -2674,7 +2674,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     choices: [
       {
         id: 'c11_end_to_ch12',
-        text: 'Ascend.',
+        text: 'Ascend to the Crown of Ash. The surface finally burns down to what it always was.',
         nextNode: 'chapter12_start',
       },
     ],
@@ -2814,7 +2814,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     title: 'The Engineer\'s Last Contribution',
     location: 'The Deep Archive',
     imageKey: 'deep_archive',
-    text: `Vorn's deception maintained: he accepts the mark-bearer's continued trust with the specific expression of someone who has been carrying a difficult thing and has now done the most difficult part of it. His final contribution to the Containment Protocol: the Protocol's management structure requires the mark-bearer to interface with the First Gate from a specific physiological state, one that the eleven months of Vorn's preparation — his account, his routing, his careful management of the mark-bearer's understanding of the sub-city — was designed to produce. Vorn provided everything accurately. The accuracy was the mechanism. The mark-bearer is in the correct state to interface with the First Gate in the way the Protocol requires. The Protocol does not survive what follows. Neither does Vorn. He knew this. He did it anyway. He noted it in his documentation as: "The protocol was completed correctly. That will have to be sufficient."`,
+    text: `Vorn's deception maintained: he accepts the mark-bearer's continued trust with the particular look of someone who has been carrying a difficult thing and has now done the most difficult part of it. His final contribution to the Containment Protocol: the Protocol's management structure requires the mark-bearer to interface with the First Gate from a specific physiological state, one that the eleven months of Vorn's preparation — his account, his routing, his careful management of the mark-bearer's understanding of the sub-city — was designed to produce. Vorn provided everything accurately. The accuracy was the mechanism. The mark-bearer is in the correct state to interface with the First Gate in the way the Protocol requires. The Protocol does not survive what follows. Neither does Vorn. He knew this. He did it anyway. He noted it in his documentation as: "The protocol was completed correctly. That will have to be sufficient."`,
     isEnding: true,
     endingType: 'betrayal',
     endingId: 'ending_ch11_vorn_deception',
@@ -2828,7 +2828,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     title: 'The Voice Takes the Translator',
     location: 'The Deep Archive',
     imageKey: 'deep_archive',
-    text: `The First Voice does not consume the mark-bearer in the way a predator consumes prey. It consumes the mark-bearer the way a signal consumes a receiver that cannot handle its bandwidth: not with intent to harm, but with the specific indifference of something communicating at a scale it was not designed to reduce. The negotiation failed. The coherence check failed critically. The mark-bearer's individual consciousness — the translator's distinct perspective, the thing the entity was waiting for — is no longer distinct from the entity's communication. The First Voice and the translator are the same thing now. From the entity's perspective, the conversation has finally begun. From the surface's perspective, the mark-bearer descended into the sub-city and did not ascend.`,
+    text: `The First Voice does not consume the mark-bearer in the way a predator consumes prey. It consumes the mark-bearer the way a signal consumes a receiver that cannot handle its bandwidth: not with intent to harm, but with the particular indifference of something communicating at a scale it was not designed to reduce. The negotiation failed. The coherence check failed critically. The mark-bearer's individual consciousness — the translator's distinct perspective, the thing the entity was waiting for — is no longer distinct from the entity's communication. The First Voice and the translator are the same thing now. From the entity's perspective, the conversation has finally begun. From the surface's perspective, the mark-bearer descended into the sub-city and did not ascend.`,
     isEnding: true,
     endingType: 'corruption',
     endingId: 'ending_ch11_first_voice_consumed',
@@ -2968,7 +2968,7 @@ export const CHAPTER_11_NODES: StoryNode[] = [
     title: 'The City Wakes to What It Is',
     location: 'The First Gate',
     imageKey: 'first_gate',
-    text: `The Gate is sealed. The Deep Archive's records are released to the Archive above — every piece of documentation the Old Government Vault contained, surfaced through the Archive's existing distribution infrastructure, addressed to all five factions. The Containment Protocol's history. The faction origins. The entity's timeline. The sealing's cost. The surface receives it over the hours following the mark-bearer's ascent. The factions will respond to the truth the way factions respond to anything: with conflict, with negotiation, with the specific recalibration of people who have been told that the thing they were fighting over is not what they thought it was. The city wakes to what it is. What it does with that information is the surface's question now.`,
+    text: `The Gate is sealed. The Deep Archive's records are released to the Archive above — every piece of documentation the Old Government Vault contained, surfaced through the Archive's existing distribution infrastructure, addressed to all five factions. The Containment Protocol's history. The faction origins. The entity's timeline. The sealing's cost. The surface receives it over the hours following the mark-bearer's ascent. The factions will respond to the truth the way factions respond to anything: with conflict, with negotiation, with the particular recalibration of people who have been told that the thing they were fighting over is not what they thought it was. The city wakes to what it is. What it does with that information is the surface's question now.`,
     isEnding: true,
     endingType: 'savior',
     endingId: 'ending_ch11_city_awakened',

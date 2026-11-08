@@ -39,3 +39,9 @@ yarn-error.*
 .vercel
 
 .env
+
+# Build artifacts
+static-build/
+
+# Google Play service account (sensitive)
+google-service-account.json

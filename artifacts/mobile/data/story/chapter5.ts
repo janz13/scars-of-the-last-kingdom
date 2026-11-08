@@ -107,7 +107,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     location: 'Glass Gate — Processing Arch',
     imageKey: 'glass_gate',
     speaker: 'Gate Officer',
-    text: `The guard who processes you has the specific expression of someone paid to make decisions that affect other people's lives without feeling the weight of those decisions. She holds a glass tablet — actual glass, etched with light — and scans you without meeting your eyes. "Purpose of visit. Sponsor name or institutional affiliation. Mark status." She says it in the order that tells you which one matters most to her. The lattice in the gate panels responds to the mark on your wrist before you speak. Her eyes move to your wrist. Then back to her tablet. "Category designation: Unregistered Resonant." She has a form for this. She always has a form.`,
+    text: `The guard who processes you has the particular expression of someone paid to make decisions that affect other people's lives without feeling the weight of those decisions. She holds a glass tablet — actual glass, etched with light — and scans you without meeting your eyes. "Purpose of visit. Sponsor name or institutional affiliation. Mark status." She says it in the order that tells you which one matters most to her. The lattice in the gate panels responds to the mark on your wrist before you speak. Her eyes move to your wrist. Then back to her tablet. "Category designation: Unregistered Resonant." She has a form for this. She always has a form.`,
     effectsOnEnter: { setFlags: ['gate_officer_met'] },
     choices: [
       {
@@ -116,7 +116,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
         nextNode: 'c5_gate_granted_entry',
         diceCheck: {
           stat: 'charisma',
-          difficulty: 13,
+          difficulty: 12,
           diceType: 'd20',
           successNode: 'c5_gate_granted_entry',
           failureNode: 'c5_gate_prisoner_route',
@@ -128,7 +128,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
         nextNode: 'c5_gate_granted_entry',
         diceCheck: {
           stat: 'agility',
-          difficulty: 14,
+          difficulty: 13,
           diceType: 'd20',
           successNode: 'c5_gate_granted_entry',
           failureNode: 'c5_gate_prisoner_route',
@@ -178,7 +178,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     title: 'The Saints\' Papers',
     location: 'Glass Gate — Processing Arch',
     imageKey: 'glass_gate',
-    text: `The Iron Saints documentation changes her expression in the specific way that institutional credentials change the expressions of people whose authority derives from institutions. She examines the chain-and-flame seal, the registration number, the Category One notation. "Iron Saints registered resonant. Referral basis — voluntary transfer for extraction consultation." She makes a note. She does not ask why you are transferring. The Glass Court and the Iron Saints have a working relationship that neither acknowledges publicly, and this moment is part of that relationship. "Glass Gate ID: GC-TEMP-4471. Your access is provisional and monitored." She hands you a glass chip. It is warm. The mark makes it warmer.`,
+    text: `The Iron Saints documentation changes her expression in the particular way that institutional credentials change the expressions of people whose authority derives from institutions. She examines the chain-and-flame seal, the registration number, the Category One notation. "Iron Saints registered resonant. Referral basis — voluntary transfer for extraction consultation." She makes a note. She does not ask why you are transferring. The Glass Court and the Iron Saints have a working relationship that neither acknowledges publicly, and this moment is part of that relationship. "Glass Gate ID: GC-TEMP-4471. Your access is provisional and monitored." She hands you a glass chip. It is warm. The mark makes it warmer.`,
     effectsOnEnter: { glassCourt: 10, setFlags: ['entered_glass_court_as_guest', 'saints_credentials_used'] },
     choices: [
       {
@@ -195,7 +195,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     title: 'Old Money',
     location: 'Glass Gate — Processing Arch',
     imageKey: 'glass_gate',
-    text: `You invoke the name the way your family taught you: quietly, with the specific confidence of someone who has never had to raise their voice for a door to open. The guard's posture changes before she fully processes what she heard — old money is recognizable in this city not by what it says but by the way it expects to be heard. "The Vale family processes legacy claimants through the East Wing," she says. She checks something on her tablet, looks at you once, looks at the mark, looks at you again. "Your name is not in the verified registry." You tell her it wouldn't be. Not yet. She processes this. Then she opens the gate.`,
+    text: `You invoke the name the way your family taught you: quietly, with the particular confidence of someone who has never had to raise their voice for a door to open. The guard's posture changes before she fully processes what she heard — old money is recognizable in this city not by what it says but by the way it expects to be heard. "The Vale family processes legacy claimants through the East Wing," she says. She checks something on her tablet, looks at you once, looks at the mark, looks at you again. "Your name is not in the verified registry." You tell her it wouldn't be. Not yet. She processes this. Then she opens the gate.`,
     effectsOnEnter: { glassCourt: 15, setFlags: ['entered_glass_court_as_guest', 'noble_identity_implied'] },
     choices: [
       {
@@ -213,7 +213,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     title: 'The Contact Name',
     location: 'Glass Gate — Processing Arch',
     imageKey: 'glass_gate',
-    text: `The name lands like a dropped instrument — the guard's professional composure has a specific seam where courier network knowledge presses against it. Harlan Voss is not a name you speak at a gate. It is a name that opens gates by existing. She does not write anything on her tablet. She waves you through with the specific efficiency of someone who understands that certain things are not recorded. Inside the gate, a different guard — older, wearing a plain grey jacket with no insignia — finds you within thirty seconds. "Voss sends better material these days," he says. He is not being kind. "I'll walk you up."`,
+    text: `The name lands like a dropped instrument — the guard's professional composure has a specific seam where courier network knowledge presses against it. Harlan Voss is not a name you speak at a gate. It is a name that opens gates by existing. She does not write anything on her tablet. She waves you through with the particular efficiency of someone who understands that certain things are not recorded. Inside the gate, a different guard — older, wearing a plain grey jacket with no insignia — finds you within thirty seconds. "Voss sends better material these days," he says. He is not being kind. "I'll walk you up."`,
     effectsOnEnter: { glassCourt: 10, hollowChildren: -5, setFlags: ['entered_glass_court_as_guest', 'courier_contact_used'] },
     choices: [
       {
@@ -300,7 +300,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     speaker: 'Juno',
     text: `They end up in the same car as you, which is not a coincidence. The elevator moves. They speak without turning their head: "You have the mark, which means you're either here to be studied or here to be used, and those are the same thing from the Court's perspective. I'm Juno. I serve on Level 9. I am also something more specific than that, but this is not the conversation for that." They look at you now, direct and quick, their eyes reading you with a precision that doesn't match the service uniform. "If you're GC-Res classification, you have twelve hours before Varr's team runs the initial extraction protocol on you. If you're here by another door, you have longer but the same endpoint. The question is what you do with the time."`,
     dialogue: 'You have twelve hours before Varr\'s team runs extraction protocol. The question is what you do with the time.',
-    effectsOnEnter: { setFlags: ['met_juno'] },
+    effectsOnEnter: { setFlags: ['met_juno', 'juno_alive'] },
     choices: [
       {
         id: 'c5_juno_trust_immediately',
@@ -331,7 +331,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     title: 'The White Atrium',
     location: 'The White Atrium — Level 7',
     imageKey: 'white_atrium',
-    text: `The Atrium occupies the entire seventh floor — the walls are glass panels looking outward at a sky you had stopped expecting to see, and inward at a space designed with the specific intent of making you feel that you have arrived somewhere that matters. White stone flooring. Real plants in iron pots. Light that has been engineered to make everything look healthier than it is. People move through it with the ease of people who do not have to think about where their next meal comes from, and the slight distance between them and the world below the glass has the quality of a posture that has been held for so long it no longer feels like effort. The mark on your wrist is quiet here. Unusually quiet. Something in the building is suppressing it.`,
+    text: `The Atrium occupies the entire seventh floor — the walls are glass panels looking outward at a sky you had stopped expecting to see, and inward at a space designed with the particular intent of making you feel that you have arrived somewhere that matters. White stone flooring. Real plants in iron pots. Light that has been engineered to make everything look healthier than it is. People move through it with the ease of people who do not have to think about where their next meal comes from, and the slight distance between them and the world below the glass has the quality of a posture that has been held for so long it no longer feels like effort. The mark on your wrist is quiet here. Unusually quiet. Something in the building is suppressing it.`,
     effectsOnEnter: { morale: 1, setFlags: ['white_atrium_reached'] },
     choices: [
       {
@@ -412,7 +412,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     location: 'The White Atrium — Central Plaza',
     imageKey: 'white_atrium',
     speaker: 'Lady Seraphine Vale',
-    text: `She gestures to a seating area that has materialized at the edge of the Atrium — someone placed chairs there and arranged them exactly for this conversation, which means this conversation was expected. "I will be direct," she says, sitting with the ease of someone who has never sat in an uncomfortable chair. "The Glass Court requires the mark's transmission capacity for a project that is almost complete. In exchange for your cooperation — not your submission, there is a distinction — you will have access to the court's resources, its protection, its medical care, and the specific information that your mark has been trying to reach for the last three years." She leans forward slightly. "We know where the signal goes. We have always known. We have simply been waiting for a marked individual willing to control the transmission rather than be controlled by it."`,
+    text: `She gestures to a seating area that has materialized at the edge of the Atrium — someone placed chairs there and arranged them exactly for this conversation, which means this conversation was expected. "I will be direct," she says, sitting with the ease of someone who has never sat in an uncomfortable chair. "The Glass Court requires the mark's transmission capacity for a project that is almost complete. In exchange for your cooperation — not your submission, there is a distinction — you will have access to the court's resources, its protection, its medical care, and the particular information that your mark has been trying to reach for the last three years." She leans forward slightly. "We know where the signal goes. We have always known. We have simply been waiting for a marked individual willing to control the transmission rather than be controlled by it."`,
     dialogue: 'We know where the signal goes. We have been waiting for someone willing to control the transmission.',
     effectsOnEnter: { setFlags: ['seraphine_offer_heard'] },
     choices: [
@@ -538,7 +538,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
         text: '[Tactician] Map the room before answering. His position, sight lines, what Seraphine\'s people can hear.',
         nextNode: 'c5_cael_cain_warns',
         requirements: { classes: ['tactician'] },
-        effects: { intelligence: 3 },
+        effects: { intelligence: 2 },
         isHidden: true,
       },
     ],
@@ -623,7 +623,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     title: 'The Hunger Gallery',
     location: 'The Hunger Gallery — Level 6',
     imageKey: 'hunger_gallery',
-    text: `The Gallery occupies the east face of Level 6 and looks outward through the glass panels at the ruined city below. But it is not arranged as a viewing gallery. It is arranged as an art exhibit. The frames on the walls are photographs — documentation, clinical and clean — of the city below as it was three years ago, one year ago, last month. Resource maps. Population density grids. Caloric deficit projections by district. The people looking at these photographs are eating. There is a service table along the west wall with small plates of food that represent quantities the photographs suggest people below are not seeing in a week. Two Court officials are examining a photograph of the Hollow Children's tunnel district with the close attention of collectors studying a particularly interesting piece. The mark burns, quietly, with the specific heat of anger rather than fear.`,
+    text: `The Gallery occupies the east face of Level 6 and looks outward through the glass panels at the ruined city below. But it is not arranged as a viewing gallery. It is arranged as an art exhibit. The frames on the walls are photographs — documentation, clinical and clean — of the city below as it was three years ago, one year ago, last month. Resource maps. Population density grids. Caloric deficit projections by district. The people looking at these photographs are eating. There is a service table along the west wall with small plates of food that represent quantities the photographs suggest people below are not seeing in a week. Two Court officials are examining a photograph of the Hollow Children's tunnel district with the close attention of collectors studying a particularly interesting piece. The mark burns, quietly, with the particular heat of anger rather than fear.`,
     effectsOnEnter: { morale: -3, setFlags: ['hunger_gallery_seen'] },
     choices: [
       {
@@ -680,7 +680,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     location: 'The Hunger Gallery — East Wall',
     imageKey: 'hunger_gallery',
     text: `The handwriting identifies itself once you know what to look for: a specific loop on the lower-case 'g', a habit of compressing numbers. You have seen this style on Iron Saints documentation — specifically on the Saints' supply route calculations, which were produced by a Court-trained administrator before the Saints absorbed their administrative function. The person who wrote "Maintain scarcity at 73%" also wrote the Iron Saints' first-year resource allocation. The Saints and the Court share an administrative lineage that neither acknowledges publicly. You file this. The information is worth considerably more than you currently have to pay for it, which means you keep it until you find someone who can match the price.`,
-    effectsOnEnter: { intelligence: 3, setFlags: ['saints_court_admin_link_found'], lastArchive: 5 },
+    effectsOnEnter: { intelligence: 2, setFlags: ['saints_court_admin_link_found'], lastArchive: 5 },
     choices: [
       {
         id: 'c5_shadow_proceed',
@@ -748,7 +748,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     title: 'The Information Price',
     location: 'The Hunger Gallery — Entry',
     imageKey: 'hunger_gallery',
-    text: `One of the Court officials who was examining the Hollow Children tunnel district photograph approaches you. He introduces himself as an "acquisition analyst" with the specific quality of someone who titles themselves to avoid the word they actually mean. He knows you came from the tunnel network. He knows you have Hollow Children contacts. He offers full Glass Court provisional status — better than what Seraphine's provisional pass gives you, equivalent to a registered court researcher — in exchange for the current access codes to the Hollow Children's primary entry points. He says it like it is a business arrangement. It is a business arrangement. It is also the end of the Hollow Children's security, probably within three months.`,
+    text: `One of the Court officials who was examining the Hollow Children tunnel district photograph approaches you. He introduces himself as an "acquisition analyst" with the particular quality of someone who titles themselves to avoid the word they actually mean. He knows you came from the tunnel network. He knows you have Hollow Children contacts. He offers full Glass Court provisional status — better than what Seraphine's provisional pass gives you, equivalent to a registered court researcher — in exchange for the current access codes to the Hollow Children's primary entry points. He says it like it is a business arrangement. It is a business arrangement. It is also the end of the Hollow Children's security, probably within three months.`,
     effectsOnEnter: {},
     choices: [
       {
@@ -761,7 +761,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
         id: 'c5_hollow_sell_codes',
         text: 'Give him the codes. The Glass Court will find them eventually. This is the price of time inside.',
         nextNode: 'c5_hollow_deal_sealed',
-        effects: { glassCourt: 20, hollowChildren: -25, morale: -5, setFlags: ['sold_out_hollow_children'] },
+        effects: { glassCourt: 20, hollowChildren: -20, morale: -5, setFlags: ['sold_out_hollow_children'] },
       },
     ],
   },
@@ -805,7 +805,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
         text: '[Medic] Read the equipment in the corridor. Know what they are doing before you meet the person doing it.',
         nextNode: 'c5_clinic_varr_intro',
         requirements: { classes: ['medic'] },
-        effects: { intelligence: 3, setFlags: ['clinic_equipment_identified'] },
+        effects: { intelligence: 2, setFlags: ['clinic_equipment_identified'] },
         isHidden: true,
       },
     ],
@@ -818,7 +818,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     location: 'The Orchid Clinic — Research Suite',
     imageKey: 'orchid_clinic',
     speaker: 'Director Enoch Varr',
-    text: `He is younger than his authority suggests — perhaps thirty-five — with the specific calm of someone who has spent a long time removing emotional response from his relationship with his work. He is writing when you enter, and he finishes the sentence before he looks up. "Saturation level four," he says. "The same as the Bellkeeper's primary resonant described before he stopped being useful." He stands and approaches you with the directness of a doctor approaching a patient who has not yet been told they are a patient. "I am Director Varr. I study the marks. Every marked individual I have worked with has described the same three experiences: a direction, a shore, and a sound that feels like memory." He holds up a small glass instrument near your wrist. The mark flares orange. "You are going to tell me I'm right about all three."`,
+    text: `He is younger than his authority suggests — perhaps thirty-five — with the particular calm of someone who has spent a long time removing emotional response from his relationship with his work. He is writing when you enter, and he finishes the sentence before he looks up. "Saturation level four," he says. "The same as the Bellkeeper's primary resonant described before he stopped being useful." He stands and approaches you with the directness of a doctor approaching a patient who has not yet been told they are a patient. "I am Director Varr. I study the marks. Every marked individual I have worked with has described the same three experiences: a direction, a shore, and a sound that feels like memory." He holds up a small glass instrument near your wrist. The mark flares orange. "You are going to tell me I'm right about all three."`,
     dialogue: 'Every marked individual describes the same three experiences. You are going to confirm all three.',
     effectsOnEnter: { setFlags: ['met_director_varr'] },
     choices: [
@@ -885,7 +885,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     speaker: 'Director Varr',
     text: `He pulls a display panel from the wall — glass, back-lit, showing a schematic. You recognise the shape immediately: your wrist mark, rendered in precise clinical detail. But the schematic shows not one mark but a network of marks, seventeen unique patterns, each one slightly different, each one connected to the others by lines that pulse on the display like heartbeats. "Your mark is not unique," he says, and says it with the careful weight of a revelation that has been prepared. "It is one node in a distributed system. Seventeen confirmed marks across the metro area. Each one is a different register of the same transmission architecture. Together, they form something the schematics describe as a 'resonance lattice.' Individually, they can communicate. Together, they can do something the documentation refers to as 'completion.' I do not yet know what completion means." He pauses. "I know what incompletion looks like. I have seen it forty-five times."`,
     dialogue: 'Your mark is one node in a network. Seventeen marks form a resonance lattice. I know what incompletion looks like.',
-    effectsOnEnter: { setFlags: ['discovered_marks_are_not_unique'], lastArchive: 10, intelligence: 3 },
+    effectsOnEnter: { setFlags: ['discovered_marks_are_not_unique'], lastArchive: 10, intelligence: 2 },
     choices: [
       {
         id: 'c5_marks_ask_ward',
@@ -941,7 +941,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
         nextNode: 'c5_mira_protected',
         diceCheck: {
           stat: 'agility',
-          difficulty: 14,
+          difficulty: 13,
           diceType: 'd20',
           successNode: 'c5_mira_protected',
           failureNode: 'c5_mira_captured',
@@ -1003,7 +1003,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
         nextNode: 'c5_mira_protected',
         diceCheck: {
           stat: 'strength',
-          difficulty: 16,
+          difficulty: 14,
           diceType: 'd20',
           successNode: 'c5_mira_protected',
           failureNode: 'c5_mira_dissection_end',
@@ -1082,7 +1082,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     speaker: 'Dessa',
     text: `"Eight can walk," she says. "Four can walk slowly. Five cannot." She glances toward the door. "The Court knows we're networked. What they don't know — and what you should know — is that we've been using the network. Quietly. We've been transmitting between each other for seven months. Low-level, below what Varr's instruments can detect at their current calibration." She leans forward. "We know what the shore is. We know what the transmission is for. We have been waiting for a four to confirm it." She holds your gaze. "The Glass Court didn't know about the blackout. They guessed, based on the marks. But we know." She touches the mark on her collarbone. "It carries the memory of the night. All of it. Every node carries one piece. Yours carries the last piece. The one that makes it complete."`,
     dialogue: 'Yours carries the last piece. The one that makes the memory complete.',
-    effectsOnEnter: { setFlags: ['ward_seventeen_truth', 'lattice_network_known'], lastArchive: 15, intelligence: 3 },
+    effectsOnEnter: { setFlags: ['ward_seventeen_truth', 'lattice_network_known'], lastArchive: 10, intelligence: 2 },
     choices: [
       {
         id: 'c5_ward_try_free_all',
@@ -1090,7 +1090,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
         nextNode: 'c5_ward_freed',
         diceCheck: {
           stat: 'agility',
-          difficulty: 15,
+          difficulty: 13,
           diceType: 'd20',
           successNode: 'c5_ward_freed',
           failureNode: 'c5_orchid_table_end',
@@ -1302,7 +1302,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     location: 'The Mirror Ballroom — Centre Floor',
     imageKey: 'mirror_ballroom',
     text: `The memory arrives in the form of a reflection that is not quite yours: the same room, the same mirrors, but three years earlier. The night of the blackout. The mirrors were here, already installed, and the people in this room knew what was coming — not everything, not the scale of it, but the event. You can see them watching a panel on the east wall that showed the metro's infrastructure status. You can see the moment the infrastructure went dark, floor by floor, station by station, and a silence falls over this room that means only one thing: they expected this. The Glass Court was not a survivor of the blackout. It was a witness. It may have been something more.`,
-    effectsOnEnter: { intelligence: 3, setFlags: ['memory_fragment_glass_ballroom', 'court_witnessed_blackout'], lastArchive: 10 },
+    effectsOnEnter: { intelligence: 2, setFlags: ['memory_fragment_glass_ballroom', 'court_witnessed_blackout'], lastArchive: 10 },
     choices: [
       {
         id: 'c5_vision_pursue_heir',
@@ -1325,7 +1325,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     title: 'The Masked Heir',
     location: 'The Mirror Ballroom — East Mirror',
     imageKey: 'mirror_ballroom',
-    text: `The figure exists in the current room as much as the memory — standing near the east mirror, wearing a mask that is a stylized rendering of a pre-collapse transit map, white enamel on gold frame. The mask is worn the way the Glass Court wears everything: as a statement about the existence of aesthetics when others cannot afford them. But the figure beneath it is still. Too still for a social gathering. Watching you with the specific attention of someone who came here because they knew you would be here. The mark responds to them the way it responds to nothing else in this building: not with warmth or pulling or suppression, but with the closest thing it has produced to recognition. As if it knows this person from before you knew the mark existed.`,
+    text: `The figure exists in the current room as much as the memory — standing near the east mirror, wearing a mask that is a stylized rendering of a pre-collapse transit map, white enamel on gold frame. The mask is worn the way the Glass Court wears everything: as a statement about the existence of aesthetics when others cannot afford them. But the figure beneath it is still. Too still for a social gathering. Watching you with the particular attention of someone who came here because they knew you would be here. The mark responds to them the way it responds to nothing else in this building: not with warmth or pulling or suppression, but with the closest thing it has produced to recognition. As if it knows this person from before you knew the mark existed.`,
     effectsOnEnter: { setFlags: ['met_masked_heir'] },
     choices: [
       {
@@ -1475,7 +1475,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     title: 'The Choice',
     location: 'The Servant Quarters — Juno\'s Room',
     imageKey: 'servant_quarters',
-    text: `The plan requires a choice that Juno has laid out with the specific care of someone who has been carrying it for a long time. The disruption on Level 10 — the ballroom — needs a visible, memorable incident: someone with the mark using it openly, publicly, in a space full of Court nobility. That person will be detained and processed. It is a sacrifice role. Juno can do it herself: she knows every escape route, she knows the personnel, and she has been in this building for two years longer than any of them know. Or you can do it — which offers a different kind of disruption, a more powerful one, but at cost to you rather than to her. The mark would rather do it. You have learned not to fully trust what the mark would rather do.`,
+    text: `The plan requires a choice that Juno has laid out with the particular caution of someone who has been carrying it for a long time. The disruption on Level 10 — the ballroom — needs a visible, memorable incident: someone with the mark using it openly, publicly, in a space full of Court nobility. That person will be detained and processed. It is a sacrifice role. Juno can do it herself: she knows every escape route, she knows the personnel, and she has been in this building for two years longer than any of them know. Or you can do it — which offers a different kind of disruption, a more powerful one, but at cost to you rather than to her. The mark would rather do it. You have learned not to fully trust what the mark would rather do.`,
     effectsOnEnter: {},
     choices: [
       {
@@ -1535,7 +1535,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     title: 'The Forty-Three',
     location: 'The Servant Quarters — Primary Corridor',
     imageKey: 'servant_quarters',
-    text: `The forty-three servants have gathered in the primary corridor in the specific order of people who have rehearsed this without being allowed to call it rehearsal. They are not armed with weapons. They are armed with the building's institutional knowledge: access codes, supply routes, security blind spots, which personnel respond to which triggers. The girl from the inventory shelf is coordinating the south corridor. An older man with grey hair and the hands of someone who has been carrying things for decades is managing the supply shaft access. They look at you with the specific expression of people who need one more thing to begin. The mark is what they need. It will open the doors the chips cannot.`,
+    text: `The forty-three servants have gathered in the primary corridor in the specific order of people who have rehearsed this without being allowed to call it rehearsal. They are not armed with weapons. They are armed with the building's institutional knowledge: access codes, supply routes, security blind spots, which personnel respond to which triggers. The girl from the inventory shelf is coordinating the south corridor. An older man with grey hair and the hands of someone who has been carrying things for decades is managing the supply shaft access. They look at you with the particular expression of people who need one more thing to begin. The mark is what they need. It will open the doors the chips cannot.`,
     effectsOnEnter: { setFlags: ['revolt_assembled'] },
     choices: [
       {
@@ -1544,7 +1544,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
         nextNode: 'c5_servant_revolt_end',
         diceCheck: {
           stat: 'charisma',
-          difficulty: 14,
+          difficulty: 13,
           diceType: 'd20',
           successNode: 'c5_servant_revolt_end',
           failureNode: 'c5_sky_garden_arrive',
@@ -1591,7 +1591,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     location: 'The Sky Garden — North Planter',
     imageKey: 'sky_garden',
     speaker: 'The Pale Curator',
-    text: `"Seventeen years ago," they say, without turning, "I acquired a marked individual from the metro network's Eastern Line. Pre-blackout. They were the first I had documented." They turn now: a face that is striking in its deliberate blankness — not emotionless, but carefully managed, the expression of someone who has chosen to present a surface. Their eyes find the wrist mark immediately, the way a jeweller finds a particular stone in a collection. "I have been collecting documentation of marked individuals for twenty-two years. I have records on one hundred and forty-three of them." They tilt their head. "I have records on you. Not recent records — I acquired these before you had a memory of them. That is the nature of a curated collection. It includes things the subjects don't yet know about themselves."`,
+    text: `"Seventeen years ago," they say, without turning, "I acquired a marked individual from the metro network's Eastern Line. Pre-blackout. They were the first I had documented." They turn now: a face that is striking in its deliberate blankness — not emotionless, but carefully managed, the face of someone who has chosen to present a surface. Their eyes find the wrist mark immediately, the way a jeweller finds a particular stone in a collection. "I have been collecting documentation of marked individuals for twenty-two years. I have records on one hundred and forty-three of them." They tilt their head. "I have records on you. Not recent records — I acquired these before you had a memory of them. That is the nature of a curated collection. It includes things the subjects don't yet know about themselves."`,
     dialogue: 'I have records on you. Before you had a memory of them. That is the nature of a curated collection.',
     effectsOnEnter: { setFlags: ['met_pale_curator'] },
     choices: [
@@ -1618,7 +1618,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     imageKey: 'sky_garden',
     speaker: 'The Pale Curator',
     text: `"The records show that you were in Metro Station 9 the night of the blackout by design, not accident. There are six individuals who were placed in Station 9 that night. You are the only one who retained the mark. The others — lost the mark within the first year, two died in the tunnel collapses, one joined the Red Choir." They open a glass case they are carrying, displaying a set of small cards, each one with a mark schematic and a name. "I collect the documentation. I do not collect the individuals — that is Varr's method, and it is inferior." They hold up a card. The mark on it is yours, rendered in precise detail. The card is dated three years before the blackout. "You were designed. Not as a weapon. As a message. Someone sent you, before the blackout, knowing the blackout was coming."`,
-    effectsOnEnter: { setFlags: ['curator_origin_revealed', 'discovered_blackout_was_planned'], lastArchive: 15, intelligence: 4 },
+    effectsOnEnter: { setFlags: ['curator_origin_revealed', 'discovered_blackout_was_planned'], lastArchive: 10, intelligence: 4 },
     choices: [
       {
         id: 'c5_curator_relic_read',
@@ -1647,8 +1647,8 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     title: 'Archive Composite',
     location: 'The Sky Garden — North Planter',
     imageKey: 'sky_garden',
-    text: `The card is Archive composite — you feel it before you identify it, the material resonating with the mark in the specific way that Archive-origin materials always do. But this card was manufactured, not found. It was produced by someone who knew how to work with Archive material before the Archive was publicly known to exist, which means the person who made this card had access to the Archive's material culture at minimum twenty-two years before the blackout officially revealed it. The Curator is watching you read the card with the attention of someone seeing a test result in real time. "You understand what the material means," they say. Not a question. "That narrows the field of who built you considerably."`,
-    effectsOnEnter: { intelligence: 3, setFlags: ['relic_hunter_card_read'], relics: 1 },
+    text: `The card is Archive composite — you feel it before you identify it, the material resonating with the mark in the particular way that Archive-origin materials always do. But this card was manufactured, not found. It was produced by someone who knew how to work with Archive material before the Archive was publicly known to exist, which means the person who made this card had access to the Archive's material culture at minimum twenty-two years before the blackout officially revealed it. The Curator is watching you read the card with the attention of someone seeing a test result in real time. "You understand what the material means," they say. Not a question. "That narrows the field of who built you considerably."`,
+    effectsOnEnter: { intelligence: 2, setFlags: ['relic_hunter_card_read'], relics: 1 },
     choices: [
       {
         id: 'c5_relic_proceed_deal',
@@ -1666,7 +1666,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     location: 'The Sky Garden — North Planter',
     imageKey: 'sky_garden',
     speaker: 'The Pale Curator',
-    text: `"The collection exists for documentation purposes," they say. "I do not traffic in individuals. But I will tell you what I know in exchange for one thing: permission to document the mark's full transmission event. When you complete the send — and you will complete the send, the architecture requires it — I want to be present with instruments. The record of a full lattice completion would be the most significant entry in any collection in the metro system." They hold out a second card, blank, with a glass stylus. "Your mark here. That is consent for my presence. In exchange, I give you the names of the six individuals from Station 9, the identity of the researcher who built the mark's architecture, and the specific location the transmission is addressed to." Their eyes are very calm and very specific. "It is a fair trade."`,
+    text: `"The collection exists for documentation purposes," they say. "I do not traffic in individuals. But I will tell you what I know in exchange for one thing: permission to document the mark's full transmission event. When you complete the send — and you will complete the send, the architecture requires it — I want to be present with instruments. The record of a full lattice completion would be the most significant entry in any collection in the metro system." They hold out a second card, blank, with a glass stylus. "Your mark here. That is consent for my presence. In exchange, I give you the names of the six individuals from Station 9, the identity of the researcher who built the mark's architecture, and the particular location the transmission is addressed to." Their eyes are very calm and very specific. "It is a fair trade."`,
     effectsOnEnter: {},
     choices: [
       {
@@ -1699,7 +1699,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     speaker: 'The Pale Curator',
     text: `They tell you. The researcher's name is redacted in the records — deliberately, a self-redaction, someone who knew their work would be examined and chose to protect their identity in the architecture. But their method signature is consistent across the mark's construction: Last Archive training, pre-blackout, combined with a relic manipulation technique that the Curator identifies from two other marks in the collection. "The six individuals from Station 9 were each placed with a specific piece of the transmission. Different registers, different harmonics. The mark's design required people who would survive the blackout, navigate the city's post-collapse factions, and arrive at the transmission point with the memory intact." A pause. "The transmission point is below the city. Deeper than any faction has mapped. The Last Kingdom, as the Bellkeeper called it, is not a metaphor." They close the case. "It is a building."`,
     dialogue: 'The Last Kingdom is not a metaphor. It is a building, below the city, deeper than any faction has mapped.',
-    effectsOnEnter: { setFlags: ['last_kingdom_location_partial', 'curator_knowledge_gained'], lastArchive: 15, intelligence: 3 },
+    effectsOnEnter: { setFlags: ['last_kingdom_location_partial', 'curator_knowledge_gained'], lastArchive: 10, intelligence: 2 },
     choices: [
       {
         id: 'c5_curator_mem_accept_col',
@@ -1752,7 +1752,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     title: 'Without Terms',
     location: 'The Sky Garden — North Planter',
     imageKey: 'sky_garden',
-    text: `The Curator accepts the refusal with equanimity — they are someone who documents, and documentation includes documentation of refusals. They close the collection box. "The Observatory is on Level 12. The Masked Heir is expecting you, which tells me they know more about your schedule than I do, which tells me they have been in this building longer than either of us." They pause. "The Auction Hall, if you go — lot seventeen is a living person. Note it." They leave. You are alone in the Sky Garden with the city visible in every direction and the specific knowledge that you were designed before you were born into the situation you are living. The mark does not comment on this. It is very patient.`,
+    text: `The Curator accepts the refusal with equanimity — they are someone who documents, and documentation includes documentation of refusals. They close the collection box. "The Observatory is on Level 12. The Masked Heir is expecting you, which tells me they know more about your schedule than I do, which tells me they have been in this building longer than either of us." They pause. "The Auction Hall, if you go — lot seventeen is a living person. Note it." They leave. You are alone in the Sky Garden with the city visible in every direction and the particular knowledge that you were designed before you were born into the situation you are living. The mark does not comment on this. It is very patient.`,
     effectsOnEnter: { morale: 2 },
     choices: [
       {
@@ -1808,7 +1808,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
         nextNode: 'c5_observatory_truth',
         diceCheck: {
           stat: 'intelligence',
-          difficulty: 13,
+          difficulty: 12,
           diceType: 'd20',
           successNode: 'c5_observatory_truth',
           failureNode: 'c5_council_arrive',
@@ -1820,7 +1820,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
         nextNode: 'c5_observatory_scholar',
         requirements: { backgrounds: ['forgotten_scholar'] },
         isHidden: true,
-        effects: { lastArchive: 10, intelligence: 3 },
+        effects: { lastArchive: 10, intelligence: 2 },
       },
       {
         id: 'c5_obs_take_sealed',
@@ -1840,7 +1840,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     text: `The predictive model is not a prediction. It is a timeline. The Glass Court's founders — three researchers, names in the document — identified the Archive's reactivation sequence as an engineered event scheduled for a specific date. The blackout was the Archive activating. Not a power failure. Not a cascade collapse. An intentional, designed power draw from every infrastructure node in the metro district, produced by the Archive drawing on the city's energy grid for one specific purpose: to send a signal. The marks — every mark — appeared on the night the signal was sent. The marks are the signal's return receipt. They are confirmation that specific individuals received a specific piece of a specific transmission. The Glass Court has known this for three years and used the knowledge to run extraction experiments on people who were never patients. They were always evidence.`,
     effectsOnEnter: {
       setFlags: ['discovered_blackout_was_planned', 'blackout_full_truth_known', 'archive_activation_understood'],
-      lastArchive: 20,
+      lastArchive: 10,
       intelligence: 4,
     },
     choices: [
@@ -1868,7 +1868,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     text: `The technical sections of the predictive model carry a method signature you recognise from your training: a specific approach to layered harmonic analysis that was developed in a pre-collapse academic program that was classified and then erased from academic records. You were in that program. Not as a researcher — as a subject. The memory arrives with the knowledge: a room, researchers you half-recognise, and the feeling of the mark before it was yours, external and being placed. The researcher who designed the mark is the same researcher who supervised your training. The sealed document contains their name, which you now remember without reading it: Velna. The Last Archive's archivist. She built you for this. Before the city ended, she built you for after.`,
     effectsOnEnter: {
       setFlags: ['velna_connection_discovered', 'chapter5_scholar_memory', 'discovered_blackout_was_planned'],
-      lastArchive: 20,
+      lastArchive: 10,
       intelligence: 4,
     },
     choices: [
@@ -1919,7 +1919,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     title: 'The Lots',
     location: 'The Private Auction Hall — Observation Tier',
     imageKey: 'private_auction_hall',
-    text: `The auction runs three additional lots before reaching seventeen. Each one is presented by the auctioneer in the precise language of commodity description: saturation levels, physical parameters, cooperative history, projected research yield. The buyers do not appear to be purchasing research subjects. They appear to be purchasing status indicators — proof that they have access to the Court's most restricted category of material. The mark on your wrist is burning. Not from corruption. From something older: the specific heat of recognition, one mark locating another. The woman in lot seventeen is still. She has been in this system long enough to know that stillness costs less than reaction. She sees the mark on your wrist from across the room. Her eyes tell you she knows what it means.`,
+    text: `The auction runs three additional lots before reaching seventeen. Each one is presented by the auctioneer in the precise language of commodity description: saturation levels, physical parameters, cooperative history, projected research yield. The buyers do not appear to be purchasing research subjects. They appear to be purchasing status indicators — proof that they have access to the Court's most restricted category of material. The mark on your wrist is burning. Not from corruption. From something older: the unmistakable heat of recognition, one mark locating another. The woman in lot seventeen is still. She has been in this system long enough to know that stillness costs less than reaction. She sees the mark on your wrist from across the room. Her eyes tell you she knows what it means.`,
     effectsOnEnter: { morale: -3 },
     choices: [
       {
@@ -1969,7 +1969,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
         id: 'c5_auction_cede',
         text: 'Stop. Withdraw. You cannot win this bid without leverage you don\'t have here.',
         nextNode: 'c5_glass_cage_end',
-        effects: { glassCourt: -25, morale: -5 },
+        effects: { glassCourt: -20, morale: -5 },
       },
     ],
   },
@@ -2017,7 +2017,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     title: 'The Council Chamber',
     location: 'The Council Chamber — Top Level',
     imageKey: 'council_chamber',
-    text: `The Council Chamber occupies the Tower's highest floor and is all glass: floor, ceiling, walls — a room from which you can see the entire ruined city in every direction and the intact sky above, which means the people who meet here make decisions with a direct line of sight to every consequence of those decisions and have apparently found this viewpoint clarifying rather than humbling. Lady Seraphine is here. Lord Cael is here, in a different configuration from the one he showed in the Atrium — less charming, more careful. Four other Council members you do not know. And at the north glass wall, still wearing the transit-map mask, the Masked Heir stands with the specific stillness of someone who has been waiting for this room to fill with exactly these people.`,
+    text: `The Council Chamber occupies the Tower's highest floor and is all glass: floor, ceiling, walls — a room from which you can see the entire ruined city in every direction and the intact sky above, which means the people who meet here make decisions with a direct line of sight to every consequence of those decisions and have apparently found this viewpoint clarifying rather than humbling. Lady Seraphine is here. Lord Cael is here, in a different configuration from the one he showed in the Atrium — less charming, more careful. Four other Council members you do not know. And at the north glass wall, still wearing the transit-map mask, the Masked Heir stands with the particular stillness of someone who has been waiting for this room to fill with exactly these people.`,
     effectsOnEnter: { setFlags: ['council_chamber_reached'], morale: 1 },
     choices: [
       {
@@ -2050,7 +2050,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
         nextNode: 'c5_council_win',
         diceCheck: {
           stat: 'charisma',
-          difficulty: 16,
+          difficulty: 14,
           diceType: 'd20',
           successNode: 'c5_council_win',
           failureNode: 'c5_council_lose',
@@ -2066,7 +2066,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
         id: 'c5_council_accept_alliance',
         text: '"I accept the first option. Full integration, on the terms you described in the Atrium."',
         nextNode: 'c5_seraphine_alliance_end',
-        effects: { glassCourt: 25, setFlags: ['glass_court_full_alliance'] },
+        effects: { glassCourt: 20, setFlags: ['glass_court_full_alliance'] },
       },
     ],
   },
@@ -2101,7 +2101,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
         id: 'c5_lose_fight',
         text: 'Fight. The mark opens. Let this building understand what it has been trying to study.',
         nextNode: 'c5_white_atrium_massacre_end',
-        effects: { corruption: 10, health: -20, glassCourt: -30 },
+        effects: { corruption: 10, health: -15, glassCourt: -20 },
       },
       {
         id: 'c5_lose_accept_false',
@@ -2120,7 +2120,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     imageKey: 'council_chamber',
     text: `The face beneath the transit-map mask is a face you have seen before — in the memory fragment from the Mirror Ballroom, in the reflection that was not quite yours. The Masked Heir is perhaps your own age, and they have the mark. Not on their wrist. On the back of their left hand — a different pattern, a different register, but recognizably the same architecture. They look at you with the expression of someone meeting a person they have been corresponding with for years and seeing them in person for the first time. "My name is Sabel," they say. "Velna was my mother. She built the mark's architecture using herself as the base template. Then she built you — the other nodes — using the same principles." A pause. "I have the memory that precedes yours. The one from before the blackout. If you want to know who you were, I can show you."`,
     dialogue: 'Velna was my mother. She built the mark using herself as a template. I have the memory that precedes yours.',
-    effectsOnEnter: { setFlags: ['masked_heir_identity_known', 'velna_identity_confirmed'], lastArchive: 20, intelligence: 4 },
+    effectsOnEnter: { setFlags: ['masked_heir_identity_known', 'velna_identity_confirmed'], lastArchive: 10, intelligence: 4 },
     choices: [
       {
         id: 'c5_heir_see_memory',
@@ -2146,7 +2146,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     speaker: 'Sabel',
     text: `"Velna built the lattice to carry a specific memory forward through the blackout," Sabel says. "Not her memory — the Archive's. The Archive contains the record of the city that was built deliberately above the Last Kingdom, by people who knew what was below. The blackout was the Archive activating because the conditions it was waiting for were finally met: seventeen marked individuals, distributed, surviving. The transmission isn't a message to someone outside the city. It is a message to the city itself. A restoration record — what the city was supposed to be, before the factions and the collapses and the starvation." They look at you. "Velna split the final piece of the memory between two marks — mine and yours. She didn't trust one person with all of it." Their mark glows, faintly, the same orange as yours. "Together we complete the record. The shore is the transmission point. The Last Kingdom is what we're remembering it back into existence."`,
     dialogue: 'The transmission is a restoration record. Together we complete it. The shore is the transmission point.',
-    effectsOnEnter: { setFlags: ['blackout_full_truth_confirmed', 'sabel_alliance_possible'], lastArchive: 25, intelligence: 4 },
+    effectsOnEnter: { setFlags: ['blackout_full_truth_confirmed', 'sabel_alliance_possible'], lastArchive: 10, intelligence: 4 },
     choices: [
       {
         id: 'c5_truth_council_final',
@@ -2197,7 +2197,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     title: 'The Orchid Table',
     location: 'The Orchid Clinic — Extraction Suite',
     imageKey: 'orchid_clinic',
-    text: `The extraction procedure is called a procedure because the Glass Court has a form for it and the form gives it a clinical name. What it is, in the room where it happens, is something the procedure form does not capture. The instruments that Mira identified in the corridor are exactly what she said they were. Varr conducts the session with the methodical care of someone whose primary concern is data integrity. The mark provides data with the specific enthusiasm of something that has been waiting to be heard and does not understand that the people listening are not listening in the right direction. When the session ends, the data is in Varr's system. The mark is significantly quieter. The person who was carrying it is present but different in a way that will take some time to measure.`,
+    text: `The extraction procedure is called a procedure because the Glass Court has a form for it and the form gives it a clinical name. What it is, in the room where it happens, is something the procedure form does not capture. The instruments that Mira identified in the corridor are exactly what she said they were. Varr conducts the session with the methodical care of someone whose primary concern is data integrity. The mark provides data with the particular enthusiasm of something that has been waiting to be heard and does not understand that the people listening are not listening in the right direction. When the session ends, the data is in Varr's system. The mark is significantly quieter. The person who was carrying it is present but different in a way that will take some time to measure.`,
     effectsOnEnter: { setFlags: ['orchid_table_experienced'] },
     choices: [],
     isEnding: true,
@@ -2212,7 +2212,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     location: 'The Orchid Clinic — Suite 3',
     imageKey: 'orchid_clinic',
     text: `The secondary extraction takes forty minutes, then six hours, then another forty minutes in a different suite with different instruments. Mira does not scream. She has the specific calm of someone who is doing a medical procedure on herself in her mind — locating each sensation, classifying it, refusing to let it be more than what it is. When it is done, she does not look at you right away. When she does, her expression is doing something that has no single name. "I know what they took," she says, very quietly. "I know what was in the neural pattern they recorded." She pauses. "It was you. The mark transferred something to my neural pattern from yours, over the months we travelled together. It was a backup." Another pause. "They have it now." The mark on your wrist burns once, in the direction of the shore, and then goes very quiet.`,
-    effectsOnEnter: { setFlags: ['mira_neural_pattern_extracted'], miraTrust: -10 },
+    effectsOnEnter: { setFlags: ['mira_neural_pattern_extracted'], miraTrust: -5 },
     choices: [],
     isEnding: true,
     endingType: 'death',
@@ -2239,7 +2239,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     title: 'White Atrium Massacre',
     location: 'The White Atrium — Level 7',
     imageKey: 'white_atrium',
-    text: `The mark at full transmission in the White Atrium interacts with the glass panels in the way that full transmission always interacts with the Archive-composite glass: total, immediate, irreversible. Every panel in the Atrium responds simultaneously, every surface resonating at the lattice frequency, the chandeliers shattering in a harmonic cascade that produces a sound which carries through every floor of the Tower. The people in the Atrium are not Archive glass. They do not resonate. They do the other thing. The security response arrives in ninety seconds and finds a different kind of scene than the one the Court has protocols for. Seraphine, somewhere above on the Council floor, hears the sound and understands it with the specific understanding of someone who has been studying it for three years. She writes something in her ledger. She does not go to the Atrium.`,
+    text: `The mark at full transmission in the White Atrium interacts with the glass panels in the way that full transmission always interacts with the Archive-composite glass: total, immediate, irreversible. Every panel in the Atrium responds simultaneously, every surface resonating at the lattice frequency, the chandeliers shattering in a harmonic cascade that produces a sound which carries through every floor of the Tower. The people in the Atrium are not Archive glass. They do not resonate. They do the other thing. The security response arrives in ninety seconds and finds a different kind of scene than the one the Court has protocols for. Seraphine, somewhere above on the Council floor, hears the sound and understands it with the particular understanding of someone who has been studying it for three years. She writes something in her ledger. She does not go to the Atrium.`,
     effectsOnEnter: { setFlags: ['white_atrium_massacre'] },
     choices: [],
     isEnding: true,
@@ -2269,7 +2269,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     imageKey: 'white_atrium',
     speaker: 'Cain',
     text: `Cain completes the transaction with Lord Cael in the same deliberateness he applies to everything. The Saints records access is transferred. The intelligence about you — your position, the mark's saturation level, the shore direction the mark points — is transferred in the other direction. Cain sits with the records for a long time after. He reads about the Saints' supply transactions. He reads about what he signed, what he forwarded, what he was used for. Then he puts the records down and goes to find you, and his face when he finds you is not the face of someone who has made peace with what he did. "I got the records," he says. "I also told them things they shouldn't have." He waits. He knows you will ask what things. He has already decided to answer. That decision does not fix what happened. It tells you what it is.`,
-    effectsOnEnter: { setFlags: ['cain_made_political_bargain', 'cain_bargain_complete'], cainTrust: -8, glassCourt: 20 },
+    effectsOnEnter: { setFlags: ['cain_made_political_bargain', 'cain_bargain_complete'], cainTrust: -5, glassCourt: 20 },
     choices: [],
     isEnding: true,
     endingType: 'betrayal',
@@ -2282,8 +2282,8 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     title: 'Noble Pet',
     location: 'The White Atrium — East Wing',
     imageKey: 'white_atrium',
-    text: `The Glass Court's social architecture has a category for marked individuals who are useful but not dangerous: "Resonant Companion," which functions socially the way a rare object functions in a collection — as a statement about the taste and resources of whoever keeps it. Lady Seraphine does not keep you as a weapon or a subject. She keeps you as a reference point: someone to consult, to introduce at specific functions, to display as evidence of the Court's relationship with the pre-collapse technology. The mark quiets in the suppression field. You quieten in the specific way that comfort quietens things that were meant to be sharp. The city is still below the glass. The shore is still below the city. The mark remembers the direction even when you stop thinking about it. The direction does not stop being true because you stopped moving.`,
-    effectsOnEnter: { setFlags: ['game_complete', 'noble_pet_status'], glassCourt: 25, morale: -10 },
+    text: `The Glass Court's social architecture has a category for marked individuals who are useful but not dangerous: "Resonant Companion," which functions socially the way a rare object functions in a collection — as a statement about the taste and resources of whoever keeps it. Lady Seraphine does not keep you as a weapon or a subject. She keeps you as a reference point: someone to consult, to introduce at specific functions, to display as evidence of the Court's relationship with the pre-collapse technology. The mark quiets in the suppression field. You quieten in the particular way that comfort quietens things that were meant to be sharp. The city is still below the glass. The shore is still below the city. The mark remembers the direction even when you stop thinking about it. The direction does not stop being true because you stopped moving.`,
+    effectsOnEnter: { setFlags: ['game_complete', 'noble_pet_status'], glassCourt: 20, morale: -10 },
     choices: [],
     isEnding: true,
     endingType: 'betrayal',
@@ -2296,7 +2296,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     title: 'Mirror Corruption',
     location: 'The Mirror Ballroom — Centre Floor',
     imageKey: 'mirror_ballroom',
-    text: `The mirror lattice and the wrist lattice complete their resonance loop in the centre of the ballroom and the completion is not violent — it is absorptive, which is worse. Every version of you that the mirrors produce converges on the centre simultaneously and the mark accepts the convergence as a transmission, receiving all of it, the Glass Court's three years of Archive-composite memory encoded in the glass. What comes out of the loop is still standing in the centre of the ballroom, still wearing the wrist mark, still pointing in the direction of the shore. But the glass chandeliers ring once, in unison, and do not stop ringing. Seraphine, on the floor above, hears it. Lord Cael hears it. Varr hears it and reaches for his instruments. The Pale Curator, in the garden, opens their documentation case and begins to write with the specific pace of someone recording something they expected and have been waiting to record.`,
+    text: `The mirror lattice and the wrist lattice complete their resonance loop in the centre of the ballroom and the completion is not violent — it is absorptive, which is worse. Every version of you that the mirrors produce converges on the centre simultaneously and the mark accepts the convergence as a transmission, receiving all of it, the Glass Court's three years of Archive-composite memory encoded in the glass. What comes out of the loop is still standing in the centre of the ballroom, still wearing the wrist mark, still pointing in the direction of the shore. But the glass chandeliers ring once, in unison, and do not stop ringing. Seraphine, on the floor above, hears it. Lord Cael hears it. Varr hears it and reaches for his instruments. The Pale Curator, in the garden, opens their documentation case and begins to write with the particular pace of someone recording something they expected and have been waiting to record.`,
     effectsOnEnter: { setFlags: ['mirror_corruption_event', 'corruption_mirror_event'], corruption: 30 },
     choices: [],
     isEnding: true,
@@ -2338,7 +2338,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     title: 'Glass Court Neutral',
     location: 'The Glass Gate — Exit',
     imageKey: 'glass_gate',
-    text: `You leave the Glass Court with what you came for and the specific kind of unresolvedness that comes from having changed something large without seeing the change complete. The Council knows the truth about the blackout now — what they do with it is a political process you have started but cannot finish in a single visit. Juno's network is intact. Dessa and the ward resonants who walked are somewhere in the city below. The Masked Heir — Sabel — is still in the building, which means Velna's other half of the memory is still accessible. The mark on your wrist points southeast as you exit the gate. The ruined city receives you. The Glass Court is above, lit and intact, continuing to make its decisions. You have added a new variable to those decisions. Variables compound.`,
+    text: `You leave the Glass Court with what you came for and the particular kind of unresolvedness that comes from having changed something large without seeing the change complete. The Council knows the truth about the blackout now — what they do with it is a political process you have started but cannot finish in a single visit. Juno's network is intact. Dessa and the ward resonants who walked are somewhere in the city below. The Masked Heir — Sabel — is still in the building, which means Velna's other half of the memory is still accessible. The mark on your wrist points southeast as you exit the gate. The ruined city receives you. The Glass Court is above, lit and intact, continuing to make its decisions. You have added a new variable to those decisions. Variables compound.`,
     effectsOnEnter: { setFlags: ['game_complete', 'glass_court_left_neutral', 'chapter5_survived_neutral'], glassCourt: -5, lastArchive: 10 },
     choices: [],
     isEnding: true,
@@ -2356,7 +2356,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     effectsOnEnter: {
       setFlags: ['servant_revolt_succeeded', 'juno_revolt_led', 'chapter5_revolt_route'],
       hollowChildren: 20,
-      glassCourt: -25,
+      glassCourt: -20,
       morale: 8,
     },
     choices: [],
@@ -2374,7 +2374,7 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     speaker: 'Lady Seraphine Vale',
     text: `The alliance terms are written on glass paper with a glass stylus in the specific formality of someone who has been managing institutional power for long enough to know that informal agreements are worth exactly what the weaker party is willing to enforce. Seraphine signs first. "The Glass Court commits its resources to reaching the transmission point," she says. "The shore. The Last Kingdom. Whatever it is below." She looks at the city through the Council Chamber glass. "In exchange, the marked individual operates as a full partner in the project, not as a subject. The distinction is documented." She slides the paper across. Lord Cael is watching from the edge of the room. The mark on your wrist recognises the glass paper — Archive composite, same as the mirrors — and warms. The alliance is a tool. Tools have specific uses and specific limits. You sign.`,
     effectsOnEnter: {
-      glassCourt: 30,
+      glassCourt: 20,
       setFlags: ['seraphine_alliance_confirmed', 'glass_court_alliance_sealed', 'chapter5_seraphine_route'],
       lastArchive: 10,
     },
@@ -2390,10 +2390,10 @@ export const CHAPTER_5_NODES: StoryNode[] = [
     title: 'Secret Memory Fragment',
     location: 'The Cracked Observatory — Document Storage',
     imageKey: 'cracked_observatory',
-    text: `Sabel closes their hand and the shared memory arrives not as vision but as texture: the quality of the Archive before the blackout, the specific warmth of a building that has been thinking for three hundred years and is about to think harder. Velna is in the memory — not as a person you can see, but as a presence, the architectural signature of someone who built something into the walls and the floors and the documents and the marks and called it a message. The message is not in words. It is in the structure of what she built: every choice has a consequence, every faction has a position, every person who carries the mark was chosen because they could navigate both. The memory shows you the shape of what the Last Kingdom remembers. You now know what the restoration looks like. Not where it is. Not how to reach it. But what it was, before it was lost. You carry that now, in addition to everything else.`,
+    text: `Sabel closes their hand and the shared memory arrives not as vision but as texture: the quality of the Archive before the blackout, the unmistakable warmth of a building that has been thinking for four hundred years and is about to think harder. Velna is in the memory — not as a person you can see, but as a presence, the architectural signature of someone who built something into the walls and the floors and the documents and the marks and called it a message. The message is not in words. It is in the structure of what she built: every choice has a consequence, every faction has a position, every person who carries the mark was chosen because they could navigate both. The memory shows you the shape of what the Last Kingdom remembers. You now know what the restoration looks like. Not where it is. Not how to reach it. But what it was, before it was lost. You carry that now, in addition to everything else.`,
     effectsOnEnter: {
       setFlags: ['game_complete', 'secret_memory_received', 'velna_message_understood', 'chapter5_scholar_route'],
-      lastArchive: 25,
+      lastArchive: 10,
       intelligence: 5,
     },
     choices: [],
@@ -2418,9 +2418,12 @@ export const CHAPTER_5_NODES: StoryNode[] = [
       lastArchive: 10,
       morale: 3,
     },
-    choices: [],
-    isEnding: true,
-    endingType: 'faction',
-    endingId: 'ending_ch5_survived',
+    choices: [
+      {
+        id: 'c5_continue_to_ch6',
+        text: 'Head east. The broadcast tunnels call.',
+        nextNode: 'chapter6_start',
+      },
+    ],
   },
 ];

@@ -131,7 +131,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'Cain at the Stair',
     location: 'The Descent Stair',
     imageKey: 'descent_stair',
-    text: `Cain reads the stair in seconds. "No observable threats. Pre-Blackout construction — older than the Saints' founding. The descent takes approximately forty minutes at a sustainable pace. We have light for three hours." He pauses at the first landing, looking at the mark on your wrist in the way he's been looking at it since the metro — not with suspicion anymore, but with the specific attentiveness of someone who has spent a long time learning what it means. "Whatever is at the bottom," he says, "we reach it."`,
+    text: `Cain reads the stair in seconds. "No observable threats. Pre-Blackout construction — older than the Saints' founding. The descent takes approximately forty minutes at a sustainable pace. We have light for three hours." He pauses at the first landing, looking at the mark on your wrist in the way he's been looking at it since the metro — not with suspicion anymore, but with the particular attentiveness of someone who has spent a long time learning what it means. "Whatever is at the bottom," he says, "we reach it."`,
     effectsOnEnter: { cainTrust: 5, morale: 5, setFlags: ['fc1_cain_companion'] },
     choices: [
       {
@@ -190,8 +190,8 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'The Night It Started',
     location: 'The Final Metro Line',
     imageKey: 'final_metro_line',
-    text: `The metro platform holds a memory the mark has been building toward since the prologue: the Blackout, from beneath. From here, the Blackout was not a catastrophe. It was a signal. The Gate's resonance, amplified through the metro infrastructure, propagating upward through the city in a configuration that was misread as a power failure because no one below-grade knew what the Gate was sending. Three hundred years of misreading a signal. The mark reads the original transmission now, in the place it originated: the Gate was not failing. It was calling. The city heard it as disaster. The city was wrong.`,
-    effectsOnEnter: { intelligence: 3, morale: 5, setFlags: ['blackout_true_memory', 'blackout_understood'] },
+    text: `The metro platform holds a memory the mark has been building toward since the prologue: the Blackout, from beneath. From here, the Blackout was not a catastrophe. It was a signal. The Gate's resonance, amplified through the metro infrastructure, propagating upward through the city in a configuration that was misread as a power failure because no one below-grade knew what the Gate was sending. four hundred years of misreading a signal. The mark reads the original transmission now, in the place it originated: the Gate was not failing. It was calling. The city heard it as disaster. The city was wrong.`,
+    effectsOnEnter: { intelligence: 2, morale: 5, setFlags: ['blackout_true_memory', 'blackout_understood'] },
     choices: [
       {
         id: 'fc1_memory_proceed',
@@ -236,7 +236,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'The Gate\'s First Voice',
     location: 'The Final Metro Line',
     imageKey: 'final_metro_line',
-    text: `The esper sense reaches through the train's relic architecture and finds the Gate's preliminary resonance — not a thought, not language, but the specific weight of something very old that has been waiting for something it recognizes. It recognizes the mark. Not the bearer — the mark. The accumulated calibration. The specific history of choices that produced this configuration. The impression it leaves is not approval, exactly. It is acknowledgment. The Gate knows the mark is coming. It has always known. The acknowledgment is: it is ready.`,
+    text: `The esper sense reaches through the train's relic architecture and finds the Gate's preliminary resonance — not a thought, not language, but the unmistakable weight of something very old that has been waiting for something it recognizes. It recognizes the mark. Not the bearer — the mark. The accumulated calibration. The specific history of choices that produced this configuration. The impression it leaves is not approval, exactly. It is acknowledgment. The Gate knows the mark is coming. It has always known. The acknowledgment is: it is ready.`,
     effectsOnEnter: { intelligence: 4, morale: 8, setFlags: ['gate_acknowledged_mark', 'esper_gate_contact'] },
     choices: [
       {
@@ -253,7 +253,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'The Transit Record',
     location: 'The Final Metro Line',
     imageKey: 'final_metro_line',
-    text: `The relic scan reveals the Final Metro Line's full operational history: twelve thousand eight hundred and forty-three recorded trips from the surface to the Gate and back. The first four hundred years: routine. Then the Blackout. Then: no trips for three hundred years. Then: one trip, initiated by the mark's activation, occurring right now. The transit log shows that the return trip has always been scheduled. Whoever built this system expected the mark to make it down and expected it to need a way back. The scan shows three hundred years of unscheduled waiting.`,
+    text: `The relic scan reveals the Final Metro Line's full operational history: twelve thousand eight hundred and forty-three recorded trips from the surface to the Gate and back. The first four hundred years: routine. Then the Blackout. Then: no trips for four hundred years. Then: one trip, initiated by the mark's activation, occurring right now. The transit log shows that the return trip has always been scheduled. Whoever built this system expected the mark to make it down and expected it to need a way back. The scan shows four hundred years of unscheduled waiting.`,
     effectsOnEnter: { intelligence: 5, setFlags: ['transit_record_read', 'return_trip_known'] },
     choices: [
       {
@@ -325,7 +325,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'The Memory Wall',
     location: 'The Memory Wall',
     imageKey: 'memory_wall',
-    text: `The Memory Wall is not a wall. It is a surface that plays back. Every major choice made across the full journey exists in the wall's record — not as summary, but as the mark's own stored resonance. The specific frequency of each decision: which companions were kept, which factions were addressed, which truths were released, which corruptions were accepted. The wall does not judge the record. It displays it. The Gate is reading through the wall what the bearer is carrying. The bearer can read it too, from this side. The question the Memory Wall asks is not what you chose. It is: do you recognize what you chose, and do you carry it consciously?`,
+    text: `The Memory Wall is not a wall. It is a surface that plays back. Every major choice made across the full journey exists in the wall's record — not as summary, but as the mark's own stored resonance. the characteristic frequency of each decision: which companions were kept, which factions were addressed, which truths were released, which corruptions were accepted. The wall does not judge the record. It displays it. The Gate is reading through the wall what the bearer is carrying. The bearer can read it too, from this side. The question the Memory Wall asks is not what you chose. It is: do you recognize what you chose, and do you carry it consciously?`,
     effectsOnEnter: { setFlags: ['memory_wall_reached'] },
     choices: [
       {
@@ -377,7 +377,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     location: 'The Memory Wall',
     imageKey: 'memory_wall',
     text: `The faction memory plays: every reputation point, every alliance offered and refused, every negotiation and every failure of negotiation across every encounter. The Iron Saints show as a weight. The Glass Court shows as a texture. The Red Choir shows as a frequency. The Last Archive shows as a depth. The Hollow Children show as something the mark reads as the oldest signal — older than any of the named factions, older than the city's formal organization, the resonance of people who adapted to a truth that everyone above them chose not to acknowledge. The five factions were not the city. They were the city's institutions. The city underneath them was always something else. The memory wall shows the difference.`,
-    effectsOnEnter: { intelligence: 3, setFlags: ['faction_memory_reviewed'] },
+    effectsOnEnter: { intelligence: 2, setFlags: ['faction_memory_reviewed'] },
     choices: [
       {
         id: 'fc1_factions_mark',
@@ -424,9 +424,9 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
           successNode: 'fc1_companion_threshold',
           failureNode: 'fc1_companion_threshold',
           criticalFailureNode: 'fc1_memory_wall_collapse_end',
-          successEffects: { intelligence: 3, morale: 5, setFlags: ['complete_record_held'] },
+          successEffects: { intelligence: 2, morale: 5, setFlags: ['complete_record_held'] },
           failureEffects: { morale: -8, intelligence: -1 },
-          criticalFailureEffects: { health: -50, morale: -20 },
+          criticalFailureEffects: { health: -30, morale: -20 },
         },
       },
     ],
@@ -567,7 +567,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'What Cain Carries',
     location: 'The Companion Threshold',
     imageKey: 'companion_threshold',
-    text: `Cain passes through the threshold with the precision of someone who has been mentally modeling this space since the transit line. On the other side, he reads the Gate Antechamber the way he has read every tactically significant space — as a field. "The Antechamber is a pre-entry buffer," he says. "Standard gate architecture: the Gate reads the bearer before opening, and the buffer space is where the final assessment occurs." He looks at the mark. "The mark is what it is. Everything built it. The Gate is going to receive exactly what was built." He does not say whether that's enough. He doesn't say it isn't.`,
+    text: `Cain passes through the threshold with the exactness of someone who has been mentally modeling this space since the transit line. On the other side, he reads the Gate Antechamber the way he has read every tactically significant space — as a field. "The Antechamber is a pre-entry buffer," he says. "Standard gate architecture: the Gate reads the bearer before opening, and the buffer space is where the final assessment occurs." He looks at the mark. "The mark is what it is. Everything built it. The Gate is going to receive exactly what was built." He does not say whether that's enough. He doesn't say it isn't.`,
     effectsOnEnter: { cainTrust: 3, morale: 8, setFlags: ['cain_at_gate', 'companion_threshold_passed'] },
     choices: [
       {
@@ -637,7 +637,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'The Five Alcoves',
     location: 'The Faction Hall',
     imageKey: 'faction_hall',
-    text: `Five alcoves. The mark reads each one: the Iron Saints' alcove glows with the specific warmth of their institutional authority — or is cold, depending on what Chapter 12 built. The Glass Court's alcove has a texture of layered intelligence — or is fractured, depending. The Red Choir's alcove resonates at the seventeen-fold frequency — or is silent. The Last Archive's alcove holds the depth of three centuries of documentation — or is sealed. The Hollow Children's alcove runs at the oldest frequency of all — or is empty. What the bearer built with each faction is visible here as resonance, readable by the mark as clearly as geography. The Gate is watching which alcoves are lit.`,
+    text: `Five alcoves. The mark reads each one: the Iron Saints' alcove glows with the unmistakable warmth of their institutional authority — or is cold, depending on what Chapter 12 built. The Glass Court's alcove has a texture of layered intelligence — or is fractured, depending. The Red Choir's alcove resonates at the seventeen-fold frequency — or is silent. The Last Archive's alcove holds the depth of three centuries of documentation — or is sealed. The Hollow Children's alcove runs at the oldest frequency of all — or is empty. What the bearer built with each faction is visible here as resonance, readable by the mark as clearly as geography. The Gate is watching which alcoves are lit.`,
     effectsOnEnter: { intelligence: 2 },
     choices: [
       {
@@ -702,7 +702,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     location: 'The Faction Hall',
     imageKey: 'faction_hall',
     text: `The Glass Court alcove activates: Seraphine's intelligence network, the disabled extraction device, and Juno's servant infrastructure all converted to the mark-bearer's route. The Glass Crown wasn't a political victory — it was an information victory. Every piece of classified Glass Court data on the Gate's location, the mark's architecture, and the Foundation Period's suppressed records is now accessible through the alcove's interface. Lady Seraphine's formal note, glass paper and glass stylus: "The Gate exists. The mark opens it. What you do with it is yours to decide. The Glass Court will not interfere with this decision. We do not have the authority, and we know it." The alcove is knowledge. The alcove is light.`,
-    effectsOnEnter: { glassCourt: 5, intelligence: 3, setFlags: ['glass_gate_support', 'faction_support_active'] },
+    effectsOnEnter: { glassCourt: 5, intelligence: 2, setFlags: ['glass_gate_support', 'faction_support_active'] },
     choices: [
       {
         id: 'fc1_glass_unified',
@@ -718,7 +718,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'Red Choir — The Broadcast',
     location: 'The Faction Hall',
     imageKey: 'faction_hall',
-    text: `The Red Choir alcove activates: Mother Veyl's redirected broadcast, the seventeen-fold network carrying the sub-city truth through the city's infrastructure. The Red Crown was a frequency victory — the city heard what the sub-city had been trying to say for three hundred years, through the Choir's transmission architecture. At the Gate, the alcove carries the specific warmth of a broadcast that reached everyone it needed to reach. The city above is different because of it. Veyl's message through the alcove: "The city heard it. The mark carried it to us. The Gate will hear what the city became because of what you did. We are not here to follow you. We are the evidence that the following was unnecessary. The city leads itself now." The alcove hums.`,
+    text: `The Red Choir alcove activates: Mother Veyl's redirected broadcast, the seventeen-fold network carrying the sub-city truth through the city's infrastructure. The Red Crown was a frequency victory — the city heard what the sub-city had been trying to say for four hundred years, through the Choir's transmission architecture. At the Gate, the alcove carries the unmistakable warmth of a broadcast that reached everyone it needed to reach. The city above is different because of it. Veyl's message through the alcove: "The city heard it. The mark carried it to us. The Gate will hear what the city became because of what you did. We are not here to follow you. We are the evidence that the following was unnecessary. The city leads itself now." The alcove hums.`,
     effectsOnEnter: { redChoir: 5, morale: 10, setFlags: ['choir_gate_support', 'faction_support_active'] },
     choices: [
       {
@@ -735,7 +735,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'Last Archive — The Record',
     location: 'The Faction Hall',
     imageKey: 'faction_hall',
-    text: `The Last Archive alcove activates: Archivist Mael's failsafe broadcast, the complete Containment Protocol history distributed to every registered receiving station in the city. The Archive Crown was a truth victory. The alcove holds Mael's full documentation — not summary, but the original record. Every faction received the truth. Every faction is now operating with information it was designed to suppress. Mael's presence in the alcove reads as the specific gravitas of someone who spent decades maintaining records that no one was supposed to see and finally released them. "The record is complete," the alcove says in Mael's voice. "Whoever bears the mark now carries the most documented approach to the Gate in three hundred years. Use it." The alcove is depth.`,
+    text: `The Last Archive alcove activates: Archivist Mael's failsafe broadcast, the complete Containment Protocol history distributed to every registered receiving station in the city. The Archive Crown was a truth victory. The alcove holds Mael's full documentation — not summary, but the original record. Every faction received the truth. Every faction is now operating with information it was designed to suppress. Mael's presence in the alcove reads as the specific gravitas of someone who spent decades maintaining records that no one was supposed to see and finally released them. "The record is complete," the alcove says in Mael's voice. "Whoever bears the mark now carries the most documented approach to the Gate in four hundred years. Use it." The alcove is depth.`,
     effectsOnEnter: { lastArchive: 5, intelligence: 4, setFlags: ['archive_gate_support', 'faction_support_active'] },
     choices: [
       {
@@ -752,7 +752,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'Hollow Children — The Underground',
     location: 'The Faction Hall',
     imageKey: 'faction_hall',
-    text: `The Hollow Children alcove activates — and it is the oldest resonance in the Hall, running at the frequency the mark has been reading since the sub-city as the most ancient signal in the city's infrastructure. The Hollow Children were below the city's decision for three hundred years. They are above it now, committed to the surface, carrying the specific knowledge of people who have been maintaining a space nobody thought mattered for exactly this moment. Mother Chalk's voice, from the alcove: "The Gate knows us. We maintained the approach for three hundred years. We are the reason the stair still stands. We are the reason the Metro still runs. We are the reason you found the platform. The Hollow Crown was always going to be here when you arrived."`,
+    text: `The Hollow Children alcove activates — and it is the oldest resonance in the Hall, running at the frequency the mark has been reading since the sub-city as the most ancient signal in the city's infrastructure. The Hollow Children were below the city's decision for four hundred years. They are above it now, committed to the surface, carrying the specific knowledge of people who have been maintaining a space nobody thought mattered for exactly this moment. Mother Chalk's voice, from the alcove: "The Gate knows us. We maintained the approach for four hundred years. We are the reason the stair still stands. We are the reason the Metro still runs. We are the reason you found the platform. The Hollow Crown was always going to be here when you arrived."`,
     effectsOnEnter: { hollowChildren: 5, morale: 8, setFlags: ['hollow_gate_support', 'faction_support_active'] },
     choices: [
       {
@@ -849,12 +849,12 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'The Heir\'s Truth',
     location: 'The Gate Antechamber',
     imageKey: 'gate_antechamber',
-    text: `The Heir, unmasked and carrying what they have been carrying since before Chapter 1's first node: the knowledge of what the mark is, where it comes from, and what it is designed to do. Glass Court bone structure and Foundation Period knowledge — they are not a Glass Court operative. They are the last recorded descendant of the Foundation Period's Gate Wardens: the family that was given the mark's maintenance documentation before the Blackout and has been waiting for the right bearer ever since. Three hundred years of waiting in a family that reduced itself to one person, who is standing in the antechamber now, holding the final documentation. They are deciding whether to give it to you.`,
-    effectsOnEnter: { intelligence: 3, setFlags: ['heir_final_reveal', 'heir_antechamber'] },
+    text: `The Heir, unmasked and carrying what they have been carrying since before Chapter 1's first node: the knowledge of what the mark is, where it comes from, and what it is designed to do. Glass Court bone structure and Foundation Period knowledge — they are not a Glass Court operative. They are the last recorded descendant of the Foundation Period's Gate Wardens: the family that was given the mark's maintenance documentation before the Blackout and has been waiting for the right bearer ever since. four hundred years of waiting in a family that reduced itself to one person, who is standing in the antechamber now, holding the final documentation. They are deciding whether to give it to you.`,
+    effectsOnEnter: { intelligence: 2, setFlags: ['heir_final_reveal', 'heir_antechamber'] },
     choices: [
       {
         id: 'fc1_heir_accept',
-        text: 'Accept the Heir\'s documentation. Whatever they carry has been earned over three hundred years.',
+        text: 'Accept the Heir\'s documentation. Whatever they carry has been earned over four hundred years.',
         nextNode: 'fc1_antechamber_heir_accept',
       },
       {
@@ -1039,7 +1039,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     location: 'The Corruption Mirror',
     imageKey: 'corruption_mirror',
     text: `The mirror shows a mark with minimal corruption: the bearer's original signal runs clear, the relic interactions throughout have been metabolized rather than accumulated, and the architecture is stable. The Gate reads this configuration as the most functional available: all resolution paths are open, the true-ending requirements are satisfied at the corruption level, and the bearing capacity for whatever the Gate's answer requires is at maximum. The mirror dims — evaluation complete — and the warmth of the clean signal fills the room. The mark feels different from this side of the mirror. Not stronger. More itself.`,
-    effectsOnEnter: { morale: 12, intelligence: 3, setFlags: ['low_corruption_mirror', 'corruption_mirror_passed', 'clean_signal'] },
+    effectsOnEnter: { morale: 12, intelligence: 2, setFlags: ['low_corruption_mirror', 'corruption_mirror_passed', 'clean_signal'] },
     choices: [
       {
         id: 'fc1_low_proceed',
@@ -1057,7 +1057,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'The Last Gate',
     location: 'The Last Gate',
     imageKey: 'last_gate',
-    text: `The Last Gate is the reason the city exists. Not metaphorically — literally: the city above was founded around the infrastructure that the Gate required for its operation, and three hundred years of faction conflict were the superstructure built over a single architectural fact: something beneath the city needed to be either managed or opened, and nobody above agreed on which, and the disagreement built walls and institutions and wars until it built the city the bearer has been navigating all this time. The Gate is: a surface approximately four meters tall and three meters wide, composed of the same compressed calcium material as the Bone Platform but older, older than anything that has been dated in the city's archaeological record. And it is warm. And it is asking.`,
+    text: `The Last Gate is the reason the city exists. Not metaphorically — literally: the city above was founded around the infrastructure that the Gate required for its operation, and four hundred years of faction conflict were the superstructure built over a single architectural fact: something beneath the city needed to be either managed or opened, and nobody above agreed on which, and the disagreement built walls and institutions and wars until it built the city the bearer has been navigating all this time. The Gate is: a surface approximately four meters tall and three meters wide, composed of the same compressed calcium material as the Bone Platform but older, older than anything that has been dated in the city's archaeological record. And it is warm. And it is asking.`,
     effectsOnEnter: { setFlags: ['last_gate_reached'] },
     choices: [
       {
@@ -1074,7 +1074,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'The Question',
     location: 'The Last Gate',
     imageKey: 'last_gate',
-    text: `The Gate reads the mark — all of it, in the specific way that architecture designed for this purpose reads: not the bearer's intentions, but the mark's record of what the bearer actually did across the full journey. The reading takes approximately two minutes. At the end of the reading, the Gate asks its question. Not in language — in the mark. In the specific resonance that corresponds to the decision the Gate needs from this bearer. Translated into the closest available language: the Gate is not asking what you want. It is asking what you understand. And what you will do with that understanding. The Gate's five available responses are presented simultaneously, as options that the mark's configuration makes accessible. Some are closed. Some are open. All are irreversible.`,
+    text: `The Gate reads the mark — all of it, in the particular way that architecture designed for this purpose reads: not the bearer's intentions, but the mark's record of what the bearer actually did across the full journey. The reading takes approximately two minutes. At the end of the reading, the Gate asks its question. Not in language — in the mark. In the specific resonance that corresponds to the decision the Gate needs from this bearer. Translated into the closest available language: the Gate is not asking what you want. It is asking what you understand. And what you will do with that understanding. The Gate's five available responses are presented simultaneously, as options that the mark's configuration makes accessible. Some are closed. Some are open. All are irreversible.`,
     effectsOnEnter: { intelligence: 5, setFlags: ['gate_question_received'] },
     choices: [
       {
@@ -1111,7 +1111,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'The Opening',
     location: 'The Last Gate',
     imageKey: 'last_gate',
-    text: `Opening the Gate releases what has been below the city into the city above. The Gate's architecture has been building toward this event for three hundred years. The mark can execute it. The question is what the opening is for: whether it is the true opening — the original agreement's completion, the entity's sanctioned release protocol, the Foundation Period's intended resolution — or whether it is a forced opening, releasing something that was not designed to be released in this configuration, without the complete record, without the correct interface. The mark knows the difference. The Gate is asking which opening this is.`,
+    text: `Opening the Gate releases what has been below the city into the city above. The Gate's architecture has been building toward this event for four hundred years. The mark can execute it. The question is what the opening is for: whether it is the true opening — the original agreement's completion, the entity's sanctioned release protocol, the Foundation Period's intended resolution — or whether it is a forced opening, releasing something that was not designed to be released in this configuration, without the complete record, without the correct interface. The mark knows the difference. The Gate is asking which opening this is.`,
     effectsOnEnter: { setFlags: ['gate_open_chosen'] },
     choices: [
       {
@@ -1147,8 +1147,8 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'The Original Agreement',
     location: 'The Last Gate',
     imageKey: 'last_gate',
-    text: `The true opening requires the complete set of conditions the Foundation Period's Gate Wardens specified: the complete record held consciously, the correct interface executed by the mark, the original agreement's terms understood and confirmed. The mark runs the validation — checking every accumulated flag against the Warden's documented requirements. The validation result is immediate and specific: either the configuration is complete, or it identifies exactly what is missing. The Gate is holding its breath — architecturally. It has been holding it for three hundred years.`,
-    effectsOnEnter: { intelligence: 3, setFlags: ['true_ending_validation'] },
+    text: `The true opening requires the complete set of conditions the Foundation Period's Gate Wardens specified: the complete record held consciously, the correct interface executed by the mark, the original agreement's terms understood and confirmed. The mark runs the validation — checking every accumulated flag against the Warden's documented requirements. The validation result is immediate and specific: either the configuration is complete, or it identifies exactly what is missing. The Gate is holding its breath — architecturally. It has been holding it for four hundred years.`,
+    effectsOnEnter: { intelligence: 2, setFlags: ['true_ending_validation'] },
     choices: [
       {
         id: 'fc1_true_validate_full',
@@ -1191,7 +1191,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
           failureNode: 'fc1_last_gate_lockin_end',
           criticalFailureNode: 'fc1_last_gate_lockin_end',
           successEffects: { morale: 10, setFlags: ['gate_sealing_in_progress'] },
-          failureEffects: { morale: -15, health: -20 },
+          failureEffects: { morale: -15, health: -15 },
         },
       },
     ],
@@ -1203,7 +1203,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'The Gate Closes',
     location: 'The Last Gate',
     imageKey: 'last_gate',
-    text: `The sealing executes. The mark's architecture shifts to accommodate the function — it is not painful, but it is permanent: the mark changes in a way that can be felt, the specific change of a system that has completed its primary function and has transitioned to a secondary state. The Gate closes. Not loudly — the Gate has been patient for three hundred years; it closes with the same patience. The warmth of the antechamber diminishes. The city above will never know exactly what the Gate was. What the city will know is that it stopped responding. Whether that is the right outcome — whether a closed city is a safer city — is a question the sealing does not answer. The answer was already given in the accumulated choices.`,
+    text: `The sealing executes. The mark's architecture shifts to accommodate the function — it is not painful, but it is permanent: the mark changes in a way that can be felt, the specific change of a system that has completed its primary function and has transitioned to a secondary state. The Gate closes. Not loudly — the Gate has been patient for four hundred years; it closes with the same patience. The warmth of the antechamber diminishes. The city above will never know exactly what the Gate was. What the city will know is that it stopped responding. Whether that is the right outcome — whether a closed city is a safer city — is a question the sealing does not answer. The answer was already given in the accumulated choices.`,
     effectsOnEnter: { morale: 15, setFlags: ['gate_sealed'] },
     choices: [
       {
@@ -1284,7 +1284,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'The Unity Threshold',
     location: 'The Last Gate',
     imageKey: 'last_gate',
-    text: `The merger requires the unity configuration: the specific resonance of a bearer who reached the Gate having built something that approached but did not fully achieve unity — a city that almost decided together, the specific warmth of forty seconds of simultaneous understanding, carried forward through the ascent as a record of what the city could have been. Whether the mark carries that record determines whether the merger produces a bridge or a collapse. The unity_almost_active flag is the Gate's recognition criterion: not the achievement, but the attempt, and what the attempt proved was possible.`,
+    text: `The merger requires the unity configuration: the specific resonance of a bearer who reached the Gate having built something that approached but did not fully achieve unity — a city that almost decided together, the unmistakable warmth of forty seconds of simultaneous understanding, carried forward through the ascent as a record of what the city could have been. Whether the mark carries that record determines whether the merger produces a bridge or a collapse. The unity_almost_active flag is the Gate's recognition criterion: not the achievement, but the attempt, and what the attempt proved was possible.`,
     effectsOnEnter: { setFlags: ['gate_unity_evaluated'] },
     choices: [
       {
@@ -1307,7 +1307,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'The Gate Resists',
     location: 'The Last Gate',
     imageKey: 'last_gate',
-    text: `The Gate is not passive about certain decisions. Destruction. Control without institutional authority. Certain forced configurations. The Gate has been patient for three hundred years, but it was built with specific response protocols for approaches it was not designed to accommodate. The resistance is not violence — it is the mark's own architecture, used against itself: the Gate is asking the mark to validate the decision through the mark's own accumulated record, and certain decisions cannot be validated by what the mark's record built. Whether the mark can push through the resistance is the question.`,
+    text: `The Gate is not passive about certain decisions. Destruction. Control without institutional authority. Certain forced configurations. The Gate has been patient for four hundred years, but it was built with specific response protocols for approaches it was not designed to accommodate. The resistance is not violence — it is the mark's own architecture, used against itself: the Gate is asking the mark to validate the decision through the mark's own accumulated record, and certain decisions cannot be validated by what the mark's record built. Whether the mark can push through the resistance is the question.`,
     effectsOnEnter: { setFlags: ['gate_resistance_active'] },
     choices: [
       {
@@ -1321,8 +1321,8 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
           successNode: 'fc1_door_of_no_return',
           failureNode: 'fc1_gate_rejection_end',
           criticalFailureNode: 'fc1_gate_rejection_end',
-          successEffects: { morale: 5, health: -20, setFlags: ['gate_resistance_overcome'] },
-          failureEffects: { health: -40, morale: -20 },
+          successEffects: { morale: 5, health: -15, setFlags: ['gate_resistance_overcome'] },
+          failureEffects: { health: -20, morale: -20 },
         },
       },
     ],
@@ -1444,7 +1444,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     isEnding: true,
     endingType: 'death',
     endingId: 'ending_fc1_false_gate',
-    text: `The Gate opens — but not the way the original agreement specified. The forced opening without the complete record executes a partial opening: the Gate's threshold activates, but the interface protocol is wrong, and what passes through the threshold is not the sanctioned release but the raw pressure of three hundred years of contained resonance, without curation, without the specific filtering the Warden's documentation required. The Gate does not close again immediately. What comes through the raw opening is not hostile — it has no orientation. It simply passes through everything that is in the threshold space, which includes the bearer. The city above receives a signal it cannot process. The mark records the outcome as: reached the Gate, opened it, and was inside when it opened the wrong way.`,
+    text: `The Gate opens — but not the way the original agreement specified. The forced opening without the complete record executes a partial opening: the Gate's threshold activates, but the interface protocol is wrong, and what passes through the threshold is not the sanctioned release but the raw pressure of four hundred years of contained resonance, without curation, without the specific filtering the Warden's documentation required. The Gate does not close again immediately. What comes through the raw opening is not hostile — it has no orientation. It simply passes through everything that is in the threshold space, which includes the bearer. The city above receives a signal it cannot process. The mark records the outcome as: reached the Gate, opened it, and was inside when it opened the wrong way.`,
     effectsOnEnter: { setFlags: ['game_complete', 'false_gate_death'] },
     choices: [],
   },
@@ -1458,7 +1458,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     isEnding: true,
     endingType: 'death',
     endingId: 'ending_fc1_heir_strikes',
-    text: `The Masked Heir strikes in the antechamber with the precision of someone who has been carrying this decision since before Chapter 1. The sub-city rejection was not forgotten. The Heir, as the last Gate Warden, holds a specific function that the Warden's documentation records plainly: the right to prevent a bearer whose record the Warden determines is incompatible with the Gate's integrity from reaching the Gate. It is not a personal decision. The three-hundred-year ledger records two previous Warden interventions. Both are documented without judgment. The current Heir's action is documented the same way: bearer reached the Gate Antechamber. Warden assessment: not compatible. Access denied. The antechamber closes. The Gate waits for the next mark.`,
+    text: `The Masked Heir strikes in the antechamber with the exactness of someone who has been carrying this decision since before Chapter 1. The sub-city rejection was not forgotten. The Heir, as the last Gate Warden, holds a specific function that the Warden's documentation records plainly: the right to prevent a bearer whose record the Warden determines is incompatible with the Gate's integrity from reaching the Gate. It is not a personal decision. The three-hundred-year ledger records two previous Warden interventions. Both are documented without judgment. The current Heir's action is documented the same way: bearer reached the Gate Antechamber. Warden assessment: not compatible. Access denied. The antechamber closes. The Gate waits for the next mark.`,
     effectsOnEnter: { setFlags: ['heir_warden_intervention'] },
     choices: [],
   },
@@ -1560,7 +1560,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     isEnding: true,
     endingType: 'wanderer',
     endingId: 'ending_fc1_door_no_return',
-    text: `The bearer walks through the Door without answering the Gate's question. The Door of No Return is accurately named: from the other side, the Gate's field is present but the Gate itself is not accessible. The bearer is in the liminal space — between the Gate level and the sub-city level, in the infrastructure the Hollow Children maintained for three hundred years, in the space where the Gate's resonance is present without the Gate's question. The mark continues. The city is above. The Gate is below. The bearer is between them, in the liminal space, which is — the mark reads — inhabitable. People have lived in less structured circumstances than the Gate's liminal field. The Door of No Return is not death. It is a very specific kind of not-going-back.`,
+    text: `The bearer walks through the Door without answering the Gate's question. The Door of No Return is accurately named: from the other side, the Gate's field is present but the Gate itself is not accessible. The bearer is in the liminal space — between the Gate level and the sub-city level, in the infrastructure the Hollow Children maintained for four hundred years, in the space where the Gate's resonance is present without the Gate's question. The mark continues. The city is above. The Gate is below. The bearer is between them, in the liminal space, which is — the mark reads — inhabitable. People have lived in less structured circumstances than the Gate's liminal field. The Door of No Return is not death. It is a very specific kind of not-going-back.`,
     effectsOnEnter: { setFlags: ['game_complete', 'door_walked_through'] },
     choices: [],
   },
@@ -1618,7 +1618,7 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     isEnding: true,
     endingType: 'companion',
     endingId: 'ending_fc1_cain_last_stand',
-    text: `Cain holds the perimeter at the threshold. His assessment of the strategic situation is, as it has been across thirteen chapters, accurate: someone needs to hold the threshold's perimeter, and the bearer needs to reach the Gate without managing a rear position. Cain is the rear position. He positions himself at the threshold's entry point with the precision of someone who has been modeling exactly this defensive requirement for several chapters and is satisfied that the position is correct. The bearer descends. Cain does not watch the descent — he is already reading the threshold's structural load, identifying the defensible angles, settling into what will be, if the transit log is accurate, a very long wait. Cain has waited before. He is good at it. The threshold is held.`,
+    text: `Cain holds the perimeter at the threshold. His assessment of the strategic situation is, as it has been across thirteen chapters, accurate: someone needs to hold the threshold's perimeter, and the bearer needs to reach the Gate without managing a rear position. Cain is the rear position. He positions himself at the threshold's entry point with the exactness of someone who has been modeling exactly this defensive requirement for several chapters and is satisfied that the position is correct. The bearer descends. Cain does not watch the descent — he is already reading the threshold's structural load, identifying the defensible angles, settling into what will be, if the transit log is accurate, a very long wait. Cain has waited before. He is good at it. The threshold is held.`,
     effectsOnEnter: { setFlags: ['game_complete', 'cain_threshold_last_stand', 'threshold_perimeter_held'] },
     choices: [],
   },
@@ -1661,12 +1661,17 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'The Savior\'s Seal',
     location: 'The Last Gate',
     imageKey: 'last_gate',
-    isEnding: true,
     endingType: 'savior',
     endingId: 'ending_fc1_gate_sealed_savior',
-    text: `The Gate is sealed. The savior route, built across thirteen chapters of choosing the city over personal authority, arrives at the Gate with exactly the configuration the sealing requires: the complete record, consciously held; the companion relationship, genuine and completed; the institutional alignment, documented and committed; and the specific clarity of someone who has spent thirteen chapters learning what the city needs and has concluded that what it needs is for this Gate to stop asking its question. The sealing executes cleanly — the mark's architecture shifting in the way the Warden's documentation describes as correct. The warmth dims. The Gate's question stops. The city above will not know what was sealed. The sub-city will. The Hollow Children will carry the record for whatever comes next, in whatever three-hundred-year span the sealed Gate creates. The savior ascends. The city breathes.`,
+    text: `The Gate is sealed. The savior route, built across thirteen chapters of choosing the city over personal authority, arrives at the Gate with exactly the configuration the sealing requires: the complete record, consciously held; the companion relationship, genuine and completed; the institutional alignment, documented and committed; and the particular clarity of someone who has spent thirteen chapters learning what the city needs and has concluded that what it needs is for this Gate to stop asking its question. The sealing executes cleanly — the mark's architecture shifting in the way the Warden's documentation describes as correct. The warmth dims. The Gate's question stops. The city above will not know what was sealed. The sub-city will. The Hollow Children will carry the record for whatever comes next, in whatever three-hundred-year span the sealed Gate creates. The savior ascends. The city breathes.`,
     effectsOnEnter: { morale: 25, setFlags: ['gate_sealed_savior', 'savior_gate_complete', 'chapter_fc1_complete'] },
-    choices: [],
+    choices: [
+      {
+        id: 'fc1_savior_to_fc2',
+        text: 'See what the city becomes.',
+        nextNode: 'final_chapter2_start',
+      },
+    ],
   },
 
   // ── ENDINGS — FACTION (1) ─────────────────────────────────────────────────
@@ -1677,12 +1682,17 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'The Faction Gate',
     location: 'The Door of No Return',
     imageKey: 'door_of_no_return',
-    isEnding: true,
     endingType: 'faction',
     endingId: 'ending_fc1_faction_gate',
     text: `The faction support that arrived at the Faction Hall extends to the Door of No Return, and through the Door, to the Gate question itself. The faction crown's institutional weight is sufficient for a specific resolution: the Gate's question is answered not by the individual mark-bearer but by the institutional alignment the bearer built. The Gate receives the faction configuration as a collective answer: the city's institutions, aligned, committed to the Gate's management in the interest of the city above rather than any individual's authority. The Gate responds to institutional weight the way it was designed to respond to it — with institutional answers. The Gate becomes a shared resource: managed by the faction alignment the bearer built, moderated by the mark's infrastructure, accessible through the transit system the Hollow Children maintained. The city above inherits a Gate. It is not a small inheritance.`,
-    effectsOnEnter: { morale: 20, setFlags: ['game_complete', 'faction_gate_resolution', 'chapter_fc1_complete'] },
-    choices: [],
+    effectsOnEnter: { morale: 20, setFlags: ['faction_gate_resolution', 'chapter_fc1_complete'] },
+    choices: [
+      {
+        id: 'fc1_faction_to_fc2',
+        text: 'See what the city becomes.',
+        nextNode: 'final_chapter2_start',
+      },
+    ],
   },
 
   // ── ENDINGS — SECRET (2) ──────────────────────────────────────────────────
@@ -1693,12 +1703,17 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'The Unity Gate',
     location: 'The Last Gate',
     imageKey: 'last_gate',
-    isEnding: true,
     endingType: 'secret',
     endingId: 'ending_fc1_unity_gate',
-    text: `The unity configuration — the forty seconds of simultaneous understanding in the War Council, carried through thirteen chapters as the specific warmth of what the city could have been — is sufficient for the merger. The mark integrates with the Gate's architecture. Not a death. Not a transformation in the way the Warden's ledger describes transformation. Something specific to this configuration: the bearer becomes the bridge, as the merger option specified, but the bridge carries the unity record. The city above and whatever exists below the Gate communicate through the bearer's mark, mediated by thirteen chapters of documented proof that the city can understand its own history if given the right interface. The Gate remains open. The bearer remains. The bridge is warm, and patient, and very old, and very new. The city above does not know what the bridge is. The bridge knows the city.`,
+    text: `The unity configuration — the forty seconds of simultaneous understanding in the War Council, carried through thirteen chapters as the unmistakable warmth of what the city could have been — is sufficient for the merger. The mark integrates with the Gate's architecture. Not a death. Not a transformation in the way the Warden's ledger describes transformation. Something specific to this configuration: the bearer becomes the bridge, as the merger option specified, but the bridge carries the unity record. The city above and whatever exists below the Gate communicate through the bearer's mark, mediated by thirteen chapters of documented proof that the city can understand its own history if given the right interface. The Gate remains open. The bearer remains. The bridge is warm, and patient, and very old, and very new. The city above does not know what the bridge is. The bridge knows the city.`,
     effectsOnEnter: { morale: 30, setFlags: ['unity_gate_merged', 'chapter_fc1_complete'] },
-    choices: [],
+    choices: [
+      {
+        id: 'fc1_unity_to_fc2',
+        text: 'See what the city becomes.',
+        nextNode: 'final_chapter2_start',
+      },
+    ],
   },
 
   {
@@ -1707,12 +1722,17 @@ export const FINAL_CHAPTER_1_NODES: StoryNode[] = [
     title: 'The Original Agreement',
     location: 'The Last Gate',
     imageKey: 'last_gate',
-    isEnding: true,
     endingType: 'secret',
     endingId: 'ending_fc1_true_ending_path',
-    text: `The original agreement. All conditions met. The true opening executes as the Foundation Period's Gate Wardens specified: the complete record held consciously; the correct interface, built through years of mark calibration; the original agreement's terms confirmed — the entity departed, the gate opened as a sanctioned release, the city above received the signal it was designed to receive rather than the garbled distress call it mistook the Blackout for. What passes through the Gate in the true opening is not a threat. It is information. The specific information that the city has been misreading for three hundred years, delivered correctly. The Gate opens. The information reaches the city. The city receives what it was designed to receive. What it does with it is the question the surface will answer. The answer to the question asked here is: yes. The original agreement is kept.`,
+    text: `The original agreement. All conditions met. The true opening executes as the Foundation Period's Gate Wardens specified: the complete record held consciously; the correct interface, built through years of mark calibration; the original agreement's terms confirmed — the entity departed, the gate opened as a sanctioned release, the city above received the signal it was designed to receive rather than the garbled distress call it mistook the Blackout for. What passes through the Gate in the true opening is not a threat. It is information. The specific information that the city has been misreading for four hundred years, delivered correctly. The Gate opens. The information reaches the city. The city receives what it was designed to receive. What it does with it is the question the surface will answer. The answer to the question asked here is: yes. The original agreement is kept.`,
     effectsOnEnter: { morale: 40, intelligence: 10, setFlags: ['true_ending_gate_opened', 'original_agreement_kept', 'chapter_fc1_complete', 'final_chapter2_true_path'] },
-    choices: [],
+    choices: [
+      {
+        id: 'fc1_true_to_fc2',
+        text: 'See what the city becomes.',
+        nextNode: 'final_chapter2_start',
+      },
+    ],
   },
 
 ];

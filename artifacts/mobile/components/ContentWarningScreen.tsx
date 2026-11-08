@@ -11,6 +11,7 @@ const WARNINGS = [
   { icon: 'zap',            text: 'Moral ambiguity — there are no clean hands in this world' },
   { icon: 'heart',          text: 'Loss of companions and relationships' },
   { icon: 'eye',            text: 'Disturbing imagery described through text' },
+  { icon: 'moon',            text: 'Body horror and transformation themes' },
 ];
 
 export default function ContentWarningScreen() {
@@ -55,7 +56,7 @@ export default function ContentWarningScreen() {
         <View style={styles.warningList}>
           {WARNINGS.map(({ icon, text }) => (
             <View key={text} style={styles.warningRow}>
-              <Feather name={icon as any} size={12} color="#6a5060" style={styles.warningIcon} />
+              <Feather name={icon as any} size={13} color="#6a5060" style={styles.warningIcon} />
               <Text style={styles.warningText}>{text}</Text>
             </View>
           ))}
@@ -63,6 +64,7 @@ export default function ContentWarningScreen() {
 
         <Text style={styles.note}>
           If any of these themes are difficult for you, please take care of yourself first.
+          You can always come back when you are ready.
         </Text>
       </Animated.View>
 
@@ -71,7 +73,7 @@ export default function ContentWarningScreen() {
           <Text style={styles.btnText}>I UNDERSTAND — ENTER THE WORLD</Text>
           <Feather name="arrow-right" size={13} color="#c9a84c" />
         </Pressable>
-        <Text style={styles.footerNote}>This warning will not appear again.</Text>
+        <Text style={styles.footerNote}>This warning will not appear again on this device.</Text>
       </Animated.View>
     </LinearGradient>
   );
@@ -141,23 +143,23 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   warningIcon: {
-    marginTop: 1,
+    marginTop: 2,
     flexShrink: 0,
   },
   warningText: {
     flex: 1,
-    fontSize: 13,
-    color: '#5a5060',
+    fontSize: 13.5,
+    color: '#6a5a68',
     fontFamily: 'Inter_400Regular',
-    lineHeight: 20,
+    lineHeight: 21,
   },
   note: {
-    fontSize: 12,
-    color: '#3a3050',
+    fontSize: 12.5,
+    color: '#4a3a50',
     fontFamily: 'Inter_400Regular',
     fontStyle: 'italic',
     textAlign: 'center',
-    lineHeight: 19,
+    lineHeight: 20,
   },
   footer: {
     paddingBottom: 50,
@@ -183,7 +185,7 @@ const styles = StyleSheet.create({
   },
   footerNote: {
     fontSize: 10,
-    color: '#2a2030',
+    color: '#3a2a40',
     fontFamily: 'Inter_400Regular',
     letterSpacing: 0.5,
   },

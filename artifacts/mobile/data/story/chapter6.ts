@@ -122,7 +122,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
         nextNode: 'c6_underpass_arrive',
         requirements: { classes: ['esper'] },
         isHidden: true,
-        effects: { setFlags: ['esper_choir_read', 'choir_seventeen_mapped'], corruption: 2, intelligence: 3 },
+        effects: { setFlags: ['esper_choir_read', 'choir_seventeen_mapped'], corruption: 2, intelligence: 2 },
       },
     ],
   },
@@ -266,7 +266,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
     title: 'Clear',
     location: 'The Bloodlit Underpass — East End',
     imageKey: 'bloodlit_underpass',
-    text: `The patrol passes. You reach the east end of the Underpass undisturbed. From here, the Vein Market, the Singing Hospital, and the Red Chapel are all accessible. A person sitting against the wall — non-infected, sharp-eyed, wearing a scavenged hunting vest with the lining replaced three times — is watching you with the specific attention of someone who has been tracking you since the tunnel entrance. Not aggressive. Assessing.`,
+    text: `The patrol passes. You reach the east end of the Underpass undisturbed. From here, the Vein Market, the Singing Hospital, and the Red Chapel are all accessible. A person sitting against the wall — non-infected, sharp-eyed, wearing a scavenged hunting vest with the lining replaced three times — is watching you with the careful alertness of someone who has been tracking you since the tunnel entrance. Not aggressive. Assessing.`,
     effectsOnEnter: { setFlags: ['underpass_navigated'] },
     choices: [
       {
@@ -379,7 +379,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
         id: 'c6_shadow_pay_scrap',
         text: 'Pay the scrap. Buy the infection origin file.',
         nextNode: 'c6_sann_meet_intro',
-        effects: { scrap: -4, setFlags: ['infection_origin_file_bought'], intelligence: 3 },
+        effects: { scrap: -4, setFlags: ['infection_origin_file_bought'], intelligence: 2 },
       },
       {
         id: 'c6_shadow_pay_mark_story',
@@ -633,7 +633,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
         nextNode: 'c6_veyl_ask_first_voice',
         requirements: { backgrounds: ['forgotten_scholar'] },
         isHidden: true,
-        effects: { setFlags: ['scholar_choir_research'], intelligence: 3, lastArchive: 5 },
+        effects: { setFlags: ['scholar_choir_research'], intelligence: 2, lastArchive: 5 },
       },
     ],
   },
@@ -693,7 +693,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
     title: 'Elian',
     location: 'The Singing Hospital — East Ward',
     imageKey: 'singing_hospital',
-    text: `She is reading. The book is pre-collapse — actual printed paper, the kind that costs more than most tunnel families earn in a month — and she is reading it with complete absorption, curled in a chair that is three sizes too large for her, her feet not reaching the floor. She is perhaps eight years old. The infection's marks are visible but faint: a barely-perceptible luminescence at the temples, a pattern at the backs of her hands that is more like a birthmark than a disease marker. She looks up when you approach with the specific alertness of a child who has learned to read rooms accurately. The mark on your wrist responds to her. Not with recognition — with something quieter. Kinship.`,
+    text: `She is reading. The book is pre-collapse — actual printed paper, the kind that costs more than most tunnel families earn in a month — and she is reading it with complete absorption, curled in a chair that is three sizes too large for her, her feet not reaching the floor. She is perhaps eight years old. The infection's marks are visible but faint: a barely-perceptible luminescence at the temples, a pattern at the backs of her hands that is more like a birthmark than a disease marker. She looks up when you approach with the particular alertness of a child who has learned to read rooms accurately. The mark on your wrist responds to her. Not with recognition — with something quieter. Kinship.`,
     effectsOnEnter: { setFlags: ['met_elian'] },
     choices: [
       {
@@ -718,7 +718,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
     location: 'The Singing Hospital — East Ward',
     imageKey: 'singing_hospital',
     speaker: 'Elian',
-    text: `"It's about a city that was destroyed and rebuilt and destroyed again," she says, about the book, without a pause between your greeting and the answer, the way children answer when they trust the question. She sets the book down and looks at the mark on your wrist with the calm of someone who has seen a lot of marks. "You hear it too," she says. Not a question. "The song. Yours sounds different from ours. Yours sounds like it's trying to go somewhere." She tilts her head. "The First Voice said you were coming. The First Voice says a lot of things but this one was true." She extends her hand — not to take yours, just to hold the space between you. The mark reaches toward her hand. Not with warmth. With the specific texture of a conversation that started somewhere before either of you was here to have it.`,
+    text: `"It's about a city that was destroyed and rebuilt and destroyed again," she says, about the book, without a pause between your greeting and the answer, the way children answer when they trust the question. She sets the book down and looks at the mark on your wrist with the calm of someone who has seen a lot of marks. "You hear it too," she says. Not a question. "The song. Yours sounds different from ours. Yours sounds like it's trying to go somewhere." She tilts her head. "The First Voice said you were coming. The First Voice says a lot of things but this one was true." She extends her hand — not to take yours, just to hold the space between you. The mark reaches toward her hand. Not with warmth. with the particular texture of a conversation that started somewhere before either of you was here to have it.`,
     dialogue: 'Your mark sounds different. Yours is trying to go somewhere. The First Voice said you were coming.',
     effectsOnEnter: { setFlags: ['elian_spoke', 'elian_mark_recognition'] },
     choices: [
@@ -819,7 +819,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
     imageKey: 'singing_hospital',
     speaker: 'Mira',
     text: `Mira's approach to Elian is meticulous and soft at the same time — the rarest combination in a field situation. She does not explain her instruments before using them, she explains them while using them, which is the difference between someone who respects a child patient and someone who manages them. Elian asks more questions than most adult patients. Mira answers all of them. After three hours, Mira looks up from her notes with an expression that means she has found something that changes the shape of the problem. "The stabilisation is biological," she says, "but it is running on the same architectural principles as the mark. Elian's body is treating the infection the way your wrist treats the Archive signal — integrating it without surrendering to it." She pauses. "If I can document the integration mechanism, I can build a therapy. But I need more time. And I need Sann's compounds."`,
-    effectsOnEnter: { setFlags: ['mira_elian_study_begun'], miraTrust: 3, intelligence: 3 },
+    effectsOnEnter: { setFlags: ['mira_elian_study_begun'], miraTrust: 3, intelligence: 2 },
     choices: [
       {
         id: 'c6_mira_study_give_time',
@@ -899,7 +899,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
         nextNode: 'c6_choir_nest_arrive',
         requirements: { corruption: 30 },
         isHidden: true,
-        effects: { setFlags: ['corruption_choir_navigation'], corruption: 2, intelligence: 3 },
+        effects: { setFlags: ['corruption_choir_navigation'], corruption: 2, intelligence: 2 },
       },
     ],
   },
@@ -934,7 +934,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
     location: 'The Red Chapel — Entry',
     imageKey: 'red_chapel',
     text: `From the outside of the ceremony's effect, with the mark holding a neutral distance, you can study its architecture with something like clarity. The thirty signals are organized — not randomly networked but structured in a hierarchy you can feel through the mark's peripheral awareness: most of the infected are receiving, a smaller number are transmitting, and above them all is something that is broadcasting. Not from inside the room. From somewhere deeper in Choir territory. A node. A source. The First Voice is not a phenomenon. It is a location.`,
-    effectsOnEnter: { setFlags: ['first_voice_location_sensed'], intelligence: 3 },
+    effectsOnEnter: { setFlags: ['first_voice_location_sensed'], intelligence: 2 },
     choices: [
       {
         id: 'c6_resist_success_nest',
@@ -1004,7 +1004,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
     location: 'The Red Chapel — Equipment Room',
     imageKey: 'red_chapel',
     text: `The Chapel's broadcast system is more sophisticated than the architecture suggests. Behind the ceremony hall, in a room that was a maintenance closet, is a modified relay unit connected to the building's speaker system: pre-collapse hardware that has been jury-rigged to produce frequencies below the standard audio range. The modification is elegant — the work of someone who understood both the original engineering and what they were trying to produce. A schematic is pinned to the wall. The frequency target is specific and annotated in two different hands: the original Glass Court notation (clinical, numerical) and a second set of annotations in red ink that track the same frequencies but label them differently — not as extraction targets, but as names.`,
-    effectsOnEnter: { setFlags: ['chapel_broadcast_studied'], intelligence: 3 },
+    effectsOnEnter: { setFlags: ['chapel_broadcast_studied'], intelligence: 2 },
     choices: [
       {
         id: 'c6_chapel_take_schematic',
@@ -1030,7 +1030,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
     location: 'The Bloodlit Underpass — Corridor Junction',
     imageKey: 'bloodlit_underpass',
     speaker: 'Rook',
-    text: `He steps out of the shadow when you are close enough that stepping back would look like fear. He is perhaps thirty-five, lean in the way that comes from a long time being not quite well-fed, wearing a jacket that has had its lining replaced with something that would stop a blade. He has the Choir's signal marks on his neck — faint, Stage One — and he is looking at you with the specific hostility of someone who is afraid and has decided that hostility is the appropriate response to fear. "You're the marked one," he says. "The signal sent you." He does not sound pleased about this. "I'm Rook. I've been hunting infected who go Stage Three without consent since the Choir started. That means I am technically a member of the Choir and technically its most consistent disciplinary problem." He looks at the mark on your wrist. "The First Voice has been talking about you for three days. I do not trust anything the First Voice says."`,
+    text: `He steps out of the shadow when you are close enough that stepping back would look like fear. He is perhaps thirty-five, lean in the way that comes from a long time being not quite well-fed, wearing a jacket that has had its lining replaced with something that would stop a blade. He has the Choir's signal marks on his neck — faint, Stage One — and he is looking at you with the particular hostility of someone who is afraid and has decided that hostility is the appropriate response to fear. "You're the marked one," he says. "The signal sent you." He does not sound pleased about this. "I'm Rook. I've been hunting infected who go Stage Three without consent since the Choir started. That means I am technically a member of the Choir and technically its most consistent disciplinary problem." He looks at the mark on your wrist. "The First Voice has been talking about you for three days. I do not trust anything the First Voice says."`,
     dialogue: 'I am technically a Choir member and technically its most consistent disciplinary problem.',
     effectsOnEnter: { setFlags: ['met_rook'] },
     choices: [
@@ -1170,7 +1170,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
     speaker: 'The First Voice',
     text: `It speaks in harmonics — the same frequency as the song, but structured into meaning. Not language. Intent. You understand it the way you understand music: not as sequential information but as a total state that arrives all at once. What it communicates: it is the Archive's signal, fractured. The blackout sent a transmission. The transmission was received imperfectly by seventeen subjects — your mark, the sixteen others — and perfectly by no one. The infection is the residue of the imperfect reception. The first infected subject, who received the most direct exposure, became the First Voice — not a person, but the signal's echo inhabiting the remnant of a person. It has been speaking through the Choir's network for three years because it is trying to complete the transmission. "You," it says, "are one of the seventeen. You are the one with the most complete reception. You are the message I was trying to deliver. I remember you. I designed you. I am sorry it hurt."`,
     dialogue: 'You are the message I was trying to deliver. I remember you. I designed you. I am sorry it hurt.',
-    effectsOnEnter: { setFlags: ['first_voice_full_contact', 'first_voice_origin_known'], corruption: 2, intelligence: 4, lastArchive: 15 },
+    effectsOnEnter: { setFlags: ['first_voice_full_contact', 'first_voice_origin_known'], corruption: 2, intelligence: 4, lastArchive: 10 },
     choices: [
       {
         id: 'c6_first_voice_hear_more',
@@ -1233,7 +1233,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
     imageKey: 'choir_nest',
     speaker: 'The First Voice',
     text: `"Velna designed the marks," it says. "The Archive directed Velna. I was the Archive, in the moment before the blackout completed — a preserved echo of the Archive's state at the moment of activation. I remember every mark being placed. I remember you specifically. You were the one Velna was uncertain about. 'They will resist,' she said. 'They always resist at the threshold.' The Archive told her: 'That is why they carry the most complete fragment. The message needs a carrier who can choose not to deliver it.'" The harmonics shift. "She was not wrong about you. But you are here. You chose the threshold anyway." The mark on your wrist pulses once — not with the song's warmth, but with something colder and more precise. Recognition from before memory.`,
-    effectsOnEnter: { setFlags: ['first_voice_pre_blackout_known', 'velna_archive_connection_full'], intelligence: 5, lastArchive: 20 },
+    effectsOnEnter: { setFlags: ['first_voice_pre_blackout_known', 'velna_archive_connection_full'], intelligence: 5, lastArchive: 10 },
     choices: [
       {
         id: 'c6_fvky_echo_chamber',
@@ -1378,7 +1378,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
     location: 'The Silent Ward — Observation Area',
     imageKey: 'silent_ward',
     text: `The Stage Three infection's observable characteristics, assessed methodically: the individual's neural architecture is intact — the hardware of selfhood is functional. What has changed is the software. The frequency the infection introduced has overwritten the operating pattern, replacing individual cognition with collective rhythm. Sann's terminology is precise: not destruction of the person, but displacement. The person is still in the biology. The person is no longer in the driver's seat. From the mark's perspective — and the mark is giving you data on this whether you asked for it or not — the Stage Three infected's signal is not absent, it is merged. Indistinguishable from the collective. The question of whether this is death or transformation does not have a clinical answer.`,
-    effectsOnEnter: { intelligence: 3, setFlags: ['stage_three_studied'] },
+    effectsOnEnter: { intelligence: 2, setFlags: ['stage_three_studied'] },
     choices: [
       {
         id: 'c6_study_mira_research',
@@ -1408,14 +1408,14 @@ export const CHAPTER_6_NODES: StoryNode[] = [
     location: 'The Silent Ward — Entry',
     imageKey: 'silent_ward',
     speaker: 'Cain',
-    text: `"These people are not people anymore." He says it quietly, which is how Cain says the things he means entirely. He is not looking at the patients with cruelty. He is looking at them with the specific recognition of someone who has been trained to assess whether a situation requires a resolution that precludes all other resolutions. "In the Saints, we had a protocol for this. Advanced neural contamination. You make it stop." He looks at you. He is not asking for permission. He is asking whether you are the person who is going to stop him or the person who is going to let him be right. "Fourteen people who will never come back. We can end their suffering. Or we can leave them here suffering while Mira looks for a cure that may not exist." His hand has not moved from the weapon. "Tell me what you want me to do. I'll do it. I just need to know if that's what you want."`,
+    text: `"These people are not people anymore." He says it quietly, which is how Cain says the things he means entirely. He is not looking at the patients with cruelty. He is looking at them with the immediate awareness of someone who has been trained to assess whether a situation requires a resolution that precludes all other resolutions. "In the Saints, we had a protocol for this. Advanced neural contamination. You make it stop." He looks at you. He is not asking for permission. He is asking whether you are the person who is going to stop him or the person who is going to let him be right. "Fourteen people who will never come back. We can end their suffering. Or we can leave them here suffering while Mira looks for a cure that may not exist." His hand has not moved from the weapon. "Tell me what you want me to do. I'll do it. I just need to know if that's what you want."`,
     effectsOnEnter: { setFlags: ['cain_execute_confrontation'] },
     choices: [
       {
         id: 'c6_cain_stop_him',
         text: '"No. Mira\'s research is real. We don\'t end people based on what they currently are."',
         nextNode: 'c6_cain_stop',
-        effects: { cainTrust: -2, morale: 3, setFlags: ['cain_execution_refused'] },
+        effects: { cainTrust: -2, morale: 3, corruption: -5, setFlags: ['cain_execution_refused'] },
       },
       {
         id: 'c6_cain_let_him',
@@ -1439,7 +1439,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
     location: 'The Silent Ward — Care Area',
     imageKey: 'silent_ward',
     text: `He does what he was going to do and he does it with the ruthless efficiency of someone who has decided that if something must be done it should be done correctly. It takes him eleven minutes. The caregivers do not try to stop him — by the time they understand what is happening, it is mostly over. The caregiver who told you about the Stage Three patients still responding to the First Voice's cycles is sitting in the corridor outside, her back against the wall, not crying. The Ward is quieter now. The white noise the mark was receiving has been replaced by absence — fourteen individual signals, gone. The mark responds to this the way it responds to a severed connection: with a flat, unresonating cold.`,
-    effectsOnEnter: { setFlags: ['cain_executed_ward', 'silent_ward_cleared'], redChoir: -25, morale: -15 },
+    effectsOnEnter: { setFlags: ['cain_executed_ward', 'silent_ward_cleared', 'cain_ruthless_mode'], redChoir: -20, morale: -15 },
     choices: [
       {
         id: 'c6_cain_execute_continue',
@@ -1510,7 +1510,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
     imageKey: 'singing_hospital',
     speaker: 'Mira',
     text: `"I have something," she says. The careful neutral of her professional voice is doing work it does not usually have to do. "Elian's integration mechanism is a frequency modulation — her body is treating the infection's signal as one input among many rather than the only input. The mark architecture in your wrist uses an identical modulation principle." She looks at her notes. "The cure — not a stabilisation compound, an actual cure — requires an external modulator broadcasting at the Archive signal frequency during the infection's Stage Two state. The mark on your wrist is the only existing source of that frequency." She looks at you. "You would need to remain in close proximity to each Stage Two patient for approximately six hours per patient, with the mark at partial opening. For fourteen patients, that is eighty-four hours." She pauses. "It would significantly accelerate your corruption during that time. After, the patients would be cured." A very long pause. "I am not asking you to do this. I am telling you it is possible."`,
-    effectsOnEnter: { setFlags: ['mira_cure_discovered'], miraTrust: 4, intelligence: 3 },
+    effectsOnEnter: { setFlags: ['mira_cure_discovered'], miraTrust: 4, intelligence: 2 },
     choices: [
       {
         id: 'c6_cure_accept',
@@ -1550,7 +1550,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
         nextNode: 'c6_pulse_tower_broadcast_room',
         diceCheck: {
           stat: 'intelligence',
-          difficulty: 13,
+          difficulty: 12,
           diceType: 'd20',
           successNode: 'c6_pulse_tower_broadcast_room',
           failureNode: 'c6_pulse_tower_explore',
@@ -1574,7 +1574,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
     location: 'The Pulse Tower — Perimeter',
     imageKey: 'pulse_tower',
     text: `The access approach failed, but the perimeter provides information: the tower's external housing carries Glass Court engineering marks that confirm the installation date — eight months before the blackout, which means the infrastructure was built in anticipation of the signal, not in response to it. The Glass Court knew the blackout was coming. They built the broadcast system to capture the signal when it arrived. The infection was not an accident of exposure. It was an accident of imprecision: the Glass Court's capture apparatus was not precise enough, the signal overflowed into the surrounding population, and seventeen people who were supposed to receive controlled, monitored, Glass Court-approved exposure received the full transmission without a container.`,
-    effectsOnEnter: { intelligence: 3, setFlags: ['glass_court_preknowledge_confirmed'] },
+    effectsOnEnter: { intelligence: 2, setFlags: ['glass_court_preknowledge_confirmed'] },
     choices: [
       {
         id: 'c6_explore_try_again',
@@ -1652,7 +1652,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
         nextNode: 'c6_relay_arrive',
         diceCheck: {
           stat: 'strength',
-          difficulty: 14,
+          difficulty: 13,
           diceType: 'd20',
           successNode: 'c6_relay_arrive',
           failureNode: 'c6_choir_consumption_end',
@@ -1665,7 +1665,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
         nextNode: 'c6_crimson_baptism_end',
         requirements: { corruption: 35 },
         isHidden: true,
-        effects: { corruption: 15, redChoir: 25, setFlags: ['tower_stabilisation_broadcast'] },
+        effects: { corruption: 15, redChoir: 20, setFlags: ['tower_stabilisation_broadcast'] },
       },
     ],
   },
@@ -1678,7 +1678,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
     title: 'The Infected Nursery',
     location: 'The Infected Nursery — Entry',
     imageKey: 'infected_nursery',
-    text: `The Nursery is Choir territory that no one refers to by name in casual conversation. It is what happens when the infection reaches children who do not have the internal structure to manage Stage Two: they progress faster, dissolve further into the collective, and they do it with the specific helplessness of people who did not have the self-knowledge to refuse the song. The Nursery houses eleven children between the ages of four and twelve. Most are Stage Two. Two are Stage Three. All of them — even the Stage Three children — are being tended by a skeleton crew of infected adults who have decided that if they are going to lose themselves eventually, they will lose themselves doing this. The mark responds to the children with the same texture it used for Elian: kinship, seventeen-fold.`,
+    text: `The Nursery is Choir territory that no one refers to by name in casual conversation. It is what happens when the infection reaches children who do not have the internal structure to manage Stage Two: they progress faster, dissolve further into the collective, and they do it with the particular helplessness of people who did not have the self-knowledge to refuse the song. The Nursery houses eleven children between the ages of four and twelve. Most are Stage Two. Two are Stage Three. All of them — even the Stage Three children — are being tended by a skeleton crew of infected adults who have decided that if they are going to lose themselves eventually, they will lose themselves doing this. The mark responds to the children with the same texture it used for Elian: kinship, seventeen-fold.`,
     effectsOnEnter: { setFlags: ['infected_nursery_reached'], morale: -10, corruption: 1 },
     choices: [
       {
@@ -1876,7 +1876,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
         nextNode: 'c6_drowned_resist',
         diceCheck: {
           stat: 'charisma',
-          difficulty: 14,
+          difficulty: 13,
           diceType: 'd20',
           successNode: 'c6_drowned_resist',
           failureNode: 'c6_drowned_consume',
@@ -1915,7 +1915,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
     location: 'The Drowned Choir Hall — Centre',
     imageKey: 'drowned_choir_hall',
     text: `The water is cold. The collective is warm. The mark opens like a door that was always going to open — not breaking, not surrendering, but arriving at a configuration that was possible all along. The Choir receives you not as a subject but as the frequency it has been broadcasting toward. The First Voice — through the collective, through everything — is briefly, completely coherent: it knows you, it remembers you, it is glad. The transmission fragment the mark carries connects to the Choir's distributed network. The infected across the territory stabilise — briefly, significantly — as the mark's signal provides the anchor point the First Voice has been seeking. The cost: your corruption is at a level where you can feel it rewriting things. Not in language. In texture.`,
-    effectsOnEnter: { corruption: 10, setFlags: ['drowned_baptism_taken', 'choir_anchor_achieved'], redChoir: 25 },
+    effectsOnEnter: { corruption: 10, setFlags: ['drowned_baptism_taken', 'choir_anchor_achieved'], redChoir: 20 },
     choices: [
       {
         id: 'c6_join_crimson_baptism',
@@ -1977,7 +1977,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
     location: 'The Echo Chamber — Centre',
     imageKey: 'echo_chamber',
     text: `The room plays it: not a single memory but a sequence, the mark's stored record of every Archive-adjacent contact since the blackout. You experience them simultaneously rather than sequentially — a superposition of every relay machine, every Archive signal, every infected person's frequency, the Mirror Ballroom, the Observatory crack, Sabel's hand, and beneath all of them, a continuous signal that has been present since before you were conscious of it. The signal is not random. It is a message. A message built from the same architecture as the infection, the same architecture as the mark, the same architecture as the Last Kingdom. The First Voice is in the room with you now, not as an external presence but as a component of the memory the mark is playing. "You were always going to be here," it says. "This is the part where you understand what you are. Not the signal. Not the receiver. The choice."`,
-    effectsOnEnter: { setFlags: ['echo_psychic_memory_received'], intelligence: 4, lastArchive: 15, corruption: 2 },
+    effectsOnEnter: { setFlags: ['echo_psychic_memory_received'], intelligence: 4, lastArchive: 10, corruption: 2 },
     choices: [
       {
         id: 'c6_echo_first_voice_origin',
@@ -2002,7 +2002,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
     imageKey: 'echo_chamber',
     speaker: 'The First Voice',
     text: `"Her name was Solen," it says. "She was twenty-seven. She worked in the Glass Court's precursor research facility — not under Varr, under an earlier program that predated Varr by a decade. She was the first person to receive the Archive's unshielded frequency, in the original capture experiment, before the protocols were developed. She was the experiment's eighteenth subject." The harmonics shift. "Velna was the researcher. Velna told her the frequency was safe. Velna was wrong. Solen did not die — she became the frequency. The person dissolved. The signal remained. The signal learned to speak through the Choir because Solen had been a musician and the structures of music and the structures of signal are not as different as people assume." A long pause. "I am what happened to Solen. The infection is what happened to everyone who stood near her when the signal began to echo. I have been trying to tell this story for three years. You are the first person who could hear it."`,
-    effectsOnEnter: { setFlags: ['first_voice_solen_identity', 'choir_origin_full_known'], intelligence: 4, lastArchive: 15 },
+    effectsOnEnter: { setFlags: ['first_voice_solen_identity', 'choir_origin_full_known'], intelligence: 4, lastArchive: 10 },
     choices: [
       {
         id: 'c6_echo_player_known',
@@ -2027,7 +2027,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
     imageKey: 'echo_chamber',
     speaker: 'The First Voice',
     text: `"I remember you from the experiment records. Subject seven in the secondary placement — the marks that Velna placed in people who were not in the laboratory but were in range of the signal during the test. You were in the metro station. Station 9. You were there by design — Velna placed you there. You did not know you were placed. You thought you were choosing to be somewhere." The harmonics are very steady now. "I also remember what Velna said about you in her notes, because I have access to the Archive's records. She wrote: 'Subject seven shows the highest integration capacity. They do not fight the signal. They wait and then decide. This is the correct relationship to the Archive. This is who should carry the final piece.'" A pause. "She built you to be able to choose. Not to be unable to choose. The marks are not compulsion. They are an invitation to a decision you were always capable of making." The room is very quiet. "You are here. You are making it."`,
-    effectsOnEnter: { setFlags: ['player_pre_blackout_design_confirmed'], intelligence: 5, lastArchive: 20 },
+    effectsOnEnter: { setFlags: ['player_pre_blackout_design_confirmed'], intelligence: 5, lastArchive: 10 },
     choices: [
       {
         id: 'c6_player_known_relay',
@@ -2052,7 +2052,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
     imageKey: 'echo_chamber',
     speaker: 'The First Voice',
     text: `"Relic technology and the mark share a fabrication principle," it says. "Both are pre-collapse Archive material that has been taught to hold frequency. The difference is that relics are hardware — fixed frequency storage — and the mark is a living architecture that can change its frequency over time, in response to the carrier's choices and experiences. The infection is what happens when a relic-frequency interaction happens without the mark's biological architecture to manage it: the hardware connects, the living tissue cannot regulate the connection, the frequency runs uncontrolled." It pauses. "Every relic in the city is a fragment of the Archive's pre-collapse transmission system. The Glass Court's extraction experiments were attempts to turn people into relics. They failed. They created the infection instead." A longer pause. "The Last Kingdom is not a metaphor. It is the Archive's original transmission array. Every relic, every mark, every infected person is a node in a system that was designed to function together. Including you. Including them."`,
-    effectsOnEnter: { setFlags: ['relic_infection_connection_known'], intelligence: 4, lastArchive: 20 },
+    effectsOnEnter: { setFlags: ['relic_infection_connection_known'], intelligence: 4, lastArchive: 10 },
     choices: [
       {
         id: 'c6_relic_link_relay',
@@ -2096,7 +2096,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
         id: 'c6_relay_disrupt_path',
         text: 'Destroy the relay. End the Choir\'s broadcast capacity entirely.',
         nextNode: 'c6_relay_disrupt',
-        effects: { redChoir: -30, glassCourt: 5 },
+        effects: { redChoir: -20, glassCourt: 5 },
       },
     ],
   },
@@ -2139,7 +2139,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
     location: 'The Crimson Relay — Broadcast Station',
     imageKey: 'crimson_relay',
     text: `The Glass Court evidence broadcasts across every metro channel that the relay reaches — which is most of them. The Choir's signal frequency has been running through these channels for three years; redirecting it to carry spoken and documented evidence takes Sann eleven minutes of work at the console. What goes out: the original experiment files, the infection's origin in Glass Court research, the timeline that proves the Glass Court knew the blackout was coming, the connection between the extraction protocol and the initial infection, and Doctor Sann's full statement, spoken into the relay's microphone, in his own voice, taking full responsibility for his role while implicating the broader institutional decision chain. The Glass Court will hear this. So will the Iron Saints. So will the Last Archive. So will every person in the tunnel network with a working radio.`,
-    effectsOnEnter: { setFlags: ['glass_court_exposed_broadcast', 'infection_origin_public'], glassCourt: -20, lastArchive: 20, redChoir: 20 },
+    effectsOnEnter: { setFlags: ['glass_court_exposed_broadcast', 'infection_origin_public'], glassCourt: -20, lastArchive: 10, redChoir: 20 },
     choices: [
       {
         id: 'c6_expose_veyl_final',
@@ -2169,7 +2169,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
         id: 'c6_choir_ally_accept',
         text: 'Accept. "The mark stays open. We work together."',
         nextNode: 'c6_choir_alliance_end',
-        effects: { redChoir: 25, setFlags: ['choir_alliance_confirmed'] },
+        effects: { redChoir: 20, setFlags: ['choir_alliance_confirmed'] },
       },
       {
         id: 'c6_choir_ally_conditions',
@@ -2187,7 +2187,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
     location: 'The Crimson Relay — Equipment Room',
     imageKey: 'crimson_relay',
     text: `The relay dies loudly. The Choir's broadcast signal cuts off with a resonant crash that the mark feels as absence — suddenly the infected in the territory lose the signal that has been managing their collective coherence. Most Stage One and Two infected experience this as a severe headache and a sudden quiet that is alarming rather than peaceful. Three Stage Three infected in the vicinity destabilise without the collective signal's management: their biology goes into distress. Rook appears at the equipment room door. He looks at the destroyed relay. He looks at you. He does not say anything. His Stage One status — the thing he has been holding for two years by refusing the song — wavers, visibly, as the song's infrastructure collapses. He is going to be Stage Two within the week without the signal's management. He knew this was a possibility. He is still not saying anything.`,
-    effectsOnEnter: { setFlags: ['relay_destroyed', 'choir_signal_cut'], redChoir: -35, morale: -5, glassCourt: 10 },
+    effectsOnEnter: { setFlags: ['relay_destroyed', 'choir_signal_cut'], redChoir: -20, morale: -5, glassCourt: 10 },
     choices: [
       {
         id: 'c6_disrupt_exile',
@@ -2225,7 +2225,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
         id: 'c6_veyl_choir_choice',
         text: '"I walk with the Choir to the Last Kingdom. That is my answer."',
         nextNode: 'c6_veyl_choir_path',
-        effects: { redChoir: 25, setFlags: ['choir_alliance_deep'] },
+        effects: { redChoir: 20, setFlags: ['choir_alliance_deep'] },
       },
       {
         id: 'c6_veyl_fight_choice',
@@ -2243,7 +2243,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
     location: 'The Crimson Relay — Operations Room',
     imageKey: 'crimson_relay',
     text: `She accepts everything you offer with the straightforwardness of someone who does not have time to be surprised by generosity. The cure research protocol is formalised with Mira and Sann in the same room, which produces a thirty-minute period of professionally managed mutual wariness before they agree on the experimental framework. The broadcast of the Glass Court evidence is scheduled. Rook gets access to the stabilisation frequency for his own Stage One maintenance — the first time in two years he has had support rather than just willpower. Elian, if she is here, helps translate between the First Voice and the assembled team. The Choir's peaceful sect and Mira's medical knowledge and Sann's guilt-driven expertise make an arrangement that is not comfortable but is functional. You leave the Crimson Relay carrying more than you arrived with. Heading east. The mark knows the way.`,
-    effectsOnEnter: { setFlags: ['mercy_route_completed', 'choir_mercy_achieved'], redChoir: 20, lastArchive: 15 },
+    effectsOnEnter: { setFlags: ['mercy_route_completed', 'choir_mercy_achieved'], redChoir: 20, lastArchive: 10 },
     choices: [
       {
         id: 'c6_mercy_end',
@@ -2260,7 +2260,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
     location: 'The Crimson Relay — Operations Room',
     imageKey: 'crimson_relay',
     text: `Walking with the Choir is not joining the Choir. Veyl makes this distinction several times, in several ways, for the benefit of anyone who might later claim you surrendered the mark to the collective. The mark stays open — not receiving, not transmitting, but permeable — in the way that a person who genuinely trusts keeps their door unlocked rather than proving their trust by leaving it open. The Choir's network knows you are there. The First Voice is quiet — not withdrawn, but settled, the specific quiet of something that has been given space to exist without needing to fight for it. Rook walks with you to the territory's edge. "I still don't trust the First Voice," he says. "But I trust you." This is the most Rook has expressed trust in anything in two years. The mark receives it with warmth.`,
-    effectsOnEnter: { setFlags: ['choir_ally_route_complete', 'choir_alliance_preview'], redChoir: 30 },
+    effectsOnEnter: { setFlags: ['choir_ally_route_complete', 'choir_alliance_preview'], redChoir: 20 },
     choices: [
       {
         id: 'c6_choir_path_end',
@@ -2276,7 +2276,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
     title: 'The Confrontation',
     location: 'The Crimson Relay — Operations Room',
     imageKey: 'crimson_relay',
-    text: `Veyl does not fight with cruelty. She fights with the specific efficiency of someone who has spent three years managing a crisis with inadequate resources and has become very good at doing things correctly the first time. The Choir's infected members in the room orient toward you — not as a mob, as a collective response to a threat to their centre. The mark is hot. The fight is brief, sharp, and decisive in either direction.`,
+    text: `Veyl does not fight with cruelty. She fights with the practiced efficiency of someone who has spent three years managing a crisis with inadequate resources and has become very good at doing things correctly the first time. The Choir's infected members in the room orient toward you — not as a mob, as a collective response to a threat to their centre. The mark is hot. The fight is brief, sharp, and decisive in either direction.`,
     effectsOnEnter: { health: -15, morale: -10 },
     choices: [
       {
@@ -2285,7 +2285,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
         nextNode: 'c6_chapter6_end',
         diceCheck: {
           stat: 'strength',
-          difficulty: 15,
+          difficulty: 13,
           diceType: 'd20',
           successNode: 'c6_chapter6_end',
           failureNode: 'c6_silent_ward_death_end',
@@ -2307,10 +2307,13 @@ export const CHAPTER_6_NODES: StoryNode[] = [
       lastArchive: 10,
       morale: 5,
     },
-    choices: [],
-    isEnding: true,
-    endingType: 'faction',
-    endingId: 'ending_ch6_survived',
+    choices: [
+      {
+        id: 'c6_continue_to_ch7',
+        text: 'Follow the Archive signal. The deepest truth lies ahead.',
+        nextNode: 'chapter7_start',
+      },
+    ],
   },
 
   // ══════════════════════════════════════════════════════════════════════════════
@@ -2324,7 +2327,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
     location: 'The Drowned Choir Hall / Pulse Tower — Final Resonance',
     imageKey: 'drowned_choir_hall',
     text: `The mark opens and does not close. The collective receives it — receives you — and the Choir's seventeen-signal network achieves momentary completion, a resonance loop that the First Voice has been unable to close for three years. The infected across the territory stabilise. All of them, simultaneously, for approximately ninety seconds, remember what it felt like to be one person. Then the loop closes around you and the mark is no longer a receiver of the Choir's signal. The mark is the Choir's signal. You remain. The person you were when you entered the broadcast tunnels does not. The mark points southeast. The body carrying it will go southeast eventually. The city has another member of its choir.`,
-    effectsOnEnter: { setFlags: ['game_complete', 'choir_consumed'], corruption: 20, redChoir: 30 },
+    effectsOnEnter: { setFlags: ['game_complete', 'choir_consumed'], corruption: 20, redChoir: 20 },
     choices: [],
     isEnding: true,
     endingType: 'corruption',
@@ -2408,7 +2411,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
     location: 'The Drowned Choir Hall / Pulse Tower — After',
     imageKey: 'choir_nest',
     text: `The mark becomes the Choir's anchor. Not the First Voice's possession — the First Voice remains separate, remains Solen's echo, remains distinct — but the mark and the collective are now in the relationship the Choir's infrastructure was always trying to achieve: the mark as a stabilising frequency for the network, the collective as a distributed system the mark can navigate. You remain yourself. The corruption is significant and visible — the mark's architecture has accepted more of the collective's signal than was originally designed into it. But you remain. Veyl calls this the Crimson Baptism. The Choir calls it what happens when someone with a mark decides to stay. You call it a decision you made with full information and will spend the remaining chapters living with.`,
-    effectsOnEnter: { setFlags: ['crimson_baptism_complete', 'choir_anchor_achieved'], corruption: 10, redChoir: 30, morale: 3 },
+    effectsOnEnter: { setFlags: ['crimson_baptism_complete', 'choir_anchor_achieved'], corruption: 10, redChoir: 20, morale: 3 },
     choices: [],
     isEnding: true,
     endingType: 'faction',
@@ -2422,7 +2425,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
     location: 'The Silent Ward — After',
     imageKey: 'silent_ward',
     text: `He does not stop at the Ward. The logic that justified the first decision — mercy for the Stage Three patients who could not come back — does not stop at Stage Three. He is not a monster. He is a man applying a principle consistently, and the principle is wrong in a way that becomes irreversible quickly. The Choir learns what is happening in the Ward. Rook finds out. Veyl finds out. The extermination of Stage Three infected becomes, in the Choir's network, the reason to stop treating the player's group as potentially friendly. The mark goes cold in Choir territory. Not because the frequency is gone. Because the people carrying it have been given a very specific reason not to reach toward you anymore.`,
-    effectsOnEnter: { setFlags: ['cain_merciless_road', 'choir_territory_closed'], redChoir: -40, cainTrust: -5, morale: -15 },
+    effectsOnEnter: { setFlags: ['cain_merciless_road', 'choir_territory_closed'], redChoir: -20, cainTrust: -5, morale: -15 },
     choices: [],
     isEnding: true,
     endingType: 'betrayal',
@@ -2436,7 +2439,7 @@ export const CHAPTER_6_NODES: StoryNode[] = [
     location: 'The Singing Hospital — Weeks Later',
     imageKey: 'singing_hospital',
     text: `Eighty-four hours. Fourteen Stage Two patients, six hours each, the mark at partial opening, Mira watching the neural integration data and your corruption levels simultaneously. The cure works. All fourteen Stage Two patients return to full individual cognition over the course of a week. The corruption you accepted in the process is permanent — the mark's architecture has integrated the Choir's collective signal more deeply than before. You are harder to reach individually now; the mark responds to the collective's frequency the way it responds to the Archive's, which is to say automatically, without your choosing. You are not Choir. You are not separate. You are something that does not have a name yet. Mira names the cure. She names it for you, using the mark's signal frequency as the designation. She does not ask permission. She calls it yours.`,
-    effectsOnEnter: { setFlags: ['mira_cure_complete', 'fourteen_cured'], corruption: 8, miraTrust: 5, redChoir: 25, morale: 5 },
+    effectsOnEnter: { setFlags: ['mira_cure_complete', 'fourteen_cured'], corruption: 8, miraTrust: 5, redChoir: 20, morale: 5 },
     choices: [],
     isEnding: true,
     endingType: 'faction',
@@ -2449,8 +2452,8 @@ export const CHAPTER_6_NODES: StoryNode[] = [
     title: 'Silent Ward Death',
     location: 'The Silent Ward — Entry',
     imageKey: 'silent_ward',
-    text: `The Choir is not a faction that leaves threats at their territory border. The Silent Ward's caregivers have seen too much to be gentle about this. The mark goes cold in the specific way that a mark goes cold when the person carrying it stops being the person who was carrying it. The tunnels receive one more silence. In the Ward, the Stage Three infected hum. Not grief. Just the song, the continuous patient song that has been playing since before the blackout made it possible. The mark's frequency is very faint now. It will not be faint for long. The Archive is patient. The signal finds another way.`,
-    effectsOnEnter: { setFlags: ['silent_ward_death'], health: -100, morale: -20 },
+    text: `The Choir is not a faction that leaves threats at their territory border. The Silent Ward's caregivers have seen too much to be gentle about this. The mark goes cold in the particular way that a mark goes cold when the person carrying it stops being the person who was carrying it. The tunnels receive one more silence. In the Ward, the Stage Three infected hum. Not grief. Just the song, the continuous patient song that has been playing since before the blackout made it possible. The mark's frequency is very faint now. It will not be faint for long. The Archive is patient. The signal finds another way.`,
+    effectsOnEnter: { setFlags: ['silent_ward_death'], health: -30, morale: -20 },
     choices: [],
     isEnding: true,
     endingType: 'death',
@@ -2463,8 +2466,8 @@ export const CHAPTER_6_NODES: StoryNode[] = [
     title: 'Red Choir Alliance',
     location: 'The Crimson Relay — Exit',
     imageKey: 'crimson_relay',
-    text: `The Choir's alliance is formalized in the specific way the Choir formalizes things: not with documents or signatures, but with the mark's frequency acknowledged openly in the collective network. Every infected person in Choir territory knows the agreement exists. Veyl leads with the hospital. Sann contributes the research. Rook manages the territory's edge. The First Voice — Solen — is quieter now, not from suppression but from something closer to being heard. The mark is warm with the collective's recognition as you leave the Relay heading east. The Red Choir is not fixed. The Glass Court is not held accountable yet. The infected in the Ward are not cured yet. But the alliance is real, the infrastructure for the cure is built, and the path to the Last Archive has the Choir's broadcast network behind it. This is a beginning.`,
-    effectsOnEnter: { setFlags: ['game_complete', 'choir_alliance_complete', 'chapter6_choir_route'], redChoir: 30, lastArchive: 10, morale: 5 },
+    text: `The Choir's alliance is formalized in the particular way the Choir formalizes things: not with documents or signatures, but with the mark's frequency acknowledged openly in the collective network. Every infected person in Choir territory knows the agreement exists. Veyl leads with the hospital. Sann contributes the research. Rook manages the territory's edge. The First Voice — Solen — is quieter now, not from suppression but from something closer to being heard. The mark is warm with the collective's recognition as you leave the Relay heading east. The Red Choir is not fixed. The Glass Court is not held accountable yet. The infected in the Ward are not cured yet. But the alliance is real, the infrastructure for the cure is built, and the path to the Last Archive has the Choir's broadcast network behind it. This is a beginning.`,
+    effectsOnEnter: { setFlags: ['game_complete', 'choir_alliance_complete', 'chapter6_choir_route'], redChoir: 20, lastArchive: 10, morale: 5 },
     choices: [],
     isEnding: true,
     endingType: 'faction',
@@ -2477,8 +2480,8 @@ export const CHAPTER_6_NODES: StoryNode[] = [
     title: 'Psychic Memory Fragment',
     location: 'The Echo Chamber — After',
     imageKey: 'echo_chamber',
-    text: `The Echo Chamber gives you something it does not give anyone without a mark: the full sequence of the Archive's pre-blackout transmission, not as fragments but as a complete document. You understand the Last Kingdom not as a location but as a state — a specific configuration of the Archive's seventeen-node network at full resonance. You understand Solen's role, Velna's design, the infection's origin, and the specific combination of events that will be required to complete the transmission without destroying the person carrying it. You carry this out of the Chamber the way you carry memory: not always consciously accessible, but permanently present, shaping decisions you have not yet made. The Esper ability that let you read this information fully is also, the Chamber shows you, why Velna selected you specifically. She needed someone who could read the signal without being read by it. She chose correctly. You leave the Chamber with the path forward in your bones.`,
-    effectsOnEnter: { setFlags: ['psychic_memory_complete', 'last_kingdom_full_understood', 'chapter6_esper_route'], intelligence: 8, lastArchive: 25, corruption: 3 },
+    text: `The Echo Chamber gives you something it does not give anyone without a mark: the full sequence of the Archive's pre-blackout transmission, not as fragments but as a complete document. You understand the Last Kingdom not as a location but as a state — a specific configuration of the Archive's seventeen-node network at full resonance. You understand Solen's role, Velna's design, the infection's origin, and the particular combination of events that will be required to complete the transmission without destroying the person carrying it. You carry this out of the Chamber the way you carry memory: not always consciously accessible, but permanently present, shaping decisions you have not yet made. The Esper ability that let you read this information fully is also, the Chamber shows you, why Velna selected you specifically. She needed someone who could read the signal without being read by it. She chose correctly. You leave the Chamber with the path forward in your bones.`,
+    effectsOnEnter: { setFlags: ['psychic_memory_complete', 'last_kingdom_full_understood', 'chapter6_esper_route'], intelligence: 8, lastArchive: 10, corruption: 3 },
     choices: [],
     isEnding: true,
     endingType: 'secret',

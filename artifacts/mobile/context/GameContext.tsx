@@ -1,4 +1,5 @@
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { BackHandler, Platform } from 'react-native';
 import type {
   Character,
   CompanionPair,
@@ -23,7 +24,17 @@ import {
   runSurvivalTick,
   shouldTriggerEnding,
 } from '../logic/gameEngine';
-import { deleteSave as deleteSaveStorage, hasSave, hasSeenContentWarning, loadGame, resetAllData as resetAllDataStorage, saveGame } from '../logic/saveSystem';
+import {
+  deleteSave as deleteSaveStorage,
+  hasSave,
+  hasSeenContentWarning,
+  importSaveData,
+  loadEndingsDiscovered,
+  loadGame,
+  resetAllData as resetAllDataStorage,
+  saveEndingsDiscovered,
+  saveGame,
+} from '../logic/saveSystem';
 import { getCompanionEventTrigger } from '../logic/companionSystem';
 
 const DEFAULT_COMPANIONS: CompanionPair = {
@@ -40,7 +51,7 @@ const DEFAULT_FACTION_REP: FactionRep = {
 };
 
 export const INITIAL_STATE: GameState = {
-  screen: 'mainMenu',
+  screen: 'splash',
   character: null,
   stats: { ...DEFAULT_STATS },
   inventory: { ...DEFAULT_INVENTORY },
@@ -50,7 +61,7 @@ export const INITIAL_STATE: GameState = {
   factionRep: DEFAULT_FACTION_REP,
   routeHistory: [],
   endingsDiscovered: [],
-  settings: { textSpeed: 'normal', soundEnabled: false, autoSave: true, skipDiceAnimation: false },
+  settings: { textSpeed: 'normal', fontSize: 'normal', soundEnabled: false, autoSave: true, skipDiceAnimation: false },
   activeEnding: null,
   pendingReturnNodeId: undefined,
 };
@@ -76,10 +87,13 @@ interface GameContextValue {
   deleteAndReset: () => Promise<void>;
   resetAllData: () => Promise<void>;
   updateSettings: (settings: Partial<GameState['settings']>) => void;
+  importSave: (jsonStr: string) => Promise<boolean>;
   // Dice system
   pendingDiceRoll: PendingDiceRoll | null;
   initiateDiceRoll: (choiceId: string) => void;
   commitDiceRoll: (choiceId: string, result: DiceResult) => void;
+  // Save notification
+  saveNotification: boolean;
   // Developer tools
   devJumpToNode: (nodeId: string) => void;
   devSetStat: (key: keyof Stats, value: number) => void;
@@ -128,11 +142,6 @@ function resolveEndingState(
     };
   }
 
-  // 3. Legacy chapter1_end
-  if (nextNodeId === 'chapter1_end') {
-    return { ...next, screen: 'ending', activeEnding: 'chapter1_end' };
-  }
-
   return null;
 }
 
@@ -177,16 +186,23 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const [hasSaveGame, setHasSaveGame] = useState(false);
   const [hasActiveGame, setHasActiveGame] = useState(false);
   const [pendingDiceRoll, setPendingDiceRoll] = useState<PendingDiceRoll | null>(null);
+  const [saveNotification, setSaveNotification] = useState(false);
   const autoSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // On mount, check for existing save + content warning
+  // On mount, check for existing save + content warning + persisted endings
   useEffect(() => {
     (async () => {
-      const [saveExists, warningSeen] = await Promise.all([hasSave(), hasSeenContentWarning()]);
+      const [saveExists, warningSeen, persistedEndings] = await Promise.all([
+        hasSave(),
+        hasSeenContentWarning(),
+        loadEndingsDiscovered(),
+      ]);
       setHasSaveGame(saveExists);
-      setHasActiveGame(false);
-      if (!warningSeen) {
-        setState((prev) => ({ ...prev, screen: 'contentWarning' }));
+      setHasActiveGame(saveExists);
+      if (persistedEndings.length > 0) {
+        setState((prev) => ({ ...prev, endingsDiscovered: persistedEndings, screen: 'splash' }));
+      } else {
+        setState((prev) => ({ ...prev, screen: 'splash' }));
       }
       setIsLoading(false);
     })();
@@ -194,14 +210,21 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
   // Auto-save when state changes (debounced)
   useEffect(() => {
-    if (state.screen === 'mainMenu' || state.screen === 'characterCreator') return;
+    if (state.screen === 'splash' || state.screen === 'mainMenu' || state.screen === 'characterCreator') return;
     if (!state.settings.autoSave) return;
+    if (!state.character) return;
 
     if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current);
     autoSaveTimer.current = setTimeout(() => {
       saveGame(state);
+      // Also persist endings separately so they survive save deletion
+      if (state.endingsDiscovered.length > 0) {
+        saveEndingsDiscovered(state.endingsDiscovered);
+      }
       setHasSaveGame(true);
       setHasActiveGame(true);
+      setSaveNotification(true);
+      setTimeout(() => setSaveNotification(false), 2200);
     }, 1000);
 
     return () => {
@@ -256,7 +279,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       companions,
       factionRep,
       routeHistory: [],
-      endingsDiscovered: [],
+      endingsDiscovered: stateRef.current.endingsDiscovered,
       activeEnding: null,
       pendingReturnNodeId: undefined,
     };
@@ -425,17 +448,29 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const continueGame = useCallback(async () => {
     const saved = await loadGame();
     if (saved) {
-      setState({ ...saved, screen: 'game' });
+      // Merge any endings from the separate persistence that aren't in the save
+      const persistedEndings = await loadEndingsDiscovered();
+      const mergedEndings = [...new Set([...saved.endingsDiscovered, ...persistedEndings])];
+      // If save has no character, it's not a valid game — go to character creator
+      if (!saved.character) {
+        setState({ ...saved, endingsDiscovered: mergedEndings, screen: 'characterCreator' });
+        setHasSaveGame(false);
+        setHasActiveGame(false);
+        return;
+      }
+      setState({ ...saved, endingsDiscovered: mergedEndings, screen: 'game' });
       setHasSaveGame(true);
       setHasActiveGame(true);
     }
   }, []);
 
   const deleteAndReset = useCallback(async () => {
+    // Preserve discovered endings across playthroughs — only resetAllData wipes them
+    const preservedEndings = stateRef.current.endingsDiscovered;
     await deleteSaveStorage();
     setHasSaveGame(false);
     setHasActiveGame(false);
-    setState(INITIAL_STATE);
+    setState({ ...INITIAL_STATE, endingsDiscovered: preservedEndings });
   }, []);
 
   const resetAllData = useCallback(async () => {
@@ -450,6 +485,17 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       ...prev,
       settings: { ...prev.settings, ...settings },
     }));
+  }, []);
+
+  const importSave = useCallback(async (jsonStr: string): Promise<boolean> => {
+    const result = await importSaveData(jsonStr);
+    if (result.success && result.state) {
+      setState(result.state);
+      setHasSaveGame(true);
+      setHasActiveGame(true);
+      return true;
+    }
+    return false;
   }, []);
 
   // ─── Developer tools ────────────────────────────────────────────────────────
@@ -521,7 +567,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const devUnlockAllEndings = useCallback(() => {
-    const allIds = [...ENDINGS.map((e) => e.id), 'chapter1_end'];
+    const allIds = [...ENDINGS.map((e) => e.id)];
     setState((prev) => ({
       ...prev,
       endingsDiscovered: [...new Set([...prev.endingsDiscovered, ...allIds])],
@@ -571,6 +617,47 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     setState(INITIAL_STATE);
   }, []);
 
+  // ─── Android back button ────────────────────────────────────────────────────
+
+  useEffect(() => {
+    if (Platform.OS === 'web') return;
+
+    const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
+      const screen = stateRef.current.screen;
+
+      // Sub-panels: go back to game
+      if (['stats', 'inventory', 'companions', 'factions', 'history', 'settings'].includes(screen)) {
+        setState((prev) => ({ ...prev, screen: 'game' }));
+        return true; // handled
+      }
+
+      // Ending / credits / route codex / chapter roadmap: go to main menu
+      if (['ending', 'credits', 'routeCodex', 'chapterRoadmap'].includes(screen)) {
+        setState((prev) => ({ ...prev, screen: 'mainMenu' }));
+        setHasActiveGame(false);
+        return true;
+      }
+
+      // Character creator: go to main menu
+      if (screen === 'characterCreator') {
+        setState((prev) => ({ ...prev, screen: 'mainMenu' }));
+        return true;
+      }
+
+      // Game screen: go to main menu (save is auto-saved)
+      if (screen === 'game') {
+        setState((prev) => ({ ...prev, screen: 'mainMenu' }));
+        setHasActiveGame(false);
+        return true;
+      }
+
+      // Main menu / splash / content warning: let system handle (exit)
+      return false;
+    });
+
+    return () => subscription.remove();
+  }, []);
+
   // ─── Derived values ─────────────────────────────────────────────────────────
 
   const currentNode = getNodeById(state.currentNodeId);
@@ -592,9 +679,11 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         deleteAndReset,
         resetAllData,
         updateSettings,
+        importSave,
         pendingDiceRoll,
         initiateDiceRoll,
         commitDiceRoll,
+        saveNotification,
         devJumpToNode,
         devSetStat,
         devSetInventory,

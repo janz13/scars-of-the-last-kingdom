@@ -50,6 +50,34 @@ export const CHAPTER_8_NODES: StoryNode[] = [
         text: 'Walk into the square. Find out what is happening.',
         nextNode: 'c8_arrive_ration_square',
       },
+      {
+        id: 'c8_start_archive_intel',
+        text: 'Mael sent supply intel. Use the Archive\'s knowledge first.',
+        nextNode: 'c8_archive_supply_intel',
+        requirements: { flags: ['archive_analysis_complete'] },
+        isHidden: true,
+      },
+      {
+        id: 'c8_start_without_mira',
+        text: 'Enter the square alone. Mira is not here.',
+        nextNode: 'c8_without_mira',
+        requirements: { blockedFlags: ['mira_joins_party'] },
+        isHidden: true,
+      },
+      {
+        id: 'c8_start_solo',
+        text: 'Approach the square. Cain stayed behind — you handle the tactics.',
+        nextNode: 'c8_solo_tactical',
+        requirements: { blockedFlags: ['cain_joins_party'] },
+        isHidden: true,
+      },
+      {
+        id: 'c8_start_gate_refused',
+        text: 'The gate card stays on the table. Deal with the hunger war first.',
+        nextNode: 'c8_gate_refused_route',
+        requirements: { flags: ['gate_card_available'], blockedFlags: ['gate_sync_accepted'] },
+        isHidden: true,
+      },
     ],
   },
 
@@ -60,7 +88,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
     location: 'The Empty Ration Square',
     imageKey: 'empty_ration_square',
     text: `Mael's message arrived two weeks before the worst of it — a folded document delivered through a courier the Archive had used since before your time in the tunnels. "The food records I mentioned," it said. "The pre-collapse agricultural system on Sublevel Fourteen was still listed as functional in the last survey I can find, dated eight years ago. If it has not been destroyed, it can be restarted. I have attached what documentation we have. You will need this before the shortage becomes a war." It became a war anyway. But you have the documentation, and Mael knew you would need it before you knew you needed it. The Archive's supply route intelligence has identified three cached food deposits that the Glass Court does not know about.`,
-    effectsOnEnter: { setFlags: ['archive_supply_intel_received', 'agricultural_docs_carried'], intelligence: 3, food: 2, lastArchive: 5 },
+    effectsOnEnter: { setFlags: ['archive_supply_intel_received', 'agricultural_docs_carried'], intelligence: 2, food: 2, lastArchive: 5 },
     choices: [
       {
         id: 'c8_intel_proceed',
@@ -190,7 +218,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
         nextNode: 'c8_roan_assessment',
         requirements: { classes: ['esper'] },
         isHidden: true,
-        effects: { intelligence: 3, setFlags: ['roan_esper_read', 'roan_genuine_loyalty_confirmed'] },
+        effects: { intelligence: 2, setFlags: ['roan_esper_read', 'roan_genuine_loyalty_confirmed'] },
       },
       {
         id: 'c8_roan_assess_first',
@@ -209,7 +237,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
     imageKey: 'empty_ration_square',
     speaker: 'Captain Roan',
     text: `He spreads a hand-drawn map on the crate platform. "Three things: the Grain Vault on Level 9 — Iron Saints requisitioned it, Veyra controls the access. The Bone Soup Kitchen on Level 11 — civilian operated, Red Choir proximity, Mother Veyl has been appearing there. The Dead Orchard — sublevel agricultural ruin, used to supply twenty percent of the tunnel network before the Choir infection spread through the water filtration." He taps each point. "The Grain Vault is where the food is. The Kitchen is where the people are fed right now. The Orchard is where the food could come from again, if someone with the right knowledge got to the pre-collapse grow systems." He looks at you. "I heard something about the Last Archive. Something about a person with a mark who knows things. Tell me I heard correctly."`,
-    effectsOnEnter: { setFlags: ['roan_map_shown', 'grain_vault_known', 'bone_soup_known', 'dead_orchard_known'], intelligence: 3 },
+    effectsOnEnter: { setFlags: ['roan_map_shown', 'grain_vault_known', 'bone_soup_known', 'dead_orchard_known'], intelligence: 2 },
     choices: [
       {
         id: 'c8_roan_confirm_archive',
@@ -232,7 +260,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
     location: 'The Empty Ration Square',
     imageKey: 'empty_ration_square',
     speaker: 'Mother Chalk',
-    text: `She does not waste time with pleasantries. The chalk marks on her coat — the Hollow Children's documentation system, every mark a record of a decision made in the deep tunnels — are recent; some are still powdery. "Thirty-one children," she says. "Thirty-one children who have not eaten in two days. Not because we chose this. Because the Saints moved the Level 6 cache without telling anyone, and our route through Level 9 is blocked by Veyra's checkpoints." She looks at you with the expression of someone who has had this exact conversation with many people who promised things they did not deliver. "I am not asking for a plan. I am asking for food. Three days' worth for thirty-one children is forty pounds of any protein source. Do you have forty pounds of protein, or are we talking about plans again?"`,
+    text: `She does not waste time with pleasantries. The chalk marks on her coat — the Hollow Children's documentation system, every mark a record of a decision made in the deep tunnels — are recent; some are still powdery. "Thirty-one children," she says. "Thirty-one children who have not eaten in two days. Not because we chose this. Because the Saints moved the Level 6 cache without telling anyone, and our route through Level 9 is blocked by Veyra's checkpoints." She looks at you with the face of someone who has had this exact conversation with many people who promised things they did not deliver. "I am not asking for a plan. I am asking for food. Three days' worth for thirty-one children is forty pounds of any protein source. Do you have forty pounds of protein, or are we talking about plans again?"`,
     effectsOnEnter: { setFlags: ['chalk_met', 'hollow_children_need_known'] },
     choices: [
       {
@@ -336,7 +364,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
         nextNode: 'c8_water_riot_arrive',
         diceCheck: {
           stat: 'agility',
-          difficulty: 13,
+          difficulty: 12,
           diceType: 'd20',
           successNode: 'c8_riot_survive',
           failureNode: 'c8_water_riot_death_end',
@@ -372,7 +400,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
         nextNode: 'c8_riot_negotiate',
         diceCheck: {
           stat: 'charisma',
-          difficulty: 14,
+          difficulty: 13,
           diceType: 'd20',
           successNode: 'c8_riot_peace',
           failureNode: 'c8_riot_survive',
@@ -395,7 +423,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
     title: 'Through the Riot',
     location: 'The Water Riot',
     imageKey: 'water_riot',
-    text: `You are through. The barricade came down while you were moving — the crowd and the dismantler finished what they started, and the Saints lieutenant either ordered her soldiers back or her soldiers retreated without being ordered, which amounts to the same thing in immediate terms. The water flows. Not enough, not clean enough, not reliable enough, but flowing. People are moving toward the pipe with cups and containers and the specific reverence of people who have been thirsty for six hours. The riot's violence potential has dropped below the ignition threshold. For now.`,
+    text: `You are through. The barricade came down while you were moving — the crowd and the dismantler finished what they started, and the Saints lieutenant either ordered her soldiers back or her soldiers retreated without being ordered, which amounts to the same thing in immediate terms. The water flows. Not enough, not clean enough, not reliable enough, but flowing. People are moving toward the pipe with cups and containers and the particular reverence of people who have been thirsty for six hours. The riot's violence potential has dropped below the ignition threshold. For now.`,
     effectsOnEnter: { setFlags: ['water_riot_survived'], water: 1, morale: 5, ironSaints: -8 },
     choices: [
       {
@@ -481,7 +509,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
         nextNode: 'c8_clinic_choice',
         requirements: { backgrounds: ['underground_medic'] },
         isHidden: true,
-        effects: { intelligence: 3, setFlags: ['medicine_rationed_extended'], miraTrust: 3 },
+        effects: { intelligence: 2, setFlags: ['medicine_rationed_extended'], miraTrust: 3 },
       },
     ],
   },
@@ -616,7 +644,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
         nextNode: 'c8_vault_roan_plan',
         diceCheck: {
           stat: 'agility',
-          difficulty: 14,
+          difficulty: 13,
           diceType: 'd20',
           successNode: 'c8_vault_distribute',
           failureNode: 'c8_vault_hoard',
@@ -650,7 +678,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
         id: 'c8_seraphine_inspect',
         text: 'Inspect the Glass Court\'s allocation before accepting. Verify it is what she claims.',
         nextNode: 'c8_vault_veyra_enforce',
-        effects: { intelligence: 3, setFlags: ['seraphine_offer_inspected'] },
+        effects: { intelligence: 2, setFlags: ['seraphine_offer_inspected'] },
       },
       {
         id: 'c8_seraphine_noble_counter',
@@ -715,7 +743,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
         id: 'c8_raid_approve',
         text: 'Approve the raid. The food needs to move.',
         nextNode: 'c8_cain_ration_raid_end',
-        effects: { setFlags: ['ration_raid_approved'], ironSaints: -25, morale: 10, cainTrust: 5 },
+        effects: { setFlags: ['ration_raid_approved'], ironSaints: -20, morale: 10, cainTrust: 5 },
       },
       {
         id: 'c8_raid_refuse_use_route',
@@ -893,7 +921,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
     location: 'The Bone Soup Kitchen',
     imageKey: 'bone_soup_kitchen',
     text: `The compound is what Veyl says it is — at this concentration. The Runaway Experiment's knowledge of Choir biological architecture is detailed enough to read the difference between the addictive full-concentration version and this. Veyl is not lying about the composition. What she is not mentioning: eleven days of this compound in the food supply will produce mild residual sensitivity to the Choir's broadcast frequency in approximately thirty percent of the population — not dependency, not infection, but attunement. The people who eat this soup for eleven days will hear the Choir's signal slightly more clearly. That is not nothing.`,
-    effectsOnEnter: { intelligence: 3, setFlags: ['choir_compound_analysed'] },
+    effectsOnEnter: { intelligence: 2, setFlags: ['choir_compound_analysed'] },
     choices: [
       {
         id: 'c8_soup_accept_knowing',
@@ -1013,7 +1041,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
         nextNode: 'c8_front_cain_tactical',
         diceCheck: {
           stat: 'strength',
-          difficulty: 13,
+          difficulty: 12,
           diceType: 'd20',
           successNode: 'c8_front_push_success',
           failureNode: 'c8_front_fallback',
@@ -1117,7 +1145,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
         nextNode: 'c8_aqueduct_assess',
         diceCheck: {
           stat: 'intelligence',
-          difficulty: 14,
+          difficulty: 13,
           diceType: 'd20',
           successNode: 'c8_aqueduct_repair_success',
           failureNode: 'c8_aqueduct_repair_fail',
@@ -1129,7 +1157,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
         nextNode: 'c8_aqueduct_repair_success',
         requirements: { classes: ['relic_hunter'] },
         isHidden: true,
-        effects: { intelligence: 3, corruption: 1, setFlags: ['aqueduct_relic_repaired'], water: 4 },
+        effects: { intelligence: 2, corruption: 1, setFlags: ['aqueduct_relic_repaired'], water: 4 },
       },
     ],
   },
@@ -1140,7 +1168,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
     title: 'Water Restored',
     location: 'The Broken Aqueduct',
     imageKey: 'broken_aqueduct',
-    text: `The regulator seats correctly. The pressure membrane holds. The flow resumes — not at full capacity, maybe seventy percent, but seventy percent of the aqueduct's flow is enough to end the acute water shortage in twelve tunnel sections. You can hear the water moving in the pipes, which is a sound the tunnels have not had at this level for three months. Dever marks the repair on his maintenance log with the specific satisfaction of a person whose skill has been required and used.`,
+    text: `The regulator seats correctly. The pressure membrane holds. The flow resumes — not at full capacity, maybe seventy percent, but seventy percent of the aqueduct's flow is enough to end the acute water shortage in twelve tunnel sections. You can hear the water moving in the pipes, which is a sound the tunnels have not had at this level for three months. Dever marks the repair on his maintenance log with the particular satisfaction of a person whose skill has been required and used.`,
     effectsOnEnter: { setFlags: ['aqueduct_repaired_success'], water: 4, morale: 10, hollowChildren: 10 },
     choices: [
       {
@@ -1246,20 +1274,20 @@ export const CHAPTER_8_NODES: StoryNode[] = [
     title: 'Thirty-One',
     location: 'The Famine Camp',
     imageKey: 'famine_camp',
-    text: `The Hollow Children's section of the camp is quieter than the rest, which is wrong. They are conserving energy — the body's response to insufficient calorie intake. Chalk is with them, doing something methodical and practical with the camp's remaining supplies. "Thirty-one," she says when she sees you. "Same thirty-one. We have not lost anyone." The way she says it — with the specific emphasis of someone who has been counting — means they came close. She looks at your pack. She does not ask.`,
+    text: `The Hollow Children's section of the camp is quieter than the rest, which is wrong. They are conserving energy — the body's response to insufficient calorie intake. Chalk is with them, doing something methodical and practical with the camp's remaining supplies. "Thirty-one," she says when she sees you. "Same thirty-one. We have not lost anyone." The way she says it — with the deliberate emphasis of someone who has been counting — means they came close. She looks at your pack. She does not ask.`,
     effectsOnEnter: { setFlags: ['hollow_children_camp_found'], morale: -8 },
     choices: [
       {
         id: 'c8_hollow_feed',
         text: 'Give the Hollow Children what you have. Feed them first.',
         nextNode: 'c8_camp_chalk_confrontation',
-        effects: { food: -2, hollowChildren: 20, morale: 10, setFlags: ['hollow_children_fed'] },
+        effects: { food: -2, hollowChildren: 20, morale: 10, corruption: -5, setFlags: ['hollow_children_fed'] },
       },
       {
         id: 'c8_hollow_refuse',
         text: 'You cannot give what you do not have enough of.',
         nextNode: 'c8_hollow_children_starve_end',
-        effects: { hollowChildren: -30, morale: -20, corruption: 5, setFlags: ['hollow_children_refused'] },
+        effects: { hollowChildren: -20, morale: -15, corruption: 5, setFlags: ['hollow_children_refused'] },
       },
       {
         id: 'c8_hollow_chalk_promise',
@@ -1370,7 +1398,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
         id: 'c8_rations_hoard_own',
         text: 'Take what you need for your group. The camp will manage with what remains.',
         nextNode: 'c8_starving_bridge_arrive',
-        effects: { hollowChildren: -25, morale: -15, corruption: 5, food: 4, setFlags: ['camp_rations_hoarded'] },
+        effects: { hollowChildren: -20, morale: -15, corruption: 5, food: 4, setFlags: ['camp_rations_hoarded'] },
       },
     ],
   },
@@ -1384,7 +1412,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
     location: 'The Dead Orchard',
     imageKey: 'dead_orchard',
     text: `Sublevel 14. The pre-collapse growing facility is not what you expected. It is not a ruin — it is a pause. The growing racks are intact. The irrigation system is intact. The relic-adjacent grow lights are dark but not destroyed. The system stopped three years ago when a water contamination event from the Red Choir's Level 14 expansion killed the bacterial cultures in the soil beds. The soil is dead but the infrastructure survived. What the Archive's documentation says — Mael's document, now in your possession — is that the bacterial culture can be restarted from a seed stock the Archive holds, if the irrigation system can be connected to a clean water source.`,
-    effectsOnEnter: { setFlags: ['dead_orchard_arrived'], intelligence: 3 },
+    effectsOnEnter: { setFlags: ['dead_orchard_arrived'], intelligence: 2 },
     choices: [
       {
         id: 'c8_orchard_study',
@@ -1573,7 +1601,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
         id: 'c8_tunnels_push_further',
         text: 'Push further. The supply corridor is open. Take more while you can.',
         nextNode: 'c8_militia_massacre_end',
-        effects: { ironSaints: -30, setFlags: ['militia_pushed_too_far'], corruption: 5 },
+        effects: { ironSaints: -20, setFlags: ['militia_pushed_too_far'], corruption: 5 },
       },
     ],
   },
@@ -1638,7 +1666,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
     location: 'The Starving Bridge',
     imageKey: 'starving_bridge',
     text: `The two hundred watching from the approaches are not a neutral audience. They are the people who have been at the receiving end of every decision made in the last three months. They know who Seraphine is. They know who Veyra is. They know Roan by name. The crowd's attention is not hostile and not hopeful — it is watching with the careful attention of people who have learned to evaluate what they see rather than what they are told. This crowd can be moved. It cannot be lied to a second time.`,
-    effectsOnEnter: { setFlags: ['bridge_crowd_read'], intelligence: 3 },
+    effectsOnEnter: { setFlags: ['bridge_crowd_read'], intelligence: 2 },
     choices: [
       {
         id: 'c8_crowd_to_factions',
@@ -1655,7 +1683,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
     location: 'The Starving Bridge',
     imageKey: 'starving_bridge',
     text: `Seraphine speaks first. "The Glass Court is prepared to offer emergency humanitarian supply — two weeks' food for the tunnel network's registered population — in exchange for formal recognition of Glass Court administrative oversight of the Dead Orchard facility." Then Veyra: "The Iron Saints are prepared to implement an emergency ration schedule in exchange for civilian cooperation with the Saints' checkpoint system." Then Chalk: "The Hollow Children have thirty-one children and want food. Not terms. Food." Then Roan: "I have a militia that just took the Level 7 junction. The supply corridor is accessible. We can distribute the Saints' supply without their terms or Seraphine's." He looks at you. Everyone looks at you.`,
-    effectsOnEnter: { setFlags: ['bridge_factions_met'], morale: 5, intelligence: 3 },
+    effectsOnEnter: { setFlags: ['bridge_factions_met'], morale: 5, intelligence: 2 },
     choices: [
       {
         id: 'c8_bridge_roan_speech_choice',
@@ -1711,7 +1739,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
         nextNode: 'c8_bridge_roan_speech',
         diceCheck: {
           stat: 'charisma',
-          difficulty: 15,
+          difficulty: 13,
           diceType: 'd20',
           successNode: 'c8_bridge_speech_success',
           failureNode: 'c8_bridge_speech_fail',
@@ -1750,7 +1778,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
     title: 'The Crowd Holds',
     location: 'The Starving Bridge',
     imageKey: 'starving_bridge',
-    text: `The crowd does not move. It watches. The speech landed in the specific silence of people who have heard speeches before and are no longer certain what speeches are for. Not hostile. Not dismissive. Just still. Seraphine begins moving toward the documentation table with the calm of someone who has been waiting for exactly this stillness. The crowd does not stop her.`,
+    text: `The crowd does not move. It watches. The speech landed in the specific silence of people who have heard speeches before and are no longer certain what speeches are for. Not hostile. Not dismissive. Just still. Seraphine begins moving toward the documentation table with the composure of someone who has been waiting for exactly this stillness. The crowd does not stop her.`,
     effectsOnEnter: { setFlags: ['bridge_speech_failed'], morale: -15, glassCourt: 10 },
     choices: [
       {
@@ -1850,7 +1878,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
     location: 'The Starving Bridge',
     imageKey: 'starving_bridge',
     text: `The Archive's documentation, Roan's map, Dever's irrigation plan, and the grow light activation are spread on the documentation table that was Seraphine's. Seraphine reads the output projections. Veyra reads the resource requirements. Chalk reads the timeline. All three reach the same conclusion from different directions: the Dead Orchard, if restored as planned, produces enough food to end the tunnel network's dependence on cached supply within eight weeks of first harvest. Not enough to be comfortable. Enough to be free. The Hunger War does not end at this table. But the argument that scarcity is permanent — that faction control of food is inevitable — becomes demonstrably false. Seraphine closes her agreement file. Veyra does not close her checkpoint order, but she does not open it either.`,
-    effectsOnEnter: { setFlags: ['agricultural_plan_revealed'], morale: 20, glassCourt: 10, ironSaints: 5, hollowChildren: 15, lastArchive: 15 },
+    effectsOnEnter: { setFlags: ['agricultural_plan_revealed'], morale: 20, glassCourt: 10, ironSaints: 5, hollowChildren: 15, lastArchive: 10 },
     choices: [
       {
         id: 'c8_agricultural_forward',
@@ -1887,7 +1915,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
     location: 'The Grain Vault',
     imageKey: 'grain_vault',
     text: `The vault's interior is a record of pre-collapse food security infrastructure: racking systems with capacity labels still legible, temperature regulation monitors showing the cold chain has held for three months undisturbed, and a manifest terminal listing every item stored and when it was last accessed. The last access was three days ago — the Glass Court's allocation window. The manifest does not list who took what. It lists quantities. The quantities confirm Roan's calculation: six weeks of food for the tunnel network's current population, assuming standard allocation. Standard allocation, by the manifest's own definition, is the Glass Court's registered citizenry.`,
-    effectsOnEnter: { setFlags: ['vault_interior_surveyed'], intelligence: 3 },
+    effectsOnEnter: { setFlags: ['vault_interior_surveyed'], intelligence: 2 },
     choices: [
       {
         id: 'c8_vault_survey_distribute',
@@ -1976,7 +2004,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
     title: 'The Kitchen Collective',
     location: 'The Bone Soup Kitchen',
     imageKey: 'bone_soup_kitchen',
-    text: `The Kitchen's collective is eight people who rotate shifts on a schedule none of them maintain perfectly because the schedule was designed for a kitchen with reliable supply and they are operating a kitchen without reliable supply. They are not complaining. They are the specific kind of people who chose to run a kitchen in a crisis rather than any of the alternatives, which means they have already done the calculation about what matters and reached a conclusion. The head of the collective — a man named Teo who was a cook before the blackout and is still a cook — is asking Veyl's compound to leave, politely, for the fifth time.`,
+    text: `The Kitchen's collective is eight people who rotate shifts on a schedule none of them maintain perfectly because the schedule was designed for a kitchen with reliable supply and they are operating a kitchen without reliable supply. They are not complaining. They are the particular kind of people who chose to run a kitchen in a crisis rather than any of the alternatives, which means they have already done the calculation about what matters and reached a conclusion. The head of the collective — a man named Teo who was a cook before the blackout and is still a cook — is asking Veyl's compound to leave, politely, for the fifth time.`,
     effectsOnEnter: { setFlags: ['kitchen_collective_met'], morale: 5 },
     choices: [
       {
@@ -2000,7 +2028,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
     location: 'The Dead Orchard',
     imageKey: 'dead_orchard',
     text: `Dever walks the irrigation system methodically, the way he walks every system — cataloguing, measuring, testing fittings with his hands. His verbal assessment is in the same format as his maintenance logs: precise, without redundancy. "Twelve pipe sections. Four connector joints failed. Two manifold feeds need replacement — I can fabricate from standard salvage materials. The soil bed drainage channels are clogged but clear-able. Two days of work, three people, with the materials I already have from the scavenger front operation." He pauses at the grow light array. "These are not standard technology." He means: he has no idea what powers them, and he is honest about not knowing things.`,
-    effectsOnEnter: { setFlags: ['orchard_dever_assessment'], intelligence: 3 },
+    effectsOnEnter: { setFlags: ['orchard_dever_assessment'], intelligence: 2 },
     choices: [
       {
         id: 'c8_dever_begin_work',
@@ -2074,7 +2102,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
     location: 'The Burned Clinic',
     imageKey: 'burned_clinic',
     text: `The clinic runs out of medicine on the fourth day, not the third. Juno stretches it with the rationing technique Mira taught her, which buys one day and does not change the outcome of the day after. The three critical cases do not survive the fifth day. The eight who needed food more than medicine survive, barely. Juno keeps working. The mark, in the burned clinic, receives a single transmission on Mira's frequency: not words, just the signal, the fact that she is still there, still working, somewhere the clinic is not. It arrives on the fifth day, as if she knew. It probably means she did.`,
-    effectsOnEnter: { setFlags: ['mira_medicine_ended', 'clinic_medicine_exhausted'], miraTrust: -5, morale: -20 },
+    effectsOnEnter: { setFlags: ['mira_medicine_ended', 'clinic_medicine_exhausted'], miraTrust: -5, morale: -15 },
     choices: [],
     isEnding: true,
     endingId: 'ending_ch8_mira_last_medicine',
@@ -2088,7 +2116,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
     location: 'The Grain Vault',
     imageKey: 'grain_vault',
     text: `Seraphine's allocation arrives in properly labelled Glass Court humanitarian containers, which are also, visibly, Glass Court branded containers. Two weeks of food for the Hollow Children and Roan's militia. Clean. Efficient. Each container carries a document that functions as a record of dependency: who received Glass Court humanitarian aid, when, and in what quantity. The Hollow Children eat. Roan's militia eats. The containers are empty in eleven days because hungry people eat. The documentation is in Seraphine's filing system permanently. The Dead Orchard's access agreement gives the Glass Court a formal claim on the facility's future output. The Hunger War's resolution, when it comes, will be written in Glass Court administrative language, which is a kind of winning that does not feel like losing until the language of the documents becomes the language of everything.`,
-    effectsOnEnter: { setFlags: ['glass_court_feast', 'seraphine_won_distribution'], glassCourt: 25, hollowChildren: -10, morale: -10, corruption: 5 },
+    effectsOnEnter: { setFlags: ['glass_court_feast', 'seraphine_won_distribution'], glassCourt: 20, hollowChildren: -10, morale: -10, corruption: 5 },
     choices: [],
     isEnding: true,
     endingId: 'ending_ch8_glass_court_feast',
@@ -2116,7 +2144,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
     location: 'The Scavenger Front',
     imageKey: 'scavenger_front',
     text: `The fallback route is compromised. The Saints' eastern battalion anticipated the retreat and pre-positioned two squads at the secondary exit — the same maintenance tunnel Dever marked as clear. They arrived while the push was happening. The ambush is not punitive — the Saints want the militia to disperse, not die — but the engagement removes the option of a controlled retreat. Three of Roan's militia are separated. One of them is Dever. The supply line operation fails completely. The militia loses the secondary tunnel access permanently. The Scavenger Front collapses back to Level 7 East and does not recover its position in the chapter's timeframe.`,
-    effectsOnEnter: { setFlags: ['scavenger_ambush_end'], ironSaints: 10, morale: -20, health: -20 },
+    effectsOnEnter: { setFlags: ['scavenger_ambush_end'], ironSaints: 10, morale: -15, health: -15 },
     choices: [],
     isEnding: true,
     endingId: 'ending_ch8_scavenger_ambush',
@@ -2129,8 +2157,8 @@ export const CHAPTER_8_NODES: StoryNode[] = [
     title: 'The Aqueduct Collapses',
     location: 'The Broken Aqueduct',
     imageKey: 'broken_aqueduct',
-    text: `The failed repair destabilises the pipe section. The fragments from the fractured regulator housing travel three metres in the main pipe before lodging in the next manifold junction, which fails twelve hours later under the redistributed pressure load. The aqueduct does not simply stop working — it fails in a way that makes future repair significantly more complex. Twelve tunnel sections lose water access entirely. The Water Riot, which had calmed, restarts with greater intensity because now there is nothing to riot toward. Dever's maintenance log entry: "Repair attempted. Repair failed. Failure escalated."`,
-    effectsOnEnter: { setFlags: ['game_complete', 'aqueduct_collapsed_permanently'], water: -5, morale: -25, hollowChildren: -15 },
+    text: `The failed repair destabilises the pipe section. The fragments from the fractured regulator housing travel three metres in the main pipe before lodging in the next manifold junction, which fails twelve hours later under the redistributed pressure load. The aqueduct does not simply stop working — it fails in a way that makes future repair significantly more complex. Twelve tunnel sections lose water access entirely. The Water Riot, which had calmed, restarts with greater intensity because now there is nothing to riot toward. Dever's maintenance log entry: "Repair attempted. Repair failed. Failure escalated." The Hunger War does not end. It finds a new front. The mark on your wrist is cold — not the cold of death, but the cold of a signal that has nothing left to point at. The city drinks dust.`,
+    effectsOnEnter: { setFlags: ['game_complete', 'aqueduct_collapsed_permanently'], water: -5, morale: -20, hollowChildren: -15 },
     choices: [],
     isEnding: true,
     endingId: 'ending_ch8_aqueduct_collapse',
@@ -2144,7 +2172,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
     location: 'The Famine Camp',
     imageKey: 'famine_camp',
     text: `The search for hidden reserves fails. The camp's three days of shared rations runs out in two and a half days because hungry people eat more when food is available, which is not a failure of discipline but a failure of mathematics. On the third day the camp loses its internal organisation — not to violence, to entropy. People start moving, individually and in small groups, back toward faction checkpoints that at least offer predictable terms. The camp dissolves. The children from the Hollow Children's section are the last to leave, because Chalk refuses to move them until she has a destination better than the origin. It is a long wait.`,
-    effectsOnEnter: { setFlags: ['famine_camp_collapsed'], hollowChildren: -25, morale: -30 },
+    effectsOnEnter: { setFlags: ['famine_camp_collapsed'], hollowChildren: -20, morale: -20 },
     choices: [],
     isEnding: true,
     endingId: 'ending_ch8_famine_camp_collapse',
@@ -2158,7 +2186,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
     location: 'The Famine Camp',
     imageKey: 'famine_camp',
     text: `You refuse. The mathematics of the refusal are correct: you do not have forty pounds of protein, and giving what you have to thirty-one children leaves nothing for everyone else. Without what you have, the Hollow Children's supply situation deteriorates below the threshold it was already below. Chalk does not return to the square. She takes the children deeper into the tunnel network, toward the sections that nobody else is fighting over because there is nothing in them. Some of the children she takes there will not come back. The ones who do will not forget the square or the person at the empty crate platform who did the arithmetic.`,
-    effectsOnEnter: { setFlags: ['hollow_children_starved'], hollowChildren: -50, morale: -30, corruption: 8 },
+    effectsOnEnter: { setFlags: ['hollow_children_starved'], hollowChildren: -20, morale: -20, corruption: 8 },
     choices: [],
     isEnding: true,
     endingId: 'ending_ch8_hollow_children_starve',
@@ -2172,7 +2200,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
     location: 'The Famine Camp',
     imageKey: 'famine_camp',
     text: `The attempt to get Sera out of the camp before the pressure peaks fails. Not because of violence — because of the camp's own collapse dynamics, the way large numbers of hungry people moving in uncoordinated directions create a human geography that cannot be navigated quickly. She is in the northeast corner. You are on the west approach when the camp's eastern section begins clearing toward the Saints checkpoint. Thirty metres. The crowd between the corner and the exit makes those thirty metres impassable in the time available. You hear someone calling your name from behind the crowd — her voice, recognisable even at this distance — and then the crowd's momentum carries the gap past the point where a response is possible.`,
-    effectsOnEnter: { setFlags: ['sera_lost_ch8'], morale: -25, miraTrust: -5 },
+    effectsOnEnter: { setFlags: ['sera_lost_ch8'], morale: -20, miraTrust: -5 },
     choices: [],
     isEnding: true,
     endingId: 'ending_ch8_sera_lost',
@@ -2185,7 +2213,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
     title: 'Sera Saved',
     location: 'The Famine Camp',
     imageKey: 'famine_camp',
-    text: `She is out. The specific logistics of getting her out vary by the route taken, but the result is the same: she is out of the famine camp and in a position where the chapter's remaining crisis does not include her immediate survival. She does not say much. She stays near you for the rest of the chapter's events in the specific way of someone who has learned that proximity to a decision-maker is a resource, and who has also decided that this decision-maker is worth the resource expenditure. On the Bridge, when the factions argue, she watches from the crowd and at one point catches your eye across the distance. She gives you a very small nod.`,
+    text: `She is out. The specific logistics of getting her out vary by the route taken, but the result is the same: she is out of the famine camp and in a position where the chapter's remaining crisis does not include her immediate survival. She does not say much. She stays near you for the rest of the chapter's events in the particular way of someone who has learned that proximity to a decision-maker is a resource, and who has also decided that this decision-maker is worth the resource expenditure. On the Bridge, when the factions argue, she watches from the crowd and at one point catches your eye across the distance. She gives you a very small nod.`,
     effectsOnEnter: { setFlags: ['sera_saved_ch8'], morale: 15, miraTrust: 5 },
     choices: [],
     isEnding: true,
@@ -2200,7 +2228,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
     location: 'The Grain Vault',
     imageKey: 'grain_vault',
     text: `Roan's militia executes the simultaneous approach. The three-point push overwhelms the twelve interior Saints before the checkpoint can respond. The food moves. Forty-three militia members distribute three times their weight in Saints field rations to the famine camp queue in four hours. Veyra arrives at hour five and says nothing that changes what has already happened. The raid is documented — Roan is careful about documentation — and the documentation will be used by both sides as evidence of necessity and criminal action respectively. The food does not care which use it finds. It is already eaten. The Saints begin militarising vault access permanently. Roan approved the raid anyway because today was today and tomorrow was tomorrow.`,
-    effectsOnEnter: { setFlags: ['game_complete', 'cain_raid_complete', 'vault_raided'], ironSaints: -30, morale: 15, food: 6, cainTrust: 5 },
+    effectsOnEnter: { setFlags: ['game_complete', 'cain_raid_complete', 'vault_raided'], ironSaints: -20, morale: 15, food: 6, cainTrust: 5 },
     choices: [],
     isEnding: true,
     endingId: 'ending_ch8_cain_ration_raid',
@@ -2214,7 +2242,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
     location: 'The Siege Tunnels',
     imageKey: 'siege_tunnels',
     text: `The negotiation's failure is the last thing Roan needed. He has forty-three people below functional calorie levels for nineteen days. In the silence after the militia falls back to Level 7 East, Roan makes a calculation that is not about you personally and is entirely about you professionally: you brought the negotiation approach, the negotiation approach failed, and the people who failed to eat are his responsibility. He sends a messenger to the Saints checkpoint. The message is about your location. The Saints appreciate the information. You find out what Roan did the same way you find out most things in the tunnels: by the absence of a door where you expected one.`,
-    effectsOnEnter: { setFlags: ['roan_betrayal_complete'], ironSaints: 10, morale: -25, cainTrust: -5 },
+    effectsOnEnter: { setFlags: ['roan_betrayal_complete'], ironSaints: 10, morale: -20, cainTrust: -5 },
     choices: [],
     isEnding: true,
     endingId: 'ending_ch8_roan_betrayal',
@@ -2227,8 +2255,8 @@ export const CHAPTER_8_NODES: StoryNode[] = [
     title: 'The Militia Goes Too Far',
     location: 'The Siege Tunnels',
     imageKey: 'siege_tunnels',
-    text: `The supply corridor is open. The order to hold at the junction is not given, or is given and not followed, in the specific way that happens when nineteen days of hunger and a successful engagement combine in forty-three people who have been angry longer than they have been disciplined. The Saints' reserve battalion withdraws — the correct tactical response. What the militia loses is the specific quality that made it trustworthy: the restraint Roan spent nineteen days maintaining. The tunnel network hears what happened in the supply corridor. The Hollow Children do not send another delegation to the ration square. Chalk's expression, when you next see her, is the expression of someone who has updated their information and does not like the update.`,
-    effectsOnEnter: { setFlags: ['militia_massacre_occurred'], ironSaints: -30, hollowChildren: -20, morale: -20, corruption: 8 },
+    text: `The supply corridor is open. The order to hold at the junction is not given, or is given and not followed, in the particular way that happens when nineteen days of hunger and a successful engagement combine in forty-three people who have been angry longer than they have been disciplined. The Saints' reserve battalion withdraws — the correct tactical response. What the militia loses is the specific quality that made it trustworthy: the restraint Roan spent nineteen days maintaining. The tunnel network hears what happened in the supply corridor. The Hollow Children do not send another delegation to the ration square. Chalk's expression, when you next see her, is the face of someone who has updated their information and does not like the update.`,
+    effectsOnEnter: { setFlags: ['militia_massacre_occurred'], ironSaints: -20, hollowChildren: -20, morale: -15, corruption: 8 },
     choices: [],
     isEnding: true,
     endingId: 'ending_ch8_militia_massacre',
@@ -2242,7 +2270,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
     location: 'The Dead Orchard',
     imageKey: 'dead_orchard',
     text: `The grow lights will not activate without the bacterial culture. The bacterial culture requires the Archive, and the Archive requires access you do not currently have or time you do not have. The Dead Orchard stays dark. The infrastructure is intact — Dever confirms this methodically before you leave — and the mark's recognition response means the grow lights are accessible in principle. Two hundred and forty people in the famine camp eat the last of their reserves while the orchard sits dark two levels below them, intact, waiting for someone to bring what it needs. The Hunger War's resolution, when it comes, will have to find a different route.`,
-    effectsOnEnter: { setFlags: ['dead_orchard_failed'], morale: -20, lastArchive: -5 },
+    effectsOnEnter: { setFlags: ['dead_orchard_failed'], morale: -15, lastArchive: -5 },
     choices: [],
     isEnding: true,
     endingId: 'ending_ch8_dead_orchard',
@@ -2269,8 +2297,8 @@ export const CHAPTER_8_NODES: StoryNode[] = [
     title: 'Starving Savior',
     location: 'The Starving Bridge',
     imageKey: 'starving_bridge',
-    text: `The coalition forms. Not cleanly — coalitions never form cleanly — but functionally: Roan's militia manages the Grain Vault distribution, the Hollow Children's network handles the Level 6 supply routes, Juno's clinic receives consistent medicine from a collective sourcing arrangement nobody completely controls, and the Dead Orchard's restoration timeline is public documentation that anyone can read. The cost of the coalition is what it always is: you spend what you had to spend to make it happen. The mark is tired in the specific way that the mark gets tired when it has been doing more than it was designed to do alone. The Savior route is not a destination. It is a direction. The direction is set.`,
-    effectsOnEnter: { setFlags: ['game_complete', 'savior_route_foundation', 'savior_coalition_formed', 'chapter8_savior_complete'], morale: 20, hollowChildren: 25, lastArchive: 15 },
+    text: `The coalition forms. Not cleanly — coalitions never form cleanly — but functionally: Roan's militia manages the Grain Vault distribution, the Hollow Children's network handles the Level 6 supply routes, Juno's clinic receives consistent medicine from a collective sourcing arrangement nobody completely controls, and the Dead Orchard's restoration timeline is public documentation that anyone can read. The cost of the coalition is what it always is: you spend what you had to spend to make it happen. The mark is tired in the particular way that the mark gets tired when it has been doing more than it was designed to do alone. The Savior route is not a destination. It is a direction. The direction is set.`,
+    effectsOnEnter: { setFlags: ['game_complete', 'savior_route_foundation', 'savior_coalition_formed', 'chapter8_savior_complete'], morale: 20, hollowChildren: 20, lastArchive: 10 },
     choices: [],
     isEnding: true,
     endingId: 'ending_ch8_starving_savior',
@@ -2284,7 +2312,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
     location: 'The Starving Bridge',
     imageKey: 'starving_bridge',
     text: `You control the supply. Not through faction authority — through the combination of the gate card, the mark's access to the relic-adjacent systems, and the willingness to make decisions that others are not willing to make. The Grain Vault's distribution schedule is yours. The aqueduct's flow is contingent on the mark. The Dead Orchard's grow lights answer the mark's interface. This is not theoretical power — it is operational power, the kind that produces compliance because the alternative is no food and no water. Veyra adapts. Seraphine negotiates. Roan follows because his people eat. The Hollow Children eat because you let them. The Tyrant path is maintained by force of resource control, which wears things down slowly rather than all at once.`,
-    effectsOnEnter: { setFlags: ['tyrant_route_foundation', 'supply_control_achieved', 'chapter8_tyrant_complete'], corruption: 10, morale: -20, ironSaints: -15, glassCourt: -15, hollowChildren: 10 },
+    effectsOnEnter: { setFlags: ['tyrant_route_foundation', 'supply_control_achieved', 'chapter8_tyrant_complete'], corruption: 10, morale: -15, ironSaints: -15, glassCourt: -15, hollowChildren: 10 },
     choices: [],
     isEnding: true,
     endingId: 'ending_ch8_ration_tyrant',
@@ -2298,7 +2326,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
     location: 'The Bone Soup Kitchen',
     imageKey: 'bone_soup_kitchen',
     text: `Eleven days. On day twelve, the Kitchen's supply runs short again — the compound's satiation effect has acclimatised to the population's physiology and the extension is no longer eleven days, it is eight, and then six, and the dose requires incremental adjustment. Veyl is present for every adjustment, making each one with the same professional precision she brought to the first. The Kitchen is now producing Red Choir nutritional infrastructure at a scale the Choir has not previously operated in the tunnel network. Two hundred and forty people in the famine camp are experiencing mild broadcast-frequency attunement. The Kitchen keeps running. The Choir's reach extends as far as the Kitchen's queue.`,
-    effectsOnEnter: { setFlags: ['choir_dependency_established', 'choir_kitchen_control'], redChoir: 30, corruption: 10, hollowChildren: 5, morale: -10 },
+    effectsOnEnter: { setFlags: ['choir_dependency_established', 'choir_kitchen_control'], redChoir: 20, corruption: 10, hollowChildren: 5, morale: -10 },
     choices: [],
     isEnding: true,
     endingId: 'ending_ch8_choir_dependency',
@@ -2326,7 +2354,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
     location: 'The Starving Bridge',
     imageKey: 'starving_bridge',
     text: `The coalition does not form. The crowd disperses. Seraphine's documentation table gets signed by a portion of the people who were watching, because Seraphine is efficient and they are hungry and the Glass Court's humanitarian supply arrives whether or not anyone thinks the terms are fair. Veyra's checkpoint remains. Roan's militia holds Level 7 East. The Hollow Children's situation is what it was before the Bridge. The scattered survivors — the people who chose neither side and must navigate between — are the majority of the tunnel network's population. They are not broken. They are scattered. Scattered is survivable, mostly.`,
-    effectsOnEnter: { setFlags: ['game_complete', 'coalition_scattered'], glassCourt: 15, morale: -20, hollowChildren: -10 },
+    effectsOnEnter: { setFlags: ['game_complete', 'coalition_scattered'], glassCourt: 15, morale: -15, hollowChildren: -10 },
     choices: [],
     isEnding: true,
     endingId: 'ending_ch8_scattered_survivors',
@@ -2354,7 +2382,7 @@ export const CHAPTER_8_NODES: StoryNode[] = [
     location: 'The Grain Vault',
     imageKey: 'grain_vault',
     text: `The document Veyra provides authorises access to Level 5 water distribution. The Level 5 water is sourced from a reservoir that three weeks ago developed slow contamination from a pipe joint failure in the Saints' chemical storage corridor — a failure that Veyra's maintenance division was notified of and classified as "within acceptable parameters for short-term use." The water is not immediately dangerous. It is dangerous over three weeks, which is the timeline the document authorises. The people who drink it develop the specific illness that "acceptable parameters for short-term use" produces when short-term becomes long-term because the repair is never prioritised. Veyra's parameters are correct. Correct in a way that causes harm, which is the most effective kind of correctness for producing harm without accountability.`,
-    effectsOnEnter: { setFlags: ['water_poison_distributed'], ironSaints: -30, health: -20, morale: -25, hollowChildren: -15 },
+    effectsOnEnter: { setFlags: ['water_poison_distributed'], ironSaints: -20, health: -15, morale: -20, hollowChildren: -15 },
     choices: [],
     isEnding: true,
     endingId: 'ending_ch8_water_poison',

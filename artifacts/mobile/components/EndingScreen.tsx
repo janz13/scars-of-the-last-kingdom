@@ -299,21 +299,37 @@ export default function EndingScreen() {
                 />
               </>
             ) : isDeath ? (
-              <EndingButton
-                label="START NEW TIMELINE"
-                icon="refresh-cw"
-                color={accentColor}
-                onPress={() => deleteAndReset()}
-                primary
-              />
+              <>
+                <EndingButton
+                  label="START NEW TIMELINE"
+                  icon="refresh-cw"
+                  color={accentColor}
+                  onPress={() => deleteAndReset()}
+                  primary
+                />
+                <EndingButton
+                  label="VIEW ROUTE CODEX"
+                  icon="compass"
+                  color="#1abc9c"
+                  onPress={() => setScreen('routeCodex')}
+                />
+              </>
             ) : (
-              <EndingButton
-                label="START NEW TIMELINE"
-                icon="refresh-cw"
-                color={accentColor}
-                onPress={() => deleteAndReset()}
-                primary
-              />
+              <>
+                <EndingButton
+                  label="START NEW TIMELINE"
+                  icon="refresh-cw"
+                  color={accentColor}
+                  onPress={() => deleteAndReset()}
+                  primary
+                />
+                <EndingButton
+                  label="VIEW ROUTE CODEX"
+                  icon="compass"
+                  color="#1abc9c"
+                  onPress={() => setScreen('routeCodex')}
+                />
+              </>
             )}
 
             <EndingButton

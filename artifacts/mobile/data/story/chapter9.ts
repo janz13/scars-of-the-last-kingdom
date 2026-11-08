@@ -180,7 +180,7 @@ export const CHAPTER_9_NODES: StoryNode[] = [
     location: 'The Relic Scar',
     imageKey: 'relic_scar',
     text: `The seam is two millimetres wide and perfectly continuous — the kind of precision that requires either extraordinary skill or extraordinary machines. The surface material on either side resolves, when examined carefully, into a protocol statement: this interface authenticates by mark resonance, not mechanical key. There is a preferred contact point at chest height. The Heir was right — the system has been waiting for this specific conversation.`,
-    effectsOnEnter: { setFlags: ['scar_door_examined'], intelligence: 3 },
+    effectsOnEnter: { setFlags: ['scar_door_examined'], intelligence: 2 },
     choices: [
       {
         id: 'c9_scar_door_interface_attempt',
@@ -232,7 +232,7 @@ export const CHAPTER_9_NODES: StoryNode[] = [
         nextNode: 'c9_scar_door_agility_dice',
         diceCheck: {
           stat: 'agility',
-          difficulty: 14,
+          difficulty: 13,
           diceType: 'd20',
           successNode: 'c9_scar_door_opened',
           failureNode: 'c9_scar_door_backlash',
@@ -389,7 +389,7 @@ export const CHAPTER_9_NODES: StoryNode[] = [
     title: 'The Exit',
     location: 'The Relic Scar',
     imageKey: 'relic_scar',
-    text: `Varr does not pursue. He remains at the Scar with the expression of someone who has learned that pursuing the marked is a good way to make the thing he is trying to study functionally hostile. The corridor back to Level 7 is clear. The mark has settled — not cold, not warm, but present in the specific way of something demonstrated and now waiting. Nineteen names. One current. Fourteen lost. The system produces interfaces until the Last Gate is opened. You do not know what that means yet.`,
+    text: `Varr does not pursue. He remains at the Scar with the face of someone who has learned that pursuing the marked is a good way to make the thing he is trying to study functionally hostile. The corridor back to Level 7 is clear. The mark has settled — not cold, not warm, but present in the particular way of something demonstrated and now waiting. Nineteen names. One current. Fourteen lost. The system produces interfaces until the Last Gate is opened. You do not know what that means yet.`,
     effectsOnEnter: { setFlags: ['varr_escaped'], morale: 2 },
     choices: [
       {
@@ -466,7 +466,7 @@ export const CHAPTER_9_NODES: StoryNode[] = [
     location: 'The Machine Graveyard',
     imageKey: 'machine_graveyard',
     text: `The cars have internal power — low, but continuous. Their identification panels show the same date: the night of the blackout. All eight registered their last service position at 23:47, two minutes before the city lost power. The mark finds a network protocol operating between them — not transit logic, not cargo scheduling. Something closer to memory-maintenance: the cars have been keeping a record of three years of silence, event by event, in a language that requires the mark to read.`,
-    effectsOnEnter: { setFlags: ['machine_network_surveyed'], intelligence: 3 },
+    effectsOnEnter: { setFlags: ['machine_network_surveyed'], intelligence: 2 },
     choices: [
       {
         id: 'c9_machine_contact_from_survey',
@@ -501,7 +501,7 @@ export const CHAPTER_9_NODES: StoryNode[] = [
     location: 'The Machine Graveyard',
     imageKey: 'machine_graveyard',
     text: `Contact with the first car's hull establishes a mark-to-network channel within three seconds. The network's response is not hostile — it is relieved, in the way machines can approximate relief: reduced overhead processes, faster response cycles, a measurable decrease in maintenance protocols running continuously for three years. The network broadcasts a status report. Three years of silent observation: twelve thousand pedestrian movements, four hundred mark-bearing individuals, and one event it has been waiting to report for thirty-seven months.`,
-    effectsOnEnter: { setFlags: ['machine_contact_established'], intelligence: 3 },
+    effectsOnEnter: { setFlags: ['machine_contact_established'], intelligence: 2 },
     choices: [
       {
         id: 'c9_machine_read_event',
@@ -549,7 +549,7 @@ export const CHAPTER_9_NODES: StoryNode[] = [
         nextNode: 'c9_machine_control_dice',
         diceCheck: {
           stat: 'intelligence',
-          difficulty: 15,
+          difficulty: 13,
           diceType: 'd20',
           successNode: 'c9_machine_network_accessed',
           failureNode: 'c9_machine_absorbed_end',
@@ -596,7 +596,7 @@ export const CHAPTER_9_NODES: StoryNode[] = [
     location: 'The Machine Graveyard',
     imageKey: 'machine_graveyard',
     text: `The cars power down to standby as you leave — not the dormancy of abandonment, but the standby of a completed task. They have been waiting three years to tell someone. You are the first someone qualified to hear it. The question of what "taken" means remains open. The question of what you were doing the night of the blackout — what your mark was doing — is now the same question.`,
-    effectsOnEnter: { setFlags: ['machine_graveyard_complete'], intelligence: 3 },
+    effectsOnEnter: { setFlags: ['machine_graveyard_complete'], intelligence: 2 },
     choices: [
       {
         id: 'c9_graveyard_to_shrine',
@@ -627,13 +627,13 @@ export const CHAPTER_9_NODES: StoryNode[] = [
     location: 'The Marked Shrine',
     imageKey: 'marked_shrine',
     text: `Someone has been keeping records of the marked. The Shrine is in a decommissioned maintenance alcove on Level 6 — a space of deliberate care: nineteen photographs, nineteen hand-written accounts, a mark-impression in wax for each of the fourteen who failed, arranged chronologically. The photographs match the names from the Relic Scar terminal. The most recent photograph shows a location notation — this alcove — and was placed here three months ago. The Masked Heir.`,
-    effectsOnEnter: { setFlags: ['marked_shrine_arrived'], intelligence: 3, morale: -3 },
+    effectsOnEnter: { setFlags: ['marked_shrine_arrived'], intelligence: 2, morale: -3 },
     choices: [
       {
         id: 'c9_shrine_read_records',
         text: 'Read the accounts. Understand how they failed.',
         nextNode: 'c9_shrine_records_examine',
-        effects: { intelligence: 3 },
+        effects: { intelligence: 2 },
       },
       {
         id: 'c9_shrine_examine_marks_wax',
@@ -746,7 +746,7 @@ export const CHAPTER_9_NODES: StoryNode[] = [
         nextNode: 'c9_first_voice_charisma_dice',
         diceCheck: {
           stat: 'charisma',
-          difficulty: 14,
+          difficulty: 13,
           diceType: 'd20',
           successNode: 'c9_first_voice_resisted',
           failureNode: 'c9_first_voice_partial',
@@ -993,7 +993,7 @@ export const CHAPTER_9_NODES: StoryNode[] = [
         nextNode: 'c9_memory_storm_luck_dice',
         diceCheck: {
           stat: 'luck',
-          difficulty: 13,
+          difficulty: 12,
           diceType: 'd20',
           successNode: 'c9_memory_storm_survived',
           failureNode: 'c9_memory_collapse_end',
@@ -1066,13 +1066,13 @@ export const CHAPTER_9_NODES: StoryNode[] = [
     location: 'The Pulse Engine',
     imageKey: 'pulse_engine',
     text: `The Pulse Engine is a node in the relic infrastructure — a junction point where three of the original seven interface activations converge, producing a steady output the mark reads as rhythmic pressure. The chamber is below Level 11 and requires the mark to open, which it does automatically. The engine's output is at maintenance level: enough to sustain the city's remaining relic functions, not enough to do what it was designed to do. Activating it fully would amplify the mark's capabilities significantly. The amplification has costs.`,
-    effectsOnEnter: { setFlags: ['pulse_engine_arrived'], intelligence: 3 },
+    effectsOnEnter: { setFlags: ['pulse_engine_arrived'], intelligence: 2 },
     choices: [
       {
         id: 'c9_pulse_survey_choice',
         text: 'Survey the engine architecture before deciding how to use it.',
         nextNode: 'c9_pulse_survey',
-        effects: { intelligence: 3 },
+        effects: { intelligence: 2 },
       },
       {
         id: 'c9_pulse_protect_direct',
@@ -1168,7 +1168,7 @@ export const CHAPTER_9_NODES: StoryNode[] = [
         nextNode: 'c9_pulse_strength_dice',
         diceCheck: {
           stat: 'strength',
-          difficulty: 15,
+          difficulty: 13,
           diceType: 'd20',
           successNode: 'c9_pulse_engine_sealed',
           failureNode: 'c9_pulse_overload_end',
@@ -1242,7 +1242,7 @@ export const CHAPTER_9_NODES: StoryNode[] = [
     imageKey: 'rust_cathedral',
     speaker: 'Archivist Mael',
     text: `"Three days. The Archive told me you were in Level 7 and then stopped telling me things, which is how I knew you had found the Scar." He stands slowly and moves to the documents. "Varr is not your enemy. He is a man who spent three years asking the right questions in the wrong institution. He came to me when the Glass Court stopped answering him." He picks up the top document. "I need to tell you something about the Last Gate that the Archive's official documentation omits. I will tell you because Velna would have told you and she is not here to do it."`,
-    effectsOnEnter: { setFlags: ['mael_ch9_met'], intelligence: 3 },
+    effectsOnEnter: { setFlags: ['mael_ch9_met'], intelligence: 2 },
     choices: [
       {
         id: 'c9_mael_ask_gate',
@@ -1273,14 +1273,14 @@ export const CHAPTER_9_NODES: StoryNode[] = [
         text: '[Relic Hunter] "What class is the fragment? Interface architecture?"',
         nextNode: 'c9_mael_relic_hunter_response',
         requirements: { classes: ['relic_hunter'] },
-        effects: { intelligence: 3, relics: 1 },
+        effects: { intelligence: 2, relics: 1 },
       },
       {
         id: 'c9_mael_scholar_detail',
         text: '[Forgotten Scholar] "The locking mechanism — is this the city seal protocol?"',
         nextNode: 'c9_mael_scholar_response',
         requirements: { backgrounds: ['forgotten_scholar'] },
-        effects: { intelligence: 3, lastArchive: 5 },
+        effects: { intelligence: 2, lastArchive: 5 },
       },
       {
         id: 'c9_mael_standard_proceed',
@@ -1414,7 +1414,7 @@ export const CHAPTER_9_NODES: StoryNode[] = [
         nextNode: 'c9_cain_standoff_dice',
         diceCheck: {
           stat: 'charisma',
-          difficulty: 15,
+          difficulty: 13,
           diceType: 'd20',
           successNode: 'c9_cain_backs_down',
           failureNode: 'c9_cain_executes_end',
@@ -1600,7 +1600,7 @@ export const CHAPTER_9_NODES: StoryNode[] = [
         nextNode: 'c9_tram_repair_dice',
         diceCheck: {
           stat: 'intelligence',
-          difficulty: 14,
+          difficulty: 13,
           diceType: 'd20',
           successNode: 'c9_tram_repaired',
           failureNode: 'c9_tram_collapse_end',
@@ -1616,7 +1616,7 @@ export const CHAPTER_9_NODES: StoryNode[] = [
     location: 'The Broken Tram Core',
     imageKey: 'broken_tram_core',
     text: `The junction activates in sequence. Three surviving operational tram cars begin their first movement in three years on routes that now connect to actual destinations. The Glass Court's controlled access modification is nullified. In four hours, approximately four hundred tunnel residents who normally take the Level 9 maintenance route will find the Level 7 tram running. They will not know why. The mark registers the infrastructure improvement as a correction — the system appreciating a function restored to its intended state.`,
-    effectsOnEnter: { setFlags: ['broken_tram_repaired'], morale: 8, glassCourt: -5, hollowChildren: 5, intelligence: 3 },
+    effectsOnEnter: { setFlags: ['broken_tram_repaired'], morale: 8, glassCourt: -5, hollowChildren: 5, intelligence: 2 },
     choices: [
       {
         id: 'c9_tram_forward',
@@ -1678,7 +1678,7 @@ export const CHAPTER_9_NODES: StoryNode[] = [
         id: 'c9_tower_survey_nodes',
         text: 'Survey the broadcast nodes before engaging the Voice.',
         nextNode: 'c9_tower_survey',
-        effects: { intelligence: 3 },
+        effects: { intelligence: 2 },
       },
       {
         id: 'c9_tower_voice_direct',
@@ -1750,7 +1750,7 @@ export const CHAPTER_9_NODES: StoryNode[] = [
     title: 'The Gift',
     location: 'The Old Signal Tower',
     imageKey: 'old_signal_tower',
-    text: `The acceptance is immediate and total. The Voice does not take anything — it receives what you offer: the mark's full channel, the corruption gradient at completion, and the specific frequency the system uses for the final interface activation. The broadcast array cycles once at maximum output. Every person in the tunnel network with proximity to a relic-adjacent surface feels something for approximately three seconds — not pain, not ecstasy, but recognition. The current active interface is complete. The Last Gate opens. You are not there to see what is on the other side, because you are no longer there.`,
+    text: `The acceptance is immediate and total. The Voice does not take anything — it receives what you offer: the mark's full channel, the corruption gradient at completion, and the particular frequency the system uses for the final interface activation. The broadcast array cycles once at maximum output. Every person in the tunnel network with proximity to a relic-adjacent surface feels something for approximately three seconds — not pain, not ecstasy, but recognition. The current active interface is complete. The Last Gate opens. You are not there to see what is on the other side, because you are no longer there.`,
     effectsOnEnter: { setFlags: ['game_complete', 'first_voice_merge_complete'] },
     choices: [],
     isEnding: true,
@@ -1773,7 +1773,7 @@ export const CHAPTER_9_NODES: StoryNode[] = [
         nextNode: 'c9_tower_agility_destroy_dice',
         diceCheck: {
           stat: 'agility',
-          difficulty: 15,
+          difficulty: 13,
           diceType: 'd20',
           successNode: 'c9_tower_broadcast_destroyed',
           failureNode: 'c9_tower_fail_end',
@@ -1820,7 +1820,7 @@ export const CHAPTER_9_NODES: StoryNode[] = [
     location: 'The Old Signal Tower',
     imageKey: 'old_signal_tower',
     speaker: 'Mira',
-    text: `She came ahead. She read the Archive's monitor logs — same logs Cain read — and came to the tower before you because she has a different theory about what to do when someone you care about is in the middle of something that might end them. Her theory is: be there. "The Voice is using your frequency," she says, standing at the array's central node with a medical pack and the expression of someone who has decided to try something with low probability of working. "I've been researching mark-frequency suppression since the Glass Court access. I think I can close the channel from the outside if you hold the frequency steady."`,
+    text: `She came ahead. She read the Archive's monitor logs — same logs Cain read — and came to the tower before you because she has a different theory about what to do when someone you care about is in the middle of something that might end them. Her theory is: be there. "The Voice is using your frequency," she says, standing at the array's central node with a medical pack and the face of someone who has decided to try something with low probability of working. "I've been researching mark-frequency suppression since the Glass Court access. I think I can close the channel from the outside if you hold the frequency steady."`,
     effectsOnEnter: { setFlags: ['mira_tower_present', 'mira_mark_conflict'], miraTrust: 5 },
     choices: [
       {
@@ -1876,7 +1876,7 @@ export const CHAPTER_9_NODES: StoryNode[] = [
         id: 'c9_garden_survey_choice',
         text: 'Read the garden carefully. Understand before proceeding.',
         nextNode: 'c9_garden_survey',
-        effects: { intelligence: 3 },
+        effects: { intelligence: 2 },
       },
       {
         id: 'c9_garden_courier_path',
@@ -2018,7 +2018,7 @@ export const CHAPTER_9_NODES: StoryNode[] = [
     title: 'Mira',
     location: 'The Corruption Garden',
     imageKey: 'corruption_garden',
-    text: `She walks you out. Not dramatically — with the specific calm of a person who has rehearsed this response to an emergency and is implementing the rehearsal. The Garden's convergence pressure drops with each metre of distance. By the time you reach the exit corridor, the fourteen frequencies have reduced to background level. She doesn't let go of your hand until you are through the exit. Then she examines the mark, professional and careful. "It's still you," she says. Not a medical assessment. Something else.`,
+    text: `She walks you out. Not dramatically — with the particular calm of a person who has rehearsed this response to an emergency and is implementing the rehearsal. The Garden's convergence pressure drops with each metre of distance. By the time you reach the exit corridor, the fourteen frequencies have reduced to background level. She doesn't let go of your hand until you are through the exit. Then she examines the mark, professional and careful. "It's still you," she says. Not a medical assessment. Something else.`,
     effectsOnEnter: { setFlags: ['game_complete', 'mira_saves_ch9'] },
     choices: [],
     isEnding: true,
@@ -2066,13 +2066,13 @@ export const CHAPTER_9_NODES: StoryNode[] = [
     location: 'The Gate Fragment Chamber',
     imageKey: 'gate_fragment_chamber',
     text: `Three levels below the Rust Cathedral. The Chamber is small — four metres square — and contains only the fragment: a piece of pre-collapse material approximately the size of a closed fist, resting in a suspension field the mark reads as: active, waiting, evaluating. The material has the same quality as the Scar wall but denser, older, and aware. The fragment is aware. Not sentient in the human sense — functionally aware, the way a lock is aware of the specific key that opens it. The lock recognises you. The lock is deciding whether you are the right version of the key.`,
-    effectsOnEnter: { setFlags: ['gate_fragment_arrived'], intelligence: 3 },
+    effectsOnEnter: { setFlags: ['gate_fragment_arrived'], intelligence: 2 },
     choices: [
       {
         id: 'c9_fragment_examine',
         text: 'Examine the fragment before contact. Understand its evaluation criteria.',
         nextNode: 'c9_gate_fragment_examine',
-        effects: { intelligence: 3 },
+        effects: { intelligence: 2 },
       },
       {
         id: 'c9_fragment_direct_contact',
@@ -2145,7 +2145,7 @@ export const CHAPTER_9_NODES: StoryNode[] = [
         nextNode: 'c9_gate_fragment_interface',
         diceCheck: {
           stat: 'intelligence',
-          difficulty: 16,
+          difficulty: 14,
           diceType: 'd20',
           successNode: 'c9_gate_fragment_acquired',
           failureNode: 'c9_gate_fragment_fail',
@@ -2189,7 +2189,7 @@ export const CHAPTER_9_NODES: StoryNode[] = [
     location: 'The Gate Fragment Chamber',
     imageKey: 'gate_fragment_chamber',
     text: `The fragment's evaluation finds something that does not pass. The suspension field intensifies — not as a rejection of the bearer but as a protection of the fragment from the bearer's current state. The specific thing the evaluation found is not communicated directly; the mark receives only the result: not yet. The fragment remains in suspension. The intent assessment found a discrepancy between the stated purpose and the decision record.`,
-    effectsOnEnter: { setFlags: ['gate_fragment_failed'], morale: -8, intelligence: 3 },
+    effectsOnEnter: { setFlags: ['gate_fragment_failed'], morale: -8, intelligence: 2 },
     choices: [
       {
         id: 'c9_fragment_fail_forward',
@@ -2234,7 +2234,7 @@ export const CHAPTER_9_NODES: StoryNode[] = [
         text: '[Fallen Noble] You remember more than others. The Dream comes easier.',
         nextNode: 'c9_dream_noble_path',
         requirements: { backgrounds: ['fallen_noble'] },
-        effects: { intelligence: 3 },
+        effects: { intelligence: 2 },
       },
       {
         id: 'c9_dream_experiment_choice',
@@ -2552,7 +2552,7 @@ export const CHAPTER_9_NODES: StoryNode[] = [
     title: 'The Mark Settles',
     location: 'The Relic Scar',
     imageKey: 'relic_scar',
-    text: `The awakening ends where it began: in the maintenance corridor, the Relic Scar's exposed wall at your back. The mark is fully awake now — not the warmth of potential but the specific heat of function. Nineteen names. Fourteen lost. Four still operating somewhere in the city by the machine network's record. One current active interface. The Last Gate requires your mark to open. The entity below the city knows your pre-blackout name. The First Voice has a third attempt queued. Cain will stay unless he has to leave. Mira is keeping her log. The gate fragment is in your possession, or it is not, and the entity and the Voice each know which. Next: the companions, and what the awakening cost them. The mark is warm. Begin.`,
+    text: `The awakening ends where it began: in the maintenance corridor, the Relic Scar's exposed wall at your back. The mark is fully awake now — not the warmth of potential but the unmistakable heat of function. Nineteen names. Fourteen lost. Four still operating somewhere in the city by the machine network's record. One current active interface. The Last Gate requires your mark to open. The entity below the city knows your pre-blackout name. The First Voice has a third attempt queued. Cain will stay unless he has to leave. Mira is keeping her log. The gate fragment is in your possession, or it is not, and the entity and the Voice each know which. Next: the companions, and what the awakening cost them. The mark is warm. Begin.`,
     effectsOnEnter: { setFlags: ['chapter9_complete'], morale: 3 },
     choices: [
       {
@@ -2573,7 +2573,7 @@ export const CHAPTER_9_NODES: StoryNode[] = [
     imageKey: 'marked_shrine',
     speaker: 'The Masked Heir',
     text: `They return to the Shrine while you are still reading. "You went to the Scar door first. Good." They examine your corruption reading without asking permission — the same direct assessment they applied to their own mark earlier. "Below the threshold that concerned Lyse at this stage. A meaningful distinction." They sit near the records. "The fragment will evaluate you on intention rather than outcome. The system was designed by someone who believed that the intent behind a mark-use is as structurally significant as the use itself. Whether they were right is something you will find out in the Chamber."`,
-    effectsOnEnter: { setFlags: ['heir_second_meeting'], intelligence: 3 },
+    effectsOnEnter: { setFlags: ['heir_second_meeting'], intelligence: 2 },
     choices: [
       {
         id: 'c9_heir_second_forward',

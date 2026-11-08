@@ -13,7 +13,7 @@ const _summary = getStorySummary();
 const FOOTER_STATS = `${_summary.totalNodes} NODES  ·  ${ENDINGS.length} ENDINGS  ·  ${CLASSES.length} CLASSES`;
 
 export default function MainMenu() {
-  const { hasActiveGame, continueGame, setScreen, state } = useGame();
+  const { hasSaveGame, continueGame, setScreen, state } = useGame();
   const insets = useSafeAreaInsets();
   const topPad = Platform.OS === 'web' ? 67 : insets.top;
   const botPad = Platform.OS === 'web' ? 34 : insets.bottom;
@@ -33,9 +33,10 @@ export default function MainMenu() {
 
   const btnAnims = [btn0, btn1, btn2, btn3, btn4, btn5, btn6, btn7];
 
-  const discovered = state.endingsDiscovered.length;
+  const discovered = state.endingsDiscovered.filter(id => id !== 'chapter1_end').length;
   const total = ENDINGS.length;
   const discoveredPct = total > 0 ? Math.round((discovered / total) * 100) : 0;
+  const endingsBarColor = discoveredPct >= 80 ? '#c9a84c' : discoveredPct >= 40 ? '#27ae60' : '#9b59b6';
 
   useEffect(() => {
     Animated.parallel([
@@ -105,32 +106,47 @@ export default function MainMenu() {
 
         {/* Buttons */}
         <View style={styles.buttons}>
-          <AnimatedMenuButton
-            anim={nextAnim()}
-            label="START NEW TIMELINE"
-            icon="play"
-            color="#9b59b6"
-            onPress={() => setScreen('characterCreator')}
-          />
-
-          {hasActiveGame && (
+          {hasSaveGame && (
             <AnimatedMenuButton
               anim={nextAnim()}
               label="CONTINUE JOURNEY"
               icon="rotate-cw"
               color="#e67e22"
               onPress={() => continueGame()}
+              primary
             />
           )}
 
           <AnimatedMenuButton
             anim={nextAnim()}
-            label={`ENDINGS  ${discovered} / ${total}  (${discoveredPct}%)`}
-            icon="book"
-            color={discovered > 0 ? '#c9a84c' : '#3a3040'}
-            onPress={() => setScreen('ending')}
-            dimmed={discovered === 0}
+            label={hasSaveGame ? 'START NEW TIMELINE' : 'BEGIN YOUR JOURNEY'}
+            icon="play"
+            color="#9b59b6"
+            onPress={() => setScreen('characterCreator')}
+            primary={!hasSaveGame}
           />
+
+          {/* Endings discovery card */}
+          <Animated.View style={{ opacity: nextAnim() }}>
+            <Pressable style={styles.endingsCard} onPress={() => setScreen('ending')}>
+              <View style={styles.endingsCardLeft}>
+                <Feather name="book-open" size={16} color={endingsBarColor} />
+                <View style={{ flex: 1 }}>
+                  <Text style={[styles.endingsCardLabel, { color: endingsBarColor }]}>
+                    ENDINGS DISCOVERED
+                  </Text>
+                  <Text style={styles.endingsCardNum}>
+                    {discovered}<Text style={styles.endingsCardDenom}>/{total}</Text>
+                    <Text style={[styles.endingsCardPct, { color: endingsBarColor }]}>  {discoveredPct}%</Text>
+                  </Text>
+                </View>
+              </View>
+              <View style={styles.endingsBarTrack}>
+                <View style={[styles.endingsBarFill, { width: `${discoveredPct}%` as any, backgroundColor: endingsBarColor }]} />
+              </View>
+              <Feather name="chevron-right" size={14} color={`${endingsBarColor}55`} />
+            </Pressable>
+          </Animated.View>
 
           <AnimatedMenuButton
             anim={nextAnim()}
@@ -180,9 +196,10 @@ interface MenuButtonProps {
   color: string;
   onPress: () => void;
   dimmed?: boolean;
+  primary?: boolean;
 }
 
-function AnimatedMenuButton({ anim, label, icon, color, onPress, dimmed }: MenuButtonProps) {
+function AnimatedMenuButton({ anim, label, icon, color, onPress, dimmed, primary }: MenuButtonProps) {
   const pressScale = useRef(new Animated.Value(1)).current;
 
   const onPressIn = () => {
@@ -206,8 +223,9 @@ function AnimatedMenuButton({ anim, label, icon, color, onPress, dimmed }: MenuB
       <Pressable
         style={[
           styles.menuBtn,
-          { borderColor: dimmed ? 'rgba(30,28,40,0.6)' : `${color}33` },
+          { borderColor: dimmed ? 'rgba(30,28,40,0.6)' : primary ? `${color}55` : `${color}33` },
           dimmed && styles.menuBtnDimmed,
+          primary && styles.menuBtnPrimary,
         ]}
         onPress={dimmed ? undefined : onPress}
         onPressIn={onPressIn}
@@ -215,7 +233,7 @@ function AnimatedMenuButton({ anim, label, icon, color, onPress, dimmed }: MenuB
       >
         <View style={[styles.menuBtnAccent, { backgroundColor: dimmed ? '#2a2838' : color }]} />
         <Feather name={icon as any} size={15} color={dimmed ? '#2a2838' : color} />
-        <Text style={[styles.menuBtnLabel, dimmed && styles.menuBtnLabelDimmed]}>
+        <Text style={[styles.menuBtnLabel, dimmed && styles.menuBtnLabelDimmed, primary && styles.menuBtnLabelPrimary]}>
           {label}
         </Text>
         <Feather name="chevron-right" size={13} color={dimmed ? '#2a2838' : `${color}55`} />
@@ -339,6 +357,10 @@ const styles = StyleSheet.create({
   menuBtnDimmed: {
     backgroundColor: 'rgba(6,4,12,0.6)',
   },
+  menuBtnPrimary: {
+    backgroundColor: 'rgba(8,5,18,0.95)',
+    borderWidth: 1.5,
+  },
   menuBtnAccent: {
     position: 'absolute',
     left: 0,
@@ -356,6 +378,62 @@ const styles = StyleSheet.create({
   },
   menuBtnLabelDimmed: {
     color: '#2a2838',
+  },
+  menuBtnLabelPrimary: {
+    fontSize: 12,
+    letterSpacing: 3.5,
+  },
+
+  // Endings discovery card
+  endingsCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(42,40,58,0.5)',
+    borderRadius: 3,
+    paddingHorizontal: 14,
+    paddingVertical: 13,
+    backgroundColor: 'rgba(8,5,18,0.85)',
+    gap: 12,
+  },
+  endingsCardLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    flex: 1,
+  },
+  endingsCardLabel: {
+    fontSize: 9,
+    letterSpacing: 2,
+    fontFamily: 'Inter_600SemiBold',
+    marginBottom: 2,
+  },
+  endingsCardNum: {
+    fontSize: 18,
+    color: '#d4c5a9',
+    fontFamily: 'Inter_700Bold',
+  },
+  endingsCardDenom: {
+    fontSize: 12,
+    color: '#4a4058',
+    fontFamily: 'Inter_400Regular',
+  },
+  endingsCardPct: {
+    fontSize: 12,
+    fontFamily: 'Inter_600SemiBold',
+  },
+  endingsBarTrack: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 2.5,
+    backgroundColor: 'rgba(40,35,55,0.6)',
+  },
+  endingsBarFill: {
+    height: '100%',
+    borderBottomLeftRadius: 3,
+    borderBottomRightRadius: 3,
   },
 
   footer: {

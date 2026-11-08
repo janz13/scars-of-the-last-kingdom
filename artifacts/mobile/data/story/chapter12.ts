@@ -208,7 +208,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     title: 'The War Council',
     location: 'The War Council',
     imageKey: 'war_council',
-    text: `The civic building's hall was designed for civic meetings, which is what this is, technically. Five faction representatives, one table, the specific quality of a room where every person present has the authority to end the meeting with violence and is choosing not to, for now. Saint Veyra occupies the north seat. Lady Seraphine occupies the southeast position. Mother Veyl stands rather than sits. Archivist Mael is present but removed from the table. A representative of the Hollow Children — the first surface-seen member in three years — stands near the east wall. When you enter, the room reconfigures around your presence the way armed rooms reconfigure: subtly, and without appearing to.`,
+    text: `The civic building's hall was designed for civic meetings, which is what this is, technically. Five faction representatives, one table, the particular quality of a room where every person present has the authority to end the meeting with violence and is choosing not to, for now. Saint Veyra occupies the north seat. Lady Seraphine occupies the southeast position. Mother Veyl stands rather than sits. Archivist Mael is present but removed from the table. A representative of the Hollow Children — the first surface-seen member in three years — stands near the east wall. When you enter, the room reconfigures around your presence the way armed rooms reconfigure: subtly, and without appearing to.`,
     effectsOnEnter: { setFlags: ['war_council_entered'] },
     choices: [
       {
@@ -415,7 +415,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     title: 'The Burning Market',
     location: 'The Burning Market',
     imageKey: 'burning_market',
-    text: `The Burning Market earns its current name from the faction-colored fires at its perimeter, not from its contents. Inside the perimeter, the agreement holds: nothing faction-marked, nothing openly carried. The market is still operating because the people running it have survived eleven chapters of faction conflict by being more useful alive than dead. Information, medicine, food, and the specific currency of people who know where all five factions are moving at any given moment. The mark reads the market the way it reads the sub-city's housing block — as a space where people adapted to survive something that was not designed with them in mind.`,
+    text: `The Burning Market earns its current name from the faction-colored fires at its perimeter, not from its contents. Inside the perimeter, the agreement holds: nothing faction-marked, nothing openly carried. The market is still operating because the people running it have survived eleven chapters of faction conflict by being more useful alive than dead. Information, medicine, food, and the particular currency of people who know where all five factions are moving at any given moment. The mark reads the market the way it reads the sub-city's housing block — as a space where people adapted to survive something that was not designed with them in mind.`,
     effectsOnEnter: { setFlags: ['burning_market_entered'] },
     choices: [
       {
@@ -478,7 +478,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     location: 'The Burning Market',
     imageKey: 'burning_market',
     text: `The shadow broker network operates in the market the way it operates everywhere: through the specific language of people who know what they know and know what it costs. The four unconfirmed items, confirmed: Director Varr has defected from the Glass Court — or is performing a defection. Inquisitor Sera received orders from Veyra three hours ago that contradict the public crusade mandate. Archivist Mael has a failsafe for the Archive that none of the attacking factions know about. The Hollow Children's representative at the War Council was not authorized by the Hollow Children leadership — she acted unilaterally. Four data points, each of which changes one of the five faction approaches.`,
-    effectsOnEnter: { intelligence: 3, setFlags: ['shadow_network_accessed', 'varr_defection_known', 'sera_order_known', 'mael_failsafe_known', 'hollow_representative_unauthorized'] },
+    effectsOnEnter: { intelligence: 2, setFlags: ['shadow_network_accessed', 'varr_defection_known', 'sera_order_known', 'mael_failsafe_known', 'hollow_representative_unauthorized'] },
     choices: [
       {
         id: 'c12_shadow_to_route',
@@ -512,7 +512,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     title: 'Mother Chalk, Surface',
     location: 'The Burning Market',
     imageKey: 'burning_market',
-    text: `Mother Chalk has been above ground for six hours. She moves through the market the way she moved through the sub-city — as if the surface is an extension of what she has always been navigating, which it probably is. "The gate shifted when you left it," she says, without preamble. "Not open, not closed — held. The entity's departure protocol is processing. The mark knows this already." She is not wrong. "The city above is deciding the same thing the city below decided over three hundred years. What to do with something it cannot contain and cannot release." She offers a single piece of advice: "The Broken Throne is where it resolves. Everything else is the path toward it."`,
+    text: `Mother Chalk has been above ground for six hours. She moves through the market the way she moved through the sub-city — as if the surface is an extension of what she has always been navigating, which it probably is. "The gate shifted when you left it," she says, without preamble. "Not open, not closed — held. The entity's departure protocol is processing. The mark knows this already." She is not wrong. "The city above is deciding the same thing the city below decided over four hundred years. What to do with something it cannot contain and cannot release." She offers a single piece of advice: "The Broken Throne is where it resolves. Everything else is the path toward it."`,
     effectsOnEnter: { morale: 5, intelligence: 2, setFlags: ['chalk_surface_met', 'broken_throne_known'] },
     choices: [
       {
@@ -529,7 +529,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     title: 'What Mira Reads',
     location: 'The Burning Market',
     imageKey: 'burning_market',
-    text: `Mira reads the market the way she reads any space containing sick people — not clinically, but with the specific attention of someone who has spent eleven chapters watching what fear does to human physiology. "The market vendors have heightened cortisol markers. The faction scouts have suppressed anxiety responses — trained. The civilians have the physiological signature of people who have stopped expecting tomorrow." She pauses. "The Glass Court extraction device tests came back inconclusive. But the bearer who was tested is in Glass Court medical custody, and the market vendor who sold them black-market pain medication this morning said their hands don't work the same way anymore." The mark processes this as a threat rating.`,
+    text: `Mira reads the market the way she reads any space containing sick people — not clinically, but with the careful attention of someone who has spent eleven chapters watching what fear does to human physiology. "The market vendors have heightened cortisol markers. The faction scouts have suppressed anxiety responses — trained. The civilians have the physiological signature of people who have stopped expecting tomorrow." She pauses. "The Glass Court extraction device tests came back inconclusive. But the bearer who was tested is in Glass Court medical custody, and the market vendor who sold them black-market pain medication this morning said their hands don't work the same way anymore." The mark processes this as a threat rating.`,
     effectsOnEnter: { intelligence: 2, setFlags: ['mira_market_assessment'] },
     choices: [
       {
@@ -546,7 +546,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     title: 'A Familiar Movement',
     location: 'The Burning Market',
     imageKey: 'burning_market',
-    text: `The figure at the market's eastern edge moves the way the Masked Heir moved through the sub-city — with the specific economy of someone who has been trained not to draw attention and is therefore always the most visible person in the room. They are not masked. The sub-city apparently made that impossible to maintain. The face is: young, Glass Court bone structure, the eyes of someone who has been carrying a specific knowledge for a very long time and is deciding what to do with the weight of it. They see you see them. They do not leave. The Heir is above ground. The Heir is unmasked. The Heir is waiting.`,
+    text: `The figure at the market's eastern edge moves the way the Masked Heir moved through the sub-city — with the particular economy of someone who has been trained not to draw attention and is therefore always the most visible person in the room. They are not masked. The sub-city apparently made that impossible to maintain. The face is: young, Glass Court bone structure, the eyes of someone who has been carrying a specific knowledge for a very long time and is deciding what to do with the weight of it. They see you see them. They do not leave. The Heir is above ground. The Heir is unmasked. The Heir is waiting.`,
     effectsOnEnter: { setFlags: ['heir_surface_sighted', 'heir_unmasked'] },
     choices: [
       {
@@ -632,7 +632,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     title: 'Saint Veyra',
     location: 'The Saint Front',
     imageKey: 'saint_front',
-    text: `Saint Veyra is the Iron Saints in condensed form: the specific quality of someone who has convinced themselves that their certainty is a form of service. She is not cruel, exactly. She is thorough. The crusade mandate she issued three days ago is thorough. The kill order for marked individuals operating in the sub-city without Archive sanction is thorough. She looks at the mark on your wrist with the expression of someone whose documentation covers exactly this scenario and who finds the coverage professionally satisfying. "The sub-city investigation is complete," she says. "The Archive has been compromised at foundation level. The marked are vectors. This is not negotiable." She is waiting for your response.`,
+    text: `Saint Veyra is the Iron Saints in condensed form: the particular quality of someone who has convinced themselves that their certainty is a form of service. She is not cruel, exactly. She is thorough. The crusade mandate she issued three days ago is thorough. The kill order for marked individuals operating in the sub-city without Archive sanction is thorough. She looks at the mark on your wrist with the expression of someone whose documentation covers exactly this scenario and who finds the coverage professionally satisfying. "The sub-city investigation is complete," she says. "The Archive has been compromised at foundation level. The marked are vectors. This is not negotiable." She is waiting for your response.`,
     effectsOnEnter: { setFlags: ['veyra_confronted'] },
     choices: [
       {
@@ -713,7 +713,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     title: 'A Different Assessment',
     location: 'The Saint Front',
     imageKey: 'saint_front',
-    text: `Veyra watches the demonstration with the specific attention of someone revising a document in real time. The mark's physical coherence — the way the demonstration doesn't look like corruption, looks like something else entirely — creates a pause in the crusade mandate's application. "That is not what the mandate describes," she says, which is as close to acknowledgment as Veyra gets. The Saints around her do not stand down. But they stop advancing. The window is narrow.`,
+    text: `Veyra watches the demonstration with the particular attention of someone revising a document in real time. The mark's physical coherence — the way the demonstration doesn't look like corruption, looks like something else entirely — creates a pause in the crusade mandate's application. "That is not what the mandate describes," she says, which is as close to acknowledgment as Veyra gets. The Saints around her do not stand down. But they stop advancing. The window is narrow.`,
     effectsOnEnter: {},
     choices: [
       {
@@ -731,7 +731,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     location: 'The Saint Front',
     imageKey: 'saint_front',
     text: `The demonstration doesn't land. Not because it's wrong — because Veyra's institutional framework doesn't have room for evidence that contradicts the mandate's foundational premise. The Saints advance. The only available response is to move through them before the line closes. The path to Sera is through the front, not past it.`,
-    effectsOnEnter: { health: -20, ironSaints: -3 },
+    effectsOnEnter: { health: -15, ironSaints: -3 },
     choices: [
       {
         id: 'c12_strength_fail_push',
@@ -787,7 +787,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     title: 'Through the Front',
     location: 'The Saint Front',
     imageKey: 'saint_front',
-    text: `The Saint Front's battle-line is not a battle — it is a pressure architecture. Six fixed positions applying directional force toward the Archive's perimeter, with Sera's enforcement arm running the precision work. Moving through it is the specific kind of navigation that doesn't look like fighting and functions identically to fighting. The mark reads the Saints' formation the way it reads any built structure: as accumulated decision. The decisions accumulating here are about the Archive, not about you, which makes them navigable if not comfortable.`,
+    text: `The Saint Front's battle-line is not a battle — it is a pressure architecture. Six fixed positions applying directional force toward the Archive's perimeter, with Sera's enforcement arm running the precision work. Moving through it is the particular kind of navigation that doesn't look like fighting and functions identically to fighting. The mark reads the Saints' formation the way it reads any built structure: as accumulated decision. The decisions accumulating here are about the Archive, not about you, which makes them navigable if not comfortable.`,
     effectsOnEnter: { health: -10, setFlags: ['saint_front_navigated'] },
     choices: [
       {
@@ -929,7 +929,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     title: 'Lady Seraphine',
     location: 'The Glass Barricade',
     imageKey: 'glass_barricade',
-    text: `Lady Seraphine sees you before you reach her position. She has been watching the approaches for the last hour — watching everything, cataloguing it, placing it in the Glass Court's operational assessment with the specific efficiency of someone who has been doing this for decades. "The sub-city's gate event changed the mark's resonance profile," she says. Not as an accusation. As an observation. "The extraction device was calibrated against the pre-gate profile. The test three days ago was conducted against a bearer with an older mark." She looks at your wrist. "Your mark is different. The test data doesn't apply." She is offering information. The question is what she wants for it.`,
+    text: `Lady Seraphine sees you before you reach her position. She has been watching the approaches for the last hour — watching everything, cataloguing it, placing it in the Glass Court's operational assessment with the practiced efficiency of someone who has been doing this for decades. "The sub-city's gate event changed the mark's resonance profile," she says. Not as an accusation. As an observation. "The extraction device was calibrated against the pre-gate profile. The test three days ago was conducted against a bearer with an older mark." She looks at your wrist. "Your mark is different. The test data doesn't apply." She is offering information. The question is what she wants for it.`,
     effectsOnEnter: { intelligence: 2, setFlags: ['seraphine_met'] },
     choices: [
       {
@@ -959,7 +959,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     location: 'The Glass Barricade',
     imageKey: 'glass_barricade',
     text: `The extraction device at close range reads differently than it reads from the barricade perimeter. The mark processes it as a specific threat: not to life, but to coherence. The device is not designed to remove marks — it is designed to destabilize the mark's architectural integration. What it produces in a bearer is not mark removal. It is mark fragmentation. The bearer in Glass Court medical custody has a fragmented mark. Fragmented marks don't heal at the same rate. The device is a weapon with documented collateral damage. Seraphine knows this. Her question — what she wants — is what you'll do with that knowledge.`,
-    effectsOnEnter: { intelligence: 3, setFlags: ['extraction_device_assessed'] },
+    effectsOnEnter: { intelligence: 2, setFlags: ['extraction_device_assessed'] },
     choices: [
       {
         id: 'c12_device_int_dice',
@@ -1002,8 +1002,8 @@ export const CHAPTER_12_NODES: StoryNode[] = [
           successNode: 'c12_glass_int_success',
           failureNode: 'c12_glass_extraction_end',
           criticalSuccessNode: 'c12_glass_int_success',
-          successEffects: { intelligence: 3, setFlags: ['device_weakness_identified'] },
-          failureEffects: { corruption: 10, health: -20 },
+          successEffects: { intelligence: 2, setFlags: ['device_weakness_identified'] },
+          failureEffects: { corruption: 10, health: -15 },
         },
       },
     ],
@@ -1082,7 +1082,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     location: 'The Glass Barricade',
     imageKey: 'glass_barricade',
     text: `Mira examines the extraction device with the attention she gives everything that has done medical damage: completely and without announcing her conclusions until she has them. Three minutes. "It's not extracting the mark. It's attempting to sever the mark's neural integration. The bearer in Glass Court medical custody has severed integration pathways — they're experiencing proprioceptive disruption, sensory processing errors, and what I would clinically describe as phantom mark syndrome." She pauses. "It's a torture device with research applications." She looks at Seraphine's position. "The disabling mechanism is the power node at the base. I can walk you through it.`,
-    effectsOnEnter: { intelligence: 3, miraTrust: 2, setFlags: ['device_medical_assessed', 'device_disable_known'] },
+    effectsOnEnter: { intelligence: 2, miraTrust: 2, setFlags: ['device_medical_assessed', 'device_disable_known'] },
     choices: [
       {
         id: 'c12_mira_to_disable',
@@ -1098,7 +1098,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     title: 'Disabling',
     location: 'The Glass Barricade',
     imageKey: 'glass_barricade',
-    text: `The extraction device goes inert in the specific way that relic-powered structures go inert: not with a dramatic shutdown, but with a gradual dimming, the coherence anchor's signal fading across the frequency band the mark can read. The Glass Court technical operatives notice it in approximately thirty seconds. By thirty seconds, the access window is either used or irrelevant. Seraphine watches from her position. Her expression: not surprised. The expression of someone whose variable has been resolved in a way she already calculated as probable.`,
+    text: `The extraction device goes inert in the particular way that relic-powered structures go inert: not with a dramatic shutdown, but with a gradual dimming, the coherence anchor's signal fading across the frequency band the mark can read. The Glass Court technical operatives notice it in approximately thirty seconds. By thirty seconds, the access window is either used or irrelevant. Seraphine watches from her position. Her expression: not surprised. The expression of someone whose variable has been resolved in a way she already calculated as probable.`,
     effectsOnEnter: { glassCourt: 5, setFlags: ['extraction_device_disabled'] },
     choices: [
       {
@@ -1115,7 +1115,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     title: 'The Glass Court\'s Position',
     location: 'The Glass Barricade',
     imageKey: 'glass_barricade',
-    text: `The Glass Court's extraction device is disabled. Seraphine's response to this is, characteristically, not what it appears to be. She does not protest, because Seraphine never protests outcomes she has already calculated. She revises. The Glass Court's position in the chapter shifts from active threat to passive observer — powerful, informed, watching the Broken Throne from the southeast with the specific patience of a faction that has been waiting for the city's decision to become calculable before committing to it.`,
+    text: `The Glass Court's extraction device is disabled. Seraphine's response to this is, characteristically, not what it appears to be. She does not protest, because Seraphine never protests outcomes she has already calculated. She revises. The Glass Court's position in the chapter shifts from active threat to passive observer — powerful, informed, watching the Broken Throne from the southeast with the particular patience of a faction that has been waiting for the city's decision to become calculable before committing to it.`,
     effectsOnEnter: { setFlags: ['glass_outcome_resolved'] },
     choices: [
       {
@@ -1142,7 +1142,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     title: 'The Red Choir March',
     location: 'The Red Choir March',
     imageKey: 'red_choir_march',
-    text: `The Red Choir March is east and moving. The march is not a military formation — it is a procession, which is something the Red Choir does that other factions don't: it moves through the city with the specific quality of something that knows it cannot be stopped by conventional force because it is not a conventional force. Mother Veyl is at the march's center, which is the only safe position when the march is broadcasting — the edges receive more direct resonance and the effect on unconditioned people is documented and significant. The march is building toward its final transmission. The time window is approximately two hours.`,
+    text: `The Red Choir March is east and moving. The march is not a military formation — it is a procession, which is something the Red Choir does that other factions don't: it moves through the city with the particular quality of something that knows it cannot be stopped by conventional force because it is not a conventional force. Mother Veyl is at the march's center, which is the only safe position when the march is broadcasting — the edges receive more direct resonance and the effect on unconditioned people is documented and significant. The march is building toward its final transmission. The time window is approximately two hours.`,
     effectsOnEnter: { setFlags: ['red_choir_march_entered'] },
     choices: [
       {
@@ -1235,7 +1235,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     title: 'Esper Interface',
     location: 'The Red Choir March',
     imageKey: 'red_choir_march',
-    text: `The esper's mark-architecture can directly interface the seventeen-fold network without passing through the broadcast infrastructure. Veyl watches the interface begin with the expression of someone who has spent three years building a structure and is watching someone navigate it in thirty seconds. The interface is not comfortable — the seventeen frequencies are coherent individually and cacophonous in parallel — but the esper's training is specifically the training for parallel signal management. The redirect happens at the network level, not the broadcast level. Cleaner, faster, and at approximately a third of the signal cost Veyl was calculating.`,
+    text: `The esper's mark-architecture can directly interface the seventeen-fold network without passing through the broadcast infrastructure. Veyl watches the interface begin with the face of someone who has spent three years building a structure and is watching someone navigate it in thirty seconds. The interface is not comfortable — the seventeen frequencies are coherent individually and cacophonous in parallel — but the esper's training is specifically the training for parallel signal management. The redirect happens at the network level, not the broadcast level. Cleaner, faster, and at approximately a third of the signal cost Veyl was calculating.`,
     effectsOnEnter: { redChoir: 8, morale: 5, setFlags: ['broadcast_esper_redirected', 'esper_network_interface'] },
     choices: [
       {
@@ -1252,7 +1252,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     title: 'The Reason',
     location: 'The Red Choir March',
     imageKey: 'red_choir_march',
-    text: `Veyl needs a reason to redirect a broadcast she has spent three years building toward this moment. The reason has to be a better broadcast — something the city needs to hear more than the seventeen-fold network's raw signal. The sub-city truth is the candidate. Whether Veyl hears it as sufficient depends on whether the bearing of it — the specific weight of twelve chapters of evidence — reaches her in the way that moves the seventeen-fold anchor to redirect rather than transmit.`,
+    text: `Veyl needs a reason to redirect a broadcast she has spent three years building toward this moment. The reason has to be a better broadcast — something the city needs to hear more than the seventeen-fold network's raw signal. The sub-city truth is the candidate. Whether Veyl hears it as sufficient depends on whether the bearing of it — the unmistakable weight of twelve chapters of evidence — reaches her in the way that moves the seventeen-fold anchor to redirect rather than transmit.`,
     effectsOnEnter: {},
     choices: [
       {
@@ -1279,7 +1279,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     title: 'The New Signal',
     location: 'The Red Choir March',
     imageKey: 'red_choir_march',
-    text: `Veyl is quiet for a long time. The march continues around her. Then she begins a different song — not the seventeen-fold network's frequency, but something that sounds older and more specific. The march follows. The broadcast infrastructure, seeded across three years, receives the redirect. What the city hears over the next two hours is not the seventeen-fold signal. It is the sub-city truth. The Containment Protocol's history. The entity's departure. The gate's holding. The city receives it the way cities receive things they didn't expect: unevenly, with conflict, with the specific recalibration of people who have been told that what they were fighting over is not what it appeared to be.`,
+    text: `Veyl is quiet for a long time. The march continues around her. Then she begins a different song — not the seventeen-fold network's frequency, but something that sounds older and more specific. The march follows. The broadcast infrastructure, seeded across three years, receives the redirect. What the city hears over the next two hours is not the seventeen-fold signal. It is the sub-city truth. The Containment Protocol's history. The entity's departure. The gate's holding. The city receives it the way cities receive things they didn't expect: unevenly, with conflict, with the particular recalibration of people who have been told that what they were fighting over is not what it appeared to be.`,
     effectsOnEnter: { redChoir: 8, morale: 10, setFlags: ['broadcast_redirected', 'city_truth_broadcast'] },
     choices: [
       {
@@ -1337,7 +1337,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     title: 'The Choir\'s Position',
     location: 'The Red Choir March',
     imageKey: 'red_choir_march',
-    text: `The Red Choir march has been redirected — either through the signal or through the route — and the broadcast is carrying something different than what it was built to carry. The seventeen-fold network's signal is still present, but attenuated. The city is hearing the sub-city truth, the Choir's march, and something that is neither: the specific sound of a city deciding what it believes. Veyl walks at the march's center, quieter than before. The cost is visible on her. The march is moving toward the Broken Throne.`,
+    text: `The Red Choir march has been redirected — either through the signal or through the route — and the broadcast is carrying something different than what it was built to carry. The seventeen-fold network's signal is still present, but attenuated. The city is hearing the sub-city truth, the Choir's march, and something that is neither: the distinctive sound of a city deciding what it believes. Veyl walks at the march's center, quieter than before. The cost is visible on her. The march is moving toward the Broken Throne.`,
     effectsOnEnter: { setFlags: ['choir_outcome_resolved'] },
     choices: [
       {
@@ -1388,7 +1388,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     location: 'The Archive Siege',
     imageKey: 'archive_siege',
     text: `The relic hunter's scan of the Archive exterior identifies what the Archive's defenders have not mapped: three relic amplifiers embedded in the siege positions — Glass Court equipment, positioned to enhance the extraction device's signal range during the siege. The amplifiers are not active yet; they are being held in reserve. Disabling them doesn't end the siege, but it removes the Glass Court's enhancement layer from the siege's threat calculation and buys Mael's defenders approximately three additional hours. The scan also identifies the Hollow Children's tunnel access points — not as a threat, but as a route into the Archive that bypasses the surface siege entirely.`,
-    effectsOnEnter: { relics: 1, intelligence: 3, setFlags: ['relic_scan_archive', 'amplifiers_identified', 'hollow_tunnel_route_known'] },
+    effectsOnEnter: { relics: 1, intelligence: 2, setFlags: ['relic_scan_archive', 'amplifiers_identified', 'hollow_tunnel_route_known'] },
     choices: [
       {
         id: 'c12_relic_scan_to_outcome',
@@ -1411,7 +1411,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     title: 'Archivist Mael',
     location: 'The Archive Siege',
     imageKey: 'archive_siege',
-    text: `Archivist Mael inside the Archive's perimeter is a different person than Archivist Mael at the War Council table. At the table, he was protecting something. Inside the Archive, he is protecting everything. The document stack he carried to the Council is not symbolic — it is the physical backup of the Containment Protocol's complete record, the one document set that the Archive's relic storage system cannot duplicate because the duplication infrastructure was severed in the Blackout. Mael looks at the mark with the expression of someone who has been waiting for this conversation for the entire duration of the Archive's siege. "You have the sub-city's truth," he says. "I have the surface record. Together they are the complete picture. The question is what we do with it."`,
+    text: `Archivist Mael inside the Archive's perimeter is a different person than Archivist Mael at the War Council table. At the table, he was protecting something. Inside the Archive, he is protecting everything. The document stack he carried to the Council is not symbolic — it is the physical backup of the Containment Protocol's complete record, the one document set that the Archive's relic storage system cannot duplicate because the duplication infrastructure was severed in the Blackout. Mael looks at the mark with the look of someone who has been waiting for this conversation for the entire duration of the Archive's siege. "You have the sub-city's truth," he says. "I have the surface record. Together they are the complete picture. The question is what we do with it."`,
     effectsOnEnter: { intelligence: 2, setFlags: ['mael_inside_reached'] },
     choices: [
       {
@@ -1447,7 +1447,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     location: 'The Archive Siege',
     imageKey: 'archive_siege',
     text: `The forgotten scholar's background means the Archive's documentation framework is not foreign — it is the framework the scholar trained in, before the circumstances that made the scholar's knowledge informal rather than institutional. Mael recognizes it immediately. Not the name — the methodology. The way the mark-bearer approaches the documents, the questions they ask, the specific structure of how they organize incomplete records. "You were trained here," he says. Not an accusation. A recognition. The scholar framework creates a specific kind of trust between the mark-bearer and Mael's professional assessment of the sub-city evidence. The analysis proceeds faster and lands more completely.`,
-    effectsOnEnter: { intelligence: 3, lastArchive: 5, setFlags: ['scholar_archive_trust', 'mael_trust_established'] },
+    effectsOnEnter: { intelligence: 2, lastArchive: 5, setFlags: ['scholar_archive_trust', 'mael_trust_established'] },
     choices: [
       {
         id: 'c12_scholar_to_int_dice',
@@ -1509,7 +1509,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     location: 'The Archive Siege',
     imageKey: 'archive_siege',
     text: `The analysis produces the complete picture. Not just the Containment Protocol's history — the faction resolution pathway. The five factions' current conflict is built around a misattribution: they believe they are fighting over the Archive's resources and the mark-bearer's authority. They are actually fighting over a question that the complete record answers definitively: who built the city, who destroyed it, and what the city's infrastructure was designed to do. The record answers all three. The answer removes the factual basis for the faction war. Whether the factions accept the answer is a different question, but the answer exists and is documentable.`,
-    effectsOnEnter: { intelligence: 3 },
+    effectsOnEnter: { intelligence: 2 },
     choices: [
       {
         id: 'c12_int_success_vorn',
@@ -1615,7 +1615,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     title: 'The Hollow Children Hideout',
     location: 'The Hollow Children Hideout',
     imageKey: 'hollow_children_hideout',
-    text: `The Hollow Children's surface emergence point is below the Burning Market — the tunnel access that the Red Choir's march has been inadvertently guarding for the last twelve hours. The hideout is not hidden; it is in plain sight, which is how the Hollow Children have been surviving on the surface for the six hours since the emergence. They move through the city the way they move through tunnels: with the specific awareness of people who have learned to read structural load rather than social cues. The surface is a new environment. They are adapting to it in real time.`,
+    text: `The Hollow Children's surface emergence point is below the Burning Market — the tunnel access that the Red Choir's march has been inadvertently guarding for the last twelve hours. The hideout is not hidden; it is in plain sight, which is how the Hollow Children have been surviving on the surface for the six hours since the emergence. They move through the city the way they move through tunnels: with the particular awareness of people who have learned to read structural load rather than social cues. The surface is a new environment. They are adapting to it in real time.`,
     effectsOnEnter: { setFlags: ['hollow_hideout_arrived'] },
     choices: [
       {
@@ -1662,7 +1662,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     title: 'Mother Chalk, Underground',
     location: 'The Hollow Children Hideout',
     imageKey: 'hollow_children_hideout',
-    text: `Mother Chalk in the hideout is different from Mother Chalk in the market. In the market she was reporting. Here, she is present in the way she was present in the sub-city: as someone who has been below the thing everyone else is arguing about and can therefore read it from the foundation rather than the surface. "The Hollow Children emerged because the sub-city's resonance field changed after the gate event," she says. "The signal that kept them below — the entity's carrier frequency — is gone. The tunnels are quiet for the first time in three hundred years." She pauses. "They don't know what to do with quiet." The Children around her confirm this nonverbally. They are listening for something that is no longer there.`,
+    text: `Mother Chalk in the hideout is different from Mother Chalk in the market. In the market she was reporting. Here, she is present in the way she was present in the sub-city: as someone who has been below the thing everyone else is arguing about and can therefore read it from the foundation rather than the surface. "The Hollow Children emerged because the sub-city's resonance field changed after the gate event," she says. "The signal that kept them below — the entity's carrier frequency — is gone. The tunnels are quiet for the first time in four hundred years." She pauses. "They don't know what to do with quiet." The Children around her confirm this nonverbally. They are listening for something that is no longer there.`,
     effectsOnEnter: { morale: 3, setFlags: ['chalk_hollow_guide'] },
     choices: [
       {
@@ -1722,7 +1722,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
           failureNode: 'c12_hollow_agility_fail',
           criticalFailureNode: 'c12_hollow_collapse_end',
           successEffects: { hollowChildren: 3, setFlags: ['hollow_route_navigated'] },
-          failureEffects: { health: -20, hollowChildren: -2 },
+          failureEffects: { health: -15, hollowChildren: -2 },
         },
       },
     ],
@@ -1752,7 +1752,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     location: 'The Hollow Children Hideout',
     imageKey: 'hollow_children_hideout',
     text: `The route does not navigate correctly. Not a collapse — a wrong turn, a tunnel branch that the sub-city's architecture suggested was navigable and turned out to be load-bearing. The Children pull you out before the structure fails. Health cost: significant. The main space is still accessible through the surface route, which is less efficient and more exposed, but functional.`,
-    effectsOnEnter: { health: -25, hollowChildren: -2 },
+    effectsOnEnter: { health: -15, hollowChildren: -2 },
     choices: [
       {
         id: 'c12_fail_to_choice',
@@ -1768,7 +1768,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     title: 'What the Children Need',
     location: 'The Hollow Children Hideout',
     imageKey: 'hollow_children_hideout',
-    text: `Sixty-three Hollow Children in a converted sub-basement, listening to a city that has been deciding their fate without including them in the decision for three hundred years. The question they are asking — through Chalk, through the Children's representative who went to the War Council unauthorized, through the specific quality of the way sixty-three people are waiting — is: is there a place for us here. Not metaphorically. Specifically: the surface city, the faction war's aftermath, the city that will exist on the other side of this chapter. Is there a place for the Hollow Children in it, or do they go back below.`,
+    text: `Sixty-three Hollow Children in a converted sub-basement, listening to a city that has been deciding their fate without including them in the decision for four hundred years. The question they are asking — through Chalk, through the Children's representative who went to the War Council unauthorized, through the particular quality of the way sixty-three people are waiting — is: is there a place for us here. Not metaphorically. Specifically: the surface city, the faction war's aftermath, the city that will exist on the other side of this chapter. Is there a place for the Hollow Children in it, or do they go back below.`,
     effectsOnEnter: { setFlags: ['hollow_children_addressed'] },
     choices: [
       {
@@ -1805,7 +1805,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     title: 'Made and Excluded',
     location: 'The Hollow Children Hideout',
     imageKey: 'hollow_children_hideout',
-    text: `The runaway experiment's background is not a metaphor the Hollow Children need explained. They are the product of a system — the sub-city's three-hundred-year relic field adaptation program, which the Foundation Period records describe as intentional and the faction war describes as accidental. They were made by the city below the city. They were excluded from the city above it. The runaway experiment's specific experience — made by an institution, excluded from it, surviving outside it — is the exact frame for what the Hollow Children have been doing for three hundred years. The sixty-three people in the sub-basement recognize it. They respond to it. The conversation that follows takes twelve minutes and produces something the Chalk translates as: "Yes. We come up. We help build it."`,
+    text: `The runaway experiment's background is not a metaphor the Hollow Children need explained. They are the product of a system — the sub-city's three-hundred-year relic field adaptation program, which the Foundation Period records describe as intentional and the faction war describes as accidental. They were made by the city below the city. They were excluded from the city above it. The runaway experiment's specific experience — made by an institution, excluded from it, surviving outside it — is the exact frame for what the Hollow Children have been doing for four hundred years. The sixty-three people in the sub-basement recognize it. They respond to it. The conversation that follows takes twelve minutes and produces something the Chalk translates as: "Yes. We come up. We help build it."`,
     effectsOnEnter: { hollowChildren: 10, morale: 10, setFlags: ['runaway_hollow_connection', 'hollow_children_committed'] },
     choices: [
       {
@@ -1822,7 +1822,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     title: 'The Hollow Children\'s Position',
     location: 'The Hollow Children Hideout',
     imageKey: 'hollow_children_hideout',
-    text: `The Hollow Children's position: they are above ground. Whether they are moving toward the Broken Throne or holding in the hideout, they are committed to the surface's outcome in a way that three hundred years of sub-city existence didn't allow. Mother Chalk leads them. The mark reads the Children's collective resonance as something the sub-city's entity would have recognized: the specific frequency of people who have been adapted to an environment that no longer exists and are in the process of adapting to the one that does.`,
+    text: `The Hollow Children's position: they are above ground. Whether they are moving toward the Broken Throne or holding in the hideout, they are committed to the surface's outcome in a way that four hundred years of sub-city existence didn't allow. Mother Chalk leads them. The mark reads the Children's collective resonance as something the sub-city's entity would have recognized: the characteristic frequency of people who have been adapted to an environment that no longer exists and are in the process of adapting to the one that does.`,
     effectsOnEnter: { setFlags: ['hollow_outcome_resolved'] },
     choices: [
       {
@@ -1866,7 +1866,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     title: 'All Five Factions',
     location: 'The Broken Throne',
     imageKey: 'broken_throne',
-    text: `The Broken Throne has all five factions in the same room — not peacefully, and not by agreement. They are here because all five faction routes converge at the point where the city's future has to be decided and there is only one room where that decision is architecturally possible. The Iron Saints are armed. The Glass Court is watching. The Red Choir's march has arrived at the building's exterior and is audible inside. The Hollow Children are at the room's edge, which is where they always are in any built space. Mael is at the table. And the Masked Heir is here — unmasked, Glass Court structure, sub-city knowledge, and the specific weight of someone who has been carrying a specific identity for too long.`,
+    text: `The Broken Throne has all five factions in the same room — not peacefully, and not by agreement. They are here because all five faction routes converge at the point where the city's future has to be decided and there is only one room where that decision is architecturally possible. The Iron Saints are armed. The Glass Court is watching. The Red Choir's march has arrived at the building's exterior and is audible inside. The Hollow Children are at the room's edge, which is where they always are in any built space. Mael is at the table. And the Masked Heir is here — unmasked, Glass Court structure, sub-city knowledge, and the particular bearing of someone who has been carrying a specific identity for too long.`,
     effectsOnEnter: { setFlags: ['all_factions_assembled'] },
     choices: [
       {
@@ -1985,7 +1985,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
           failureNode: 'c12_throne_collapse_end',
           criticalFailureNode: 'c12_throne_collapse_end',
           successEffects: { corruption: 15, setFlags: ['tyrant_throne_claimed'] },
-          failureEffects: { health: -40, corruption: 20 },
+          failureEffects: { health: -20, corruption: 20 },
         },
       },
     ],
@@ -2041,7 +2041,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
           failureNode: 'c12_execution_plaza_arrive',
           criticalFailureNode: 'c12_broken_throne_betrayal_end',
           successEffects: { morale: 20, setFlags: ['savior_throne_succeeded', 'savior_route_complete'] },
-          failureEffects: { morale: -15, health: -20 },
+          failureEffects: { morale: -15, health: -15 },
         },
       },
     ],
@@ -2093,7 +2093,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     title: 'The Unity Covenant',
     location: 'The Broken Throne',
     imageKey: 'broken_throne',
-    text: `The unity route exists only if the council ceasefire held and all five factions are at the Throne in a configuration where a covenant is possible. The covenant is not an agreement — agreements require enforcement. It is a shared acknowledgment: the five factions, the complete record, the sub-city truth, and the specific moment where all five can choose not to be at war. The window for this is approximately the duration of the mark's resonance — the sub-city's signal is still perceptible in the room, and while it is perceptible, the choice is available.`,
+    text: `The unity route exists only if the council ceasefire held and all five factions are at the Throne in a configuration where a covenant is possible. The covenant is not an agreement — agreements require enforcement. It is a shared acknowledgment: the five factions, the complete record, the sub-city truth, and the particular moment where all five can choose not to be at war. The window for this is approximately the duration of the mark's resonance — the sub-city's signal is still perceptible in the room, and while it is perceptible, the choice is available.`,
     effectsOnEnter: {},
     choices: [
       {
@@ -2216,7 +2216,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
           failureNode: 'c12_execution_plaza_end',
           criticalFailureNode: 'c12_execution_plaza_end',
           successEffects: { morale: 8, setFlags: ['prisoner_rescued'] },
-          failureEffects: { health: -30 },
+          failureEffects: { health: -20 },
         },
       },
     ],
@@ -2245,7 +2245,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     title: 'After the Plaza',
     location: 'The Execution Plaza',
     imageKey: 'execution_plaza',
-    text: `The Execution Plaza's aftermath: the prisoner is either saved or witnessed. The chapter's main route is the Broken Throne — or, if the Broken Throne has already produced the savior route's success, the final decision about what the savior route's success means. The plaza is behind you. The city is still deciding. The mark points toward the Broken Throne's direction the way the sub-city's mark pointed toward the First Gate: not urgently. With the specific patience of something that knows the direction is correct and is waiting for the bearer to agree.`,
+    text: `The Execution Plaza's aftermath: the prisoner is either saved or witnessed. The chapter's main route is the Broken Throne — or, if the Broken Throne has already produced the savior route's success, the final decision about what the savior route's success means. The plaza is behind you. The city is still deciding. The mark points toward the Broken Throne's direction the way the sub-city's mark pointed toward the First Gate: not urgently. with the particular patience of something that knows the direction is correct and is waiting for the bearer to agree.`,
     effectsOnEnter: {},
     choices: [
       {
@@ -2264,7 +2264,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     title: 'The Citywide Battlefield',
     location: 'The Citywide Battlefield',
     imageKey: 'citywide_battlefield',
-    text: `Outside the Broken Throne's building, the five-faction conflict has reached the citywide battlefield stage — which is not a military designation but a civic one: the city is the battlefield, every street and block and surviving structure a contested position. The faction war has been building toward this since the founding sealing, three hundred years of pressure finally making the conflict visible. The mark reads the battlefield the way it reads every space of accumulated decision. The mark-bearer moving through it is either the resolution or the last surviving variable.`,
+    text: `Outside the Broken Throne's building, the five-faction conflict has reached the citywide battlefield stage — which is not a military designation but a civic one: the city is the battlefield, every street and block and surviving structure a contested position. The faction war has been building toward this since the founding sealing, four hundred years of pressure finally making the conflict visible. The mark reads the battlefield the way it reads every space of accumulated decision. The mark-bearer moving through it is either the resolution or the last surviving variable.`,
     effectsOnEnter: { setFlags: ['citywide_battlefield_entered'] },
     choices: [
       {
@@ -2342,7 +2342,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
           failureNode: 'c12_battlefield_overwhelmed_end',
           criticalFailureNode: 'c12_battlefield_overwhelmed_end',
           successEffects: { morale: 5 },
-          failureEffects: { health: -40 },
+          failureEffects: { health: -20 },
         },
       },
     ],
@@ -2498,8 +2498,15 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     location: 'The Broken Throne',
     imageKey: 'broken_throne',
     text: `The chapter's final moment. The city's decision is made — or making — or unmakeable, depending on the route. The mark reads twelve chapters of accumulated resonance and returns a single reading: the bearer has carried the city's truth from the sub-city's Foundation Period to the surface's faction war to this room. What the bearer does with that truth in the next moment is the chapter's last question. The Final Gate is still ahead. The truth-bearer route is still active, if it was established. The mark points forward. It has always pointed forward.`,
-    effectsOnEnter: { setFlags: ['game_complete', 'chapter12_final_decision'] },
+    effectsOnEnter: { setFlags: ['chapter12_final_decision'] },
     choices: [
+      {
+        id: 'c12_decision_gate',
+        text: 'The Final Gate is ahead. Descend to the last stair.',
+        nextNode: 'final_chapter1_start',
+        requirements: { flags: ['gate_approach_begun'] },
+        effects: { setFlags: ['gate_descent_chosen'] },
+      },
       {
         id: 'c12_decision_savior',
         text: 'The city is saved. Walk forward from what you built.',
@@ -2538,7 +2545,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     isEnding: true,
     endingType: 'faction',
     endingId: 'ending_ch12_iron_crown',
-    text: `Veyra and Sera, standing at the Saint Front with the crusade mandate revised and the mark-bearer's authority formally documented, offer the Iron Crown in the way the Iron Saints offer everything: as an operational designation, not a ceremony. The crown is the city's northern perimeter, the Saints' complete formation, and the specific institutional architecture of an organization that has been building toward a city worth defending. The mark reads the Iron Crown as: stable, specific, requiring maintenance. The Final Gate ahead. The Iron Saints behind. The city, for the first time in twelve chapters, held.`,
+    text: `Veyra and Sera, standing at the Saint Front with the crusade mandate revised and the mark-bearer's authority formally documented, offer the Iron Crown in the way the Iron Saints offer everything: as an operational designation, not a ceremony. The crown is the city's northern perimeter, the Saints' complete formation, and the particular institutional architecture of an organization that has been building toward a city worth defending. The mark reads the Iron Crown as: stable, specific, requiring maintenance. The Final Gate ahead. The Iron Saints behind. The city, for the first time in twelve chapters, held.`,
     effectsOnEnter: { setFlags: ['iron_crown_claimed', 'iron_crown_held', 'chapter12_complete', 'iron_saints_ending'] },
     choices: [],
   },
@@ -2552,7 +2559,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     isEnding: true,
     endingType: 'faction',
     endingId: 'ending_ch12_glass_crown',
-    text: `Lady Seraphine formalizes the Glass Crown in writing on glass paper with a glass stylus, which is the Glass Court's way of making something permanent. The extraction device is disabled. The Glass Court's intelligence network, the servant network Juno maintains within it, and the specific analytical infrastructure that Seraphine has built across twelve chapters are now formally behind the mark-bearer's route to the Final Gate. "The Glass Court commits its resources to the gate's resolution," Seraphine says. "We always have. We were waiting for a bearer capable of receiving the commitment." The crown is analytical. The rule is through information. The Final Gate ahead, the Glass Court behind, and twelve chapters of data pointing forward.`,
+    text: `Lady Seraphine formalizes the Glass Crown in writing on glass paper with a glass stylus, which is the Glass Court's way of making something permanent. The extraction device is disabled. The Glass Court's intelligence network, the servant network Juno maintains within it, and the particular analytical infrastructure that Seraphine has built across twelve chapters are now formally behind the mark-bearer's route to the Final Gate. "The Glass Court commits its resources to the gate's resolution," Seraphine says. "We always have. We were waiting for a bearer capable of receiving the commitment." The crown is analytical. The rule is through information. The Final Gate ahead, the Glass Court behind, and twelve chapters of data pointing forward.`,
     effectsOnEnter: { setFlags: ['glass_crown_claimed', 'glass_crown_held', 'chapter12_complete', 'glass_court_ending'] },
     choices: [],
   },
@@ -2566,7 +2573,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     isEnding: true,
     endingType: 'faction',
     endingId: 'ending_ch12_hollow_crown',
-    text: `The Hollow Crown is not a crown in the surface city's sense. Mother Chalk presents it in the tunnel language that the Children speak — a specific gesture, performed by sixty-three people simultaneously, that the sub-city's three hundred years of below-ground existence produced as the Hollow Children's version of formal acknowledgment. What it means: the Children are committed to the mark-bearer's route to the Final Gate. Not as a force. As the people who have been below the thing everyone else was fighting about and have now come up. The mark reads the Hollow Crown as: old, specific, and more structurally sound than any faction built on the surface has been since the Blackout. Sixty-three people, moving upward. The Final Gate ahead.`,
+    text: `The Hollow Crown is not a crown in the surface city's sense. Mother Chalk presents it in the tunnel language that the Children speak — a specific gesture, performed by sixty-three people simultaneously, that the sub-city's four hundred years of below-ground existence produced as the Hollow Children's version of formal acknowledgment. What it means: the Children are committed to the mark-bearer's route to the Final Gate. Not as a force. As the people who have been below the thing everyone else was fighting about and have now come up. The mark reads the Hollow Crown as: old, specific, and more structurally sound than any faction built on the surface has been since the Blackout. Sixty-three people, moving upward. The Final Gate ahead.`,
     effectsOnEnter: { setFlags: ['game_complete', 'hollow_crown_claimed', 'hollow_crown_held', 'chapter12_complete', 'hollow_children_ending'] },
     choices: [],
   },
@@ -2730,7 +2737,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     isEnding: true,
     endingType: 'secret',
     endingId: 'ending_ch12_unity_almost',
-    text: `The unity covenant holds for forty seconds. All five factions, the complete record, the sub-city truth, and the specific resonance of the mark's twelve-chapter calibration in a room built for a city's decision. Forty seconds where the faction war's factual basis is simultaneously acknowledged by every institutional representative present. Then it ends. Not with violence — with the specific entropy of five institutions remembering that they are five institutions and that acknowledging the same truth is not the same as having the same response to it. The unity almost existed. The almost is more than the faction war produced in three hundred years. The mark carries the almost forward to the Final Gate, which will be the place where the city's full truth — and the almost-unity — either finds its completion or reveals why almost was the most the city could offer. Almost was not nothing. Almost was everything the city had.`,
+    text: `The unity covenant holds for forty seconds. All five factions, the complete record, the sub-city truth, and the particular resonance of the mark's twelve-chapter calibration in a room built for a city's decision. Forty seconds where the faction war's factual basis is simultaneously acknowledged by every institutional representative present. Then it ends. Not with violence — with the particular entropy of five institutions remembering that they are five institutions and that acknowledging the same truth is not the same as having the same response to it. The unity almost existed. The almost is more than the faction war produced in four hundred years. The mark carries the almost forward to the Final Gate, which will be the place where the city's full truth — and the almost-unity — either finds its completion or reveals why almost was the most the city could offer. Almost was not nothing. Almost was everything the city had.`,
     effectsOnEnter: { setFlags: ['unity_almost_complete', 'chapter12_complete', 'unity_almost_active'], morale: 25 },
     choices: [],
   },
@@ -2746,7 +2753,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     isEnding: true,
     endingType: 'death',
     endingId: 'ending_ch12_saint_crusade_death',
-    text: `The crusade mandate's language is specific: marked individuals operating in the sub-city without Archive sanction, demonstrating relic contamination at the Foundation Protocol level. The mark's twelve-chapter history meets Veyra's mandate's documentation. The Saints are thorough. The mandate was built to be thorough. The mark dims — not immediately, but in the specific way that a relic architecture dims when the body it is integrated with stops. The sub-city's resonance holds for a moment longer than the body does. Then it too resolves. The city continues its war. The mark is noted in Veyra's operational record: contained.`,
+    text: `The crusade mandate's language is specific: marked individuals operating in the sub-city without Archive sanction, demonstrating relic contamination at the Foundation Protocol level. The mark's twelve-chapter history meets Veyra's mandate's documentation. The Saints are thorough. The mandate was built to be thorough. The mark dims — not immediately, but in the particular way that a relic architecture dims when the body it is integrated with stops. The sub-city's resonance holds for a moment longer than the body does. Then it too resolves. The city continues its war. The mark is noted in Veyra's operational record: contained.`,
     effectsOnEnter: { setFlags: ['game_complete', 'crusade_death'] },
     choices: [],
   },
@@ -2774,7 +2781,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     isEnding: true,
     endingType: 'death',
     endingId: 'ending_ch12_hollow_collapse',
-    text: `The tunnel structure fails in the specific way that tunnel structures fail when navigated by someone who does not know them: not catastrophically, but completely. The load-bearing calculation was wrong, and the wrong answer produces a collapse that is thorough enough that the Hollow Children cannot reach the bearer before the structure finishes. Mother Chalk notes, afterward, that the mark's resonance held in the rubble for approximately six hours after the bearer's death — the sub-city's architecture carrying the signal longer than the body did. The Hollow Children maintain the rubble site. They have maintained sites like it for three hundred years. They are good at it.`,
+    text: `The tunnel structure fails in the particular way that tunnel structures fail when navigated by someone who does not know them: not catastrophically, but completely. The load-bearing calculation was wrong, and the wrong answer produces a collapse that is thorough enough that the Hollow Children cannot reach the bearer before the structure finishes. Mother Chalk notes, afterward, that the mark's resonance held in the rubble for approximately six hours after the bearer's death — the sub-city's architecture carrying the signal longer than the body did. The Hollow Children maintain the rubble site. They have maintained sites like it for four hundred years. They are good at it.`,
     effectsOnEnter: { setFlags: ['hollow_collapse_death'] },
     choices: [],
   },
@@ -2816,7 +2823,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     isEnding: true,
     endingType: 'death',
     endingId: 'ending_ch12_all_factions_burn',
-    text: `All five factions burn. Not metaphorically — the Broken Throne, the faction infrastructure, the three hundred years of institutional architecture that the Blackout shattered and the factions rebuilt around the shattering. Gone. What remains: the sub-city's gate, Chalk and the Hollow Children in the tunnels below, Juno's network operating in the rubble above, and the marked population's sixty-two survivors adapting to a city without factions for the first time since the Foundation Period. The mark-bearer is in the burning. Not surviving it — having caused it, which is a different kind of ending. The city rebuilds from nothing. Whether nothing was the right price is the city's question to answer without the mark's twelve chapters of evidence. The evidence burned with the factions.`,
+    text: `All five factions burn. Not metaphorically — the Broken Throne, the faction infrastructure, the four hundred years of institutional architecture that the Blackout shattered and the factions rebuilt around the shattering. Gone. What remains: the sub-city's gate, Chalk and the Hollow Children in the tunnels below, Juno's network operating in the rubble above, and the marked population's sixty-two survivors adapting to a city without factions for the first time since the Foundation Period. The mark-bearer is in the burning. Not surviving it — having caused it, which is a different kind of ending. The city rebuilds from nothing. Whether nothing was the right price is the city's question to answer without the mark's twelve chapters of evidence. The evidence burned with the factions.`,
     effectsOnEnter: { setFlags: ['game_complete', 'all_factions_burn_death'] },
     choices: [],
   },
@@ -2830,7 +2837,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     isEnding: true,
     endingType: 'death',
     endingId: 'ending_ch12_throne_collapse',
-    text: `The tyrant's claim collapses when the room rejects it — not with violence, but with the specific weight of five factions simultaneously declining to accept a seventh authority in a city that has survived six. The mark's twelve-chapter resonance cannot substitute for the institutional backing that the throne claim requires. The factions exit the room. The Broken Throne is broken again, and the mark-bearer's final accounting is: attempted to hold it, failed to hold it, and the throne fell on what was under it. The mark dims in the rubble of the Broken Throne's hall. The city divides into five again and will divide further, and the sub-city's truth goes undelivered, and the entity's departure record goes uncommitted to the Archive. The bearer gave twelve chapters. The city gave the throne back.`,
+    text: `The tyrant's claim collapses when the room rejects it — not with violence, but with the particular weight of five factions simultaneously declining to accept a seventh authority in a city that has survived six. The mark's twelve-chapter resonance cannot substitute for the institutional backing that the throne claim requires. The factions exit the room. The Broken Throne is broken again, and the mark-bearer's final accounting is: attempted to hold it, failed to hold it, and the throne fell on what was under it. The mark dims in the rubble of the Broken Throne's hall. The city divides into five again and will divide further, and the sub-city's truth goes undelivered, and the entity's departure record goes uncommitted to the Archive. The bearer gave twelve chapters. The city gave the throne back.`,
     effectsOnEnter: { setFlags: ['throne_collapse_death'] },
     choices: [],
   },
@@ -2858,7 +2865,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     isEnding: true,
     endingType: 'death',
     endingId: 'ending_ch12_city_burns',
-    text: `The broadcast completes without redirect, and the seventeen-fold signal's full propagation through the city's broadcast infrastructure produces what the Red Choir's documented research predicted and the other four factions' institutional responses ensured: a cascade. The faction war's simultaneous climax, triggered by a signal that reaches every person in the city simultaneously. The city burns in the specific way that cities burn when the decision about what they are finally becomes undeniable. The mark-bearer is in the burning, having tried the redirect and failed it. The sub-city truth is in the bearer. The bearer is in the city. The city is fire. The Hollow Children's tunnel system survives. The Sleeping Server's records survive. The mark survives, held in the rubble's resonance, until the city cools enough to remember what it was carrying.`,
+    text: `The broadcast completes without redirect, and the seventeen-fold signal's full propagation through the city's broadcast infrastructure produces what the Red Choir's documented research predicted and the other four factions' institutional responses ensured: a cascade. The faction war's simultaneous climax, triggered by a signal that reaches every person in the city simultaneously. The city burns in the particular way that cities burn when the decision about what they are finally becomes undeniable. The mark-bearer is in the burning, having tried the redirect and failed it. The sub-city truth is in the bearer. The bearer is in the city. The city is fire. The Hollow Children's tunnel system survives. The Sleeping Server's records survive. The mark survives, held in the rubble's resonance, until the city cools enough to remember what it was carrying.`,
     effectsOnEnter: { setFlags: ['city_burns_death'] },
     choices: [],
   },
@@ -2888,7 +2895,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     isEnding: true,
     endingType: 'betrayal',
     endingId: 'ending_ch12_varr_betrayal',
-    text: `Varr's defection was a performance. Director Varr has been Glass Court intelligence for twenty-three years, and the specific skill of performing defection for a mark-bearer's benefit is the kind of skill that a twenty-three-year career in Glass Court intelligence produces without the career intending it. The bearer trusted the performance. The performance completed its objective: the mark-bearer's position within the Glass Barricade, at the extraction device, without the shadow network's confirmed read. Seraphine accepts the outcome with the expression of someone whose variable has been resolved exactly as calculated. The extraction device activates on the bearer. The Glass Court's research record is updated.`,
+    text: `Varr's defection was a performance. Director Varr has been Glass Court intelligence for twenty-three years, and the particular skill of performing defection for a mark-bearer's benefit is the kind of skill that a twenty-three-year career in Glass Court intelligence produces without the career intending it. The bearer trusted the performance. The performance completed its objective: the mark-bearer's position within the Glass Barricade, at the extraction device, without the shadow network's confirmed read. Seraphine accepts the outcome with the expression of someone whose variable has been resolved exactly as calculated. The extraction device activates on the bearer. The Glass Court's research record is updated.`,
     effectsOnEnter: { setFlags: ['varr_betrayal_complete'] },
     choices: [],
   },
@@ -2916,7 +2923,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     isEnding: true,
     endingType: 'betrayal',
     endingId: 'ending_ch12_heir_knife',
-    text: `The sub-city established the basis for many things. The rejection below — whatever form it took at the First Gate — established the basis for this. The Masked Heir, unmasked and inheriting, strikes in the Broken Throne with the specific precision of someone who has been carrying the rejection across the ascent and has chosen the convergence point as the resolution. The strike is not political. It is personal. It is the oldest reason for a knife at the Broken Throne: someone who was wronged and had the patience to wait for the right room. The mark dims. The sub-city's resonance holds in the Broken Throne's hall for four minutes and thirty seconds, which is the longest it has held in any space above ground. The Heir does not note this. They are already carrying the record.`,
+    text: `The sub-city established the basis for many things. The rejection below — whatever form it took at the First Gate — established the basis for this. The Masked Heir, unmasked and inheriting, strikes in the Broken Throne with the exact exactness of someone who has been carrying the rejection across the ascent and has chosen the convergence point as the resolution. The strike is not political. It is personal. It is the oldest reason for a knife at the Broken Throne: someone who was wronged and had the patience to wait for the right room. The mark dims. The sub-city's resonance holds in the Broken Throne's hall for four minutes and thirty seconds, which is the longest it has held in any space above ground. The Heir does not note this. They are already carrying the record.`,
     effectsOnEnter: { setFlags: ['heir_knife_complete'] },
     choices: [],
   },
@@ -2946,7 +2953,7 @@ export const CHAPTER_12_NODES: StoryNode[] = [
     isEnding: true,
     endingType: 'corruption',
     endingId: 'ending_ch12_choir_city',
-    text: `The broadcast completes at full intensity. The seventeen-fold network's signal propagates through every broadcast point in the city. The forty percent temporary mark sensitivity becomes, in the high-corruption configuration, sixty percent. The permanent eight percent becomes fifteen. The city sings. Not the Red Choir's organized hymn — the city's own resonance, uncurated, the three hundred years of compressed relic field interaction released into the population simultaneously. It is not painful, exactly. It is overwhelming in the way that truth is overwhelming when it arrives at the wrong moment. The mark-bearer is in it. The mark-bearer's corruption, at sixty-plus, is sufficient that the integration is not temporary. The city sings. The bearer sings with it. The faction war continues somewhere outside the song. The song continues everywhere else.`,
+    text: `The broadcast completes at full intensity. The seventeen-fold network's signal propagates through every broadcast point in the city. The forty percent temporary mark sensitivity becomes, in the high-corruption configuration, sixty percent. The permanent eight percent becomes fifteen. The city sings. Not the Red Choir's organized hymn — the city's own resonance, uncurated, the four hundred years of compressed relic field interaction released into the population simultaneously. It is not painful, exactly. It is overwhelming in the way that truth is overwhelming when it arrives at the wrong moment. The mark-bearer is in it. The mark-bearer's corruption, at sixty-plus, is sufficient that the integration is not temporary. The city sings. The bearer sings with it. The faction war continues somewhere outside the song. The song continues everywhere else.`,
     effectsOnEnter: { setFlags: ['choir_city_corruption'] },
     choices: [],
   },

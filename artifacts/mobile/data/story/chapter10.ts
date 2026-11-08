@@ -39,7 +39,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     title: 'Who Is Here',
     location: 'The Quiet Safehouse',
     imageKey: 'quiet_safehouse',
-    text: `Mira's kit is in the east room, spread across a maintenance bench: vials racked with the specific order of someone who reorganises when worried. Cain's jacket is on a wall hook near the entrance, the Iron Saints insignia removed — the stitching outline of its absence is still there. The safehouse has one table with three chairs. The third chair is for no one in particular. Both of them are here. Neither of them is in the same room as the other. The chapter opens on a house divided by nothing specific and everything accumulated.`,
+    text: `Mira's kit is in the east room, spread across a maintenance bench: vials racked with the particular order of someone who reorganises when worried. Cain's jacket is on a wall hook near the entrance, the Iron Saints insignia removed — the stitching outline of its absence is still there. The safehouse has one table with three chairs. The third chair is for no one in particular. Both of them are here. Neither of them is in the same room as the other. The chapter opens on a house divided by nothing specific and everything accumulated.`,
     effectsOnEnter: {},
     choices: [
       {
@@ -331,7 +331,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
         text: 'Cross-reference both. You know Archive document structure.',
         nextNode: 'c10_clinic_memo_success',
         requirements: { backgrounds: ['forgotten_scholar'] },
-        effects: { intelligence: 3, setFlags: ['scholar_archive_cross_ref'], miraTrust: 2 },
+        effects: { intelligence: 2, setFlags: ['scholar_archive_cross_ref'], miraTrust: 2 },
       },
     ],
   },
@@ -351,7 +351,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
         nextNode: 'c10_clinic_intelligence_dice',
         diceCheck: {
           stat: 'intelligence',
-          difficulty: 13,
+          difficulty: 12,
           diceType: 'd20',
           successNode: 'c10_clinic_memo_success',
           failureNode: 'c10_clinic_memo_fail',
@@ -614,7 +614,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     title: 'The War Room',
     location: "Cain's War Room",
     imageKey: 'cain_war_room',
-    text: `The war room is three maintenance rooms repurposed: a tactical table built from a signal console, wall maps with pins and wire, a single bunk that has not been used recently. Cain has been running the external security assessment from here since the Archive library access. The room smells like metal, cigarette substitute, and the specific chemical residue that means someone has been cleaning weapons. On the tactical table, alongside the district maps, is a sealed folder marked with an Iron Saints watermark that has been partially redacted. The folder is open. He did not hide it.`,
+    text: `The war room is three maintenance rooms repurposed: a tactical table built from a signal console, wall maps with pins and wire, a single bunk that has not been used recently. Cain has been running the external security assessment from here since the Archive library access. The room smells like metal, cigarette substitute, and the particular chemical residue that means someone has been cleaning weapons. On the tactical table, alongside the district maps, is a sealed folder marked with an Iron Saints watermark that has been partially redacted. The folder is open. He did not hide it.`,
     effectsOnEnter: { setFlags: ['cain_war_room_arrived'] },
     choices: [
       {
@@ -667,7 +667,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     title: 'The Command Chain',
     location: "Cain's War Room",
     imageKey: 'cain_war_room',
-    text: `The command chain is clear. The evacuation order came from Iron Saints Central Command — Cain was three levels below the decision. His name appears on the implementation log as the officer who cleared the corridor. What is not in the formal documentation but visible in the timeline: a four-minute gap between the structural assessment request and the evacuation order. Someone above Cain's rank issued the order before the assessment returned. Cain implemented an order that was already moving when the error in it became apparent. He did not stop it. That is the specific weight he carries: not that he ordered it, but that he did not countermand it when he saw the assessment return incomplete.`,
+    text: `The command chain is clear. The evacuation order came from Iron Saints Central Command — Cain was three levels below the decision. His name appears on the implementation log as the officer who cleared the corridor. What is not in the formal documentation but visible in the timeline: a four-minute gap between the structural assessment request and the evacuation order. Someone above Cain's rank issued the order before the assessment returned. Cain implemented an order that was already moving when the error in it became apparent. He did not stop it. That is the unmistakable weight he carries: not that he ordered it, but that he did not countermand it when he saw the assessment return incomplete.`,
     effectsOnEnter: { setFlags: ['cain_orders_understood'] },
     choices: [
       {
@@ -766,7 +766,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
         id: 'c10_defense_believe',
         text: '"I have watched you make different calculations all this time. Yes."',
         nextNode: 'c10_cain_accept_past',
-        effects: { cainTrust: 4 },
+        effects: { cainTrust: 4, corruption: -3 },
       },
       {
         id: 'c10_defense_unsure',
@@ -872,7 +872,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
         nextNode: 'c10_veyra_charisma_dice',
         diceCheck: {
           stat: 'charisma',
-          difficulty: 14,
+          difficulty: 13,
           diceType: 'd20',
           successNode: 'c10_veyra_success',
           failureNode: 'c10_veyra_fail',
@@ -1091,7 +1091,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     title: 'Betrayal Alley',
     location: 'The Betrayal Alley',
     imageKey: 'betrayal_alley',
-    text: `Betrayal Alley is not the tunnel network's name for this place — it is the camp's name, earned from the three separate faction betrayals that have played out in this junction district. Narrow, well-lit by a string of salvage lamps, running between the Level 3 north maintenance corridor and the Archive's secondary access gate. The Masked Heir is at the far end, leaning against the gate pillar with the specific stillness of someone who was expecting you and has been waiting for an appropriate interval.`,
+    text: `Betrayal Alley is not the tunnel network's name for this place — it is the camp's name, earned from the three separate faction betrayals that have played out in this junction district. Narrow, well-lit by a string of salvage lamps, running between the Level 3 north maintenance corridor and the Archive's secondary access gate. The Masked Heir is at the far end, leaning against the gate pillar with the particular stillness of someone who was expecting you and has been waiting for an appropriate interval.`,
     effectsOnEnter: { setFlags: ['betrayal_alley_arrived'] },
     choices: [
       {
@@ -1152,7 +1152,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
         text: 'You know this kind of offer structure. Read what\'s underneath it.',
         nextNode: 'c10_heir_expose_success',
         requirements: { backgrounds: ['underground_medic'] },
-        effects: { intelligence: 3, setFlags: ['underground_reads_heir'] },
+        effects: { intelligence: 2, setFlags: ['underground_reads_heir'] },
       },
     ],
   },
@@ -1188,7 +1188,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     location: 'The Betrayal Alley',
     imageKey: 'betrayal_alley',
     speaker: 'The Masked Heir',
-    text: `"Veyra's immunity arrangement covers the Level 3 South operation entirely. Juno's case file goes into the Iron Saints internal review process, where it will be handled as an institutional matter rather than a personal accusation against Cain specifically." They pause. "The exoneration is not justice for the seventeen people — nothing is. But it removes the specific weight Cain has been carrying from an institutional context that was already wrong before he implemented the order." A pause. "He has been your security asset all this time because he could not go home. If home is no longer a court-martial, you should ask yourself whether you want him to stay because it is good for him or because you need him."`,
+    text: `"Veyra's immunity arrangement covers the Level 3 South operation entirely. Juno's case file goes into the Iron Saints internal review process, where it will be handled as an institutional matter rather than a personal accusation against Cain specifically." They pause. "The exoneration is not justice for the seventeen people — nothing is. But it removes the unmistakable weight Cain has been carrying from an institutional context that was already wrong before he implemented the order." A pause. "He has been your security asset all this time because he could not go home. If home is no longer a court-martial, you should ask yourself whether you want him to stay because it is good for him or because you need him."`,
     effectsOnEnter: { setFlags: ['heir_cain_offer_detailed'] },
     choices: [
       {
@@ -1220,7 +1220,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
         nextNode: 'c10_heir_intelligence_dice',
         diceCheck: {
           stat: 'intelligence',
-          difficulty: 14,
+          difficulty: 13,
           diceType: 'd20',
           successNode: 'c10_heir_expose_success',
           failureNode: 'c10_heir_expose_fail',
@@ -1236,7 +1236,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     location: 'The Betrayal Alley',
     imageKey: 'betrayal_alley',
     text: `The information is real. The recall order exists. The immunity arrangement is a genuine Iron Saints offer. The Heir did not fabricate the external pressures — they surfaced real pressures that were already present. What they fabricated was the conclusion: that the pressures require your companions to leave. The separation is clear: the pressures can be managed with the companions present, and the Heir's interest in presenting them as incompatible is the manipulation. You say this aloud, clearly, in front of the Heir. Their expression does not change. "You are right," they say. "The conclusion was mine, not the evidence. I note that you arrived at the correct analysis. That is a meaningful data point for the Last Gate."`,
-    effectsOnEnter: { setFlags: ['heir_manipulation_exposed'], intelligence: 3, miraTrust: 2, cainTrust: 2 },
+    effectsOnEnter: { setFlags: ['heir_manipulation_exposed'], intelligence: 2, miraTrust: 2, cainTrust: 2 },
     choices: [
       {
         id: 'c10_expose_success_forward',
@@ -1623,7 +1623,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     title: 'The Crossroads',
     location: 'The Companion Crossroads',
     imageKey: 'companion_crossroads',
-    text: `The Companion Crossroads is a four-way junction in the Level 3-4 transition zone where the maintenance tunnels feed into the Archive's lower access grid. It has been a decision point for the tunnel network's internal migration routes for three years — the specific kind of place where people choose which section of the network to commit to. Today it is the chapter's central choice architecture: who stays, who goes, and whether what remains is enough to carry into the descent.`,
+    text: `The Companion Crossroads is a four-way junction in the Level 3-4 transition zone where the maintenance tunnels feed into the Archive's lower access grid. It has been a decision point for the tunnel network's internal migration routes for three years — the particular kind of place where people choose which section of the network to commit to. Today it is the chapter's central choice architecture: who stays, who goes, and whether what remains is enough to carry into the descent.`,
     effectsOnEnter: { setFlags: ['companion_crossroads_arrived'] },
     choices: [
       {
@@ -1901,7 +1901,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     title: 'The Administration',
     location: 'The Last Medicine Room',
     imageKey: 'last_medicine_room',
-    text: `Administering the stabilisation compound for the specific modification in Mira's neurological architecture is not standard medical procedure — it requires precision timing and correct application sequence. Mira is talking you through it but the feedback loop is affecting her coherence slightly. The administration requires steady hands and accurate timing under the specific pressure of someone telling you how to save them while that process is happening.`,
+    text: `Administering the stabilisation compound for the specific modification in Mira's neurological architecture is not standard medical procedure — it requires precision timing and correct application sequence. Mira is talking you through it but the feedback loop is affecting her coherence slightly. The administration requires steady hands and accurate timing under the particular pressure of someone telling you how to save them while that process is happening.`,
     effectsOnEnter: {},
     choices: [
       {
@@ -1910,7 +1910,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
         nextNode: 'c10_medicine_agility_dice',
         diceCheck: {
           stat: 'agility',
-          difficulty: 13,
+          difficulty: 12,
           diceType: 'd20',
           successNode: 'c10_medicine_success',
           failureNode: 'c10_medicine_fail',
@@ -2145,7 +2145,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
         nextNode: 'c10_grave_strength_dice',
         diceCheck: {
           stat: 'strength',
-          difficulty: 14,
+          difficulty: 13,
           diceType: 'd20',
           successNode: 'c10_grave_veyra_success',
           failureNode: 'c10_grave_cain_chooses_player',
@@ -2265,7 +2265,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     location: 'The Place We Promised',
     imageKey: 'place_we_promised',
     speaker: 'Cain',
-    text: `He looks at the chalk writing without touching it. "The Iron Saints had a version of this. Written in permanent marker on the unit barracks wall. 'We hold what we were given.' It meant the jurisdiction, the assigned district, the operational parameters." He is quiet. "What I hold now is not a jurisdiction. I am aware of the difference." He turns from the wall. "The promise I am carrying is not written anywhere. It is the list in my pocket and the person standing next to me and the specific commitment that whatever I do with the mark-bearer's situation, it will not be the calculation that produced the seventeen." A pause. "That is not a vow. It is a stated operating principle. I find those more reliable than vows."`,
+    text: `He looks at the chalk writing without touching it. "The Iron Saints had a version of this. Written in permanent marker on the unit barracks wall. 'We hold what we were given.' It meant the jurisdiction, the assigned district, the operational parameters." He is quiet. "What I hold now is not a jurisdiction. I am aware of the difference." He turns from the wall. "The promise I am carrying is not written anywhere. It is the list in my pocket and the person standing next to me and the particular commitment that whatever I do with the mark-bearer's situation, it will not be the calculation that produced the seventeen." A pause. "That is not a vow. It is a stated operating principle. I find those more reliable than vows."`,
     effectsOnEnter: { setFlags: ['cain_promise_revealed'], cainTrust: 2 },
     choices: [
       {
@@ -2348,7 +2348,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     title: 'The Empty Chair',
     location: 'The Empty Chair',
     imageKey: 'empty_chair',
-    text: `The safehouse table has three chairs. The Empty Chair is the chapter's final image: what is missing from those three chairs at the end of this chapter registers the specific cost of everything that came before it. If both companions are present, the empty chair is the chapter's acknowledgment of the companion who could have been here and is not. If one companion is absent, the empty chair is theirs. If both are absent, the table's three chairs are two too many, and the chapter's final image is the specific kind of alone that knows exactly how it got here.`,
+    text: `The safehouse table has three chairs. The Empty Chair is the chapter's final image: what is missing from those three chairs at the end of this chapter registers the specific cost of everything that came before it. If both companions are present, the empty chair is the chapter's acknowledgment of the companion who could have been here and is not. If one companion is absent, the empty chair is theirs. If both are absent, the table's three chairs are two too many, and the chapter's final image is the particular kind of alone that knows exactly how it got here.`,
     effectsOnEnter: { setFlags: ['empty_chair_arrived'] },
     choices: [
       {
@@ -2429,7 +2429,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     title: 'Two Empty Chairs',
     location: 'The Empty Chair',
     imageKey: 'empty_chair',
-    text: `Both chairs. The table for three has no one at it. The specific weight of this is not the same as grief — grief has a direction, toward something that was taken. This is the weight of something that accumulated and resolved and left an absence that has the exact shape of everything that was present before it. The mark reads the room as quiet, which is accurate. The mark is fully awake and functional and has no companions in the room to register the noise of their presence. This is what full awakening in isolation looks like. The descent begins from this position. The lone wanderer route is the hardest path and the one that requires the most of whoever is walking it.`,
+    text: `Both chairs. The table for three has no one at it. the unmistakable weight of this is not the same as grief — grief has a direction, toward something that was taken. This is the weight of something that accumulated and resolved and left an absence that has the exact shape of everything that was present before it. The mark reads the room as quiet, which is accurate. The mark is fully awake and functional and has no companions in the room to register the noise of their presence. This is what full awakening in isolation looks like. The descent begins from this position. The lone wanderer route is the hardest path and the one that requires the most of whoever is walking it.`,
     effectsOnEnter: { setFlags: ['both_companions_gone', 'lone_wanderer_active'] },
     choices: [
       {
@@ -2480,7 +2480,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     title: 'The Weight of Alone',
     location: 'The Empty Chair',
     imageKey: 'empty_chair',
-    text: `The specific weight of the lone wanderer position is this: the mark was designed to be managed by a bearer with companion support. Nineteen previous bearers navigated toward the Last Gate with varying companion configurations. The ones who arrived alone tended to apply the mark's power in ways the Archive's evaluation criteria scored differently — not worse, but differently. More direct. Less filtered by the presence of people who could say "wait." The Archive notes this in the bearer evaluation criteria without comment. The entity below the city notes it with what may be interest. The First Voice notes it as an opportunity. The lone wanderer has the most freedom and the least protection from their own decisions.`,
+    text: `the unmistakable weight of the lone wanderer position is this: the mark was designed to be managed by a bearer with companion support. Nineteen previous bearers navigated toward the Last Gate with varying companion configurations. The ones who arrived alone tended to apply the mark's power in ways the Archive's evaluation criteria scored differently — not worse, but differently. More direct. Less filtered by the presence of people who could say "wait." The Archive notes this in the bearer evaluation criteria without comment. The entity below the city notes it with what may be interest. The First Voice notes it as an opportunity. The lone wanderer has the most freedom and the least protection from their own decisions.`,
     effectsOnEnter: { setFlags: ['lone_wanderer_moment'] },
     choices: [
       {
@@ -2520,7 +2520,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
         id: 'c10_lone_truth_seeker',
         text: 'The truth. Alone, but still toward the truth.',
         nextNode: 'c10_chapter_resolution',
-        effects: { intelligence: 3, setFlags: ['lone_wanderer_truth_path'] },
+        effects: { intelligence: 2, setFlags: ['lone_wanderer_truth_path'] },
       },
       {
         id: 'c10_lone_protector',
@@ -2698,12 +2698,12 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     title: 'The Broken Companions Chapter Closes',
     location: 'The Quiet Safehouse',
     imageKey: 'quiet_safehouse',
-    text: `The safehouse. The table is still there. The chalk "we will fix this" is still on the Level 2-3 platform wall. The seventeen markers are still in the Level 3 South section. Mira's personal file is on the bench, or it is not. Cain's tactical maps are on the war room wall, or they have been taken down. The mark is operational. The companions — however many remain — are committed to whatever form this produced. The City Beneath the City awaits. The Archive is not the bottom. Begin.`,
+    text: `The safehouse. The table is still there. The chalk "we will fix this" is still on the Level 2-3 platform wall. The seventeen markers are still in the Level 3 South section. Mira's personal file is on the bench, or it is not. Cain's tactical maps are on the war room wall, or they have been taken down. The mark is operational — fully awake, fully directed, pointing down with an insistence that has no ambiguity left. The companions — however many remain — are committed to whatever form this produced. The City Beneath the City awaits below the Archive, below the factions, below everything the surface has built on top of what was already here. The Archive is not the bottom. Something older is. Begin.`,
     effectsOnEnter: { setFlags: ['chapter10_complete'], morale: 3 },
     choices: [
       {
         id: 'c10_end_to_ch11',
-        text: 'Descend.',
+        text: 'Descend into the City Beneath the City. The mark points down.',
         nextNode: 'chapter11_start',
       },
     ],
@@ -2823,7 +2823,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     location: 'The Quiet Safehouse',
     imageKey: 'quiet_safehouse',
     speaker: 'Cain',
-    text: `Cain at the war room table, adding a note to the tactical assessment. The note reads: "Glass Court forward scouts — holding position, not advancing. Iron Saints remnants — inactive following Veyra's withdrawal. Archive enforcement division — one documented approach, withdrawn after intervention. Current threat level: managed." He adds, in different ink, in the margin: "Companion configuration: intact. Mark-bearer corruption gradient: within acceptable range. Assessment: required outcome achieved." He folds the assessment. Tomorrow they descend. Tonight, the war room is occupied by someone who made the calculation correctly, in the specific way that has nothing to do with tactics.`,
+    text: `Cain at the war room table, adding a note to the tactical assessment. The note reads: "Glass Court forward scouts — holding position, not advancing. Iron Saints remnants — inactive following Veyra's withdrawal. Archive enforcement division — one documented approach, withdrawn after intervention. Current threat level: managed." He adds, in different ink, in the margin: "Companion configuration: intact. Mark-bearer corruption gradient: within acceptable range. Assessment: required outcome achieved." He folds the assessment. Tomorrow they descend. Tonight, the war room is occupied by someone who made the calculation correctly, in the particular way that has nothing to do with tactics.`,
     effectsOnEnter: { setFlags: ['cain_loyalty_ch10_end', 'chapter10_complete'] },
     choices: [],
     isEnding: true,
@@ -2938,7 +2938,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     location: "Cain's War Room",
     imageKey: 'cain_war_room',
     speaker: 'Saint Veyra',
-    text: `The negotiation failed, the trust was not sufficient, and Cain looks at the wall map and the Iron Saints folder and makes a calculation that the chapter did not give him enough reason to refuse. He goes with Veyra. Not violently — there is no violence in this, which is its own kind of cost. He takes the seventeen names, leaves the tactical maps, and walks out the war room door with the specific deliberate movement of a person who has made a decision and is executing it cleanly. From inside the Saints, he sends one message to the mark-bearer via the tunnel network's relay: "The review will proceed through the internal channel. Juno has the case number." He does not say anything else. The war room is occupied by one fewer person. The Iron Saints have their soldier back.`,
+    text: `The negotiation failed, the trust was not sufficient, and Cain looks at the wall map and the Iron Saints folder and makes a calculation that the chapter did not give him enough reason to refuse. He goes with Veyra. Not violently — there is no violence in this, which is its own kind of cost. He takes the seventeen names, leaves the tactical maps, and walks out the war room door with the particular deliberate movement of a person who has made a decision and is executing it cleanly. From inside the Saints, he sends one message to the mark-bearer via the tunnel network's relay: "The review will proceed through the internal channel. Juno has the case number." He does not say anything else. The war room is occupied by one fewer person. The Iron Saints have their soldier back.`,
     effectsOnEnter: { setFlags: ['game_complete', 'cain_saints_return_ch10'] },
     choices: [],
     isEnding: true,
