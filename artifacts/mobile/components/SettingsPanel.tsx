@@ -6,6 +6,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useGame } from '../context/GameContext';
 import { APP_VERSION, BUILD_DATE } from '../constants/version';
 import { exportSaveData } from '../logic/saveSystem';
+import { requestDeviceTiltPermission } from '../engine/pixel/camera';
 import type { SaveSlotMetadata } from '../data/types';
 
 export default function SettingsPanel() {
@@ -370,6 +371,142 @@ export default function SettingsPanel() {
           </View>
           <View style={[styles.toggle, settings.skipDiceAnimation && styles.toggleOn]}>
             <View style={[styles.toggleThumb, settings.skipDiceAnimation && styles.toggleThumbOn]} />
+          </View>
+        </Pressable>
+
+        <View style={styles.divider} />
+
+        <Text style={styles.sectionHeader}>SOUND & ADAPTIVE SCORE</Text>
+        <Pressable
+          style={styles.toggleRow}
+          onPress={() => updateSettings({ soundEnabled: !settings.soundEnabled })}
+        >
+          <View>
+            <Text style={styles.toggleLabel}>Enable Audio & Score</Text>
+            <Text style={styles.toggleDesc}>Procedural 16-bit dark fantasy soundtrack and SFX.</Text>
+          </View>
+          <View style={[styles.toggle, settings.soundEnabled && styles.toggleOn]}>
+            <View style={[styles.toggleThumb, settings.soundEnabled && styles.toggleThumbOn]} />
+          </View>
+        </Pressable>
+
+        <View style={{ height: 12 }} />
+        <Text style={styles.sectionHeader}>MUSIC MODE</Text>
+        <View style={styles.buttonGroup}>
+          {(['adaptive', 'calm', 'off'] as const).map((mode) => (
+            <Pressable
+              key={mode}
+              style={[
+                styles.optionBtn,
+                (settings.musicMode ?? 'adaptive') === mode && styles.optionBtnActive,
+              ]}
+              onPress={() => updateSettings({ musicMode: mode })}
+            >
+              <Text
+                style={[
+                  styles.optionText,
+                  (settings.musicMode ?? 'adaptive') === mode && styles.optionTextActive,
+                ]}
+              >
+                {mode.toUpperCase()}
+              </Text>
+            </Pressable>
+          ))}
+        </View>
+
+        <View style={{ height: 12 }} />
+        <Text style={styles.sectionHeader}>MIXER VOLUMES (MUSIC / SFX / AMBIENCE)</Text>
+        {(
+          [
+            { key: 'musicVolume', label: 'MUSIC', val: settings.musicVolume ?? 0.7 },
+            { key: 'sfxVolume', label: 'SFX', val: settings.sfxVolume ?? 0.85 },
+            { key: 'ambienceVolume', label: 'AMBIENCE', val: settings.ambienceVolume ?? 0.65 },
+          ] as const
+        ).map((bus) => (
+          <View key={bus.key} style={{ marginBottom: 10 }}>
+            <Text style={[styles.toggleDesc, { marginBottom: 6 }]}>
+              {bus.label}: {Math.round(bus.val * 100)}%
+            </Text>
+            <View style={styles.buttonGroup}>
+              {[0, 0.35, 0.7, 1.0].map((lvl) => (
+                <Pressable
+                  key={lvl}
+                  style={[
+                    styles.optionBtn,
+                    Math.abs(bus.val - lvl) < 0.12 && styles.optionBtnActive,
+                  ]}
+                  onPress={() => updateSettings({ [bus.key]: lvl })}
+                >
+                  <Text
+                    style={[
+                      styles.optionText,
+                      Math.abs(bus.val - lvl) < 0.12 && styles.optionTextActive,
+                    ]}
+                  >
+                    {Math.round(lvl * 100)}%
+                  </Text>
+                </Pressable>
+              ))}
+            </View>
+          </View>
+        ))}
+
+        <View style={styles.divider} />
+
+        <Text style={styles.sectionHeader}>PIXEL RENDERER & MOTION</Text>
+        <View style={styles.buttonGroup}>
+          {(['auto', 'high', 'medium', 'low'] as const).map((tier) => (
+            <Pressable
+              key={tier}
+              style={[
+                styles.optionBtn,
+                (settings.qualityTier ?? 'auto') === tier && styles.optionBtnActive,
+              ]}
+              onPress={() => updateSettings({ qualityTier: tier })}
+            >
+              <Text
+                style={[
+                  styles.optionText,
+                  (settings.qualityTier ?? 'auto') === tier && styles.optionTextActive,
+                ]}
+              >
+                {tier.toUpperCase()}
+              </Text>
+            </Pressable>
+          ))}
+        </View>
+
+        <View style={{ height: 12 }} />
+        <Pressable
+          style={styles.toggleRow}
+          onPress={async () => {
+            const nextTilt = !settings.tiltParallax;
+            if (nextTilt) {
+              await requestDeviceTiltPermission();
+            }
+            updateSettings({ tiltParallax: nextTilt });
+          }}
+        >
+          <View>
+            <Text style={styles.toggleLabel}>Device Tilt Parallax (Mobile)</Text>
+            <Text style={styles.toggleDesc}>Shift scene depth layers gently when tilting your device.</Text>
+          </View>
+          <View style={[styles.toggle, settings.tiltParallax && styles.toggleOn]}>
+            <View style={[styles.toggleThumb, settings.tiltParallax && styles.toggleThumbOn]} />
+          </View>
+        </Pressable>
+
+        <View style={{ height: 8 }} />
+        <Pressable
+          style={styles.toggleRow}
+          onPress={() => updateSettings({ reducedMotion: !settings.reducedMotion })}
+        >
+          <View>
+            <Text style={styles.toggleLabel}>Reduced Motion</Text>
+            <Text style={styles.toggleDesc}>Disable camera drift, parallax, particles, and screen shake.</Text>
+          </View>
+          <View style={[styles.toggle, settings.reducedMotion && styles.toggleOn]}>
+            <View style={[styles.toggleThumb, settings.reducedMotion && styles.toggleThumbOn]} />
           </View>
         </Pressable>
 

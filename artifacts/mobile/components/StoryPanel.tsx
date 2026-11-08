@@ -1,13 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
-  Animated,
   Platform,
   Pressable,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
+import Animated, {
+  cancelAnimation,
+  useAnimatedStyle,
+  useSharedValue,
+  withDelay,
+  withRepeat,
+  withSequence,
+  withTiming,
+} from 'react-native-reanimated';
 import { Feather } from '@expo/vector-icons';
 import { useGame } from '../context/GameContext';
 import SaveNotification from './SaveNotification';
@@ -24,33 +32,43 @@ import { useChoiceImagePreloader } from '../hooks/useChoiceImagePreloader';
 import { preloadNextChapter, subscribeChapterLoaded } from '../data/story/chapterLoader';
 import { useTypewriter } from '../hooks/useTypewriter';
 import { useReducedMotion } from '../hooks/useReducedMotion';
+import { getSceneManifestEntry } from '../constants/sceneManifest';
+import { sound } from '../logic/audioEngine';
 
 // ─── Mini stat bar ────────────────────────────────────────────────────────────
 
 function MiniStatBar({ value, max, color }: { value: number; max: number; color: string }) {
   const pct = Math.max(0, Math.min(1, value / max));
-  const lowPulse = useRef(new Animated.Value(1)).current;
+  const lowPulse = useSharedValue(1);
+  const isLow = pct < 0.25;
 
   useEffect(() => {
-    if (pct < 0.25) {
-      Animated.loop(
-        Animated.sequence([
-          Animated.timing(lowPulse, { toValue: 0.45, duration: 800, useNativeDriver: true }),
-          Animated.timing(lowPulse, { toValue: 1, duration: 800, useNativeDriver: true }),
-        ])
-      ).start();
+    if (isLow) {
+      lowPulse.value = withRepeat(
+        withSequence(
+          withTiming(0.45, { duration: 800 }),
+          withTiming(1, { duration: 800 })
+        ),
+        -1,
+        true
+      );
     } else {
-      lowPulse.stopAnimation();
-      lowPulse.setValue(1);
+      cancelAnimation(lowPulse);
+      lowPulse.value = 1;
     }
-  }, [pct < 0.25]);
+  }, [isLow, lowPulse]);
+
+  const fillAnimStyle = useAnimatedStyle(() => ({
+    opacity: isLow ? lowPulse.value : 1,
+  }));
 
   return (
     <View style={barStyles.miniTrack}>
       <Animated.View
         style={[
           barStyles.miniFill,
-          { width: `${pct * 100}%` as any, backgroundColor: color, opacity: pct < 0.25 ? lowPulse : 1 },
+          { width: `${pct * 100}%` as any, backgroundColor: color },
+          fillAnimStyle,
         ]}
       />
     </View>
@@ -164,22 +182,28 @@ const WARNING_TYPE_COLORS: Record<SurvivalWarningType, string> = {
 };
 
 function WarningRow({ warning }: { warning: SurvivalWarning }) {
-  const pulseAnim = useRef(new Animated.Value(1)).current;
+  const pulseAnim = useSharedValue(1);
   const isCritical = warning.severity === 'critical';
 
   useEffect(() => {
     if (isCritical) {
-      Animated.loop(
-        Animated.sequence([
-          Animated.timing(pulseAnim, { toValue: 0.5, duration: 900, useNativeDriver: true }),
-          Animated.timing(pulseAnim, { toValue: 1, duration: 900, useNativeDriver: true }),
-        ])
-      ).start();
+      pulseAnim.value = withRepeat(
+        withSequence(
+          withTiming(0.5, { duration: 900 }),
+          withTiming(1, { duration: 900 })
+        ),
+        -1,
+        true
+      );
     } else {
-      pulseAnim.stopAnimation();
-      pulseAnim.setValue(1);
+      cancelAnimation(pulseAnim);
+      pulseAnim.value = 1;
     }
-  }, [isCritical]);
+  }, [isCritical, pulseAnim]);
+
+  const rowAnimStyle = useAnimatedStyle(() => ({
+    opacity: isCritical ? pulseAnim.value : 1,
+  }));
 
   const color = WARNING_TYPE_COLORS[warning.type];
   const iconName = WARNING_TYPE_ICONS[warning.type] as any;
@@ -188,7 +212,8 @@ function WarningRow({ warning }: { warning: SurvivalWarning }) {
     <Animated.View
       style={[
         warnStyles.row,
-        { borderLeftColor: color, opacity: isCritical ? pulseAnim : 1 },
+        { borderLeftColor: color },
+        rowAnimStyle,
       ]}
     >
       <Feather name={iconName} size={10} color={color} />
@@ -218,24 +243,26 @@ function SurvivalWarningStrip({ warnings }: { warnings: SurvivalWarning[] }) {
 // ─── Chapter transition banner ────────────────────────────────────────────────
 
 function ChapterBanner({ chapter }: { chapter: string }) {
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-  const scaleAnim = useRef(new Animated.Value(1.04)).current;
+  const fadeAnim = useSharedValue(0);
+  const scaleAnim = useSharedValue(1.04);
 
   useEffect(() => {
-    Animated.sequence([
-      Animated.parallel([
-        Animated.timing(fadeAnim, { toValue: 1, duration: 420, useNativeDriver: true }),
-        Animated.timing(scaleAnim, { toValue: 1, duration: 400, useNativeDriver: true }),
-      ]),
-      Animated.delay(1100),
-      Animated.timing(fadeAnim, { toValue: 0, duration: 500, useNativeDriver: true }),
-    ]).start();
+    fadeAnim.value = withSequence(
+      withTiming(1, { duration: 420 }),
+      withDelay(1100, withTiming(0, { duration: 500 }))
+    );
+    scaleAnim.value = withTiming(1, { duration: 400 });
   }, [fadeAnim, scaleAnim]);
+
+  const bannerAnimStyle = useAnimatedStyle(() => ({
+    opacity: fadeAnim.value,
+    transform: [{ scale: scaleAnim.value }],
+  }));
 
   return (
     <Animated.View
       pointerEvents="none"
-      style={[bannerStyles.container, { opacity: fadeAnim, transform: [{ scale: scaleAnim }] }]}
+      style={[bannerStyles.container, bannerAnimStyle]}
     >
       <View style={bannerStyles.card}>
         <View style={bannerStyles.accentLine} />
@@ -306,8 +333,8 @@ export default function StoryPanel({ onOpenHotkeys }: { onOpenHotkeys?: () => vo
     });
   }, []);
 
-  const titleFade = useRef(new Animated.Value(1)).current;
-  const titleSlide = useRef(new Animated.Value(0)).current;
+  const titleFade = useSharedValue(1);
+  const titleSlide = useSharedValue(0);
   const prevNodeId = useRef<string | undefined>(undefined);
   const prevChapter = useRef<string | undefined>(undefined);
   const [showBanner, setShowBanner] = useState(false);
@@ -319,6 +346,7 @@ export default function StoryPanel({ onOpenHotkeys }: { onOpenHotkeys?: () => vo
     if (prevChapter.current !== undefined && prevChapter.current !== currentNode.chapter) {
       if (bannerTimeoutRef.current) clearTimeout(bannerTimeoutRef.current);
       setShowBanner(true);
+      sound.playStinger('chapter_card');
       bannerTimeoutRef.current = setTimeout(() => setShowBanner(false), 2200);
     }
     prevChapter.current = currentNode.chapter;
@@ -326,22 +354,32 @@ export default function StoryPanel({ onOpenHotkeys }: { onOpenHotkeys?: () => vo
     if (prevNodeId.current === currentNode.id) return;
     prevNodeId.current = currentNode.id;
 
+    // Trigger adaptive procedural scene music cue
+    const manifestEntry = getSceneManifestEntry(currentNode.imageKey);
+    if (manifestEntry?.music) {
+      sound.playTheme(manifestEntry.music.theme, manifestEntry.music.intensity);
+    }
+
     if (reducedMotion) {
-      titleFade.setValue(1);
-      titleSlide.setValue(0);
+      titleFade.value = 1;
+      titleSlide.value = 0;
     } else {
-      titleFade.setValue(0);
-      titleSlide.setValue(14);
-      Animated.parallel([
-        Animated.timing(titleFade, { toValue: 1, duration: 500, delay: 140, useNativeDriver: true }),
-        Animated.timing(titleSlide, { toValue: 0, duration: 400, delay: 140, useNativeDriver: true }),
-      ]).start();
+      titleFade.value = 0;
+      titleSlide.value = 14;
+      titleFade.value = withDelay(140, withTiming(1, { duration: 500 }));
+      titleSlide.value = withDelay(140, withTiming(0, { duration: 400 }));
     }
 
     return () => {
       if (bannerTimeoutRef.current) clearTimeout(bannerTimeoutRef.current);
     };
-  }, [currentNode?.id, currentNode?.chapter, reducedMotion, titleFade, titleSlide]);
+  }, [currentNode?.id, currentNode?.chapter, currentNode?.imageKey, reducedMotion, titleFade, titleSlide]);
+
+  // Keep procedural music engine updated with corruption & low-HP heartbeat state
+  useEffect(() => {
+    const isLowHp = state.stats.health / Math.max(1, state.stats.maxHealth) <= 0.3;
+    sound.setAdaptiveState(state.stats.corruption, isLowHp);
+  }, [state.stats.corruption, state.stats.health, state.stats.maxHealth]);
 
   if (!currentNode) {
     return (
@@ -475,6 +513,14 @@ export default function StoryPanel({ onOpenHotkeys }: { onOpenHotkeys?: () => vo
           sceneKey={currentNode.id}
           overlayOpacity={isHallucination ? 0.88 : isCompanionEvent ? 0.84 : 0.78}
           fadeDuration={isHallucination ? 600 : isCompanionEvent ? 500 : 420}
+          corruption={state.stats.corruption}
+          health={state.stats.health}
+          maxHealth={state.stats.maxHealth}
+          hunger={state.stats.hunger}
+          thirst={state.stats.thirst}
+          isHallucination={isHallucination}
+          tiltParallaxEnabled={state.settings.tiltParallax ?? false}
+          reducedMotion={reducedMotion}
         />
       }
       sidebarHUD={<DesktopSidebarHUD onOpenHotkeys={onOpenHotkeys} />}

@@ -1,6 +1,5 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import {
-  Animated,
   Platform,
   Pressable,
   ScrollView,
@@ -8,6 +7,12 @@ import {
   Text,
   View,
 } from 'react-native';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withDelay,
+  withTiming,
+} from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -23,15 +28,18 @@ interface ResourceCardProps {
 }
 
 function ResourceCard({ label, value, icon, color, description, delay = 0 }: ResourceCardProps) {
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-  const slideAnim = useRef(new Animated.Value(12)).current;
+  const fadeAnim = useSharedValue(0);
+  const slideAnim = useSharedValue(12);
 
   useEffect(() => {
-    Animated.parallel([
-      Animated.timing(fadeAnim, { toValue: 1, duration: 350, delay, useNativeDriver: true }),
-      Animated.timing(slideAnim, { toValue: 0, duration: 300, delay, useNativeDriver: true }),
-    ]).start();
+    fadeAnim.value = withDelay(delay, withTiming(1, { duration: 350 }));
+    slideAnim.value = withDelay(delay, withTiming(0, { duration: 300 }));
   }, []);
+
+  const animStyle = useAnimatedStyle(() => ({
+    opacity: fadeAnim.value,
+    transform: [{ translateY: slideAnim.value }],
+  }));
 
   const empty = value === 0;
 
@@ -40,7 +48,7 @@ function ResourceCard({ label, value, icon, color, description, delay = 0 }: Res
       style={[
         styles.card,
         { borderColor: empty ? 'rgba(30,28,40,0.5)' : `${color}20` },
-        { opacity: fadeAnim, transform: [{ translateY: slideAnim }] },
+        animStyle,
       ]}
     >
       <View style={[styles.cardTopAccent, { backgroundColor: empty ? '#2a2838' : color }]} />
@@ -75,15 +83,18 @@ export default function InventoryPanel() {
   const topPad = Platform.OS === 'web' ? 67 : insets.top;
   const botPad = Platform.OS === 'web' ? 34 : insets.bottom;
 
-  const headerFade = useRef(new Animated.Value(0)).current;
-  const headerSlide = useRef(new Animated.Value(-16)).current;
+  const headerFade = useSharedValue(0);
+  const headerSlide = useSharedValue(-16);
 
   useEffect(() => {
-    Animated.parallel([
-      Animated.timing(headerFade, { toValue: 1, duration: 400, useNativeDriver: true }),
-      Animated.timing(headerSlide, { toValue: 0, duration: 350, useNativeDriver: true }),
-    ]).start();
+    headerFade.value = withTiming(1, { duration: 400 });
+    headerSlide.value = withTiming(0, { duration: 350 });
   }, []);
+
+  const headerAnimStyle = useAnimatedStyle(() => ({
+    opacity: headerFade.value,
+    transform: [{ translateY: headerSlide.value }],
+  }));
 
   return (
     <LinearGradient colors={['#04020a', '#08050f', '#04020a']} style={styles.container}>
@@ -93,7 +104,7 @@ export default function InventoryPanel() {
         style={[
           styles.header,
           { paddingTop: topPad + 14 },
-          { opacity: headerFade, transform: [{ translateY: headerSlide }] },
+          headerAnimStyle,
         ]}
       >
         <View>

@@ -1,8 +1,17 @@
-import React, { useRef } from 'react';
-import { Animated, Platform, Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Platform, Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withDelay,
+  withSequence,
+  withSpring,
+  withTiming,
+} from 'react-native-reanimated';
 import { Feather } from '@expo/vector-icons';
 import type { DiceCheck } from '../data/types';
 import { DICE_STAT_LABELS } from '../logic/diceEngine';
+import { MOTION_EASINGS, MOTION_SPRINGS } from '../constants/motion';
 
 interface Props {
   choiceId: string;
@@ -24,6 +33,7 @@ const RIPPLE = Platform.OS === 'android'
 const HIT_SLOP = { top: 3, bottom: 3, left: 6, right: 6 };
 
 export default function ChoiceButton({
+  choiceId,
   text,
   met,
   reasons,
@@ -40,14 +50,47 @@ export default function ChoiceButton({
 
   const reasonText = reasons.length > 0 ? reasons.join(' · ') : (flavorText ?? '');
   const hasDice = Boolean(diceCheck);
-  const scaleAnim = useRef(new Animated.Value(1)).current;
+  const [isHovered, setIsHovered] = useState(false);
+
+  const scaleAnim = useSharedValue(1);
+  const pressY = useSharedValue(0);
+  const shakeX = useSharedValue(0);
+  const entryOpacity = useSharedValue(0);
+  const entrySlideX = useSharedValue(-8);
+
+  useEffect(() => {
+    const staggerMs = ((hotkeyIndex ?? 1) - 1) * 45;
+    entryOpacity.value = 0;
+    entrySlideX.value = -8;
+    entryOpacity.value = withDelay(
+      staggerMs,
+      withTiming(1, { duration: 180, easing: MOTION_EASINGS.step6 })
+    );
+    entrySlideX.value = withDelay(
+      staggerMs,
+      withTiming(0, { duration: 180, easing: MOTION_EASINGS.step6 })
+    );
+  }, [choiceId, hotkeyIndex]);
 
   const onPressIn = () => {
-    if (!met && !isTyping) return;
-    Animated.spring(scaleAnim, { toValue: 0.975, useNativeDriver: true, speed: 60, bounciness: 0 }).start();
+    if (!met && !isTyping) {
+      // Chain-rattle horizontal shake on locked choice press
+      shakeX.value = withSequence(
+        withTiming(-4, { duration: 40 }),
+        withTiming(4, { duration: 40 }),
+        withTiming(-3, { duration: 40 }),
+        withTiming(3, { duration: 40 }),
+        withTiming(0, { duration: 40 })
+      );
+      return;
+    }
+    scaleAnim.value = withSpring(0.985, MOTION_SPRINGS.snappy);
+    pressY.value = withTiming(2, { duration: 60 });
   };
+
   const onPressOut = () => {
-    Animated.spring(scaleAnim, { toValue: 1, useNativeDriver: true, speed: 40, bounciness: 4 }).start();
+    scaleAnim.value = withSpring(1, MOTION_SPRINGS.snappy);
+    pressY.value = withTiming(0, { duration: 80 });
   };
 
   const handlePress = () => {
@@ -60,6 +103,15 @@ export default function ChoiceButton({
     }
   };
 
+  const wrapperAnimStyle = useAnimatedStyle(() => ({
+    opacity: entryOpacity.value,
+    transform: [
+      { translateX: Math.round(entrySlideX.value + shakeX.value) },
+      { translateY: Math.round(pressY.value) },
+      { scale: scaleAnim.value },
+    ],
+  }));
+
   const diceInfoDesc = hasDice
     ? `${DICE_STAT_LABELS[diceCheck!.stat]} check, DC ${diceCheck!.difficulty}`
     : '';
@@ -71,13 +123,15 @@ export default function ChoiceButton({
   ].filter(Boolean).join('');
 
   return (
-    <Animated.View style={[styles.wrapper, { transform: [{ scale: scaleAnim }] }]}>
+    <Animated.View style={[styles.wrapper, wrapperAnimStyle]}>
       <Pressable
         onPress={met || isTyping ? handlePress : undefined}
         android_ripple={met ? RIPPLE : undefined}
         hitSlop={HIT_SLOP}
         onPressIn={onPressIn}
         onPressOut={onPressOut}
+        onHoverIn={() => setIsHovered(true)}
+        onHoverOut={() => setIsHovered(false)}
         role="button"
         accessibilityRole="button"
         aria-label={choiceAriaLabel}
@@ -91,6 +145,7 @@ export default function ChoiceButton({
           styles.button,
           met ? styles.buttonActive : styles.buttonLocked,
           hasDice && met && styles.buttonDice,
+          isHovered && met && styles.buttonHovered,
           focused && styles.buttonFocused,
         ]}
       >
@@ -99,7 +154,7 @@ export default function ChoiceButton({
           <View
             style={[
               styles.accentBar,
-              { backgroundColor: hasDice ? '#b87de0' : '#e67e22' },
+              { backgroundColor: hasDice ? '#b87de0' : isHovered ? '#f39c12' : '#e67e22' },
             ]}
           />
         )}
@@ -117,7 +172,7 @@ export default function ChoiceButton({
               <Feather name="lock" size={12} color="#4a4058" style={styles.lockIcon} />
             )}
             {met && !hasDice && (
-              <View style={styles.diamond} />
+              <View style={[styles.diamond, isHovered && { backgroundColor: '#f39c12' }]} />
             )}
             {met && hasDice && (
               <View style={styles.diceBadge}>
@@ -131,7 +186,11 @@ export default function ChoiceButton({
               {text}
             </Text>
             {met && !hasDice && (
-              <Feather name="chevron-right" size={13} color="rgba(230,126,34,0.4)" />
+              <Feather
+                name="chevron-right"
+                size={13}
+                color={isHovered ? '#f39c12' : 'rgba(230,126,34,0.4)'}
+              />
             )}
           </View>
 
@@ -173,6 +232,10 @@ const styles = StyleSheet.create({
   buttonDice: {
     backgroundColor: 'rgba(20,10,38,0.95)',
     borderColor: 'rgba(100,50,140,0.65)',
+  },
+  buttonHovered: {
+    borderColor: 'rgba(243,156,18,0.75)',
+    backgroundColor: 'rgba(28,18,46,0.96)',
   },
   buttonLocked: {
     backgroundColor: 'rgba(8,6,14,0.7)',
@@ -299,8 +362,8 @@ const styles = StyleSheet.create({
   },
   diceInfoText: {
     fontSize: 10,
-    color: '#b87de0',
+    color: '#c695ec',
     fontFamily: 'Inter_600SemiBold',
-    letterSpacing: 0.8,
+    letterSpacing: 0.3,
   },
 });

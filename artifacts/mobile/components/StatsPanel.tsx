@@ -1,6 +1,5 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import {
-  Animated,
   Platform,
   Pressable,
   ScrollView,
@@ -8,10 +7,18 @@ import {
   Text,
   View,
 } from 'react-native';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withDelay,
+  withSpring,
+  withTiming,
+} from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useGame } from '../context/GameContext';
+import { MOTION_SPRINGS } from '../constants/motion';
 
 interface StatBarRowProps {
   label: string;
@@ -24,18 +31,24 @@ interface StatBarRowProps {
 
 function StatBarRow({ label, value, max = 100, color, showBar = false, delay = 0 }: StatBarRowProps) {
   const pct = Math.max(0, Math.min(1, value / max));
-  const widthAnim = useRef(new Animated.Value(0)).current;
-  const mountAnim = useRef(new Animated.Value(0)).current;
+  const widthAnim = useSharedValue(0);
+  const mountAnim = useSharedValue(0);
 
   useEffect(() => {
-    Animated.parallel([
-      Animated.timing(mountAnim, { toValue: 1, duration: 300, delay, useNativeDriver: true }),
-      Animated.timing(widthAnim, { toValue: pct, duration: 700, delay: delay + 100, useNativeDriver: false }),
-    ]).start();
-  }, []);
+    mountAnim.value = withDelay(delay, withTiming(1, { duration: 300 }));
+    widthAnim.value = withDelay(delay + 100, withTiming(pct, { duration: 700 }));
+  }, [pct]);
+
+  const rowStyle = useAnimatedStyle(() => ({
+    opacity: mountAnim.value,
+  }));
+
+  const fillStyle = useAnimatedStyle(() => ({
+    width: `${widthAnim.value * 100}%` as any,
+  }));
 
   return (
-    <Animated.View style={[styles.statRow, { opacity: mountAnim }]}>
+    <Animated.View style={[styles.statRow, rowStyle]}>
       <Text style={styles.statLabel}>{label}</Text>
       <View style={styles.statRight}>
         {showBar && (
@@ -43,17 +56,16 @@ function StatBarRow({ label, value, max = 100, color, showBar = false, delay = 0
             <Animated.View
               style={[
                 styles.barFill,
-                {
-                  backgroundColor: color,
-                  width: widthAnim.interpolate({ inputRange: [0, 1], outputRange: ['0%', '100%'] }),
-                },
+                { backgroundColor: color },
+                fillStyle,
               ]}
             />
             {pct > 0.02 && (
               <Animated.View
                 style={[
                   styles.barGlow,
-                  { backgroundColor: color, width: widthAnim.interpolate({ inputRange: [0, 1], outputRange: ['0%', '100%'] }) },
+                  { backgroundColor: color },
+                  fillStyle,
                 ]}
               />
             )}
@@ -88,15 +100,18 @@ export default function StatsPanel() {
   const topPad = Platform.OS === 'web' ? 67 : insets.top;
   const botPad = Platform.OS === 'web' ? 34 : insets.bottom;
 
-  const headerFade = useRef(new Animated.Value(0)).current;
-  const headerSlide = useRef(new Animated.Value(-16)).current;
+  const headerFade = useSharedValue(0);
+  const headerSlide = useSharedValue(-16);
 
   useEffect(() => {
-    Animated.parallel([
-      Animated.timing(headerFade, { toValue: 1, duration: 400, useNativeDriver: true }),
-      Animated.timing(headerSlide, { toValue: 0, duration: 350, useNativeDriver: true }),
-    ]).start();
+    headerFade.value = withTiming(1, { duration: 400 });
+    headerSlide.value = withTiming(0, { duration: 350 });
   }, []);
+
+  const headerAnimStyle = useAnimatedStyle(() => ({
+    opacity: headerFade.value,
+    transform: [{ translateY: headerSlide.value }],
+  }));
 
   const className = character?.characterClass.replace(/_/g, ' ').toUpperCase() ?? '';
 
@@ -108,7 +123,7 @@ export default function StatsPanel() {
         style={[
           styles.header,
           { paddingTop: topPad + 14 },
-          { opacity: headerFade, transform: [{ translateY: headerSlide }] },
+          headerAnimStyle,
         ]}
       >
         <View>
@@ -175,20 +190,24 @@ export default function StatsPanel() {
 }
 
 function AttrBadge({ label, value, color, delay = 0 }: { label: string; value: number; color: string; delay?: number }) {
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-  const scaleAnim = useRef(new Animated.Value(0.85)).current;
+  const fadeAnim = useSharedValue(0);
+  const scaleAnim = useSharedValue(0.85);
   useEffect(() => {
-    Animated.parallel([
-      Animated.timing(fadeAnim, { toValue: 1, duration: 300, delay, useNativeDriver: true }),
-      Animated.spring(scaleAnim, { toValue: 1, delay, useNativeDriver: true, tension: 100, friction: 8 }),
-    ]).start();
+    fadeAnim.value = withDelay(delay, withTiming(1, { duration: 300 }));
+    scaleAnim.value = withDelay(delay, withSpring(1, MOTION_SPRINGS.snappy));
   }, []);
+
+  const animStyle = useAnimatedStyle(() => ({
+    opacity: fadeAnim.value,
+    transform: [{ scale: scaleAnim.value }],
+  }));
 
   return (
     <Animated.View
       style={[
         styles.attrBadge,
-        { borderColor: `${color}25`, opacity: fadeAnim, transform: [{ scale: scaleAnim }] },
+        { borderColor: `${color}25` },
+        animStyle,
       ]}
     >
       <Text style={[styles.attrLabel, { color: `${color}88` }]}>{label}</Text>

@@ -1,5 +1,11 @@
-import React, { useEffect, useRef } from 'react';
-import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withDelay,
+  withTiming,
+} from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Feather } from '@expo/vector-icons';
 import { markContentWarningSeen } from '../logic/saveSystem';
@@ -17,17 +23,24 @@ const WARNINGS = [
 export default function ContentWarningScreen() {
   const { setScreen } = useGame();
 
-  const fade = useRef(new Animated.Value(0)).current;
-  const slide = useRef(new Animated.Value(18)).current;
-  const btnFade = useRef(new Animated.Value(0)).current;
+  const fade = useSharedValue(0);
+  const slide = useSharedValue(18);
+  const btnFade = useSharedValue(0);
 
   useEffect(() => {
-    Animated.parallel([
-      Animated.timing(fade, { toValue: 1, duration: 600, useNativeDriver: true }),
-      Animated.timing(slide, { toValue: 0, duration: 500, useNativeDriver: true }),
-    ]).start();
-    Animated.timing(btnFade, { toValue: 1, duration: 400, delay: 1000, useNativeDriver: true }).start();
+    fade.value = withTiming(1, { duration: 600 });
+    slide.value = withTiming(0, { duration: 500 });
+    btnFade.value = withDelay(1000, withTiming(1, { duration: 400 }));
   }, []);
+
+  const contentAnimStyle = useAnimatedStyle(() => ({
+    opacity: fade.value,
+    transform: [{ translateY: slide.value }],
+  }));
+
+  const footerAnimStyle = useAnimatedStyle(() => ({
+    opacity: btnFade.value,
+  }));
 
   const handleContinue = async () => {
     await markContentWarningSeen();
@@ -36,7 +49,7 @@ export default function ContentWarningScreen() {
 
   return (
     <LinearGradient colors={['#020106', '#060310', '#020106']} style={styles.container}>
-      <Animated.View style={[styles.content, { opacity: fade, transform: [{ translateY: slide }] }]}>
+      <Animated.View style={[styles.content, contentAnimStyle]}>
         <View style={styles.iconRow}>
           <View style={styles.iconRing}>
             <Feather name="alert-triangle" size={26} color="#c9a84c" />
@@ -68,7 +81,7 @@ export default function ContentWarningScreen() {
         </Text>
       </Animated.View>
 
-      <Animated.View style={[styles.footer, { opacity: btnFade }]}>
+      <Animated.View style={[styles.footer, footerAnimStyle]}>
         <Pressable style={styles.btn} onPress={handleContinue}>
           <Text style={styles.btnText}>I UNDERSTAND — ENTER THE WORLD</Text>
           <Feather name="arrow-right" size={13} color="#c9a84c" />

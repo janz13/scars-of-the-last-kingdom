@@ -3,11 +3,15 @@
  *
  * Provides:
  * 1. Double-buffered canvas compositing at 720×400 / 400×760 native art resolution.
- * 2. Zero-black-flash cross-fading (front buffer stays visible until back buffer is ready).
+ * 2. Zero-black-flash transitions (`dither-dissolve`, `mosaic`, `scanline-wipe`, `flash-white`, `glitch-tear`, `fade`).
  * 3. CSS integer upscaling via `image-rendering: pixelated`.
- * 4. Ultrawide decorative pillarbox frame rendering (aspect > 1.9).
- * 5. Native iOS/Android fallback using dual-layer cross-fading Image components.
- * 6. Persistent child rendering (no unmounting on scene change).
+ * 4. Multi-layer parallax (`far` ±2px, `mid` ±5px, `fore` ±9px) + 30s Ken Burns focal drift.
+ * 5. Atmospheric particle system (`dust`, `ash`, `embers`, `rain`, `drip`, `fog`, `sparks`, `snow-ash`).
+ * 6. Corruption vein overlays, hue drift (>= 50), and glitch tears (>= 70).
+ * 7. Stat feedback: damage red border pulse, low hunger/thirst desaturation, and low-HP heartbeat vignette.
+ * 8. Ultrawide decorative pillarbox frame rendering (aspect > 1.9).
+ * 9. Native iOS/Android fallback using dual-layer cross-fading Image components.
+ * 10. Persistent child rendering (no unmounting on scene change).
  */
 
 import React, { useEffect, useRef, useState } from 'react';
@@ -26,16 +30,20 @@ import { PIXEL_GRID } from '../../constants/pixelGrid';
 import {
   getBackgroundGradient,
   getBackgroundImage,
-  type GradientConfig,
 } from '../../constants/images';
 import { resolveImageUri } from '../../hooks/useChoiceImagePreloader';
 import {
   getSceneManifestEntry,
   resolveSceneAsset,
+  SCENE_ASSET_REGISTRY,
   SCENE_MANIFEST,
 } from '../../constants/sceneManifest';
 import { useQualityTier } from '../../constants/pixelTiers';
 import { PaletteCycler } from '../../engine/pixel/palette';
+import { PixelCamera } from '../../engine/pixel/camera';
+import { PixelParticleSystem } from '../../engine/pixel/particles';
+import { renderPixelTransition, type PixelTransitionMode } from '../../engine/pixel/transitions';
+import { compositeParallaxLayers, renderStageOverlays } from '../../engine/pixel/compositor';
 
 export interface PixelStageProps {
   /** imageKey from current StoryNode */
@@ -44,12 +52,28 @@ export interface PixelStageProps {
   sceneKey: string;
   /** Overlay darkness opacity (0–1, default: 0.72) */
   overlayOpacity?: number;
-  /** Cross-fade duration in ms (default: 350) */
+  /** Transition duration in ms (default: 350) */
   fadeDuration?: number;
   /** Optional focus coordinates in art-pixels */
   focus?: { x: number; y: number };
   /** Transition mode */
-  transition?: 'fade' | 'dither-dissolve' | 'instant';
+  transition?: PixelTransitionMode;
+  /** Player corruption level (0–100) for C7 corruption visuals */
+  corruption?: number;
+  /** Player current health for C8 stat feedback */
+  health?: number;
+  /** Player max health for C8 stat feedback */
+  maxHealth?: number;
+  /** Player hunger (0–100) for C8 stat feedback */
+  hunger?: number;
+  /** Player thirst (0–100) for C8 stat feedback */
+  thirst?: number;
+  /** Whether hallucination mode is active */
+  isHallucination?: boolean;
+  /** Opt-in mobile tilt parallax setting (default: false) */
+  tiltParallaxEnabled?: boolean;
+  /** Whether reduced motion is active */
+  reducedMotion?: boolean;
   /** Optional container style */
   style?: StyleProp<ViewStyle>;
   /** Persistent children (story prose, choices, HUD) */
@@ -65,9 +89,6 @@ export default function PixelStage(props: PixelStageProps) {
 
 /**
  * Resolves the image source for the current scene and orientation.
- * 1. Checks SCENE_MANIFEST and resolves orientation variant via resolveSceneAsset.
- * 2. If not found in manifest, falls back to legacy getBackgroundImage(key).
- * 3. If still not found, falls back to ruined_metro_station orientation variant.
  */
 function resolveSceneSource(key: string, activeOrientation: 'landscape' | 'portrait'): any {
   if (SCENE_MANIFEST[key]) {
@@ -82,7 +103,7 @@ function resolveSceneSource(key: string, activeOrientation: 'landscape' | 'portr
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Web HTML5 Canvas Implementation (Double-Buffered)
+// Web HTML5 Canvas Implementation (Double-Buffered + Parallax + Particles)
 // ─────────────────────────────────────────────────────────────────────────────
 
 function WebPixelStage({
@@ -90,6 +111,16 @@ function WebPixelStage({
   sceneKey,
   overlayOpacity = 0.72,
   fadeDuration = 350,
+  focus,
+  transition = 'dither-dissolve',
+  corruption = 0,
+  health = 100,
+  maxHealth = 100,
+  hunger = 100,
+  thirst = 100,
+  isHallucination = false,
+  tiltParallaxEnabled = false,
+  reducedMotion = false,
   style,
   children,
 }: PixelStageProps) {
@@ -112,47 +143,110 @@ function WebPixelStage({
   // Dual offscreen buffers
   const frontBufferRef = useRef<HTMLCanvasElement | null>(null);
   const backBufferRef = useRef<HTMLCanvasElement | null>(null);
+  const cycBufferRef = useRef<HTMLCanvasElement | null>(null);
+
+  // Optional parallax layer buffers for active scene
+  const layerBuffersRef = useRef<{
+    far: HTMLCanvasElement | null;
+    mid: HTMLCanvasElement | null;
+    fore: HTMLCanvasElement | null;
+  }>({ far: null, mid: null, fore: null });
 
   const currentRenderKeyRef = useRef<string | null>(null);
   const animFrameRef = useRef<number | null>(null);
   const cycleFrameRef = useRef<number | null>(null);
   const paletteCyclerRef = useRef<PaletteCycler | null>(null);
+  const cameraRef = useRef<PixelCamera>(new PixelCamera(0));
+  const particleSysRef = useRef<PixelParticleSystem>(new PixelParticleSystem(1337));
   const activeTransitionIdRef = useRef<number>(0);
   const lastDimensionsRef = useRef<{ w: number; h: number } | null>(null);
+  const prevHealthRef = useRef<number>(health);
+  const damagePulseRef = useRef<number>(0);
+
+  // Live reactive state refs for the 60fps animation loop
+  const liveStatsRef = useRef({
+    corruption,
+    health,
+    maxHealth,
+    hunger,
+    thirst,
+    isHallucination,
+    reducedMotion,
+    tiltParallaxEnabled,
+  });
+  liveStatsRef.current = {
+    corruption,
+    health,
+    maxHealth,
+    hunger,
+    thirst,
+    isHallucination,
+    reducedMotion,
+    tiltParallaxEnabled,
+  };
+
+  // Trigger red edge pulse and subtle shake when health drops
+  useEffect(() => {
+    if (health < prevHealthRef.current) {
+      damagePulseRef.current = 0.85;
+      if (!reducedMotion) {
+        cameraRef.current.triggerShake(200, 3, typeof performance !== 'undefined' ? performance.now() : Date.now());
+      }
+    }
+    prevHealthRef.current = health;
+  }, [health, reducedMotion]);
+
   const tierCaps = useQualityTier();
+
+  // Desktop mouse pointer listener for parallax
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const handleMouseMove = (e: MouseEvent) => {
+      if (liveStatsRef.current.reducedMotion) return;
+      const nx = (e.clientX / Math.max(1, window.innerWidth)) * 2 - 1;
+      const ny = (e.clientY / Math.max(1, window.innerHeight)) * 2 - 1;
+      cameraRef.current.setPointerNormalized(nx, ny);
+    };
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  // Opt-in mobile DeviceOrientationEvent tilt listener
+  useEffect(() => {
+    if (typeof window === 'undefined' || !tiltParallaxEnabled || reducedMotion) {
+      cameraRef.current.setTiltAngles(null, null);
+      return;
+    }
+    const handleOrientation = (e: DeviceOrientationEvent) => {
+      cameraRef.current.setTiltAngles(e.gamma, e.beta);
+    };
+    window.addEventListener('deviceorientation', handleOrientation, { passive: true });
+    return () => window.removeEventListener('deviceorientation', handleOrientation);
+  }, [tiltParallaxEnabled, reducedMotion]);
 
   // Helper to lazily instantiate and dimension-sync offscreen canvases
   const getBuffers = () => {
     if (typeof document === 'undefined') {
-      return { front: null, back: null };
+      return { front: null, back: null, cyc: null };
     }
-    if (!frontBufferRef.current) {
-      const f = document.createElement('canvas');
-      f.width = masterW;
-      f.height = masterH;
-      frontBufferRef.current = f;
-    } else if (
-      frontBufferRef.current.width !== masterW ||
-      frontBufferRef.current.height !== masterH
-    ) {
-      frontBufferRef.current.width = masterW;
-      frontBufferRef.current.height = masterH;
-    }
+    const ensureCanvas = (ref: React.MutableRefObject<HTMLCanvasElement | null>) => {
+      if (!ref.current) {
+        const c = document.createElement('canvas');
+        c.width = masterW;
+        c.height = masterH;
+        ref.current = c;
+      } else if (ref.current.width !== masterW || ref.current.height !== masterH) {
+        ref.current.width = masterW;
+        ref.current.height = masterH;
+      }
+      return ref.current;
+    };
 
-    if (!backBufferRef.current) {
-      const b = document.createElement('canvas');
-      b.width = masterW;
-      b.height = masterH;
-      backBufferRef.current = b;
-    } else if (
-      backBufferRef.current.width !== masterW ||
-      backBufferRef.current.height !== masterH
-    ) {
-      backBufferRef.current.width = masterW;
-      backBufferRef.current.height = masterH;
-    }
-
-    return { front: frontBufferRef.current, back: backBufferRef.current };
+    return {
+      front: ensureCanvas(frontBufferRef),
+      back: ensureCanvas(backBufferRef),
+      cyc: ensureCanvas(cycBufferRef),
+    };
   };
 
   // Helper to draw procedural fallback gradient
@@ -180,6 +274,50 @@ function WebPixelStage({
     ctx.fillStyle = 'rgba(0,0,0,0.08)';
     for (let y = 0; y < h; y += 4) {
       ctx.fillRect(0, y, w, 1);
+    }
+  };
+
+  // Helper to load optional parallax depth layers (`far`, `mid`, `fore`) in background
+  const loadParallaxLayers = (
+    targetKey: string,
+    activeOrientation: 'landscape' | 'portrait',
+    transitionId: number
+  ) => {
+    layerBuffersRef.current = { far: null, mid: null, fore: null };
+    if (typeof document === 'undefined' || typeof window === 'undefined') return;
+    if (tierCaps.parallaxLayers <= 1) return;
+
+    const basePrefix = `${targetKey}_${activeOrientation}`;
+    const farAsset = SCENE_ASSET_REGISTRY[`${basePrefix}_far`];
+    const midAsset = SCENE_ASSET_REGISTRY[`${basePrefix}_mid`];
+    const foreAsset = SCENE_ASSET_REGISTRY[`${basePrefix}_fore`];
+
+    if (!farAsset || !midAsset) return;
+
+    const loadSingleLayer = (asset: any, slot: 'far' | 'mid' | 'fore') => {
+      const uri = resolveImageUri(asset);
+      if (!uri) return;
+      const img = new window.Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => {
+        if (transitionId !== activeTransitionIdRef.current) return;
+        const c = document.createElement('canvas');
+        c.width = masterW;
+        c.height = masterH;
+        const lCtx = c.getContext('2d');
+        if (lCtx) {
+          lCtx.imageSmoothingEnabled = false;
+          lCtx.drawImage(img, 0, 0, masterW, masterH);
+          layerBuffersRef.current[slot] = c;
+        }
+      };
+      img.src = uri;
+    };
+
+    loadSingleLayer(farAsset, 'far');
+    loadSingleLayer(midAsset, 'mid');
+    if (foreAsset && tierCaps.parallaxLayers >= 3) {
+      loadSingleLayer(foreAsset, 'fore');
     }
   };
 
@@ -259,7 +397,7 @@ function WebPixelStage({
     }
   };
 
-  // Scene transition orchestration
+  // Scene transition & active stage loop orchestration
   useEffect(() => {
     const transitionId = ++activeTransitionIdRef.current;
 
@@ -268,8 +406,8 @@ function WebPixelStage({
       cycleFrameRef.current = null;
     }
 
-    const { front, back } = getBuffers();
-    if (!front || !back || !canvasRef.current) return;
+    const { front, back, cyc } = getBuffers();
+    if (!front || !back || !cyc || !canvasRef.current) return;
 
     const displayCanvas = canvasRef.current;
     const displayCtx = displayCanvas.getContext('2d');
@@ -278,48 +416,138 @@ function WebPixelStage({
     displayCtx.imageSmoothingEnabled = false;
 
     const renderKey = `${imageKey}:${orientation}`;
+    const manifestEntry = getSceneManifestEntry(imageKey);
+    const sceneFocus = focus ?? manifestEntry?.focus ?? { x: masterW / 2, y: masterH / 2 };
+    const isTunnelScene =
+      imageKey.includes('metro') ||
+      imageKey.includes('tunnel') ||
+      imageKey.includes('underpass') ||
+      imageKey.includes('archive') ||
+      manifestEntry?.atmosphere === 'drip';
+    const isStormScene =
+      manifestEntry?.atmosphere === 'rain' ||
+      imageKey.includes('storm') ||
+      imageKey.includes('night');
 
-    const startPaletteCycle = () => {
-      if (!tierCaps.paletteCycling) return;
+    const startActiveSceneLoop = () => {
       if (cycleFrameRef.current) {
         cancelAnimationFrame(cycleFrameRef.current);
         cycleFrameRef.current = null;
       }
+
+      loadParallaxLayers(imageKey, orientation, transitionId);
+
+      // Configure atmospheric particles for this scene
+      const effectiveParticleCap = liveStatsRef.current.reducedMotion ? 0 : tierCaps.maxParticles;
+      particleSysRef.current.configure(
+        manifestEntry?.atmosphere,
+        effectiveParticleCap,
+        masterW,
+        masterH
+      );
+
+      const nowInit = typeof performance !== 'undefined' ? performance.now() : Date.now();
+      cameraRef.current.resetScene(nowInit);
+
       const fCtx = front.getContext('2d');
-      if (!fCtx) return;
+      const cycCtx = cyc.getContext('2d');
+      let cycler: PaletteCycler | null = null;
 
-      try {
-        const imgData = fCtx.getImageData(0, 0, masterW, masterH);
-        const manifestEntry = getSceneManifestEntry(imageKey);
-        const cycler = new PaletteCycler();
+      if (tierCaps.paletteCycling && fCtx && cycCtx) {
+        try {
+          const imgData = fCtx.getImageData(0, 0, masterW, masterH);
+          cycler = new PaletteCycler();
+          if (manifestEntry?.cycles && manifestEntry.cycles.length > 0) {
+            cycler.setCycles(
+              manifestEntry.cycles.map((c, i) => ({
+                id: `cycle_${i}`,
+                startIndex: c.indices[0] ?? 50,
+                length: c.indices.length,
+                rateHz: 1000 / Math.max(16, c.speedMs),
+                mode: 'cycle',
+                blend: true,
+              }))
+            );
+          }
+          const indexed = cycler.extractIndexMapFromImageData(imgData);
+          cycler.attachCanvas(cycCtx, masterW, masterH, indexed);
+          paletteCyclerRef.current = cycler;
+        } catch {
+          cycler = null;
+        }
+      }
 
-        if (manifestEntry?.cycles && manifestEntry.cycles.length > 0) {
-          cycler.setCycles(
-            manifestEntry.cycles.map((c, i) => ({
-              id: `cycle_${i}`,
-              startIndex: c.indices[0] ?? 50,
-              length: c.indices.length,
-              rateHz: 1000 / Math.max(16, c.speedMs),
-              mode: 'cycle',
-              blend: true,
-            }))
-          );
+      let lastFrameMs = nowInit;
+
+      const stageLoop = (now: number) => {
+        if (transitionId !== activeTransitionIdRef.current) return;
+        const dt = Math.max(0.001, (now - lastFrameMs) / 1000);
+        lastFrameMs = now;
+
+        // 1. Update palette cycler into `cyc` offscreen buffer (or use `front`)
+        let activeBase: HTMLCanvasElement = front;
+        if (cycler && cycCtx) {
+          cycler.update(now);
+          cycler.render(cycCtx);
+          activeBase = cyc;
         }
 
-        const indexed = cycler.extractIndexMapFromImageData(imgData);
-        cycler.attachCanvas(displayCtx, masterW, masterH, indexed);
-        paletteCyclerRef.current = cycler;
+        // 2. Compute camera parallax & Ken Burns focal drift offsets
+        const isReduced = liveStatsRef.current.reducedMotion;
+        const offsets = cameraRef.current.computeOffsets(now, {
+          masterW,
+          masterH,
+          focus: sceneFocus,
+          allowParallax: !isReduced && tierCaps.parallaxLayers > 1,
+          allowCameraDrift: !isReduced && tierCaps.tier !== 'low',
+          allowSubpixelCamera: !isReduced && tierCaps.subpixelCamera,
+          parallaxLayers: isReduced ? 1 : tierCaps.parallaxLayers,
+        });
 
-        const cycleLoop = (now: number) => {
-          if (transitionId !== activeTransitionIdRef.current) return;
-          cycler.update(now);
-          cycler.render(displayCtx);
-          cycleFrameRef.current = requestAnimationFrame(cycleLoop);
-        };
-        cycleFrameRef.current = requestAnimationFrame(cycleLoop);
-      } catch {
-        // Non-fatal if context reading is constrained
-      }
+        // 3. Composite parallax depth layers (or shifted base buffer) onto display canvas
+        compositeParallaxLayers(
+          displayCtx,
+          {
+            base: activeBase,
+            far: layerBuffersRef.current.far,
+            mid: layerBuffersRef.current.mid,
+            fore: layerBuffersRef.current.fore,
+          },
+          offsets,
+          masterW,
+          masterH
+        );
+
+        // 4. Update and render grid-snapped atmospheric particles
+        if (!isReduced && tierCaps.maxParticles > 0) {
+          particleSysRef.current.update(dt);
+          particleSysRef.current.render(displayCtx, offsets.foreX * 0.5, offsets.foreY * 0.5);
+        }
+
+        // 5. Decay damage pulse & render lighting, corruption veins, and stat feedback overlays
+        if (damagePulseRef.current > 0) {
+          damagePulseRef.current = Math.max(0, damagePulseRef.current - dt * 1.8);
+        }
+
+        renderStageOverlays(displayCtx, {
+          width: masterW,
+          height: masterH,
+          corruption: liveStatsRef.current.corruption,
+          health: liveStatsRef.current.health,
+          maxHealth: liveStatsRef.current.maxHealth,
+          hunger: liveStatsRef.current.hunger,
+          thirst: liveStatsRef.current.thirst,
+          damagePulseAlpha: damagePulseRef.current,
+          isTunnelScene,
+          isStormScene,
+          isHallucination: liveStatsRef.current.isHallucination,
+          nowMs: now,
+        });
+
+        cycleFrameRef.current = requestAnimationFrame(stageLoop);
+      };
+
+      cycleFrameRef.current = requestAnimationFrame(stageLoop);
     };
 
     // Detect buffer dimension changes (e.g. orientation changes between landscape and portrait)
@@ -330,9 +558,7 @@ function WebPixelStage({
 
     lastDimensionsRef.current = { w: masterW, h: masterH };
 
-    // On orientation or dimension change, cancel any active animation, immediately draw
-    // the current scene to the resized front buffer, and blit to the display canvas.
-    if (dimensionsChanged) {
+    if (dimensionsChanged || currentRenderKeyRef.current === null) {
       if (animFrameRef.current) {
         cancelAnimationFrame(animFrameRef.current);
         animFrameRef.current = null;
@@ -343,31 +569,24 @@ function WebPixelStage({
         displayCtx.imageSmoothingEnabled = false;
         displayCtx.clearRect(0, 0, masterW, masterH);
         displayCtx.drawImage(front, 0, 0);
-        startPaletteCycle();
+        startActiveSceneLoop();
       });
       return;
     }
 
-    // First mount initialization
-    if (currentRenderKeyRef.current === null) {
-      currentRenderKeyRef.current = renderKey;
-      drawSceneToBuffer(front, imageKey, orientation, transitionId, () => {
-        if (transitionId !== activeTransitionIdRef.current) return;
-        displayCtx.imageSmoothingEnabled = false;
-        displayCtx.clearRect(0, 0, masterW, masterH);
-        displayCtx.drawImage(front, 0, 0);
-        startPaletteCycle();
-      });
-      return;
-    }
-
-    // If image hasn't changed and dimensions haven't changed, retain current display
     if (currentRenderKeyRef.current === renderKey) {
-      startPaletteCycle();
+      startActiveSceneLoop();
       return;
     }
 
     currentRenderKeyRef.current = renderKey;
+
+    // Choose effective transition mode (auto-escalate to glitch-tear at high corruption)
+    const effectiveTransition: PixelTransitionMode = liveStatsRef.current.reducedMotion
+      ? 'fade'
+      : liveStatsRef.current.corruption >= 70 && transition === 'dither-dissolve'
+      ? 'glitch-tear'
+      : transition;
 
     // Load next scene into back buffer while front buffer remains displayed
     drawSceneToBuffer(back, imageKey, orientation, transitionId, () => {
@@ -384,13 +603,15 @@ function WebPixelStage({
         const elapsed = now - startTime;
         const t = Math.min(1, elapsed / duration);
 
-        displayCtx.imageSmoothingEnabled = false;
-        displayCtx.clearRect(0, 0, masterW, masterH);
-        displayCtx.globalAlpha = 1.0;
-        displayCtx.drawImage(front, 0, 0);
-        displayCtx.globalAlpha = t;
-        displayCtx.drawImage(back, 0, 0);
-        displayCtx.globalAlpha = 1.0;
+        renderPixelTransition(
+          displayCtx,
+          front,
+          back,
+          masterW,
+          masterH,
+          t,
+          effectiveTransition
+        );
 
         if (t < 1) {
           animFrameRef.current = requestAnimationFrame(step);
@@ -403,7 +624,7 @@ function WebPixelStage({
             fCtx.drawImage(back, 0, 0);
           }
           animFrameRef.current = null;
-          startPaletteCycle();
+          startActiveSceneLoop();
         }
       };
 
@@ -421,7 +642,20 @@ function WebPixelStage({
         cycleFrameRef.current = null;
       }
     };
-  }, [imageKey, sceneKey, orientation, fadeDuration, masterW, masterH, tierCaps.paletteCycling]);
+  }, [
+    imageKey,
+    sceneKey,
+    orientation,
+    fadeDuration,
+    masterW,
+    masterH,
+    tierCaps.paletteCycling,
+    tierCaps.maxParticles,
+    tierCaps.parallaxLayers,
+    tierCaps.subpixelCamera,
+    tierCaps.tier,
+    transition,
+  ]);
 
   const overlayColors = [
     `rgba(4,2,10,0.15)`,

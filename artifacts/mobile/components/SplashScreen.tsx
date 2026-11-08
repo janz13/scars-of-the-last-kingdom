@@ -1,64 +1,89 @@
-import React, { useEffect, useRef } from 'react';
-import { Animated, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withDelay,
+  withRepeat,
+  withSequence,
+  withSpring,
+  withTiming,
+} from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
-import { markContentWarningSeen, hasSeenContentWarning } from '../logic/saveSystem';
+import { hasSeenContentWarning } from '../logic/saveSystem';
 import { useGame } from '../context/GameContext';
+import { MOTION_SPRINGS } from '../constants/motion';
 
 const SPLASH_DURATION = 2200;
 
 export default function SplashScreen() {
   const { setScreen } = useGame();
 
-  const logoFade = useRef(new Animated.Value(0)).current;
-  const logoScale = useRef(new Animated.Value(0.92)).current;
-  const subtitleFade = useRef(new Animated.Value(0)).current;
-  const taglineFade = useRef(new Animated.Value(0)).current;
-  const exitFade = useRef(new Animated.Value(1)).current;
-  const glowPulse = useRef(new Animated.Value(0.03)).current;
+  const logoFade = useSharedValue(0);
+  const logoScale = useSharedValue(0.92);
+  const subtitleFade = useSharedValue(0);
+  const taglineFade = useSharedValue(0);
+  const exitFade = useSharedValue(1);
+  const glowPulse = useSharedValue(0.03);
 
   useEffect(() => {
-    // Phase 1: Logo entrance
-    Animated.parallel([
-      Animated.timing(logoFade, { toValue: 1, duration: 600, useNativeDriver: true }),
-      Animated.spring(logoScale, { toValue: 1, tension: 50, friction: 8, useNativeDriver: true }),
-    ]).start();
+    logoFade.value = withTiming(1, { duration: 600 });
+    logoScale.value = withSpring(1, MOTION_SPRINGS.gentle);
+    subtitleFade.value = withDelay(500, withTiming(1, { duration: 500 }));
+    taglineFade.value = withDelay(900, withTiming(1, { duration: 400 }));
 
-    // Phase 2: Subtitle
-    Animated.timing(subtitleFade, { toValue: 1, duration: 500, delay: 500, useNativeDriver: true }).start();
+    glowPulse.value = withRepeat(
+      withSequence(
+        withTiming(0.06, { duration: 3000 }),
+        withTiming(0.02, { duration: 3000 })
+      ),
+      -1,
+      false
+    );
 
-    // Phase 3: Tagline
-    Animated.timing(taglineFade, { toValue: 1, duration: 400, delay: 900, useNativeDriver: true }).start();
-
-    // Ambient glow
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(glowPulse, { toValue: 0.06, duration: 3000, useNativeDriver: true }),
-        Animated.timing(glowPulse, { toValue: 0.02, duration: 3000, useNativeDriver: true }),
-      ])
-    ).start();
-
-    // Phase 4: Exit and transition
-    const timer = setTimeout(async () => {
-      Animated.timing(exitFade, { toValue: 0, duration: 400, useNativeDriver: true }).start(async () => {
+    const timer = setTimeout(() => {
+      exitFade.value = withTiming(0, { duration: 400 });
+      setTimeout(async () => {
         const seen = await hasSeenContentWarning();
         if (seen) {
           setScreen('mainMenu');
         } else {
           setScreen('contentWarning');
         }
-      });
+      }, 410);
     }, SPLASH_DURATION);
 
     return () => clearTimeout(timer);
   }, []);
 
+  const glowStyle = useAnimatedStyle(() => ({
+    opacity: glowPulse.value,
+  }));
+
+  const exitStyle = useAnimatedStyle(() => ({
+    opacity: exitFade.value,
+  }));
+
+  const logoStyle = useAnimatedStyle(() => ({
+    opacity: logoFade.value,
+    transform: [{ scale: logoScale.value }],
+  }));
+
+  const subtitleStyle = useAnimatedStyle(() => ({
+    opacity: subtitleFade.value,
+  }));
+
+  const taglineStyle = useAnimatedStyle(() => ({
+    opacity: taglineFade.value,
+  }));
+
   return (
     <LinearGradient colors={['#020106', '#060310', '#020106']} style={styles.container}>
-      <Animated.View style={[styles.topGlow, { opacity: glowPulse }]} />
-      <Animated.View style={[styles.bottomGlow, { opacity: glowPulse }]} />
+      <Animated.View style={[styles.topGlow, glowStyle]} />
+      <Animated.View style={[styles.bottomGlow, glowStyle]} />
 
-      <Animated.View style={[styles.content, { opacity: exitFade }]}>
-        <Animated.View style={{ opacity: logoFade, transform: [{ scale: logoScale }] }}>
+      <Animated.View style={[styles.content, exitStyle]}>
+        <Animated.View style={logoStyle}>
           <View style={styles.runeRow}>
             <View style={styles.runeLine} />
             <View style={styles.runeDiamond} />
@@ -68,7 +93,7 @@ export default function SplashScreen() {
           <Text style={styles.title}>{'SCARS OF THE\nLAST KINGDOM'}</Text>
         </Animated.View>
 
-        <Animated.View style={{ opacity: subtitleFade }}>
+        <Animated.View style={subtitleStyle}>
           <View style={styles.subtitleRow}>
             <View style={styles.subtitleTick} />
             <Text style={styles.subtitle}>The Ruined Station</Text>
@@ -76,7 +101,7 @@ export default function SplashScreen() {
           </View>
         </Animated.View>
 
-        <Animated.View style={{ opacity: taglineFade }}>
+        <Animated.View style={taglineStyle}>
           <Text style={styles.tagline}>
             The city is dead. The mark on your wrist is not.
           </Text>

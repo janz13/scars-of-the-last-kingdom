@@ -95,6 +95,45 @@ const {
   resolveActiveTier,
 } = require('../../artifacts/mobile/constants/pixelTiers.ts');
 
+const {
+  PixelCamera,
+  PARALLAX_AMPLITUDES,
+  DRIFT_CYCLE_MS,
+  MAX_DRIFT_PIXELS,
+} = require('../../artifacts/mobile/engine/pixel/camera.ts');
+
+const {
+  PixelParticleSystem,
+} = require('../../artifacts/mobile/engine/pixel/particles.ts');
+
+const {
+  BAYER_8X8,
+} = require('../../artifacts/mobile/engine/pixel/transitions.ts');
+
+const {
+  CHARACTER_PORTRAIT_CATALOG,
+  resolveSpeakerCharacterId,
+  buildPortraitPixelGrid,
+} = require('../../artifacts/mobile/constants/portraits.ts');
+
+const {
+  THEME_SCORES,
+  getThemeScore,
+} = require('../../artifacts/mobile/logic/music/themes.ts');
+
+const {
+  STINGER_DEFINITIONS,
+} = require('../../artifacts/mobile/logic/music/stingers.ts');
+
+const {
+  MusicSequencer,
+  TRAILER_75S_ARRANGEMENT,
+} = require('../../artifacts/mobile/logic/music/sequencer.ts');
+
+const {
+  midiToFreq,
+} = require('../../artifacts/mobile/logic/music/voices.ts');
+
 let passedTests = 0;
 let failedTests = 0;
 
@@ -885,6 +924,94 @@ const highTier = resolveActiveTier('high');
 assert(highTier.tier === 'high' && highTier.maxParticles === 150, 'High tier has 150 max particles');
 const lowTier = resolveActiveTier('low');
 assert(lowTier.tier === 'low' && lowTier.maxParticles === 0, 'Low tier disables particles');
+
+// ============================================================================
+// SUITE 15: WAVE 3 — CAMERA, PARTICLES, TRANSITIONS, PORTRAITS & MUSIC
+// ============================================================================
+console.log('\n--- Suite 15: Wave 3 Camera, Particles, Transitions, Portraits & Music ---');
+
+// 1. PixelCamera parallax & Ken Burns drift
+const cam = new PixelCamera(0);
+cam.setPointerNormalized(1, -1);
+for (let i = 0; i < 30; i++) {
+  cam.computeOffsets(i * 100, {
+    masterW: 720,
+    masterH: 400,
+    focus: { x: 540, y: 120 },
+    allowParallax: true,
+    allowCameraDrift: true,
+    allowSubpixelCamera: false,
+    parallaxLayers: 3,
+  });
+}
+const offsets = cam.computeOffsets(7500, {
+  masterW: 720,
+  masterH: 400,
+  focus: { x: 540, y: 120 },
+  allowParallax: true,
+  allowCameraDrift: true,
+  allowSubpixelCamera: false,
+  parallaxLayers: 3,
+});
+assert(Number.isInteger(offsets.farX) && Number.isInteger(offsets.farY), 'PixelCamera snaps far layer to integer grid');
+assert(Number.isInteger(offsets.midX) && Number.isInteger(offsets.midY), 'PixelCamera snaps mid layer to integer grid');
+assert(Number.isInteger(offsets.foreX) && Number.isInteger(offsets.foreY), 'PixelCamera snaps fore layer to integer grid');
+assert(Math.abs(offsets.driftX) <= MAX_DRIFT_PIXELS, 'PixelCamera drift stays within MAX_DRIFT_PIXELS');
+assert(PARALLAX_AMPLITUDES.far === 2 && PARALLAX_AMPLITUDES.mid === 5 && PARALLAX_AMPLITUDES.fore === 9, 'Parallax amplitudes match spec (2, 5, 9)');
+assert(DRIFT_CYCLE_MS === 30000, 'Ken Burns drift cycle is 30s (30000ms)');
+
+// 2. PixelParticleSystem caps & determinism
+const pSys1 = new PixelParticleSystem(42);
+const pSys2 = new PixelParticleSystem(42);
+pSys1.configure('rain', 150, 720, 400);
+pSys2.configure('rain', 150, 720, 400);
+assert(pSys1.getActiveCount() === 150, 'Rain particle count respects High tier cap (150)');
+pSys1.configure('rain', 60, 720, 400);
+assert(pSys1.getActiveCount() === 60, 'Rain particle count respects Medium tier cap (60)');
+pSys1.configure('rain', 0, 720, 400);
+assert(pSys1.getActiveCount() === 0, 'Particle count is 0 on Low tier');
+
+// 3. Bayer 8x8 dither matrix
+assert(BAYER_8X8.length === 64, 'BAYER_8X8 has 64 entries');
+const bayerSet = new Set(BAYER_8X8);
+assert(bayerSet.size === 64, 'BAYER_8X8 contains all unique values 0..63');
+
+// 4. Character Portrait Registry (13 characters × 3 expressions = 39 portraits)
+const characterIds = Object.keys(CHARACTER_PORTRAIT_CATALOG);
+assert(characterIds.length === 13, `CHARACTER_PORTRAIT_CATALOG has 13 characters (found ${characterIds.length})`);
+const expressions = ['neutral', 'strained', 'resolved'] as const;
+let portraitGridCount = 0;
+for (const charId of characterIds) {
+  for (const expr of expressions) {
+    const grid = buildPortraitPixelGrid(charId as any, expr, false, false);
+    if (grid.length === 16 && grid[0]?.length === 16) {
+      portraitGridCount++;
+    }
+  }
+}
+assert(portraitGridCount === 39, `All 39 character expression portraits (13 × 3) generate valid 16x16 grids`);
+assert(resolveSpeakerCharacterId('Mira') === 'mira', 'Speaker resolver maps Mira -> mira');
+assert(resolveSpeakerCharacterId('Commander Varr') === 'varr', 'Speaker resolver maps Commander Varr -> varr');
+assert(resolveSpeakerCharacterId('The Pale Curator') === 'pale_curator', 'Speaker resolver maps The Pale Curator -> pale_curator');
+
+// 5. Procedural Music Engine (Themes, Stingers, Sequencer & Trailer 75s cue)
+const themeKeys = Object.keys(THEME_SCORES);
+assert(themeKeys.length === 11, `THEME_SCORES defines 11 themes (found ${themeKeys.length})`);
+assert(getThemeScore('main_theme').title === 'The Last Kingdom', 'Main theme is "The Last Kingdom"');
+assert(getThemeScore('epilogue_theme').title === 'Is Anyone Still There?', 'Epilogue theme is "Is Anyone Still There?"');
+assert(Math.abs(midiToFreq(69) - 440) < 0.01, 'midiToFreq(69) equals 440Hz (A4)');
+
+const stingerKeys = Object.keys(STINGER_DEFINITIONS);
+assert(stingerKeys.length === 14, `STINGER_DEFINITIONS defines 14 stingers (10 endings + 4 set-pieces)`);
+
+const seq = new MusicSequencer();
+seq.setMusicMode('calm');
+assert(seq.getMusicMode() === 'calm', 'MusicSequencer switches to calm mode');
+seq.setMusicMode('adaptive');
+assert(seq.getMusicMode() === 'adaptive', 'MusicSequencer switches back to adaptive mode');
+
+const totalTrailerSec = TRAILER_75S_ARRANGEMENT.reduce((acc: number, s: any) => acc + s.durationSec, 0);
+assert(totalTrailerSec === 75, `TRAILER_75S_ARRANGEMENT totals exactly 75 seconds (found ${totalTrailerSec}s)`);
 
 console.log(`\n========================================`);
 console.log(`TOTAL TESTS: ${passedTests + failedTests}`);

@@ -1,12 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  Animated,
   Platform,
   Pressable,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSequence,
+  withSpring,
+  withTiming,
+} from 'react-native-reanimated';
 import { Feather } from '@expo/vector-icons';
 import type { DiceCheck, GameState } from '../data/types';
 import {
@@ -20,6 +26,7 @@ import {
   resolveDiceCheck,
   rollDie,
 } from '../logic/diceEngine';
+import { MOTION_SPRINGS } from '../constants/motion';
 
 interface Props {
   diceCheck: DiceCheck;
@@ -42,8 +49,9 @@ export default function DiceRollOverlay({ diceCheck, choiceText, state, onCommit
   const [rerollUsed, setRerollUsed] = useState(false);
   const [rerolling, setRerolling] = useState(false);
 
-  const scaleAnim = useRef(new Animated.Value(1)).current;
-  const opacityAnim = useRef(new Animated.Value(0)).current;
+  const scaleAnim = useSharedValue(1);
+  const opacityAnim = useSharedValue(0);
+  const shakeX = useSharedValue(0);
   const tickRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const luckAvailable = canUseLuckReroll(state) && !rerollUsed;
@@ -51,7 +59,7 @@ export default function DiceRollOverlay({ diceCheck, choiceText, state, onCommit
   // ── Dice rolling animation ─────────────────────────────────────────────────
   function startRollingAnimation(finalRoll: number, onDone: () => void) {
     let ticks = 0;
-    const maxTicks = 28;
+    const maxTicks = 24;
 
     const tick = () => {
       ticks++;
@@ -59,7 +67,7 @@ export default function DiceRollOverlay({ diceCheck, choiceText, state, onCommit
         setDisplayNum(finalRoll);
         tickRef.current = setTimeout(onDone, 320);
       } else {
-        const delay = ticks < 12 ? 45 : ticks < 20 ? 75 : 120;
+        const delay = ticks < 10 ? 45 : ticks < 18 ? 75 : 115;
         setDisplayNum(Math.floor(Math.random() * sides) + 1);
         tickRef.current = setTimeout(tick, delay);
       }
@@ -70,18 +78,23 @@ export default function DiceRollOverlay({ diceCheck, choiceText, state, onCommit
 
   useEffect(() => {
     if (skip) {
-      Animated.timing(opacityAnim, { toValue: 1, duration: 0, useNativeDriver: false }).start();
+      opacityAnim.value = 1;
       return;
     }
 
-    Animated.timing(opacityAnim, { toValue: 1, duration: 200, useNativeDriver: false }).start();
+    opacityAnim.value = withTiming(1, { duration: 200 });
 
     startRollingAnimation(result.roll, () => {
       setPhase('revealed');
-      Animated.sequence([
-        Animated.timing(scaleAnim, { toValue: 1.25, duration: 120, useNativeDriver: false }),
-        Animated.timing(scaleAnim, { toValue: 1, duration: 180, useNativeDriver: false }),
-      ]).start();
+      scaleAnim.value = withSequence(
+        withTiming(1.25, { duration: 120 }),
+        withSpring(1, MOTION_SPRINGS.stiff)
+      );
+      shakeX.value = withSequence(
+        withTiming(-3, { duration: 30 }),
+        withTiming(3, { duration: 30 }),
+        withTiming(0, { duration: 30 })
+      );
     });
 
     return () => {
@@ -129,12 +142,23 @@ export default function DiceRollOverlay({ diceCheck, choiceText, state, onCommit
     startRollingAnimation(newResult.roll, () => {
       setPhase('revealed');
       setRerolling(false);
-      Animated.sequence([
-        Animated.timing(scaleAnim, { toValue: 1.25, duration: 120, useNativeDriver: false }),
-        Animated.timing(scaleAnim, { toValue: 1, duration: 180, useNativeDriver: false }),
-      ]).start();
+      scaleAnim.value = withSequence(
+        withTiming(1.25, { duration: 120 }),
+        withSpring(1, MOTION_SPRINGS.stiff)
+      );
     });
   }
+
+  const backdropStyle = useAnimatedStyle(() => ({
+    opacity: opacityAnim.value,
+  }));
+
+  const diceFaceStyle = useAnimatedStyle(() => ({
+    transform: [
+      { translateX: Math.round(shakeX.value) },
+      { scale: scaleAnim.value },
+    ],
+  }));
 
   // ── Render ─────────────────────────────────────────────────────────────────
   const color = phase === 'revealed' ? outcomeColor(result.outcome) : '#9b59b6';
@@ -145,7 +169,7 @@ export default function DiceRollOverlay({ diceCheck, choiceText, state, onCommit
   const isCrit = result.outcome === 'criticalSuccess' || result.outcome === 'criticalFailure';
 
   return (
-    <Animated.View style={[styles.backdrop, { opacity: opacityAnim }]}>
+    <Animated.View style={[styles.backdrop, backdropStyle]}>
       <View style={styles.card}>
 
         {/* ── Header ── */}
@@ -162,7 +186,7 @@ export default function DiceRollOverlay({ diceCheck, choiceText, state, onCommit
 
         {/* ── Dice face ── */}
         <View style={styles.diceArea}>
-          <Animated.View style={[styles.diceFace, { borderColor: color, transform: [{ scale: scaleAnim }] }]}>
+          <Animated.View style={[styles.diceFace, { borderColor: color }, diceFaceStyle]}>
             {phase === 'revealed' && isSuccess && (
               <View style={[styles.diceGlow, { backgroundColor: color }]} />
             )}

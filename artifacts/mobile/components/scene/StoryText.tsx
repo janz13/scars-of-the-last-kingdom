@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  Animated,
   Pressable,
   StyleProp,
   StyleSheet,
@@ -8,12 +7,20 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
+import Animated, { useAnimatedStyle, type SharedValue } from 'react-native-reanimated';
 import type { CompanionPair, ProseFont } from '../../data/types';
 import { getProseFontFamily } from '../../constants/typography';
+import {
+  CHARACTER_PORTRAIT_CATALOG,
+  resolveSpeakerCharacterId,
+  type CharacterId,
+  type PortraitExpression,
+} from '../../constants/portraits';
+import CharacterPortrait from './CharacterPortrait';
 
 export interface CharacterPortraitConfig {
-  characterId: string;
-  expression?: 'neutral' | 'strained' | 'resolved';
+  characterId: CharacterId;
+  expression?: PortraitExpression;
   blinking?: boolean;
 }
 
@@ -46,15 +53,35 @@ export interface StoryTextProps {
   fontSize?: 'small' | 'normal' | 'large';
   /** Prose font preference ('inter' | 'pixel') */
   proseFont?: ProseFont;
-  /** Forward-compatible portrait configuration for Wave 3 */
+  /** Explicit portrait configuration override */
   speakerPortrait?: CharacterPortraitConfig;
-  /** Animated values for title entrance */
-  titleFade?: Animated.Value;
-  titleSlide?: Animated.Value;
+  /** Reanimated shared values for title entrance */
+  titleFade?: SharedValue<number>;
+  titleSlide?: SharedValue<number>;
   /** Whether desktop sizing applies */
   isDesktopView?: boolean;
+  /** Whether reduced motion is enabled */
+  reducedMotion?: boolean;
   /** Custom container style */
   style?: StyleProp<ViewStyle>;
+}
+
+/**
+ * Renders inline `*emphasis*` spans with distinct styling while preserving plain text.
+ */
+function renderFormattedText(raw: string, emphasisColor: string): React.ReactNode {
+  if (!raw || !raw.includes('*')) return raw;
+  const parts = raw.split(/(\*[^*]+\*)/g);
+  return parts.map((part, idx) => {
+    if (part.startsWith('*') && part.endsWith('*') && part.length > 2) {
+      return (
+        <Text key={idx} style={{ color: emphasisColor, fontStyle: 'italic' }}>
+          {part.slice(1, -1)}
+        </Text>
+      );
+    }
+    return part;
+  });
 }
 
 export default function StoryText({
@@ -72,9 +99,11 @@ export default function StoryText({
   isCompanionEvent = false,
   fontSize = 'normal',
   proseFont = 'inter',
+  speakerPortrait,
   titleFade,
   titleSlide,
   isDesktopView = false,
+  reducedMotion = false,
   style,
 }: StoryTextProps) {
   // Font scaling metrics
@@ -87,12 +116,19 @@ export default function StoryText({
     fontFamily: getProseFontFamily(proseFont, 'regular'),
   };
 
-  const titleAnimStyle = {
-    opacity: titleFade ?? 1,
-    transform: titleSlide ? [{ translateY: titleSlide }] : undefined,
-  };
+  const titleAnimStyle = useAnimatedStyle(() => ({
+    opacity: titleFade ? titleFade.value : 1,
+    transform: [{ translateY: titleSlide ? titleSlide.value : 0 }],
+  }));
 
   const isCainSpeaker = speaker === 'Cain';
+  const resolvedCharId = speakerPortrait?.characterId ?? resolveSpeakerCharacterId(speaker);
+  const resolvedExpression: PortraitExpression =
+    speakerPortrait?.expression ??
+    (isHallucination ? 'strained' : isCompanionEvent ? 'resolved' : 'neutral');
+
+  const speakerMeta = resolvedCharId ? CHARACTER_PORTRAIT_CATALOG[resolvedCharId] : null;
+  const speakerAccentColor = speakerMeta?.factionColor ?? (isCainSpeaker ? '#e67e22' : '#9b59b6');
 
   return (
     <Pressable
@@ -148,9 +184,11 @@ export default function StoryText({
       {/* Speaker Header Badge */}
       {speaker ? (
         <View style={styles.speakerBadge}>
-          <View style={styles.speakerLine} />
-          <Text style={styles.speakerText}>{speaker}</Text>
-          <View style={styles.speakerLine} />
+          <View style={[styles.speakerLine, { backgroundColor: `${speakerAccentColor}33` }]} />
+          <Text style={[styles.speakerText, { color: speakerMeta?.accentColor ?? '#ba7fd4' }]}>
+            {speaker}
+          </Text>
+          <View style={[styles.speakerLine, { backgroundColor: `${speakerAccentColor}33` }]} />
         </View>
       ) : null}
 
@@ -163,27 +201,49 @@ export default function StoryText({
           { fontSize: narrationFontSize, lineHeight: narrationLineHeight },
         ]}
       >
-        {displayedNarration}
+        {renderFormattedText(displayedNarration, '#ede0c4')}
         {isTyping && !hasDialogue && (
           <Text style={styles.typewriterCursor}> ▍</Text>
         )}
       </Text>
 
-      {/* Dialogue Blockquote */}
+      {/* Dialogue Blockquote + Character Portrait */}
       {hasDialogue && displayedDialogue ? (
-        <View style={[styles.dialogueBox, isHallucination && styles.hallucinationDialogueBox]}>
-          <Text style={styles.dialogueOpenQuote}>{'\u201C'}</Text>
-          <Text
-            style={[
-              styles.dialogue,
-              fontStyle,
-              isHallucination && styles.hallucinationDialogue,
-              { fontSize: dialogueFontSize, lineHeight: dialogueLineHeight },
-            ]}
-          >
-            {displayedDialogue}
-            {isTyping && <Text style={styles.typewriterCursor}> ▍</Text>}
-          </Text>
+        <View
+          style={[
+            styles.dialogueBox,
+            { borderLeftColor: speakerAccentColor },
+            isHallucination && styles.hallucinationDialogueBox,
+          ]}
+        >
+          <View style={styles.dialogueRow}>
+            {resolvedCharId && (
+              <CharacterPortrait
+                characterId={resolvedCharId}
+                expression={resolvedExpression}
+                isTalking={isTyping}
+                size={64}
+                reducedMotion={reducedMotion}
+              />
+            )}
+            <View style={styles.dialogueTextCol}>
+              <Text style={[styles.dialogueOpenQuote, { color: `${speakerAccentColor}44` }]}>
+                {'\u201C'}
+              </Text>
+              <Text
+                style={[
+                  styles.dialogue,
+                  fontStyle,
+                  speakerMeta ? { color: '#f0e2c8' } : undefined,
+                  isHallucination && styles.hallucinationDialogue,
+                  { fontSize: dialogueFontSize, lineHeight: dialogueLineHeight },
+                ]}
+              >
+                {renderFormattedText(displayedDialogue, speakerMeta?.accentColor ?? '#f5d799')}
+                {isTyping && <Text style={styles.typewriterCursor}> ▍</Text>}
+              </Text>
+            </View>
+          </View>
         </View>
       ) : null}
 
@@ -303,6 +363,14 @@ const styles = StyleSheet.create({
     paddingBottom: 14,
     marginBottom: 16,
     borderRadius: 2,
+  },
+  dialogueRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 14,
+  },
+  dialogueTextCol: {
+    flex: 1,
   },
   hallucinationDialogueBox: {
     backgroundColor: 'rgba(155,89,182,0.12)',

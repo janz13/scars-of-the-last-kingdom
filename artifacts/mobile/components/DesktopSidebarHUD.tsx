@@ -1,12 +1,20 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import {
-  Animated,
   Pressable,
   ScrollView,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
+import Animated, {
+  cancelAnimation,
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withSequence,
+  withTiming,
+  type SharedValue,
+} from 'react-native-reanimated';
 import { Feather } from '@expo/vector-icons';
 import { useGame } from '../context/GameContext';
 import {
@@ -36,7 +44,7 @@ interface StatMeterProps {
   color: string;
   icon: string;
   isPulsing?: boolean;
-  pulseAnim?: Animated.Value;
+  pulseAnim?: SharedValue<number>;
 }
 
 function StatMeter({
@@ -49,6 +57,10 @@ function StatMeter({
   pulseAnim,
 }: StatMeterProps) {
   const pct = Math.max(0, Math.min(1, value / max));
+  const fillAnimStyle = useAnimatedStyle(() => ({
+    opacity: isPulsing && pulseAnim ? pulseAnim.value : 1,
+  }));
+
   return (
     <View style={styles.meterContainer}>
       <View style={styles.meterHeader}>
@@ -68,8 +80,8 @@ function StatMeter({
             {
               width: `${pct * 100}%` as any,
               backgroundColor: color,
-              opacity: isPulsing && pulseAnim ? pulseAnim : 1,
             },
+            fillAnimStyle,
           ]}
         />
         {isPulsing && pulseAnim && (
@@ -78,8 +90,8 @@ function StatMeter({
               styles.meterPulseGlow,
               {
                 width: `${pct * 100}%` as any,
-                opacity: pulseAnim,
               },
+              fillAnimStyle,
             ]}
           />
         )}
@@ -98,22 +110,28 @@ export default function DesktopSidebarHUD({ onOpenHotkeys }: DesktopSidebarHUDPr
   const { character, stats, companions, inventory, factionRep } = state;
 
   // Pulse animation for high corruption (>50)
-  const corruptionPulse = useRef(new Animated.Value(1)).current;
+  const corruptionPulse = useSharedValue(1);
   const isHighCorruption = stats.corruption > 50;
 
   useEffect(() => {
     if (isHighCorruption) {
-      Animated.loop(
-        Animated.sequence([
-          Animated.timing(corruptionPulse, { toValue: 0.35, duration: 800, useNativeDriver: false }),
-          Animated.timing(corruptionPulse, { toValue: 1, duration: 800, useNativeDriver: false }),
-        ])
-      ).start();
+      corruptionPulse.value = withRepeat(
+        withSequence(
+          withTiming(0.35, { duration: 800 }),
+          withTiming(1, { duration: 800 })
+        ),
+        -1,
+        true
+      );
     } else {
-      corruptionPulse.stopAnimation();
-      corruptionPulse.setValue(1);
+      cancelAnimation(corruptionPulse);
+      corruptionPulse.value = 1;
     }
-  }, [isHighCorruption]);
+  }, [isHighCorruption, corruptionPulse]);
+
+  const warningPulseStyle = useAnimatedStyle(() => ({
+    opacity: corruptionPulse.value,
+  }));
 
   // Character profile details
   const classDef = CLASSES.find((c) => c.id === character?.characterClass);
@@ -227,7 +245,7 @@ export default function DesktopSidebarHUD({ onOpenHotkeys }: DesktopSidebarHUDPr
           </View>
 
           {isHighCorruption && (
-            <Animated.View style={[styles.corruptionWarning, { opacity: corruptionPulse }]}>
+            <Animated.View style={[styles.corruptionWarning, warningPulseStyle]}>
               <Feather name="alert-octagon" size={11} color="#c39bd3" />
               <Text style={styles.corruptionWarningText}>Mark awakens — boundary critical</Text>
             </Animated.View>
