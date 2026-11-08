@@ -40,13 +40,18 @@ export interface SceneManifestEntry {
   music?: { theme: string; intensity: number };
 }
 
+const DEFAULT_CYCLES: PaletteCycleConfig[] = [
+  { indices: [50, 51, 52, 53], speedMs: 550 },
+  { indices: [54, 55, 56, 57], speedMs: 320 },
+  { indices: [58, 59, 60, 61], speedMs: 2400 },
+];
+
 /**
  * Static asset require mapping for Metro bundler compatibility.
  */
 export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   ruined_metro_station_landscape: require('../assets/pixel/scenes/ruined_metro_station_landscape.png'),
   ruined_metro_station_portrait: require('../assets/pixel/scenes/ruined_metro_station_portrait.png'),
-  ruined_metro_station: require('../assets/pixel/scenes/ruined_metro_station_landscape.png'),
   ruined_metro_station_landscape_far: require('../assets/pixel/scenes/ruined_metro_station_landscape_far.png'),
   ruined_metro_station_landscape_mid: require('../assets/pixel/scenes/ruined_metro_station_landscape_mid.png'),
   ruined_metro_station_landscape_fore: require('../assets/pixel/scenes/ruined_metro_station_landscape_fore.png'),
@@ -55,79 +60,54 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   ruined_metro_station_portrait_fore: require('../assets/pixel/scenes/ruined_metro_station_portrait_fore.png'),
   dark_metro_hallway_landscape: require('../assets/pixel/scenes/dark_metro_hallway_landscape.png'),
   dark_metro_hallway_portrait: require('../assets/pixel/scenes/dark_metro_hallway_portrait.png'),
-  dark_metro_hallway: require('../assets/pixel/scenes/dark_metro_hallway_landscape.png'),
   broken_vending_area_landscape: require('../assets/pixel/scenes/broken_vending_area_landscape.png'),
   broken_vending_area_portrait: require('../assets/pixel/scenes/broken_vending_area_portrait.png'),
-  broken_vending_area: require('../assets/pixel/scenes/broken_vending_area_landscape.png'),
   collapsed_tunnel_landscape: require('../assets/pixel/scenes/collapsed_tunnel_landscape.png'),
   collapsed_tunnel_portrait: require('../assets/pixel/scenes/collapsed_tunnel_portrait.png'),
-  collapsed_tunnel: require('../assets/pixel/scenes/collapsed_tunnel_landscape.png'),
   tunnel_camp_landscape: require('../assets/pixel/scenes/tunnel_camp_landscape.png'),
   tunnel_camp_portrait: require('../assets/pixel/scenes/tunnel_camp_portrait.png'),
-  tunnel_camp: require('../assets/pixel/scenes/tunnel_camp_landscape.png'),
   surface_ruins_landscape: require('../assets/pixel/scenes/surface_ruins_landscape.png'),
   surface_ruins_portrait: require('../assets/pixel/scenes/surface_ruins_portrait.png'),
-  surface_ruins: require('../assets/pixel/scenes/surface_ruins_landscape.png'),
   iron_saints_checkpoint_landscape: require('../assets/pixel/scenes/iron_saints_checkpoint_landscape.png'),
   iron_saints_checkpoint_portrait: require('../assets/pixel/scenes/iron_saints_checkpoint_portrait.png'),
-  iron_saints_checkpoint: require('../assets/pixel/scenes/iron_saints_checkpoint_landscape.png'),
   glass_tower_gate_landscape: require('../assets/pixel/scenes/glass_tower_gate_landscape.png'),
   glass_tower_gate_portrait: require('../assets/pixel/scenes/glass_tower_gate_portrait.png'),
-  glass_tower_gate: require('../assets/pixel/scenes/glass_tower_gate_landscape.png'),
   red_choir_chamber_landscape: require('../assets/pixel/scenes/red_choir_chamber_landscape.png'),
   red_choir_chamber_portrait: require('../assets/pixel/scenes/red_choir_chamber_portrait.png'),
-  red_choir_chamber: require('../assets/pixel/scenes/red_choir_chamber_landscape.png'),
   surface_dawn_landscape: require('../assets/pixel/scenes/surface_dawn_landscape.png'),
   surface_dawn_portrait: require('../assets/pixel/scenes/surface_dawn_portrait.png'),
-  surface_dawn: require('../assets/pixel/scenes/surface_dawn_landscape.png'),
   ruined_street_landscape: require('../assets/pixel/scenes/ruined_street_landscape.png'),
   ruined_street_portrait: require('../assets/pixel/scenes/ruined_street_portrait.png'),
-  ruined_street: require('../assets/pixel/scenes/ruined_street_landscape.png'),
   saints_patrol_landscape: require('../assets/pixel/scenes/saints_patrol_landscape.png'),
   saints_patrol_portrait: require('../assets/pixel/scenes/saints_patrol_portrait.png'),
-  saints_patrol: require('../assets/pixel/scenes/saints_patrol_landscape.png'),
   black_market_alley_landscape: require('../assets/pixel/scenes/black_market_alley_landscape.png'),
   black_market_alley_portrait: require('../assets/pixel/scenes/black_market_alley_portrait.png'),
-  black_market_alley: require('../assets/pixel/scenes/black_market_alley_landscape.png'),
   glass_tower_lobby_landscape: require('../assets/pixel/scenes/glass_tower_lobby_landscape.png'),
   glass_tower_lobby_portrait: require('../assets/pixel/scenes/glass_tower_lobby_portrait.png'),
-  glass_tower_lobby: require('../assets/pixel/scenes/glass_tower_lobby_landscape.png'),
   choir_broadcast_point_landscape: require('../assets/pixel/scenes/choir_broadcast_point_landscape.png'),
   choir_broadcast_point_portrait: require('../assets/pixel/scenes/choir_broadcast_point_portrait.png'),
-  choir_broadcast_point: require('../assets/pixel/scenes/choir_broadcast_point_landscape.png'),
   archive_ruin_wall_landscape: require('../assets/pixel/scenes/archive_ruin_wall_landscape.png'),
   archive_ruin_wall_portrait: require('../assets/pixel/scenes/archive_ruin_wall_portrait.png'),
-  archive_ruin_wall: require('../assets/pixel/scenes/archive_ruin_wall_landscape.png'),
   surface_night_landscape: require('../assets/pixel/scenes/surface_night_landscape.png'),
   surface_night_portrait: require('../assets/pixel/scenes/surface_night_portrait.png'),
-  surface_night: require('../assets/pixel/scenes/surface_night_landscape.png'),
   last_archive_door_landscape: require('../assets/pixel/scenes/last_archive_door_landscape.png'),
   last_archive_door_portrait: require('../assets/pixel/scenes/last_archive_door_portrait.png'),
-  last_archive_door: require('../assets/pixel/scenes/last_archive_door_landscape.png'),
   candle_market_landscape: require('../assets/pixel/scenes/candle_market_landscape.png'),
   candle_market_portrait: require('../assets/pixel/scenes/candle_market_portrait.png'),
-  candle_market: require('../assets/pixel/scenes/candle_market_landscape.png'),
   bone_turnstile_landscape: require('../assets/pixel/scenes/bone_turnstile_landscape.png'),
   bone_turnstile_portrait: require('../assets/pixel/scenes/bone_turnstile_portrait.png'),
-  bone_turnstile: require('../assets/pixel/scenes/bone_turnstile_landscape.png'),
   flooded_platform_landscape: require('../assets/pixel/scenes/flooded_platform_landscape.png'),
   flooded_platform_portrait: require('../assets/pixel/scenes/flooded_platform_portrait.png'),
-  flooded_platform: require('../assets/pixel/scenes/flooded_platform_landscape.png'),
   nursery_of_knives_landscape: require('../assets/pixel/scenes/nursery_of_knives_landscape.png'),
   nursery_of_knives_portrait: require('../assets/pixel/scenes/nursery_of_knives_portrait.png'),
-  nursery_of_knives: require('../assets/pixel/scenes/nursery_of_knives_landscape.png'),
   chalk_map_wall_landscape: require('../assets/pixel/scenes/chalk_map_wall_landscape.png'),
   chalk_map_wall_portrait: require('../assets/pixel/scenes/chalk_map_wall_portrait.png'),
-  chalk_map_wall: require('../assets/pixel/scenes/chalk_map_wall_landscape.png'),
   rat_king_gate_landscape: require('../assets/pixel/scenes/rat_king_gate_landscape.png'),
   rat_king_gate_portrait: require('../assets/pixel/scenes/rat_king_gate_portrait.png'),
-  rat_king_gate: require('../assets/pixel/scenes/rat_king_gate_landscape.png'),
   hidden_clinic_landscape: require('../assets/pixel/scenes/hidden_clinic_landscape.png'),
   hidden_clinic_portrait: require('../assets/pixel/scenes/hidden_clinic_portrait.png'),
-  hidden_clinic: require('../assets/pixel/scenes/hidden_clinic_landscape.png'),
   relic_engine_room_landscape: require('../assets/pixel/scenes/relic_engine_room_landscape.png'),
   relic_engine_room_portrait: require('../assets/pixel/scenes/relic_engine_room_portrait.png'),
-  relic_engine_room: require('../assets/pixel/scenes/relic_engine_room_landscape.png'),
   relic_engine_room_landscape_far: require('../assets/pixel/scenes/relic_engine_room_landscape_far.png'),
   relic_engine_room_landscape_mid: require('../assets/pixel/scenes/relic_engine_room_landscape_mid.png'),
   relic_engine_room_landscape_fore: require('../assets/pixel/scenes/relic_engine_room_landscape_fore.png'),
@@ -136,7 +116,6 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   relic_engine_room_portrait_fore: require('../assets/pixel/scenes/relic_engine_room_portrait_fore.png'),
   broken_throne_landscape: require('../assets/pixel/scenes/broken_throne_landscape.png'),
   broken_throne_portrait: require('../assets/pixel/scenes/broken_throne_portrait.png'),
-  broken_throne: require('../assets/pixel/scenes/broken_throne_landscape.png'),
   broken_throne_landscape_far: require('../assets/pixel/scenes/broken_throne_landscape_far.png'),
   broken_throne_landscape_mid: require('../assets/pixel/scenes/broken_throne_landscape_mid.png'),
   broken_throne_landscape_fore: require('../assets/pixel/scenes/broken_throne_landscape_fore.png'),
@@ -145,7 +124,6 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   broken_throne_portrait_fore: require('../assets/pixel/scenes/broken_throne_portrait_fore.png'),
   relic_scar_landscape: require('../assets/pixel/scenes/relic_scar_landscape.png'),
   relic_scar_portrait: require('../assets/pixel/scenes/relic_scar_portrait.png'),
-  relic_scar: require('../assets/pixel/scenes/relic_scar_landscape.png'),
   relic_scar_landscape_far: require('../assets/pixel/scenes/relic_scar_landscape_far.png'),
   relic_scar_landscape_mid: require('../assets/pixel/scenes/relic_scar_landscape_mid.png'),
   relic_scar_landscape_fore: require('../assets/pixel/scenes/relic_scar_landscape_fore.png'),
@@ -154,7 +132,6 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   relic_scar_portrait_fore: require('../assets/pixel/scenes/relic_scar_portrait_fore.png'),
   first_gate_landscape: require('../assets/pixel/scenes/first_gate_landscape.png'),
   first_gate_portrait: require('../assets/pixel/scenes/first_gate_portrait.png'),
-  first_gate: require('../assets/pixel/scenes/first_gate_landscape.png'),
   first_gate_landscape_far: require('../assets/pixel/scenes/first_gate_landscape_far.png'),
   first_gate_landscape_mid: require('../assets/pixel/scenes/first_gate_landscape_mid.png'),
   first_gate_landscape_fore: require('../assets/pixel/scenes/first_gate_landscape_fore.png'),
@@ -163,7 +140,6 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   first_gate_portrait_fore: require('../assets/pixel/scenes/first_gate_portrait_fore.png'),
   last_gate_landscape: require('../assets/pixel/scenes/last_gate_landscape.png'),
   last_gate_portrait: require('../assets/pixel/scenes/last_gate_portrait.png'),
-  last_gate: require('../assets/pixel/scenes/last_gate_landscape.png'),
   last_gate_landscape_far: require('../assets/pixel/scenes/last_gate_landscape_far.png'),
   last_gate_landscape_mid: require('../assets/pixel/scenes/last_gate_landscape_mid.png'),
   last_gate_landscape_fore: require('../assets/pixel/scenes/last_gate_landscape_fore.png'),
@@ -172,7 +148,6 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   last_gate_portrait_fore: require('../assets/pixel/scenes/last_gate_portrait_fore.png'),
   starving_bridge_landscape: require('../assets/pixel/scenes/starving_bridge_landscape.png'),
   starving_bridge_portrait: require('../assets/pixel/scenes/starving_bridge_portrait.png'),
-  starving_bridge: require('../assets/pixel/scenes/starving_bridge_landscape.png'),
   starving_bridge_landscape_far: require('../assets/pixel/scenes/starving_bridge_landscape_far.png'),
   starving_bridge_landscape_mid: require('../assets/pixel/scenes/starving_bridge_landscape_mid.png'),
   starving_bridge_landscape_fore: require('../assets/pixel/scenes/starving_bridge_landscape_fore.png'),
@@ -181,7 +156,6 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   starving_bridge_portrait_fore: require('../assets/pixel/scenes/starving_bridge_portrait_fore.png'),
   cain_war_room_landscape: require('../assets/pixel/scenes/cain_war_room_landscape.png'),
   cain_war_room_portrait: require('../assets/pixel/scenes/cain_war_room_portrait.png'),
-  cain_war_room: require('../assets/pixel/scenes/cain_war_room_landscape.png'),
   cain_war_room_landscape_far: require('../assets/pixel/scenes/cain_war_room_landscape_far.png'),
   cain_war_room_landscape_mid: require('../assets/pixel/scenes/cain_war_room_landscape_mid.png'),
   cain_war_room_landscape_fore: require('../assets/pixel/scenes/cain_war_room_landscape_fore.png'),
@@ -190,7 +164,6 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   cain_war_room_portrait_fore: require('../assets/pixel/scenes/cain_war_room_portrait_fore.png'),
   saint_front_landscape: require('../assets/pixel/scenes/saint_front_landscape.png'),
   saint_front_portrait: require('../assets/pixel/scenes/saint_front_portrait.png'),
-  saint_front: require('../assets/pixel/scenes/saint_front_landscape.png'),
   saint_front_landscape_far: require('../assets/pixel/scenes/saint_front_landscape_far.png'),
   saint_front_landscape_mid: require('../assets/pixel/scenes/saint_front_landscape_mid.png'),
   saint_front_landscape_fore: require('../assets/pixel/scenes/saint_front_landscape_fore.png'),
@@ -199,7 +172,6 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   saint_front_portrait_fore: require('../assets/pixel/scenes/saint_front_portrait_fore.png'),
   dust_library_landscape: require('../assets/pixel/scenes/dust_library_landscape.png'),
   dust_library_portrait: require('../assets/pixel/scenes/dust_library_portrait.png'),
-  dust_library: require('../assets/pixel/scenes/dust_library_landscape.png'),
   dust_library_landscape_far: require('../assets/pixel/scenes/dust_library_landscape_far.png'),
   dust_library_landscape_mid: require('../assets/pixel/scenes/dust_library_landscape_mid.png'),
   dust_library_landscape_fore: require('../assets/pixel/scenes/dust_library_landscape_fore.png'),
@@ -208,7 +180,6 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   dust_library_portrait_fore: require('../assets/pixel/scenes/dust_library_portrait_fore.png'),
   quiet_safehouse_landscape: require('../assets/pixel/scenes/quiet_safehouse_landscape.png'),
   quiet_safehouse_portrait: require('../assets/pixel/scenes/quiet_safehouse_portrait.png'),
-  quiet_safehouse: require('../assets/pixel/scenes/quiet_safehouse_landscape.png'),
   quiet_safehouse_landscape_far: require('../assets/pixel/scenes/quiet_safehouse_landscape_far.png'),
   quiet_safehouse_landscape_mid: require('../assets/pixel/scenes/quiet_safehouse_landscape_mid.png'),
   quiet_safehouse_landscape_fore: require('../assets/pixel/scenes/quiet_safehouse_landscape_fore.png'),
@@ -217,7 +188,6 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   quiet_safehouse_portrait_fore: require('../assets/pixel/scenes/quiet_safehouse_portrait_fore.png'),
   mira_hidden_clinic_landscape: require('../assets/pixel/scenes/mira_hidden_clinic_landscape.png'),
   mira_hidden_clinic_portrait: require('../assets/pixel/scenes/mira_hidden_clinic_portrait.png'),
-  mira_hidden_clinic: require('../assets/pixel/scenes/mira_hidden_clinic_landscape.png'),
   mira_hidden_clinic_landscape_far: require('../assets/pixel/scenes/mira_hidden_clinic_landscape_far.png'),
   mira_hidden_clinic_landscape_mid: require('../assets/pixel/scenes/mira_hidden_clinic_landscape_mid.png'),
   mira_hidden_clinic_landscape_fore: require('../assets/pixel/scenes/mira_hidden_clinic_landscape_fore.png'),
@@ -226,7 +196,6 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   mira_hidden_clinic_portrait_fore: require('../assets/pixel/scenes/mira_hidden_clinic_portrait_fore.png'),
   sub_city_gate_landscape: require('../assets/pixel/scenes/sub_city_gate_landscape.png'),
   sub_city_gate_portrait: require('../assets/pixel/scenes/sub_city_gate_portrait.png'),
-  sub_city_gate: require('../assets/pixel/scenes/sub_city_gate_landscape.png'),
   sub_city_gate_landscape_far: require('../assets/pixel/scenes/sub_city_gate_landscape_far.png'),
   sub_city_gate_landscape_mid: require('../assets/pixel/scenes/sub_city_gate_landscape_mid.png'),
   sub_city_gate_landscape_fore: require('../assets/pixel/scenes/sub_city_gate_landscape_fore.png'),
@@ -235,7 +204,6 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   sub_city_gate_portrait_fore: require('../assets/pixel/scenes/sub_city_gate_portrait_fore.png'),
   deep_archive_landscape: require('../assets/pixel/scenes/deep_archive_landscape.png'),
   deep_archive_portrait: require('../assets/pixel/scenes/deep_archive_portrait.png'),
-  deep_archive: require('../assets/pixel/scenes/deep_archive_landscape.png'),
   deep_archive_landscape_far: require('../assets/pixel/scenes/deep_archive_landscape_far.png'),
   deep_archive_landscape_mid: require('../assets/pixel/scenes/deep_archive_landscape_mid.png'),
   deep_archive_landscape_fore: require('../assets/pixel/scenes/deep_archive_landscape_fore.png'),
@@ -244,7 +212,6 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   deep_archive_portrait_fore: require('../assets/pixel/scenes/deep_archive_portrait_fore.png'),
   bloodlit_underpass_landscape: require('../assets/pixel/scenes/bloodlit_underpass_landscape.png'),
   bloodlit_underpass_portrait: require('../assets/pixel/scenes/bloodlit_underpass_portrait.png'),
-  bloodlit_underpass: require('../assets/pixel/scenes/bloodlit_underpass_landscape.png'),
   bloodlit_underpass_landscape_far: require('../assets/pixel/scenes/bloodlit_underpass_landscape_far.png'),
   bloodlit_underpass_landscape_mid: require('../assets/pixel/scenes/bloodlit_underpass_landscape_mid.png'),
   bloodlit_underpass_landscape_fore: require('../assets/pixel/scenes/bloodlit_underpass_landscape_fore.png'),
@@ -253,7 +220,6 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   bloodlit_underpass_portrait_fore: require('../assets/pixel/scenes/bloodlit_underpass_portrait_fore.png'),
   singing_hospital_landscape: require('../assets/pixel/scenes/singing_hospital_landscape.png'),
   singing_hospital_portrait: require('../assets/pixel/scenes/singing_hospital_portrait.png'),
-  singing_hospital: require('../assets/pixel/scenes/singing_hospital_landscape.png'),
   singing_hospital_landscape_far: require('../assets/pixel/scenes/singing_hospital_landscape_far.png'),
   singing_hospital_landscape_mid: require('../assets/pixel/scenes/singing_hospital_landscape_mid.png'),
   singing_hospital_landscape_fore: require('../assets/pixel/scenes/singing_hospital_landscape_fore.png'),
@@ -262,7 +228,6 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   singing_hospital_portrait_fore: require('../assets/pixel/scenes/singing_hospital_portrait_fore.png'),
   companion_crossroads_landscape: require('../assets/pixel/scenes/companion_crossroads_landscape.png'),
   companion_crossroads_portrait: require('../assets/pixel/scenes/companion_crossroads_portrait.png'),
-  companion_crossroads: require('../assets/pixel/scenes/companion_crossroads_landscape.png'),
   companion_crossroads_landscape_far: require('../assets/pixel/scenes/companion_crossroads_landscape_far.png'),
   companion_crossroads_landscape_mid: require('../assets/pixel/scenes/companion_crossroads_landscape_mid.png'),
   companion_crossroads_landscape_fore: require('../assets/pixel/scenes/companion_crossroads_landscape_fore.png'),
@@ -271,7 +236,6 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   companion_crossroads_portrait_fore: require('../assets/pixel/scenes/companion_crossroads_portrait_fore.png'),
   blackout_core_landscape: require('../assets/pixel/scenes/blackout_core_landscape.png'),
   blackout_core_portrait: require('../assets/pixel/scenes/blackout_core_portrait.png'),
-  blackout_core: require('../assets/pixel/scenes/blackout_core_landscape.png'),
   blackout_core_landscape_far: require('../assets/pixel/scenes/blackout_core_landscape_far.png'),
   blackout_core_landscape_mid: require('../assets/pixel/scenes/blackout_core_landscape_mid.png'),
   blackout_core_landscape_fore: require('../assets/pixel/scenes/blackout_core_landscape_fore.png'),
@@ -280,7 +244,6 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   blackout_core_portrait_fore: require('../assets/pixel/scenes/blackout_core_portrait_fore.png'),
   red_choir_march_landscape: require('../assets/pixel/scenes/red_choir_march_landscape.png'),
   red_choir_march_portrait: require('../assets/pixel/scenes/red_choir_march_portrait.png'),
-  red_choir_march: require('../assets/pixel/scenes/red_choir_march_landscape.png'),
   red_choir_march_landscape_far: require('../assets/pixel/scenes/red_choir_march_landscape_far.png'),
   red_choir_march_landscape_mid: require('../assets/pixel/scenes/red_choir_march_landscape_mid.png'),
   red_choir_march_landscape_fore: require('../assets/pixel/scenes/red_choir_march_landscape_fore.png'),
@@ -289,7 +252,6 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   red_choir_march_portrait_fore: require('../assets/pixel/scenes/red_choir_march_portrait_fore.png'),
   white_atrium_landscape: require('../assets/pixel/scenes/white_atrium_landscape.png'),
   white_atrium_portrait: require('../assets/pixel/scenes/white_atrium_portrait.png'),
-  white_atrium: require('../assets/pixel/scenes/white_atrium_landscape.png'),
   white_atrium_landscape_far: require('../assets/pixel/scenes/white_atrium_landscape_far.png'),
   white_atrium_landscape_mid: require('../assets/pixel/scenes/white_atrium_landscape_mid.png'),
   white_atrium_landscape_fore: require('../assets/pixel/scenes/white_atrium_landscape_fore.png'),
@@ -298,7 +260,6 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   white_atrium_portrait_fore: require('../assets/pixel/scenes/white_atrium_portrait_fore.png'),
   relic_transit_line_landscape: require('../assets/pixel/scenes/relic_transit_line_landscape.png'),
   relic_transit_line_portrait: require('../assets/pixel/scenes/relic_transit_line_portrait.png'),
-  relic_transit_line: require('../assets/pixel/scenes/relic_transit_line_landscape.png'),
   relic_transit_line_landscape_far: require('../assets/pixel/scenes/relic_transit_line_landscape_far.png'),
   relic_transit_line_landscape_mid: require('../assets/pixel/scenes/relic_transit_line_landscape_mid.png'),
   relic_transit_line_landscape_fore: require('../assets/pixel/scenes/relic_transit_line_landscape_fore.png'),
@@ -307,7 +268,6 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   relic_transit_line_portrait_fore: require('../assets/pixel/scenes/relic_transit_line_portrait_fore.png'),
   glass_barricade_landscape: require('../assets/pixel/scenes/glass_barricade_landscape.png'),
   glass_barricade_portrait: require('../assets/pixel/scenes/glass_barricade_portrait.png'),
-  glass_barricade: require('../assets/pixel/scenes/glass_barricade_landscape.png'),
   glass_barricade_landscape_far: require('../assets/pixel/scenes/glass_barricade_landscape_far.png'),
   glass_barricade_landscape_mid: require('../assets/pixel/scenes/glass_barricade_landscape_mid.png'),
   glass_barricade_landscape_fore: require('../assets/pixel/scenes/glass_barricade_landscape_fore.png'),
@@ -316,7 +276,6 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   glass_barricade_portrait_fore: require('../assets/pixel/scenes/glass_barricade_portrait_fore.png'),
   archive_siege_landscape: require('../assets/pixel/scenes/archive_siege_landscape.png'),
   archive_siege_portrait: require('../assets/pixel/scenes/archive_siege_portrait.png'),
-  archive_siege: require('../assets/pixel/scenes/archive_siege_landscape.png'),
   archive_siege_landscape_far: require('../assets/pixel/scenes/archive_siege_landscape_far.png'),
   archive_siege_landscape_mid: require('../assets/pixel/scenes/archive_siege_landscape_mid.png'),
   archive_siege_landscape_fore: require('../assets/pixel/scenes/archive_siege_landscape_fore.png'),
@@ -325,7 +284,6 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   archive_siege_portrait_fore: require('../assets/pixel/scenes/archive_siege_portrait_fore.png'),
   hollow_children_hideout_landscape: require('../assets/pixel/scenes/hollow_children_hideout_landscape.png'),
   hollow_children_hideout_portrait: require('../assets/pixel/scenes/hollow_children_hideout_portrait.png'),
-  hollow_children_hideout: require('../assets/pixel/scenes/hollow_children_hideout_landscape.png'),
   hollow_children_hideout_landscape_far: require('../assets/pixel/scenes/hollow_children_hideout_landscape_far.png'),
   hollow_children_hideout_landscape_mid: require('../assets/pixel/scenes/hollow_children_hideout_landscape_mid.png'),
   hollow_children_hideout_landscape_fore: require('../assets/pixel/scenes/hollow_children_hideout_landscape_fore.png'),
@@ -334,7 +292,6 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   hollow_children_hideout_portrait_fore: require('../assets/pixel/scenes/hollow_children_hideout_portrait_fore.png'),
   saint_furnace_landscape: require('../assets/pixel/scenes/saint_furnace_landscape.png'),
   saint_furnace_portrait: require('../assets/pixel/scenes/saint_furnace_portrait.png'),
-  saint_furnace: require('../assets/pixel/scenes/saint_furnace_landscape.png'),
   saint_furnace_landscape_far: require('../assets/pixel/scenes/saint_furnace_landscape_far.png'),
   saint_furnace_landscape_mid: require('../assets/pixel/scenes/saint_furnace_landscape_mid.png'),
   saint_furnace_landscape_fore: require('../assets/pixel/scenes/saint_furnace_landscape_fore.png'),
@@ -343,7 +300,6 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   saint_furnace_portrait_fore: require('../assets/pixel/scenes/saint_furnace_portrait_fore.png'),
   grain_vault_landscape: require('../assets/pixel/scenes/grain_vault_landscape.png'),
   grain_vault_portrait: require('../assets/pixel/scenes/grain_vault_portrait.png'),
-  grain_vault: require('../assets/pixel/scenes/grain_vault_landscape.png'),
   grain_vault_landscape_far: require('../assets/pixel/scenes/grain_vault_landscape_far.png'),
   grain_vault_landscape_mid: require('../assets/pixel/scenes/grain_vault_landscape_mid.png'),
   grain_vault_landscape_fore: require('../assets/pixel/scenes/grain_vault_landscape_fore.png'),
@@ -352,7 +308,6 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   grain_vault_portrait_fore: require('../assets/pixel/scenes/grain_vault_portrait_fore.png'),
   famine_camp_landscape: require('../assets/pixel/scenes/famine_camp_landscape.png'),
   famine_camp_portrait: require('../assets/pixel/scenes/famine_camp_portrait.png'),
-  famine_camp: require('../assets/pixel/scenes/famine_camp_landscape.png'),
   famine_camp_landscape_far: require('../assets/pixel/scenes/famine_camp_landscape_far.png'),
   famine_camp_landscape_mid: require('../assets/pixel/scenes/famine_camp_landscape_mid.png'),
   famine_camp_landscape_fore: require('../assets/pixel/scenes/famine_camp_landscape_fore.png'),
@@ -361,7 +316,6 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   famine_camp_portrait_fore: require('../assets/pixel/scenes/famine_camp_portrait_fore.png'),
   rust_cathedral_landscape: require('../assets/pixel/scenes/rust_cathedral_landscape.png'),
   rust_cathedral_portrait: require('../assets/pixel/scenes/rust_cathedral_portrait.png'),
-  rust_cathedral: require('../assets/pixel/scenes/rust_cathedral_landscape.png'),
   rust_cathedral_landscape_far: require('../assets/pixel/scenes/rust_cathedral_landscape_far.png'),
   rust_cathedral_landscape_mid: require('../assets/pixel/scenes/rust_cathedral_landscape_mid.png'),
   rust_cathedral_landscape_fore: require('../assets/pixel/scenes/rust_cathedral_landscape_fore.png'),
@@ -370,7 +324,6 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   rust_cathedral_portrait_fore: require('../assets/pixel/scenes/rust_cathedral_portrait_fore.png'),
   betrayal_alley_landscape: require('../assets/pixel/scenes/betrayal_alley_landscape.png'),
   betrayal_alley_portrait: require('../assets/pixel/scenes/betrayal_alley_portrait.png'),
-  betrayal_alley: require('../assets/pixel/scenes/betrayal_alley_landscape.png'),
   betrayal_alley_landscape_far: require('../assets/pixel/scenes/betrayal_alley_landscape_far.png'),
   betrayal_alley_landscape_mid: require('../assets/pixel/scenes/betrayal_alley_landscape_mid.png'),
   betrayal_alley_landscape_fore: require('../assets/pixel/scenes/betrayal_alley_landscape_fore.png'),
@@ -379,7 +332,6 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   betrayal_alley_portrait_fore: require('../assets/pixel/scenes/betrayal_alley_portrait_fore.png'),
   memory_shelter_landscape: require('../assets/pixel/scenes/memory_shelter_landscape.png'),
   memory_shelter_portrait: require('../assets/pixel/scenes/memory_shelter_portrait.png'),
-  memory_shelter: require('../assets/pixel/scenes/memory_shelter_landscape.png'),
   memory_shelter_landscape_far: require('../assets/pixel/scenes/memory_shelter_landscape_far.png'),
   memory_shelter_landscape_mid: require('../assets/pixel/scenes/memory_shelter_landscape_mid.png'),
   memory_shelter_landscape_fore: require('../assets/pixel/scenes/memory_shelter_landscape_fore.png'),
@@ -388,7 +340,6 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   memory_shelter_portrait_fore: require('../assets/pixel/scenes/memory_shelter_portrait_fore.png'),
   empty_chair_landscape: require('../assets/pixel/scenes/empty_chair_landscape.png'),
   empty_chair_portrait: require('../assets/pixel/scenes/empty_chair_portrait.png'),
-  empty_chair: require('../assets/pixel/scenes/empty_chair_landscape.png'),
   empty_chair_landscape_far: require('../assets/pixel/scenes/empty_chair_landscape_far.png'),
   empty_chair_landscape_mid: require('../assets/pixel/scenes/empty_chair_landscape_mid.png'),
   empty_chair_landscape_fore: require('../assets/pixel/scenes/empty_chair_landscape_fore.png'),
@@ -397,7 +348,6 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   empty_chair_portrait_fore: require('../assets/pixel/scenes/empty_chair_portrait_fore.png'),
   underworld_district_landscape: require('../assets/pixel/scenes/underworld_district_landscape.png'),
   underworld_district_portrait: require('../assets/pixel/scenes/underworld_district_portrait.png'),
-  underworld_district: require('../assets/pixel/scenes/underworld_district_landscape.png'),
   underworld_district_landscape_far: require('../assets/pixel/scenes/underworld_district_landscape_far.png'),
   underworld_district_landscape_mid: require('../assets/pixel/scenes/underworld_district_landscape_mid.png'),
   underworld_district_landscape_fore: require('../assets/pixel/scenes/underworld_district_landscape_fore.png'),
@@ -406,7 +356,6 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   underworld_district_portrait_fore: require('../assets/pixel/scenes/underworld_district_portrait_fore.png'),
   old_government_vault_landscape: require('../assets/pixel/scenes/old_government_vault_landscape.png'),
   old_government_vault_portrait: require('../assets/pixel/scenes/old_government_vault_portrait.png'),
-  old_government_vault: require('../assets/pixel/scenes/old_government_vault_landscape.png'),
   old_government_vault_landscape_far: require('../assets/pixel/scenes/old_government_vault_landscape_far.png'),
   old_government_vault_landscape_mid: require('../assets/pixel/scenes/old_government_vault_landscape_mid.png'),
   old_government_vault_landscape_fore: require('../assets/pixel/scenes/old_government_vault_landscape_fore.png'),
@@ -415,7 +364,6 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   old_government_vault_portrait_fore: require('../assets/pixel/scenes/old_government_vault_portrait_fore.png'),
   faction_hall_landscape: require('../assets/pixel/scenes/faction_hall_landscape.png'),
   faction_hall_portrait: require('../assets/pixel/scenes/faction_hall_portrait.png'),
-  faction_hall: require('../assets/pixel/scenes/faction_hall_landscape.png'),
   faction_hall_landscape_far: require('../assets/pixel/scenes/faction_hall_landscape_far.png'),
   faction_hall_landscape_mid: require('../assets/pixel/scenes/faction_hall_landscape_mid.png'),
   faction_hall_landscape_fore: require('../assets/pixel/scenes/faction_hall_landscape_fore.png'),
@@ -424,73 +372,50 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   faction_hall_portrait_fore: require('../assets/pixel/scenes/faction_hall_portrait_fore.png'),
   archive_tribunal_landscape: require('../assets/pixel/scenes/archive_tribunal_landscape.png'),
   archive_tribunal_portrait: require('../assets/pixel/scenes/archive_tribunal_portrait.png'),
-  archive_tribunal: require('../assets/pixel/scenes/archive_tribunal_landscape.png'),
   ascension_elevator_landscape: require('../assets/pixel/scenes/ascension_elevator_landscape.png'),
   ascension_elevator_portrait: require('../assets/pixel/scenes/ascension_elevator_portrait.png'),
-  ascension_elevator: require('../assets/pixel/scenes/ascension_elevator_landscape.png'),
   ashen_square_landscape: require('../assets/pixel/scenes/ashen_square_landscape.png'),
   ashen_square_portrait: require('../assets/pixel/scenes/ashen_square_portrait.png'),
-  ashen_square: require('../assets/pixel/scenes/ashen_square_landscape.png'),
   barracks_of_ash_landscape: require('../assets/pixel/scenes/barracks_of_ash_landscape.png'),
   barracks_of_ash_portrait: require('../assets/pixel/scenes/barracks_of_ash_portrait.png'),
-  barracks_of_ash: require('../assets/pixel/scenes/barracks_of_ash_landscape.png'),
   blackout_record_chamber_landscape: require('../assets/pixel/scenes/blackout_record_chamber_landscape.png'),
   blackout_record_chamber_portrait: require('../assets/pixel/scenes/blackout_record_chamber_portrait.png'),
-  blackout_record_chamber: require('../assets/pixel/scenes/blackout_record_chamber_landscape.png'),
   bone_platform_landscape: require('../assets/pixel/scenes/bone_platform_landscape.png'),
   bone_platform_portrait: require('../assets/pixel/scenes/bone_platform_portrait.png'),
-  bone_platform: require('../assets/pixel/scenes/bone_platform_landscape.png'),
   bone_soup_kitchen_landscape: require('../assets/pixel/scenes/bone_soup_kitchen_landscape.png'),
   bone_soup_kitchen_portrait: require('../assets/pixel/scenes/bone_soup_kitchen_portrait.png'),
-  bone_soup_kitchen: require('../assets/pixel/scenes/bone_soup_kitchen_landscape.png'),
   broken_aqueduct_landscape: require('../assets/pixel/scenes/broken_aqueduct_landscape.png'),
   broken_aqueduct_portrait: require('../assets/pixel/scenes/broken_aqueduct_portrait.png'),
-  broken_aqueduct: require('../assets/pixel/scenes/broken_aqueduct_landscape.png'),
   broken_bridge_camp_landscape: require('../assets/pixel/scenes/broken_bridge_camp_landscape.png'),
   broken_bridge_camp_portrait: require('../assets/pixel/scenes/broken_bridge_camp_portrait.png'),
-  broken_bridge_camp: require('../assets/pixel/scenes/broken_bridge_camp_landscape.png'),
   broken_observatory_landscape: require('../assets/pixel/scenes/broken_observatory_landscape.png'),
   broken_observatory_portrait: require('../assets/pixel/scenes/broken_observatory_portrait.png'),
-  broken_observatory: require('../assets/pixel/scenes/broken_observatory_landscape.png'),
   broken_tram_core_landscape: require('../assets/pixel/scenes/broken_tram_core_landscape.png'),
   broken_tram_core_portrait: require('../assets/pixel/scenes/broken_tram_core_portrait.png'),
-  broken_tram_core: require('../assets/pixel/scenes/broken_tram_core_landscape.png'),
   burned_clinic_landscape: require('../assets/pixel/scenes/burned_clinic_landscape.png'),
   burned_clinic_portrait: require('../assets/pixel/scenes/burned_clinic_portrait.png'),
-  burned_clinic: require('../assets/pixel/scenes/burned_clinic_landscape.png'),
   burning_market_landscape: require('../assets/pixel/scenes/burning_market_landscape.png'),
   burning_market_portrait: require('../assets/pixel/scenes/burning_market_portrait.png'),
-  burning_market: require('../assets/pixel/scenes/burning_market_landscape.png'),
   cain_last_stand_ending_landscape: require('../assets/pixel/scenes/cain_last_stand_ending_landscape.png'),
   cain_last_stand_ending_portrait: require('../assets/pixel/scenes/cain_last_stand_ending_portrait.png'),
-  cain_last_stand_ending: require('../assets/pixel/scenes/cain_last_stand_ending_landscape.png'),
   chapel_of_chains_landscape: require('../assets/pixel/scenes/chapel_of_chains_landscape.png'),
   chapel_of_chains_portrait: require('../assets/pixel/scenes/chapel_of_chains_portrait.png'),
-  chapel_of_chains: require('../assets/pixel/scenes/chapel_of_chains_landscape.png'),
   choir_nest_landscape: require('../assets/pixel/scenes/choir_nest_landscape.png'),
   choir_nest_portrait: require('../assets/pixel/scenes/choir_nest_portrait.png'),
-  choir_nest: require('../assets/pixel/scenes/choir_nest_landscape.png'),
   city_opened_wastes_landscape: require('../assets/pixel/scenes/city_opened_wastes_landscape.png'),
   city_opened_wastes_portrait: require('../assets/pixel/scenes/city_opened_wastes_portrait.png'),
-  city_opened_wastes: require('../assets/pixel/scenes/city_opened_wastes_landscape.png'),
   city_sealed_forever_landscape: require('../assets/pixel/scenes/city_sealed_forever_landscape.png'),
   city_sealed_forever_portrait: require('../assets/pixel/scenes/city_sealed_forever_portrait.png'),
-  city_sealed_forever: require('../assets/pixel/scenes/city_sealed_forever_landscape.png'),
   citywide_battlefield_landscape: require('../assets/pixel/scenes/citywide_battlefield_landscape.png'),
   citywide_battlefield_portrait: require('../assets/pixel/scenes/citywide_battlefield_portrait.png'),
-  citywide_battlefield: require('../assets/pixel/scenes/citywide_battlefield_landscape.png'),
   companion_threshold_landscape: require('../assets/pixel/scenes/companion_threshold_landscape.png'),
   companion_threshold_portrait: require('../assets/pixel/scenes/companion_threshold_portrait.png'),
-  companion_threshold: require('../assets/pixel/scenes/companion_threshold_landscape.png'),
   confession_hall_landscape: require('../assets/pixel/scenes/confession_hall_landscape.png'),
   confession_hall_portrait: require('../assets/pixel/scenes/confession_hall_portrait.png'),
-  confession_hall: require('../assets/pixel/scenes/confession_hall_landscape.png'),
   corruption_garden_landscape: require('../assets/pixel/scenes/corruption_garden_landscape.png'),
   corruption_garden_portrait: require('../assets/pixel/scenes/corruption_garden_portrait.png'),
-  corruption_garden: require('../assets/pixel/scenes/corruption_garden_landscape.png'),
   corruption_god_landscape: require('../assets/pixel/scenes/corruption_god_landscape.png'),
   corruption_god_portrait: require('../assets/pixel/scenes/corruption_god_portrait.png'),
-  corruption_god: require('../assets/pixel/scenes/corruption_god_landscape.png'),
   corruption_god_landscape_far: require('../assets/pixel/scenes/corruption_god_landscape_far.png'),
   corruption_god_landscape_mid: require('../assets/pixel/scenes/corruption_god_landscape_mid.png'),
   corruption_god_landscape_fore: require('../assets/pixel/scenes/corruption_god_landscape_fore.png'),
@@ -499,43 +424,30 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   corruption_god_portrait_fore: require('../assets/pixel/scenes/corruption_god_portrait_fore.png'),
   corruption_mirror_landscape: require('../assets/pixel/scenes/corruption_mirror_landscape.png'),
   corruption_mirror_portrait: require('../assets/pixel/scenes/corruption_mirror_portrait.png'),
-  corruption_mirror: require('../assets/pixel/scenes/corruption_mirror_landscape.png'),
   council_chamber_landscape: require('../assets/pixel/scenes/council_chamber_landscape.png'),
   council_chamber_portrait: require('../assets/pixel/scenes/council_chamber_portrait.png'),
-  council_chamber: require('../assets/pixel/scenes/council_chamber_landscape.png'),
   cracked_observatory_landscape: require('../assets/pixel/scenes/cracked_observatory_landscape.png'),
   cracked_observatory_portrait: require('../assets/pixel/scenes/cracked_observatory_portrait.png'),
-  cracked_observatory: require('../assets/pixel/scenes/cracked_observatory_landscape.png'),
   crimson_relay_landscape: require('../assets/pixel/scenes/crimson_relay_landscape.png'),
   crimson_relay_portrait: require('../assets/pixel/scenes/crimson_relay_portrait.png'),
-  crimson_relay: require('../assets/pixel/scenes/crimson_relay_landscape.png'),
   dead_orchard_landscape: require('../assets/pixel/scenes/dead_orchard_landscape.png'),
   dead_orchard_portrait: require('../assets/pixel/scenes/dead_orchard_portrait.png'),
-  dead_orchard: require('../assets/pixel/scenes/dead_orchard_landscape.png'),
   descent_stair_landscape: require('../assets/pixel/scenes/descent_stair_landscape.png'),
   descent_stair_portrait: require('../assets/pixel/scenes/descent_stair_portrait.png'),
-  descent_stair: require('../assets/pixel/scenes/descent_stair_landscape.png'),
   door_of_no_return_landscape: require('../assets/pixel/scenes/door_of_no_return_landscape.png'),
   door_of_no_return_portrait: require('../assets/pixel/scenes/door_of_no_return_portrait.png'),
-  door_of_no_return: require('../assets/pixel/scenes/door_of_no_return_landscape.png'),
   door_without_name_landscape: require('../assets/pixel/scenes/door_without_name_landscape.png'),
   door_without_name_portrait: require('../assets/pixel/scenes/door_without_name_portrait.png'),
-  door_without_name: require('../assets/pixel/scenes/door_without_name_landscape.png'),
   dream_of_before_landscape: require('../assets/pixel/scenes/dream_of_before_landscape.png'),
   dream_of_before_portrait: require('../assets/pixel/scenes/dream_of_before_portrait.png'),
-  dream_of_before: require('../assets/pixel/scenes/dream_of_before_landscape.png'),
   drowned_choir_hall_landscape: require('../assets/pixel/scenes/drowned_choir_hall_landscape.png'),
   drowned_choir_hall_portrait: require('../assets/pixel/scenes/drowned_choir_hall_portrait.png'),
-  drowned_choir_hall: require('../assets/pixel/scenes/drowned_choir_hall_landscape.png'),
   echo_chamber_landscape: require('../assets/pixel/scenes/echo_chamber_landscape.png'),
   echo_chamber_portrait: require('../assets/pixel/scenes/echo_chamber_portrait.png'),
-  echo_chamber: require('../assets/pixel/scenes/echo_chamber_landscape.png'),
   empty_ration_square_landscape: require('../assets/pixel/scenes/empty_ration_square_landscape.png'),
   empty_ration_square_portrait: require('../assets/pixel/scenes/empty_ration_square_portrait.png'),
-  empty_ration_square: require('../assets/pixel/scenes/empty_ration_square_landscape.png'),
   examine_mark_landscape: require('../assets/pixel/scenes/examine_mark_landscape.png'),
   examine_mark_portrait: require('../assets/pixel/scenes/examine_mark_portrait.png'),
-  examine_mark: require('../assets/pixel/scenes/examine_mark_landscape.png'),
   examine_mark_landscape_far: require('../assets/pixel/scenes/examine_mark_landscape_far.png'),
   examine_mark_landscape_mid: require('../assets/pixel/scenes/examine_mark_landscape_mid.png'),
   examine_mark_landscape_fore: require('../assets/pixel/scenes/examine_mark_landscape_fore.png'),
@@ -544,61 +456,42 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   examine_mark_portrait_fore: require('../assets/pixel/scenes/examine_mark_portrait_fore.png'),
   execution_plaza_landscape: require('../assets/pixel/scenes/execution_plaza_landscape.png'),
   execution_plaza_portrait: require('../assets/pixel/scenes/execution_plaza_portrait.png'),
-  execution_plaza: require('../assets/pixel/scenes/execution_plaza_landscape.png'),
   experiment_ward_landscape: require('../assets/pixel/scenes/experiment_ward_landscape.png'),
   experiment_ward_portrait: require('../assets/pixel/scenes/experiment_ward_portrait.png'),
-  experiment_ward: require('../assets/pixel/scenes/experiment_ward_landscape.png'),
   final_metro_line_landscape: require('../assets/pixel/scenes/final_metro_line_landscape.png'),
   final_metro_line_portrait: require('../assets/pixel/scenes/final_metro_line_portrait.png'),
-  final_metro_line: require('../assets/pixel/scenes/final_metro_line_landscape.png'),
   forbidden_stacks_landscape: require('../assets/pixel/scenes/forbidden_stacks_landscape.png'),
   forbidden_stacks_portrait: require('../assets/pixel/scenes/forbidden_stacks_portrait.png'),
-  forbidden_stacks: require('../assets/pixel/scenes/forbidden_stacks_landscape.png'),
   forgotten_platform_landscape: require('../assets/pixel/scenes/forgotten_platform_landscape.png'),
   forgotten_platform_portrait: require('../assets/pixel/scenes/forgotten_platform_portrait.png'),
-  forgotten_platform: require('../assets/pixel/scenes/forgotten_platform_landscape.png'),
   gate_antechamber_landscape: require('../assets/pixel/scenes/gate_antechamber_landscape.png'),
   gate_antechamber_portrait: require('../assets/pixel/scenes/gate_antechamber_portrait.png'),
-  gate_antechamber: require('../assets/pixel/scenes/gate_antechamber_landscape.png'),
   gate_fragment_chamber_landscape: require('../assets/pixel/scenes/gate_fragment_chamber_landscape.png'),
   gate_fragment_chamber_portrait: require('../assets/pixel/scenes/gate_fragment_chamber_portrait.png'),
-  gate_fragment_chamber: require('../assets/pixel/scenes/gate_fragment_chamber_landscape.png'),
   glass_court_ascension_landscape: require('../assets/pixel/scenes/glass_court_ascension_landscape.png'),
   glass_court_ascension_portrait: require('../assets/pixel/scenes/glass_court_ascension_portrait.png'),
-  glass_court_ascension: require('../assets/pixel/scenes/glass_court_ascension_landscape.png'),
   glass_gate_landscape: require('../assets/pixel/scenes/glass_gate_landscape.png'),
   glass_gate_portrait: require('../assets/pixel/scenes/glass_gate_portrait.png'),
-  glass_gate: require('../assets/pixel/scenes/glass_gate_landscape.png'),
   hollow_children_future_landscape: require('../assets/pixel/scenes/hollow_children_future_landscape.png'),
   hollow_children_future_portrait: require('../assets/pixel/scenes/hollow_children_future_portrait.png'),
-  hollow_children_future: require('../assets/pixel/scenes/hollow_children_future_landscape.png'),
   hollow_lecture_hall_landscape: require('../assets/pixel/scenes/hollow_lecture_hall_landscape.png'),
   hollow_lecture_hall_portrait: require('../assets/pixel/scenes/hollow_lecture_hall_portrait.png'),
-  hollow_lecture_hall: require('../assets/pixel/scenes/hollow_lecture_hall_landscape.png'),
   hunger_gallery_landscape: require('../assets/pixel/scenes/hunger_gallery_landscape.png'),
   hunger_gallery_portrait: require('../assets/pixel/scenes/hunger_gallery_portrait.png'),
-  hunger_gallery: require('../assets/pixel/scenes/hunger_gallery_landscape.png'),
   infected_nursery_landscape: require('../assets/pixel/scenes/infected_nursery_landscape.png'),
   infected_nursery_portrait: require('../assets/pixel/scenes/infected_nursery_portrait.png'),
-  infected_nursery: require('../assets/pixel/scenes/infected_nursery_landscape.png'),
   ink_chapel_landscape: require('../assets/pixel/scenes/ink_chapel_landscape.png'),
   ink_chapel_portrait: require('../assets/pixel/scenes/ink_chapel_portrait.png'),
-  ink_chapel: require('../assets/pixel/scenes/ink_chapel_landscape.png'),
   iron_checkpoint_landscape: require('../assets/pixel/scenes/iron_checkpoint_landscape.png'),
   iron_checkpoint_portrait: require('../assets/pixel/scenes/iron_checkpoint_portrait.png'),
-  iron_checkpoint: require('../assets/pixel/scenes/iron_checkpoint_landscape.png'),
   iron_saints_dominion_landscape: require('../assets/pixel/scenes/iron_saints_dominion_landscape.png'),
   iron_saints_dominion_portrait: require('../assets/pixel/scenes/iron_saints_dominion_portrait.png'),
-  iron_saints_dominion: require('../assets/pixel/scenes/iron_saints_dominion_landscape.png'),
   last_archive_revelation_landscape: require('../assets/pixel/scenes/last_archive_revelation_landscape.png'),
   last_archive_revelation_portrait: require('../assets/pixel/scenes/last_archive_revelation_portrait.png'),
-  last_archive_revelation: require('../assets/pixel/scenes/last_archive_revelation_landscape.png'),
   last_medicine_room_landscape: require('../assets/pixel/scenes/last_medicine_room_landscape.png'),
   last_medicine_room_portrait: require('../assets/pixel/scenes/last_medicine_room_portrait.png'),
-  last_medicine_room: require('../assets/pixel/scenes/last_medicine_room_landscape.png'),
   lone_wanderer_ending_landscape: require('../assets/pixel/scenes/lone_wanderer_ending_landscape.png'),
   lone_wanderer_ending_portrait: require('../assets/pixel/scenes/lone_wanderer_ending_portrait.png'),
-  lone_wanderer_ending: require('../assets/pixel/scenes/lone_wanderer_ending_landscape.png'),
   lone_wanderer_ending_landscape_far: require('../assets/pixel/scenes/lone_wanderer_ending_landscape_far.png'),
   lone_wanderer_ending_landscape_mid: require('../assets/pixel/scenes/lone_wanderer_ending_landscape_mid.png'),
   lone_wanderer_ending_landscape_fore: require('../assets/pixel/scenes/lone_wanderer_ending_landscape_fore.png'),
@@ -607,16 +500,12 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   lone_wanderer_ending_portrait_fore: require('../assets/pixel/scenes/lone_wanderer_ending_portrait_fore.png'),
   machine_graveyard_landscape: require('../assets/pixel/scenes/machine_graveyard_landscape.png'),
   machine_graveyard_portrait: require('../assets/pixel/scenes/machine_graveyard_portrait.png'),
-  machine_graveyard: require('../assets/pixel/scenes/machine_graveyard_landscape.png'),
   machine_nursery_landscape: require('../assets/pixel/scenes/machine_nursery_landscape.png'),
   machine_nursery_portrait: require('../assets/pixel/scenes/machine_nursery_portrait.png'),
-  machine_nursery: require('../assets/pixel/scenes/machine_nursery_landscape.png'),
   marked_shrine_landscape: require('../assets/pixel/scenes/marked_shrine_landscape.png'),
   marked_shrine_portrait: require('../assets/pixel/scenes/marked_shrine_portrait.png'),
-  marked_shrine: require('../assets/pixel/scenes/marked_shrine_landscape.png'),
   masked_heir_ending_landscape: require('../assets/pixel/scenes/masked_heir_ending_landscape.png'),
   masked_heir_ending_portrait: require('../assets/pixel/scenes/masked_heir_ending_portrait.png'),
-  masked_heir_ending: require('../assets/pixel/scenes/masked_heir_ending_landscape.png'),
   masked_heir_ending_landscape_far: require('../assets/pixel/scenes/masked_heir_ending_landscape_far.png'),
   masked_heir_ending_landscape_mid: require('../assets/pixel/scenes/masked_heir_ending_landscape_mid.png'),
   masked_heir_ending_landscape_fore: require('../assets/pixel/scenes/masked_heir_ending_landscape_fore.png'),
@@ -625,25 +514,18 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   masked_heir_ending_portrait_fore: require('../assets/pixel/scenes/masked_heir_ending_portrait_fore.png'),
   memory_storm_landscape: require('../assets/pixel/scenes/memory_storm_landscape.png'),
   memory_storm_portrait: require('../assets/pixel/scenes/memory_storm_portrait.png'),
-  memory_storm: require('../assets/pixel/scenes/memory_storm_landscape.png'),
   memory_vault_landscape: require('../assets/pixel/scenes/memory_vault_landscape.png'),
   memory_vault_portrait: require('../assets/pixel/scenes/memory_vault_portrait.png'),
-  memory_vault: require('../assets/pixel/scenes/memory_vault_landscape.png'),
   memory_wall_landscape: require('../assets/pixel/scenes/memory_wall_landscape.png'),
   memory_wall_portrait: require('../assets/pixel/scenes/memory_wall_portrait.png'),
-  memory_wall: require('../assets/pixel/scenes/memory_wall_landscape.png'),
   mira_tomorrow_landscape: require('../assets/pixel/scenes/mira_tomorrow_landscape.png'),
   mira_tomorrow_portrait: require('../assets/pixel/scenes/mira_tomorrow_portrait.png'),
-  mira_tomorrow: require('../assets/pixel/scenes/mira_tomorrow_landscape.png'),
   mirror_ballroom_landscape: require('../assets/pixel/scenes/mirror_ballroom_landscape.png'),
   mirror_ballroom_portrait: require('../assets/pixel/scenes/mirror_ballroom_portrait.png'),
-  mirror_ballroom: require('../assets/pixel/scenes/mirror_ballroom_landscape.png'),
   nameless_housing_block_landscape: require('../assets/pixel/scenes/nameless_housing_block_landscape.png'),
   nameless_housing_block_portrait: require('../assets/pixel/scenes/nameless_housing_block_portrait.png'),
-  nameless_housing_block: require('../assets/pixel/scenes/nameless_housing_block_landscape.png'),
   old_signal_tower_landscape: require('../assets/pixel/scenes/old_signal_tower_landscape.png'),
   old_signal_tower_portrait: require('../assets/pixel/scenes/old_signal_tower_portrait.png'),
-  old_signal_tower: require('../assets/pixel/scenes/old_signal_tower_landscape.png'),
   old_signal_tower_landscape_far: require('../assets/pixel/scenes/old_signal_tower_landscape_far.png'),
   old_signal_tower_landscape_mid: require('../assets/pixel/scenes/old_signal_tower_landscape_mid.png'),
   old_signal_tower_landscape_fore: require('../assets/pixel/scenes/old_signal_tower_landscape_fore.png'),
@@ -652,40 +534,28 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   old_signal_tower_portrait_fore: require('../assets/pixel/scenes/old_signal_tower_portrait_fore.png'),
   orchid_clinic_landscape: require('../assets/pixel/scenes/orchid_clinic_landscape.png'),
   orchid_clinic_portrait: require('../assets/pixel/scenes/orchid_clinic_portrait.png'),
-  orchid_clinic: require('../assets/pixel/scenes/orchid_clinic_landscape.png'),
   place_we_promised_landscape: require('../assets/pixel/scenes/place_we_promised_landscape.png'),
   place_we_promised_portrait: require('../assets/pixel/scenes/place_we_promised_portrait.png'),
-  place_we_promised: require('../assets/pixel/scenes/place_we_promised_landscape.png'),
   prison_carts_landscape: require('../assets/pixel/scenes/prison_carts_landscape.png'),
   prison_carts_portrait: require('../assets/pixel/scenes/prison_carts_portrait.png'),
-  prison_carts: require('../assets/pixel/scenes/prison_carts_landscape.png'),
   private_auction_hall_landscape: require('../assets/pixel/scenes/private_auction_hall_landscape.png'),
   private_auction_hall_portrait: require('../assets/pixel/scenes/private_auction_hall_portrait.png'),
-  private_auction_hall: require('../assets/pixel/scenes/private_auction_hall_landscape.png'),
   pulse_engine_landscape: require('../assets/pixel/scenes/pulse_engine_landscape.png'),
   pulse_engine_portrait: require('../assets/pixel/scenes/pulse_engine_portrait.png'),
-  pulse_engine: require('../assets/pixel/scenes/pulse_engine_landscape.png'),
   pulse_tower_landscape: require('../assets/pixel/scenes/pulse_tower_landscape.png'),
   pulse_tower_portrait: require('../assets/pixel/scenes/pulse_tower_portrait.png'),
-  pulse_tower: require('../assets/pixel/scenes/pulse_tower_landscape.png'),
   purification_yard_landscape: require('../assets/pixel/scenes/purification_yard_landscape.png'),
   purification_yard_portrait: require('../assets/pixel/scenes/purification_yard_portrait.png'),
-  purification_yard: require('../assets/pixel/scenes/purification_yard_landscape.png'),
   red_chapel_landscape: require('../assets/pixel/scenes/red_chapel_landscape.png'),
   red_chapel_portrait: require('../assets/pixel/scenes/red_chapel_portrait.png'),
-  red_chapel: require('../assets/pixel/scenes/red_chapel_landscape.png'),
   red_choir_communion_landscape: require('../assets/pixel/scenes/red_choir_communion_landscape.png'),
   red_choir_communion_portrait: require('../assets/pixel/scenes/red_choir_communion_portrait.png'),
-  red_choir_communion: require('../assets/pixel/scenes/red_choir_communion_landscape.png'),
   relic_machine_ending_landscape: require('../assets/pixel/scenes/relic_machine_ending_landscape.png'),
   relic_machine_ending_portrait: require('../assets/pixel/scenes/relic_machine_ending_portrait.png'),
-  relic_machine_ending: require('../assets/pixel/scenes/relic_machine_ending_landscape.png'),
   relic_map_room_landscape: require('../assets/pixel/scenes/relic_map_room_landscape.png'),
   relic_map_room_portrait: require('../assets/pixel/scenes/relic_map_room_portrait.png'),
-  relic_map_room: require('../assets/pixel/scenes/relic_map_room_landscape.png'),
   savior_ending_landscape: require('../assets/pixel/scenes/savior_ending_landscape.png'),
   savior_ending_portrait: require('../assets/pixel/scenes/savior_ending_portrait.png'),
-  savior_ending: require('../assets/pixel/scenes/savior_ending_landscape.png'),
   savior_ending_landscape_far: require('../assets/pixel/scenes/savior_ending_landscape_far.png'),
   savior_ending_landscape_mid: require('../assets/pixel/scenes/savior_ending_landscape_mid.png'),
   savior_ending_landscape_fore: require('../assets/pixel/scenes/savior_ending_landscape_fore.png'),
@@ -694,13 +564,10 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   savior_ending_portrait_fore: require('../assets/pixel/scenes/savior_ending_portrait_fore.png'),
   scavenger_front_landscape: require('../assets/pixel/scenes/scavenger_front_landscape.png'),
   scavenger_front_portrait: require('../assets/pixel/scenes/scavenger_front_portrait.png'),
-  scavenger_front: require('../assets/pixel/scenes/scavenger_front_landscape.png'),
   sealed_engine_landscape: require('../assets/pixel/scenes/sealed_engine_landscape.png'),
   sealed_engine_portrait: require('../assets/pixel/scenes/sealed_engine_portrait.png'),
-  sealed_engine: require('../assets/pixel/scenes/sealed_engine_landscape.png'),
   secret_true_ending_landscape: require('../assets/pixel/scenes/secret_true_ending_landscape.png'),
   secret_true_ending_portrait: require('../assets/pixel/scenes/secret_true_ending_portrait.png'),
-  secret_true_ending: require('../assets/pixel/scenes/secret_true_ending_landscape.png'),
   secret_true_ending_landscape_far: require('../assets/pixel/scenes/secret_true_ending_landscape_far.png'),
   secret_true_ending_landscape_mid: require('../assets/pixel/scenes/secret_true_ending_landscape_mid.png'),
   secret_true_ending_landscape_fore: require('../assets/pixel/scenes/secret_true_ending_landscape_fore.png'),
@@ -709,28 +576,20 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   secret_true_ending_portrait_fore: require('../assets/pixel/scenes/secret_true_ending_portrait_fore.png'),
   secret_unity_ending_landscape: require('../assets/pixel/scenes/secret_unity_ending_landscape.png'),
   secret_unity_ending_portrait: require('../assets/pixel/scenes/secret_unity_ending_portrait.png'),
-  secret_unity_ending: require('../assets/pixel/scenes/secret_unity_ending_landscape.png'),
   servant_quarters_landscape: require('../assets/pixel/scenes/servant_quarters_landscape.png'),
   servant_quarters_portrait: require('../assets/pixel/scenes/servant_quarters_portrait.png'),
-  servant_quarters: require('../assets/pixel/scenes/servant_quarters_landscape.png'),
   siege_tunnels_landscape: require('../assets/pixel/scenes/siege_tunnels_landscape.png'),
   siege_tunnels_portrait: require('../assets/pixel/scenes/siege_tunnels_portrait.png'),
-  siege_tunnels: require('../assets/pixel/scenes/siege_tunnels_landscape.png'),
   silent_ward_landscape: require('../assets/pixel/scenes/silent_ward_landscape.png'),
   silent_ward_portrait: require('../assets/pixel/scenes/silent_ward_portrait.png'),
-  silent_ward: require('../assets/pixel/scenes/silent_ward_landscape.png'),
   sky_garden_landscape: require('../assets/pixel/scenes/sky_garden_landscape.png'),
   sky_garden_portrait: require('../assets/pixel/scenes/sky_garden_portrait.png'),
-  sky_garden: require('../assets/pixel/scenes/sky_garden_landscape.png'),
   sleeping_server_landscape: require('../assets/pixel/scenes/sleeping_server_landscape.png'),
   sleeping_server_portrait: require('../assets/pixel/scenes/sleeping_server_portrait.png'),
-  sleeping_server: require('../assets/pixel/scenes/sleeping_server_landscape.png'),
   soldiers_grave_landscape: require('../assets/pixel/scenes/soldiers_grave_landscape.png'),
   soldiers_grave_portrait: require('../assets/pixel/scenes/soldiers_grave_portrait.png'),
-  soldiers_grave: require('../assets/pixel/scenes/soldiers_grave_landscape.png'),
   tyrant_ending_landscape: require('../assets/pixel/scenes/tyrant_ending_landscape.png'),
   tyrant_ending_portrait: require('../assets/pixel/scenes/tyrant_ending_portrait.png'),
-  tyrant_ending: require('../assets/pixel/scenes/tyrant_ending_landscape.png'),
   tyrant_ending_landscape_far: require('../assets/pixel/scenes/tyrant_ending_landscape_far.png'),
   tyrant_ending_landscape_mid: require('../assets/pixel/scenes/tyrant_ending_landscape_mid.png'),
   tyrant_ending_landscape_fore: require('../assets/pixel/scenes/tyrant_ending_landscape_fore.png'),
@@ -739,19 +598,14 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   tyrant_ending_portrait_fore: require('../assets/pixel/scenes/tyrant_ending_portrait_fore.png'),
   vein_market_landscape: require('../assets/pixel/scenes/vein_market_landscape.png'),
   vein_market_portrait: require('../assets/pixel/scenes/vein_market_portrait.png'),
-  vein_market: require('../assets/pixel/scenes/vein_market_landscape.png'),
   war_council_landscape: require('../assets/pixel/scenes/war_council_landscape.png'),
   war_council_portrait: require('../assets/pixel/scenes/war_council_portrait.png'),
-  war_council: require('../assets/pixel/scenes/war_council_landscape.png'),
   war_shrine_landscape: require('../assets/pixel/scenes/war_shrine_landscape.png'),
   war_shrine_portrait: require('../assets/pixel/scenes/war_shrine_portrait.png'),
-  war_shrine: require('../assets/pixel/scenes/war_shrine_landscape.png'),
   water_riot_landscape: require('../assets/pixel/scenes/water_riot_landscape.png'),
   water_riot_portrait: require('../assets/pixel/scenes/water_riot_portrait.png'),
-  water_riot: require('../assets/pixel/scenes/water_riot_landscape.png'),
   mb1_chalk_pillar_landscape: require('../assets/pixel/scenes/mb1_chalk_pillar_landscape.png'),
   mb1_chalk_pillar_portrait: require('../assets/pixel/scenes/mb1_chalk_pillar_portrait.png'),
-  mb1_chalk_pillar: require('../assets/pixel/scenes/mb1_chalk_pillar_landscape.png'),
   mb1_chalk_pillar_landscape_far: require('../assets/pixel/scenes/mb1_chalk_pillar_landscape_far.png'),
   mb1_chalk_pillar_landscape_mid: require('../assets/pixel/scenes/mb1_chalk_pillar_landscape_mid.png'),
   mb1_chalk_pillar_landscape_fore: require('../assets/pixel/scenes/mb1_chalk_pillar_landscape_fore.png'),
@@ -760,16 +614,12 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   mb1_chalk_pillar_portrait_fore: require('../assets/pixel/scenes/mb1_chalk_pillar_portrait_fore.png'),
   mb1_saints_sweep_landscape: require('../assets/pixel/scenes/mb1_saints_sweep_landscape.png'),
   mb1_saints_sweep_portrait: require('../assets/pixel/scenes/mb1_saints_sweep_portrait.png'),
-  mb1_saints_sweep: require('../assets/pixel/scenes/mb1_saints_sweep_landscape.png'),
   mb1_aqueduct_climb_landscape: require('../assets/pixel/scenes/mb1_aqueduct_climb_landscape.png'),
   mb1_aqueduct_climb_portrait: require('../assets/pixel/scenes/mb1_aqueduct_climb_portrait.png'),
-  mb1_aqueduct_climb: require('../assets/pixel/scenes/mb1_aqueduct_climb_landscape.png'),
   mb2_subcarrier_console_landscape: require('../assets/pixel/scenes/mb2_subcarrier_console_landscape.png'),
   mb2_subcarrier_console_portrait: require('../assets/pixel/scenes/mb2_subcarrier_console_portrait.png'),
-  mb2_subcarrier_console: require('../assets/pixel/scenes/mb2_subcarrier_console_landscape.png'),
   mb2_velna_survey_camp_landscape: require('../assets/pixel/scenes/mb2_velna_survey_camp_landscape.png'),
   mb2_velna_survey_camp_portrait: require('../assets/pixel/scenes/mb2_velna_survey_camp_portrait.png'),
-  mb2_velna_survey_camp: require('../assets/pixel/scenes/mb2_velna_survey_camp_landscape.png'),
   mb2_velna_survey_camp_landscape_far: require('../assets/pixel/scenes/mb2_velna_survey_camp_landscape_far.png'),
   mb2_velna_survey_camp_landscape_mid: require('../assets/pixel/scenes/mb2_velna_survey_camp_landscape_mid.png'),
   mb2_velna_survey_camp_landscape_fore: require('../assets/pixel/scenes/mb2_velna_survey_camp_landscape_fore.png'),
@@ -778,22 +628,16 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   mb2_velna_survey_camp_portrait_fore: require('../assets/pixel/scenes/mb2_velna_survey_camp_portrait_fore.png'),
   mb2_old_aqueduct_exit_landscape: require('../assets/pixel/scenes/mb2_old_aqueduct_exit_landscape.png'),
   mb2_old_aqueduct_exit_portrait: require('../assets/pixel/scenes/mb2_old_aqueduct_exit_portrait.png'),
-  mb2_old_aqueduct_exit: require('../assets/pixel/scenes/mb2_old_aqueduct_exit_landscape.png'),
   mb3_grain_silo_catwalk_landscape: require('../assets/pixel/scenes/mb3_grain_silo_catwalk_landscape.png'),
   mb3_grain_silo_catwalk_portrait: require('../assets/pixel/scenes/mb3_grain_silo_catwalk_portrait.png'),
-  mb3_grain_silo_catwalk: require('../assets/pixel/scenes/mb3_grain_silo_catwalk_landscape.png'),
   mb3_ration_forge_desk_landscape: require('../assets/pixel/scenes/mb3_ration_forge_desk_landscape.png'),
   mb3_ration_forge_desk_portrait: require('../assets/pixel/scenes/mb3_ration_forge_desk_portrait.png'),
-  mb3_ration_forge_desk: require('../assets/pixel/scenes/mb3_ration_forge_desk_landscape.png'),
   mb3_silo_floor_riot_landscape: require('../assets/pixel/scenes/mb3_silo_floor_riot_landscape.png'),
   mb3_silo_floor_riot_portrait: require('../assets/pixel/scenes/mb3_silo_floor_riot_portrait.png'),
-  mb3_silo_floor_riot: require('../assets/pixel/scenes/mb3_silo_floor_riot_landscape.png'),
   mb4_signal_tower_roof_landscape: require('../assets/pixel/scenes/mb4_signal_tower_roof_landscape.png'),
   mb4_signal_tower_roof_portrait: require('../assets/pixel/scenes/mb4_signal_tower_roof_portrait.png'),
-  mb4_signal_tower_roof: require('../assets/pixel/scenes/mb4_signal_tower_roof_landscape.png'),
   mb4_transmitter_booth_landscape: require('../assets/pixel/scenes/mb4_transmitter_booth_landscape.png'),
   mb4_transmitter_booth_portrait: require('../assets/pixel/scenes/mb4_transmitter_booth_portrait.png'),
-  mb4_transmitter_booth: require('../assets/pixel/scenes/mb4_transmitter_booth_landscape.png'),
   mb4_transmitter_booth_landscape_far: require('../assets/pixel/scenes/mb4_transmitter_booth_landscape_far.png'),
   mb4_transmitter_booth_landscape_mid: require('../assets/pixel/scenes/mb4_transmitter_booth_landscape_mid.png'),
   mb4_transmitter_booth_landscape_fore: require('../assets/pixel/scenes/mb4_transmitter_booth_landscape_fore.png'),
@@ -802,10 +646,8 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   mb4_transmitter_booth_portrait_fore: require('../assets/pixel/scenes/mb4_transmitter_booth_portrait_fore.png'),
   mb4_tower_balcony_dawn_landscape: require('../assets/pixel/scenes/mb4_tower_balcony_dawn_landscape.png'),
   mb4_tower_balcony_dawn_portrait: require('../assets/pixel/scenes/mb4_tower_balcony_dawn_portrait.png'),
-  mb4_tower_balcony_dawn: require('../assets/pixel/scenes/mb4_tower_balcony_dawn_landscape.png'),
   velna_descent_landscape: require('../assets/pixel/scenes/velna_descent_landscape.png'),
   velna_descent_portrait: require('../assets/pixel/scenes/velna_descent_portrait.png'),
-  velna_descent: require('../assets/pixel/scenes/velna_descent_landscape.png'),
   velna_descent_landscape_far: require('../assets/pixel/scenes/velna_descent_landscape_far.png'),
   velna_descent_landscape_mid: require('../assets/pixel/scenes/velna_descent_landscape_mid.png'),
   velna_descent_landscape_fore: require('../assets/pixel/scenes/velna_descent_landscape_fore.png'),
@@ -814,7 +656,6 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   velna_descent_portrait_fore: require('../assets/pixel/scenes/velna_descent_portrait_fore.png'),
   velna_camp_landscape: require('../assets/pixel/scenes/velna_camp_landscape.png'),
   velna_camp_portrait: require('../assets/pixel/scenes/velna_camp_portrait.png'),
-  velna_camp: require('../assets/pixel/scenes/velna_camp_landscape.png'),
   velna_camp_landscape_far: require('../assets/pixel/scenes/velna_camp_landscape_far.png'),
   velna_camp_landscape_mid: require('../assets/pixel/scenes/velna_camp_landscape_mid.png'),
   velna_camp_landscape_fore: require('../assets/pixel/scenes/velna_camp_landscape_fore.png'),
@@ -823,7 +664,6 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   velna_camp_portrait_fore: require('../assets/pixel/scenes/velna_camp_portrait_fore.png'),
   signal_choir_cavern_landscape: require('../assets/pixel/scenes/signal_choir_cavern_landscape.png'),
   signal_choir_cavern_portrait: require('../assets/pixel/scenes/signal_choir_cavern_portrait.png'),
-  signal_choir_cavern: require('../assets/pixel/scenes/signal_choir_cavern_landscape.png'),
   signal_choir_cavern_landscape_far: require('../assets/pixel/scenes/signal_choir_cavern_landscape_far.png'),
   signal_choir_cavern_landscape_mid: require('../assets/pixel/scenes/signal_choir_cavern_landscape_mid.png'),
   signal_choir_cavern_landscape_fore: require('../assets/pixel/scenes/signal_choir_cavern_landscape_fore.png'),
@@ -832,7 +672,6 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   signal_choir_cavern_portrait_fore: require('../assets/pixel/scenes/signal_choir_cavern_portrait_fore.png'),
   vault_heart_landscape: require('../assets/pixel/scenes/vault_heart_landscape.png'),
   vault_heart_portrait: require('../assets/pixel/scenes/vault_heart_portrait.png'),
-  vault_heart: require('../assets/pixel/scenes/vault_heart_landscape.png'),
   vault_heart_landscape_far: require('../assets/pixel/scenes/vault_heart_landscape_far.png'),
   vault_heart_landscape_mid: require('../assets/pixel/scenes/vault_heart_landscape_mid.png'),
   vault_heart_landscape_fore: require('../assets/pixel/scenes/vault_heart_landscape_fore.png'),
@@ -841,7 +680,6 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   vault_heart_portrait_fore: require('../assets/pixel/scenes/vault_heart_portrait_fore.png'),
   answer_chamber_landscape: require('../assets/pixel/scenes/answer_chamber_landscape.png'),
   answer_chamber_portrait: require('../assets/pixel/scenes/answer_chamber_portrait.png'),
-  answer_chamber: require('../assets/pixel/scenes/answer_chamber_landscape.png'),
   answer_chamber_landscape_far: require('../assets/pixel/scenes/answer_chamber_landscape_far.png'),
   answer_chamber_landscape_mid: require('../assets/pixel/scenes/answer_chamber_landscape_mid.png'),
   answer_chamber_landscape_fore: require('../assets/pixel/scenes/answer_chamber_landscape_fore.png'),
@@ -850,7 +688,6 @@ export const SCENE_ASSET_REGISTRY: Record<string, any> = {
   answer_chamber_portrait_fore: require('../assets/pixel/scenes/answer_chamber_portrait_fore.png'),
   city_after_landscape: require('../assets/pixel/scenes/city_after_landscape.png'),
   city_after_portrait: require('../assets/pixel/scenes/city_after_portrait.png'),
-  city_after: require('../assets/pixel/scenes/city_after_landscape.png'),
   city_after_landscape_far: require('../assets/pixel/scenes/city_after_landscape_far.png'),
   city_after_landscape_mid: require('../assets/pixel/scenes/city_after_landscape_mid.png'),
   city_after_landscape_fore: require('../assets/pixel/scenes/city_after_landscape_fore.png'),
@@ -875,11 +712,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#444458', '#dedee8', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#e27e56', '#18040a', '#320a16', '#541026', '#7a1a3a', '#aa2a52', '#d84c78', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#1a2030', '#2e384c', '#5c1608', '#9a280c', '#d85012', '#e29cfc'
     ],
     atmosphere: 'dust',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'tunnel_bed', intensity: 1 },
   },
   dark_metro_hallway: {
@@ -892,11 +725,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#444458', '#dedee8', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#e27e56', '#c6ab5a', '#18040a', '#320a16', '#541026', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#0e121e', '#1a2030', '#2e384c', '#5c1608', '#9a280c', '#d85012', '#f89824'
     ],
     atmosphere: 'dust',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'tunnel_bed', intensity: 1 },
   },
   broken_vending_area: {
@@ -909,11 +738,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#1a2030', '#4c5c76', '#8e3a2a', '#444458', '#6e6e84', '#749652', '#423426', '#dedee8', '#2e384c', '#282838', '#7a889e', '#b0bac8', '#64503c', '#2c546a', '#a2a2b8', '#161622', '#e27e56', '#506e3a', '#b85438', '#b6a080', '#8a7458', '#0a0a12', '#a4c47e', '#18040a', '#541026', '#0e121e', '#344a28', '#68281a', '#7a1a3a', '#261e16', '#08161c'
     ],
     atmosphere: 'drip',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'tunnel_bed', intensity: 1 },
   },
   collapsed_tunnel: {
@@ -926,11 +751,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#0e121e', '#282838', '#4c5c76', '#444458', '#6e6e84', '#541026', '#8a7458', '#2e384c', '#161622', '#5c1608', '#b6a080', '#7a889e', '#1a2030', '#e27e56', '#0a0a12', '#64503c', '#04020a', '#68281a', '#b85438', '#9a280c', '#320a16', '#7a1a3a', '#8e3a2a', '#d84c78', '#423426', '#18040a', '#a2a2b8', '#aa2a52', '#3d1810', '#261e16', '#1f0c08', '#b0bac8'
     ],
     atmosphere: 'dust',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'tunnel_bed', intensity: 2 },
   },
   tunnel_camp: {
@@ -943,11 +764,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#282838', '#64503c', '#b85438', '#e27e56', '#8a7458', '#444458', '#2e384c', '#18040a', '#0a0a12', '#1a2030', '#04020a', '#8e3a2a', '#f89824', '#423426', '#161622', '#d85012', '#0e121e', '#68281a', '#b6a080', '#320a16', '#c6ab5a', '#3d1810', '#947e3c', '#4c5c76', '#1f0c08', '#6e6e84', '#7a889e', '#541026', '#261e16', '#5c1608', '#dedee8', '#a2a2b8'
     ],
     atmosphere: 'embers',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'calm_bed', intensity: 1 },
   },
   surface_ruins: {
@@ -960,11 +777,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#444458', '#6e6e84', '#a2a2b8', '#dedee8', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#342910', '#4e3e1c', '#18040a', '#320a16', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#1a2030', '#2e384c', '#4c5c76', '#7a889e', '#b0bac8', '#42124e', '#7d3c98', '#b062d4'
     ],
     atmosphere: 'ash',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'surface_bed', intensity: 1 },
   },
   iron_saints_checkpoint: {
@@ -977,11 +790,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#dedee8', '#121a10', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#e27e56', '#1c1608', '#342910', '#4e3e1c', '#6a5a2a', '#947e3c', '#c6ab5a', '#18040a', '#320a16', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#5c1608', '#9a280c', '#d85012', '#f89824'
     ],
     atmosphere: 'snow-ash',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'iron_saints_motif', intensity: 2 },
   },
   glass_tower_gate: {
@@ -994,11 +803,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#161622', '#282838', '#dedee8', '#102832', '#1c404e', '#2a5a6a', '#3e8094', '#6ac0d6', '#0e121e', '#1a2030', '#2e384c', '#4c5c76', '#7a889e', '#b0bac8', '#122430', '#1c3848', '#2c546a', '#447a96'
     ],
     atmosphere: 'fog',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'glass_court_motif', intensity: 1 },
   },
   red_choir_chamber: {
@@ -1011,11 +816,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#18040a', '#320a16', '#541026', '#7a1a3a', '#aa2a52', '#d84c78', '#5c1608', '#9a280c', '#d85012'
     ],
     atmosphere: 'embers',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'red_choir_motif', intensity: 2 },
   },
   surface_dawn: {
@@ -1028,11 +829,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#444458', '#6e6e84', '#a2a2b8', '#dedee8', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#342910', '#4e3e1c', '#18040a', '#320a16', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#1a2030', '#2e384c', '#4c5c76', '#7a889e', '#b0bac8', '#42124e', '#7d3c98', '#b062d4'
     ],
     atmosphere: 'ash',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'surface_bed', intensity: 1 },
   },
   ruined_street: {
@@ -1045,11 +842,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#444458', '#6e6e84', '#a2a2b8', '#dedee8', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#342910', '#4e3e1c', '#18040a', '#320a16', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#1a2030', '#2e384c', '#4c5c76', '#7a889e', '#b0bac8', '#42124e', '#7d3c98', '#b062d4'
     ],
     atmosphere: 'ash',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'surface_bed', intensity: 1 },
   },
   saints_patrol: {
@@ -1062,11 +855,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#dedee8', '#121a10', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#e27e56', '#1c1608', '#342910', '#4e3e1c', '#6a5a2a', '#947e3c', '#c6ab5a', '#18040a', '#320a16', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#5c1608', '#9a280c', '#d85012', '#f89824'
     ],
     atmosphere: 'snow-ash',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'iron_saints_motif', intensity: 2 },
   },
   black_market_alley: {
@@ -1079,11 +868,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#1a2030', '#4c5c76', '#8e3a2a', '#444458', '#6e6e84', '#749652', '#423426', '#dedee8', '#2e384c', '#282838', '#7a889e', '#b0bac8', '#64503c', '#2c546a', '#a2a2b8', '#161622', '#e27e56', '#506e3a', '#b85438', '#b6a080', '#8a7458', '#0a0a12', '#a4c47e', '#18040a', '#541026', '#0e121e', '#344a28', '#68281a', '#7a1a3a', '#261e16', '#08161c'
     ],
     atmosphere: 'fog',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'calm_bed', intensity: 1 },
   },
   glass_tower_lobby: {
@@ -1096,11 +881,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#161622', '#282838', '#dedee8', '#102832', '#1c404e', '#2a5a6a', '#3e8094', '#6ac0d6', '#0e121e', '#1a2030', '#2e384c', '#4c5c76', '#7a889e', '#b0bac8', '#122430', '#1c3848', '#2c546a', '#447a96'
     ],
     atmosphere: 'fog',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'glass_court_motif', intensity: 1 },
   },
   choir_broadcast_point: {
@@ -1113,11 +894,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#18040a', '#320a16', '#541026', '#7a1a3a', '#aa2a52', '#d84c78', '#5c1608', '#9a280c', '#d85012'
     ],
     atmosphere: 'sparks',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'red_choir_motif', intensity: 2 },
   },
   archive_ruin_wall: {
@@ -1130,11 +907,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#0a0a12', '#161622', '#18040a', '#320a16', '#541026', '#7a1a3a', '#d84c78', '#42124e', '#7d3c98', '#b062d4'
     ],
     atmosphere: 'dust',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'last_archive_motif', intensity: 1 },
   },
   surface_night: {
@@ -1147,11 +920,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#282838', '#64503c', '#b85438', '#e27e56', '#8a7458', '#444458', '#2e384c', '#18040a', '#0a0a12', '#1a2030', '#04020a', '#8e3a2a', '#f89824', '#423426', '#161622', '#d85012', '#0e121e', '#68281a', '#b6a080', '#320a16', '#c6ab5a', '#3d1810', '#947e3c', '#4c5c76', '#1f0c08', '#6e6e84', '#7a889e', '#541026', '#261e16', '#5c1608', '#dedee8', '#a2a2b8'
     ],
     atmosphere: 'ash',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'surface_bed', intensity: 2 },
   },
   last_archive_door: {
@@ -1164,11 +933,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#0a0a12', '#161622', '#18040a', '#320a16', '#541026', '#7a1a3a', '#d84c78', '#42124e', '#7d3c98', '#b062d4'
     ],
     atmosphere: 'dust',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'last_archive_motif', intensity: 2 },
   },
   candle_market: {
@@ -1181,11 +946,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#444458', '#dedee8', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#e27e56', '#c6ab5a', '#18040a', '#320a16', '#541026', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#0e121e', '#1a2030', '#2e384c', '#5c1608', '#9a280c', '#d85012', '#f89824'
     ],
     atmosphere: 'drip',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'calm_bed', intensity: 1 },
   },
   bone_turnstile: {
@@ -1198,11 +959,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#0e121e', '#282838', '#4c5c76', '#444458', '#6e6e84', '#541026', '#8a7458', '#2e384c', '#161622', '#5c1608', '#b6a080', '#7a889e', '#1a2030', '#e27e56', '#0a0a12', '#64503c', '#04020a', '#68281a', '#b85438', '#9a280c', '#320a16', '#7a1a3a', '#8e3a2a', '#d84c78', '#423426', '#18040a', '#a2a2b8', '#aa2a52', '#3d1810', '#261e16', '#1f0c08', '#b0bac8'
     ],
     atmosphere: 'drip',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'tunnel_bed', intensity: 1 },
   },
   flooded_platform: {
@@ -1215,11 +972,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#444458', '#dedee8', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#e27e56', '#18040a', '#320a16', '#541026', '#7a1a3a', '#aa2a52', '#d84c78', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#1a2030', '#2e384c', '#5c1608', '#9a280c', '#d85012', '#e29cfc'
     ],
     atmosphere: 'drip',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'tunnel_bed', intensity: 1 },
   },
   nursery_of_knives: {
@@ -1232,11 +985,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#947e3c', '#282838', '#64503c', '#c6ab5a', '#6a5a2a', '#344a28', '#0a0a12', '#2e384c', '#1a2030', '#506e3a', '#749652', '#8a7458', '#1f0c08', '#423426', '#14100c', '#04020a', '#161622', '#0e121e', '#4e3e1c', '#444458', '#a4c47e', '#261e16', '#b85438', '#1c3848', '#342910', '#d85012', '#18040a', '#e27e56', '#8e3a2a', '#1e2e1a', '#f89824', '#3d1810'
     ],
     atmosphere: 'fog',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'hollow_children_motif', intensity: 2 },
   },
   chalk_map_wall: {
@@ -1249,11 +998,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#0a0a12', '#161622', '#0e121e', '#1a2030', '#42124e', '#7d3c98', '#b062d4', '#e29cfc'
     ],
     atmosphere: 'dust',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'tunnel_bed', intensity: 1 },
   },
   rat_king_gate: {
@@ -1266,11 +1011,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#0e121e', '#64503c', '#8a7458', '#423426', '#04020a', '#161622', '#0a0a12', '#444458', '#282838', '#1a2030', '#2e384c', '#d85012', '#c6ab5a', '#947e3c', '#261e16', '#342910', '#b6a080', '#4e3e1c', '#6a5a2a', '#1e2e1a', '#9a280c', '#344a28', '#dedee8', '#14100c', '#b85438', '#121a10', '#e27e56', '#4c5c76', '#3d1810', '#1c1608', '#a4c47e', '#18040a'
     ],
     atmosphere: 'drip',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'tunnel_bed', intensity: 2 },
   },
   hidden_clinic: {
@@ -1283,11 +1024,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#1a2030', '#4c5c76', '#8e3a2a', '#444458', '#6e6e84', '#749652', '#423426', '#dedee8', '#2e384c', '#282838', '#7a889e', '#b0bac8', '#64503c', '#2c546a', '#a2a2b8', '#161622', '#e27e56', '#506e3a', '#b85438', '#b6a080', '#8a7458', '#0a0a12', '#a4c47e', '#18040a', '#541026', '#0e121e', '#344a28', '#68281a', '#7a1a3a', '#261e16', '#08161c'
     ],
     atmosphere: 'drip',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'calm_bed', intensity: 1 },
   },
   relic_engine_room: {
@@ -1305,11 +1042,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#161622', '#0e121e', '#42124e', '#7d3c98', '#b062d4', '#e29cfc'
     ],
     atmosphere: 'sparks',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'main_theme', intensity: 2 },
   },
   broken_throne: {
@@ -1327,11 +1060,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#0a0a12', '#161622', '#0e121e', '#1a2030', '#42124e', '#7d3c98', '#b062d4', '#e29cfc'
     ],
     atmosphere: 'ash',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'main_theme', intensity: 3 },
   },
   relic_scar: {
@@ -1349,11 +1078,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#161622', '#0e121e', '#42124e', '#7d3c98', '#b062d4', '#e29cfc'
     ],
     atmosphere: 'sparks',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'main_theme', intensity: 3 },
   },
   first_gate: {
@@ -1371,11 +1096,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#0a0a12', '#161622', '#282838', '#444458', '#6e6e84', '#a2a2b8', '#dedee8', '#102832', '#1c404e', '#2a5a6a', '#3e8094', '#6ac0d6', '#0e121e', '#1a2030', '#2e384c', '#4c5c76', '#7a889e', '#b0bac8', '#122430', '#1c3848', '#2c546a', '#447a96'
     ],
     atmosphere: 'dust',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'surface_bed', intensity: 2 },
   },
   last_gate: {
@@ -1393,11 +1114,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#161622', '#0e121e', '#42124e', '#7d3c98', '#b062d4', '#e29cfc'
     ],
     atmosphere: 'sparks',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'main_theme', intensity: 3 },
   },
   starving_bridge: {
@@ -1415,11 +1132,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#1a2030', '#282838', '#161622', '#0a0a12', '#444458', '#2e384c', '#4c5c76', '#6e6e84', '#04020a', '#749652', '#344a28', '#1e2e1a', '#2a5a6a', '#0e121e', '#a4c47e', '#7a889e', '#121a10', '#506e3a', '#08161c', '#dedee8', '#122430', '#423426', '#14100c', '#1c3848', '#102832', '#261e16', '#64503c', '#b0bac8', '#4e3e1c', '#18040a', '#1c404e', '#1c1608'
     ],
     atmosphere: 'fog',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'hollow_children_motif', intensity: 2 },
   },
   cain_war_room: {
@@ -1437,11 +1150,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#dedee8', '#121a10', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#e27e56', '#1c1608', '#342910', '#4e3e1c', '#6a5a2a', '#947e3c', '#c6ab5a', '#18040a', '#320a16', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#5c1608', '#9a280c', '#d85012', '#f89824'
     ],
     atmosphere: 'dust',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'iron_saints_motif', intensity: 2 },
   },
   saint_front: {
@@ -1459,11 +1168,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#dedee8', '#121a10', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#e27e56', '#1c1608', '#342910', '#4e3e1c', '#6a5a2a', '#947e3c', '#c6ab5a', '#18040a', '#320a16', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#5c1608', '#9a280c', '#d85012', '#f89824'
     ],
     atmosphere: 'snow-ash',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'iron_saints_motif', intensity: 3 },
   },
   dust_library: {
@@ -1481,11 +1186,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#0a0a12', '#161622', '#18040a', '#320a16', '#541026', '#7a1a3a', '#d84c78', '#42124e', '#7d3c98', '#b062d4'
     ],
     atmosphere: 'dust',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'last_archive_motif', intensity: 1 },
   },
   quiet_safehouse: {
@@ -1503,11 +1204,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#282838', '#64503c', '#b85438', '#e27e56', '#8a7458', '#444458', '#2e384c', '#18040a', '#0a0a12', '#1a2030', '#04020a', '#8e3a2a', '#f89824', '#423426', '#161622', '#d85012', '#0e121e', '#68281a', '#b6a080', '#320a16', '#c6ab5a', '#3d1810', '#947e3c', '#4c5c76', '#1f0c08', '#6e6e84', '#7a889e', '#541026', '#261e16', '#5c1608', '#dedee8', '#a2a2b8'
     ],
     atmosphere: 'drip',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'calm_bed', intensity: 1 },
   },
   mira_hidden_clinic: {
@@ -1525,11 +1222,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#1a2030', '#4c5c76', '#8e3a2a', '#444458', '#6e6e84', '#749652', '#423426', '#dedee8', '#2e384c', '#282838', '#7a889e', '#b0bac8', '#64503c', '#2c546a', '#a2a2b8', '#161622', '#e27e56', '#506e3a', '#b85438', '#b6a080', '#8a7458', '#0a0a12', '#a4c47e', '#18040a', '#541026', '#0e121e', '#344a28', '#68281a', '#7a1a3a', '#261e16', '#08161c'
     ],
     atmosphere: 'drip',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'calm_bed', intensity: 1 },
   },
   sub_city_gate: {
@@ -1547,11 +1240,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#dedee8', '#121a10', '#1e2e1a', '#344a28', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#e27e56', '#1c1608', '#342910', '#4e3e1c', '#6a5a2a', '#947e3c', '#c6ab5a', '#18040a', '#08161c', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#0e121e', '#5c1608', '#9a280c', '#d85012', '#f89824', '#f39c12'
     ],
     atmosphere: 'dust',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'last_archive_motif', intensity: 2 },
   },
   deep_archive: {
@@ -1569,11 +1258,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#0a0a12', '#161622', '#18040a', '#320a16', '#541026', '#7a1a3a', '#d84c78', '#42124e', '#7d3c98', '#b062d4'
     ],
     atmosphere: 'dust',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'last_archive_motif', intensity: 2 },
   },
   bloodlit_underpass: {
@@ -1591,11 +1276,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#0a0a12', '#161622', '#282838', '#444458', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#e27e56', '#18040a', '#320a16', '#541026', '#7a1a3a', '#aa2a52', '#d84c78', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#1a2030', '#2e384c', '#5c1608', '#9a280c', '#d85012', '#42124e', '#7d3c98'
     ],
     atmosphere: 'embers',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'red_choir_motif', intensity: 2 },
   },
   singing_hospital: {
@@ -1613,11 +1294,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#18040a', '#64503c', '#261e16', '#8a7458', '#444458', '#aa2a52', '#282838', '#b6a080', '#d84c78', '#423426', '#e29cfc', '#7a1a3a', '#8e3a2a', '#e27e56', '#541026', '#68281a', '#6e6e84', '#b85438', '#320a16', '#161622', '#14100c', '#1f0c08', '#dedee8', '#3d1810', '#1a2030', '#0a0a12', '#d85012', '#2e384c', '#4e3e1c', '#9a280c', '#0e121e', '#5c1608'
     ],
     atmosphere: 'embers',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'red_choir_motif', intensity: 2 },
   },
   companion_crossroads: {
@@ -1635,11 +1312,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#1a2030', '#4c5c76', '#8e3a2a', '#444458', '#6e6e84', '#749652', '#423426', '#dedee8', '#2e384c', '#282838', '#7a889e', '#b0bac8', '#64503c', '#2c546a', '#a2a2b8', '#161622', '#e27e56', '#506e3a', '#b85438', '#b6a080', '#8a7458', '#0a0a12', '#a4c47e', '#18040a', '#541026', '#0e121e', '#344a28', '#68281a', '#7a1a3a', '#261e16', '#08161c'
     ],
     atmosphere: 'fog',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'calm_bed', intensity: 1 },
   },
   blackout_core: {
@@ -1657,11 +1330,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#161622', '#0e121e', '#42124e', '#7d3c98', '#b062d4', '#e29cfc'
     ],
     atmosphere: 'sparks',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'main_theme', intensity: 3 },
   },
   red_choir_march: {
@@ -1679,11 +1348,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#18040a', '#320a16', '#541026', '#7a1a3a', '#aa2a52', '#d84c78', '#5c1608', '#9a280c', '#d85012'
     ],
     atmosphere: 'embers',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'red_choir_motif', intensity: 3 },
   },
   white_atrium: {
@@ -1701,11 +1366,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#161622', '#282838', '#dedee8', '#102832', '#1c404e', '#2a5a6a', '#3e8094', '#6ac0d6', '#0e121e', '#1a2030', '#2e384c', '#4c5c76', '#7a889e', '#b0bac8', '#122430', '#1c3848', '#2c546a', '#447a96'
     ],
     atmosphere: 'fog',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'glass_court_motif', intensity: 2 },
   },
   relic_transit_line: {
@@ -1723,11 +1384,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#161622', '#0e121e', '#42124e', '#7d3c98', '#b062d4', '#e29cfc'
     ],
     atmosphere: 'sparks',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'main_theme', intensity: 2 },
   },
   glass_barricade: {
@@ -1745,11 +1402,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#161622', '#282838', '#dedee8', '#102832', '#1c404e', '#2a5a6a', '#3e8094', '#6ac0d6', '#0e121e', '#1a2030', '#2e384c', '#4c5c76', '#7a889e', '#b0bac8', '#122430', '#1c3848', '#2c546a', '#447a96'
     ],
     atmosphere: 'fog',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'glass_court_motif', intensity: 2 },
   },
   archive_siege: {
@@ -1767,11 +1420,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#0a0a12', '#161622', '#18040a', '#320a16', '#541026', '#7a1a3a', '#d84c78', '#42124e', '#7d3c98', '#b062d4'
     ],
     atmosphere: 'dust',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'last_archive_motif', intensity: 3 },
   },
   hollow_children_hideout: {
@@ -1789,11 +1438,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#947e3c', '#282838', '#64503c', '#c6ab5a', '#6a5a2a', '#344a28', '#0a0a12', '#2e384c', '#1a2030', '#506e3a', '#749652', '#8a7458', '#1f0c08', '#423426', '#14100c', '#04020a', '#161622', '#0e121e', '#4e3e1c', '#444458', '#a4c47e', '#261e16', '#b85438', '#1c3848', '#342910', '#d85012', '#18040a', '#e27e56', '#8e3a2a', '#1e2e1a', '#f89824', '#3d1810'
     ],
     atmosphere: 'embers',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'hollow_children_motif', intensity: 2 },
   },
   saint_furnace: {
@@ -1811,11 +1456,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#18040a', '#320a16', '#541026', '#7a1a3a', '#d84c78', '#42124e', '#7d3c98', '#b062d4'
     ],
     atmosphere: 'embers',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'iron_saints_motif', intensity: 3 },
   },
   grain_vault: {
@@ -1833,11 +1474,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#1a2030', '#4c5c76', '#8e3a2a', '#444458', '#6e6e84', '#749652', '#423426', '#dedee8', '#2e384c', '#282838', '#7a889e', '#b0bac8', '#64503c', '#2c546a', '#a2a2b8', '#161622', '#e27e56', '#506e3a', '#b85438', '#b6a080', '#8a7458', '#0a0a12', '#a4c47e', '#18040a', '#541026', '#0e121e', '#344a28', '#68281a', '#7a1a3a', '#261e16', '#08161c'
     ],
     atmosphere: 'dust',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'surface_bed', intensity: 1 },
   },
   famine_camp: {
@@ -1855,11 +1492,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#947e3c', '#282838', '#64503c', '#c6ab5a', '#6a5a2a', '#344a28', '#0a0a12', '#2e384c', '#1a2030', '#506e3a', '#749652', '#8a7458', '#1f0c08', '#423426', '#14100c', '#04020a', '#161622', '#0e121e', '#4e3e1c', '#444458', '#a4c47e', '#261e16', '#b85438', '#1c3848', '#342910', '#d85012', '#18040a', '#e27e56', '#8e3a2a', '#1e2e1a', '#f89824', '#3d1810'
     ],
     atmosphere: 'ash',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'hollow_children_motif', intensity: 1 },
   },
   rust_cathedral: {
@@ -1877,11 +1510,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#444458', '#6e6e84', '#a2a2b8', '#dedee8', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#342910', '#4e3e1c', '#18040a', '#320a16', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#1a2030', '#2e384c', '#4c5c76', '#7a889e', '#b0bac8', '#42124e', '#7d3c98', '#b062d4'
     ],
     atmosphere: 'drip',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'surface_bed', intensity: 2 },
   },
   betrayal_alley: {
@@ -1899,11 +1528,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#1a2030', '#4c5c76', '#8e3a2a', '#444458', '#6e6e84', '#749652', '#423426', '#dedee8', '#2e384c', '#282838', '#7a889e', '#b0bac8', '#64503c', '#2c546a', '#a2a2b8', '#161622', '#e27e56', '#506e3a', '#b85438', '#b6a080', '#8a7458', '#0a0a12', '#a4c47e', '#18040a', '#541026', '#0e121e', '#344a28', '#68281a', '#7a1a3a', '#261e16', '#08161c'
     ],
     atmosphere: 'fog',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'calm_bed', intensity: 2 },
   },
   memory_shelter: {
@@ -1921,11 +1546,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#444458', '#dedee8', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#e27e56', '#c6ab5a', '#18040a', '#320a16', '#541026', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#0e121e', '#1a2030', '#2e384c', '#5c1608', '#9a280c', '#d85012', '#f89824'
     ],
     atmosphere: 'dust',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'calm_bed', intensity: 1 },
   },
   empty_chair: {
@@ -1943,11 +1564,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#0a0a12', '#161622', '#0e121e', '#1a2030', '#42124e', '#7d3c98', '#b062d4', '#e29cfc'
     ],
     atmosphere: 'dust',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'calm_bed', intensity: 1 },
   },
   underworld_district: {
@@ -1965,11 +1582,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#444458', '#dedee8', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#e27e56', '#c6ab5a', '#18040a', '#320a16', '#541026', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#0e121e', '#1a2030', '#2e384c', '#5c1608', '#9a280c', '#d85012', '#f89824'
     ],
     atmosphere: 'drip',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'tunnel_bed', intensity: 1 },
   },
   old_government_vault: {
@@ -1987,11 +1600,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#0e121e', '#282838', '#4c5c76', '#444458', '#6e6e84', '#541026', '#8a7458', '#2e384c', '#161622', '#5c1608', '#b6a080', '#7a889e', '#1a2030', '#e27e56', '#0a0a12', '#64503c', '#04020a', '#68281a', '#b85438', '#9a280c', '#320a16', '#7a1a3a', '#8e3a2a', '#d84c78', '#423426', '#18040a', '#a2a2b8', '#aa2a52', '#3d1810', '#261e16', '#1f0c08', '#b0bac8'
     ],
     atmosphere: 'dust',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'surface_bed', intensity: 2 },
   },
   faction_hall: {
@@ -2009,11 +1618,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#444458', '#6e6e84', '#a2a2b8', '#dedee8', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#342910', '#4e3e1c', '#18040a', '#320a16', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#1a2030', '#2e384c', '#4c5c76', '#7a889e', '#b0bac8', '#42124e', '#7d3c98', '#b062d4'
     ],
     atmosphere: 'dust',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'main_theme', intensity: 2 },
   },
   archive_tribunal: {
@@ -2026,11 +1631,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#0a0a12', '#161622', '#18040a', '#320a16', '#541026', '#7a1a3a', '#d84c78', '#42124e', '#7d3c98', '#b062d4'
     ],
     atmosphere: 'dust',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'last_archive', intensity: 2 },
   },
   ascension_elevator: {
@@ -2043,11 +1644,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#161622', '#282838', '#dedee8', '#102832', '#1c404e', '#2a5a6a', '#3e8094', '#6ac0d6', '#0e121e', '#1a2030', '#2e384c', '#4c5c76', '#7a889e', '#b0bac8', '#122430', '#1c3848', '#2c546a', '#447a96'
     ],
     atmosphere: 'fog',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'glass_court', intensity: 2 },
   },
   ashen_square: {
@@ -2060,11 +1657,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#444458', '#6e6e84', '#a2a2b8', '#dedee8', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#342910', '#4e3e1c', '#18040a', '#320a16', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#1a2030', '#2e384c', '#4c5c76', '#7a889e', '#b0bac8', '#42124e', '#7d3c98', '#b062d4'
     ],
     atmosphere: 'ash',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'surface_bed', intensity: 2 },
   },
   barracks_of_ash: {
@@ -2077,11 +1670,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#dedee8', '#121a10', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#e27e56', '#1c1608', '#342910', '#4e3e1c', '#6a5a2a', '#947e3c', '#c6ab5a', '#18040a', '#320a16', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#5c1608', '#9a280c', '#d85012', '#f89824'
     ],
     atmosphere: 'snow-ash',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'iron_saints', intensity: 2 },
   },
   blackout_record_chamber: {
@@ -2094,11 +1683,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#0a0a12', '#161622', '#18040a', '#320a16', '#541026', '#7a1a3a', '#d84c78', '#42124e', '#7d3c98', '#b062d4'
     ],
     atmosphere: 'dust',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'last_archive', intensity: 3 },
   },
   bone_platform: {
@@ -2111,11 +1696,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#0e121e', '#282838', '#4c5c76', '#444458', '#6e6e84', '#541026', '#8a7458', '#2e384c', '#161622', '#5c1608', '#b6a080', '#7a889e', '#1a2030', '#e27e56', '#0a0a12', '#64503c', '#04020a', '#68281a', '#b85438', '#9a280c', '#320a16', '#7a1a3a', '#8e3a2a', '#d84c78', '#423426', '#18040a', '#a2a2b8', '#aa2a52', '#3d1810', '#261e16', '#1f0c08', '#b0bac8'
     ],
     atmosphere: 'drip',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'tunnel_bed', intensity: 2 },
   },
   bone_soup_kitchen: {
@@ -2128,11 +1709,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#1e2e1a', '#121a10', '#344a28', '#0a0a12', '#947e3c', '#423426', '#6a5a2a', '#b85438', '#64503c', '#04020a', '#4e3e1c', '#261e16', '#342910', '#14100c', '#8e3a2a', '#1f0c08', '#c6ab5a', '#68281a', '#f89824', '#18040a', '#3d1810', '#1c1608', '#8a7458', '#506e3a', '#08161c', '#5c1608', '#a4c47e', '#e27e56', '#282838', '#161622', '#9a280c', '#320a16'
     ],
     atmosphere: 'embers',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'hollow_children', intensity: 1 },
   },
   broken_aqueduct: {
@@ -2145,11 +1722,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#444458', '#dedee8', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#e27e56', '#18040a', '#320a16', '#541026', '#7a1a3a', '#aa2a52', '#d84c78', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#1a2030', '#2e384c', '#5c1608', '#9a280c', '#d85012', '#e29cfc'
     ],
     atmosphere: 'drip',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'tunnel_bed', intensity: 2 },
   },
   broken_bridge_camp: {
@@ -2162,11 +1735,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#282838', '#64503c', '#b85438', '#e27e56', '#8a7458', '#444458', '#2e384c', '#18040a', '#0a0a12', '#1a2030', '#04020a', '#8e3a2a', '#f89824', '#423426', '#161622', '#d85012', '#0e121e', '#68281a', '#b6a080', '#320a16', '#c6ab5a', '#3d1810', '#947e3c', '#4c5c76', '#1f0c08', '#6e6e84', '#7a889e', '#541026', '#261e16', '#5c1608', '#dedee8', '#a2a2b8'
     ],
     atmosphere: 'embers',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'calm_bed', intensity: 1 },
   },
   broken_observatory: {
@@ -2179,11 +1748,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#282838', '#64503c', '#b85438', '#e27e56', '#8a7458', '#444458', '#2e384c', '#18040a', '#0a0a12', '#1a2030', '#04020a', '#8e3a2a', '#f89824', '#423426', '#161622', '#d85012', '#0e121e', '#68281a', '#b6a080', '#320a16', '#c6ab5a', '#3d1810', '#947e3c', '#4c5c76', '#1f0c08', '#6e6e84', '#7a889e', '#541026', '#261e16', '#5c1608', '#dedee8', '#a2a2b8'
     ],
     atmosphere: 'ash',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'surface_bed', intensity: 2 },
   },
   broken_tram_core: {
@@ -2196,11 +1761,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#161622', '#0e121e', '#42124e', '#7d3c98', '#b062d4', '#e29cfc'
     ],
     atmosphere: 'sparks',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'tunnel_bed', intensity: 2 },
   },
   burned_clinic: {
@@ -2213,11 +1774,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#1a2030', '#4c5c76', '#8e3a2a', '#444458', '#6e6e84', '#749652', '#423426', '#dedee8', '#2e384c', '#282838', '#7a889e', '#b0bac8', '#64503c', '#2c546a', '#a2a2b8', '#161622', '#e27e56', '#506e3a', '#b85438', '#b6a080', '#8a7458', '#0a0a12', '#a4c47e', '#18040a', '#541026', '#0e121e', '#344a28', '#68281a', '#7a1a3a', '#261e16', '#08161c'
     ],
     atmosphere: 'embers',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'tunnel_bed', intensity: 2 },
   },
   burning_market: {
@@ -2230,11 +1787,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#444458', '#dedee8', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#e27e56', '#c6ab5a', '#18040a', '#320a16', '#541026', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#0e121e', '#1a2030', '#2e384c', '#5c1608', '#9a280c', '#d85012', '#f89824'
     ],
     atmosphere: 'embers',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'combat_loop', intensity: 3 },
   },
   cain_last_stand_ending: {
@@ -2247,11 +1800,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#dedee8', '#121a10', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#e27e56', '#1c1608', '#342910', '#4e3e1c', '#6a5a2a', '#947e3c', '#c6ab5a', '#18040a', '#320a16', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#5c1608', '#9a280c', '#d85012', '#f89824'
     ],
     atmosphere: 'embers',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'iron_saints', intensity: 3 },
   },
   chapel_of_chains: {
@@ -2264,11 +1813,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#dedee8', '#121a10', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#e27e56', '#1c1608', '#342910', '#4e3e1c', '#6a5a2a', '#947e3c', '#c6ab5a', '#18040a', '#320a16', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#5c1608', '#9a280c', '#d85012', '#f89824'
     ],
     atmosphere: 'dust',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'iron_saints', intensity: 2 },
   },
   choir_nest: {
@@ -2281,11 +1826,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#18040a', '#320a16', '#541026', '#7a1a3a', '#aa2a52', '#d84c78', '#5c1608', '#9a280c', '#d85012'
     ],
     atmosphere: 'embers',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'red_choir', intensity: 2 },
   },
   city_opened_wastes: {
@@ -2298,11 +1839,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#444458', '#6e6e84', '#a2a2b8', '#dedee8', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#342910', '#4e3e1c', '#18040a', '#320a16', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#1a2030', '#2e384c', '#4c5c76', '#7a889e', '#b0bac8', '#42124e', '#7d3c98', '#b062d4'
     ],
     atmosphere: 'ash',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'main_theme', intensity: 2 },
   },
   city_sealed_forever: {
@@ -2315,11 +1852,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#0e121e', '#282838', '#4c5c76', '#444458', '#6e6e84', '#541026', '#8a7458', '#2e384c', '#161622', '#5c1608', '#b6a080', '#7a889e', '#1a2030', '#e27e56', '#0a0a12', '#64503c', '#04020a', '#68281a', '#b85438', '#9a280c', '#320a16', '#7a1a3a', '#8e3a2a', '#d84c78', '#423426', '#18040a', '#a2a2b8', '#aa2a52', '#3d1810', '#261e16', '#1f0c08', '#b0bac8'
     ],
     atmosphere: 'dust',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'tunnel_bed', intensity: 2 },
   },
   citywide_battlefield: {
@@ -2332,11 +1865,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#444458', '#6e6e84', '#a2a2b8', '#dedee8', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#342910', '#4e3e1c', '#18040a', '#320a16', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#1a2030', '#2e384c', '#4c5c76', '#7a889e', '#b0bac8', '#42124e', '#7d3c98', '#b062d4'
     ],
     atmosphere: 'embers',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'combat_loop', intensity: 3 },
   },
   companion_threshold: {
@@ -2349,11 +1878,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#282838', '#64503c', '#b85438', '#e27e56', '#8a7458', '#444458', '#2e384c', '#18040a', '#0a0a12', '#1a2030', '#04020a', '#8e3a2a', '#f89824', '#423426', '#161622', '#d85012', '#0e121e', '#68281a', '#b6a080', '#320a16', '#c6ab5a', '#3d1810', '#947e3c', '#4c5c76', '#1f0c08', '#6e6e84', '#7a889e', '#541026', '#261e16', '#5c1608', '#dedee8', '#a2a2b8'
     ],
     atmosphere: 'embers',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'calm_bed', intensity: 2 },
   },
   confession_hall: {
@@ -2366,11 +1891,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#18040a', '#320a16', '#541026', '#7a1a3a', '#aa2a52', '#d84c78', '#5c1608', '#9a280c', '#d85012'
     ],
     atmosphere: 'embers',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'red_choir', intensity: 2 },
   },
   corruption_garden: {
@@ -2383,11 +1904,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#161622', '#0e121e', '#42124e', '#7d3c98', '#b062d4', '#e29cfc'
     ],
     atmosphere: 'sparks',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'red_choir', intensity: 2 },
   },
   corruption_god: {
@@ -2405,11 +1922,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#161622', '#0e121e', '#42124e', '#7d3c98', '#b062d4', '#e29cfc'
     ],
     atmosphere: 'sparks',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'red_choir', intensity: 3 },
   },
   corruption_mirror: {
@@ -2422,11 +1935,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#161622', '#444458', '#a2a2b8', '#dedee8', '#1c404e', '#6ac0d6', '#0e121e', '#1a2030', '#2e384c', '#4c5c76', '#7a889e', '#b0bac8', '#1c3848', '#2c546a', '#447a96', '#42124e', '#7d3c98', '#b062d4', '#e29cfc'
     ],
     atmosphere: 'sparks',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'red_choir', intensity: 2 },
   },
   council_chamber: {
@@ -2439,11 +1948,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#161622', '#282838', '#dedee8', '#102832', '#1c404e', '#2a5a6a', '#3e8094', '#6ac0d6', '#0e121e', '#1a2030', '#2e384c', '#4c5c76', '#7a889e', '#b0bac8', '#122430', '#1c3848', '#2c546a', '#447a96'
     ],
     atmosphere: 'fog',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'glass_court', intensity: 2 },
   },
   cracked_observatory: {
@@ -2456,11 +1961,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#b85438', '#423426', '#18040a', '#e27e56', '#64503c', '#8e3a2a', '#f89824', '#282838', '#261e16', '#1f0c08', '#68281a', '#d85012', '#320a16', '#3d1810', '#8a7458', '#c6ab5a', '#947e3c', '#161622', '#4e3e1c', '#5c1608', '#04020a', '#b6a080', '#6a5a2a', '#9a280c', '#14100c', '#0a0a12', '#dedee8', '#a4c47e', '#342910', '#1a2030', '#0e121e', '#f39c12'
     ],
     atmosphere: 'ash',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'last_archive', intensity: 2 },
   },
   crimson_relay: {
@@ -2473,11 +1974,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#18040a', '#320a16', '#541026', '#7a1a3a', '#aa2a52', '#d84c78', '#5c1608', '#9a280c', '#d85012'
     ],
     atmosphere: 'sparks',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'red_choir', intensity: 3 },
   },
   dead_orchard: {
@@ -2490,11 +1987,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#444458', '#6e6e84', '#a2a2b8', '#dedee8', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#342910', '#4e3e1c', '#18040a', '#320a16', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#1a2030', '#2e384c', '#4c5c76', '#7a889e', '#b0bac8', '#42124e', '#7d3c98', '#b062d4'
     ],
     atmosphere: 'ash',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'surface_bed', intensity: 1 },
   },
   descent_stair: {
@@ -2507,11 +2000,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#444458', '#dedee8', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#e27e56', '#c6ab5a', '#18040a', '#320a16', '#541026', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#0e121e', '#1a2030', '#2e384c', '#5c1608', '#9a280c', '#d85012', '#f89824'
     ],
     atmosphere: 'drip',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'tunnel_bed', intensity: 2 },
   },
   door_of_no_return: {
@@ -2524,11 +2013,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#161622', '#0e121e', '#42124e', '#7d3c98', '#b062d4', '#e29cfc'
     ],
     atmosphere: 'sparks',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'main_theme', intensity: 3 },
   },
   door_without_name: {
@@ -2541,11 +2026,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#0a0a12', '#161622', '#18040a', '#320a16', '#541026', '#7a1a3a', '#d84c78', '#42124e', '#7d3c98', '#b062d4'
     ],
     atmosphere: 'dust',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'last_archive', intensity: 2 },
   },
   dream_of_before: {
@@ -2558,11 +2039,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#444458', '#6e6e84', '#a2a2b8', '#dedee8', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#342910', '#4e3e1c', '#18040a', '#320a16', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#1a2030', '#2e384c', '#4c5c76', '#7a889e', '#b0bac8', '#42124e', '#7d3c98', '#b062d4'
     ],
     atmosphere: 'fog',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'calm_bed', intensity: 1 },
   },
   drowned_choir_hall: {
@@ -2575,11 +2052,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#e27e56', '#18040a', '#320a16', '#541026', '#7a1a3a', '#aa2a52', '#d84c78', '#5c1608', '#9a280c', '#d85012', '#e29cfc'
     ],
     atmosphere: 'drip',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'red_choir', intensity: 2 },
   },
   echo_chamber: {
@@ -2592,11 +2065,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#18040a', '#320a16', '#541026', '#7a1a3a', '#aa2a52', '#d84c78', '#5c1608', '#9a280c', '#d85012'
     ],
     atmosphere: 'sparks',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'red_choir', intensity: 2 },
   },
   empty_ration_square: {
@@ -2609,11 +2078,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#506e3a', '#1e2e1a', '#749652', '#04020a', '#a4c47e', '#344a28', '#6a5a2a', '#64503c', '#423426', '#dedee8', '#2a5a6a', '#121a10', '#8a7458', '#0a0a12', '#4e3e1c', '#b6a080', '#947e3c', '#14100c', '#102832', '#08161c', '#c6ab5a', '#e27e56', '#1f0c08', '#2ecc71', '#342910', '#1c404e', '#b85438', '#261e16', '#1c3848', '#3e8094', '#1c1608', '#18040a'
     ],
     atmosphere: 'ash',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'hollow_children', intensity: 1 },
   },
   examine_mark: {
@@ -2631,11 +2096,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#161622', '#0e121e', '#42124e', '#7d3c98', '#b062d4', '#e29cfc'
     ],
     atmosphere: 'sparks',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'main_theme', intensity: 2 },
   },
   execution_plaza: {
@@ -2648,11 +2109,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#dedee8', '#121a10', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#e27e56', '#1c1608', '#342910', '#4e3e1c', '#6a5a2a', '#947e3c', '#c6ab5a', '#18040a', '#320a16', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#5c1608', '#9a280c', '#d85012', '#f89824'
     ],
     atmosphere: 'snow-ash',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'iron_saints', intensity: 3 },
   },
   experiment_ward: {
@@ -2665,11 +2122,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#1c3848', '#447a96', '#04020a', '#2c546a', '#4c5c76', '#6ac0d6', '#64503c', '#444458', '#3e8094', '#dedee8', '#102832', '#7a889e', '#2e384c', '#0a0a12', '#6e6e84', '#122430', '#1c404e', '#282838', '#a2a2b8', '#0e121e', '#8a7458', '#2a5a6a', '#b0bac8', '#161622', '#18040a', '#1a2030', '#08161c', '#b6a080', '#d84c78', '#a4c47e', '#423426', '#e27e56'
     ],
     atmosphere: 'fog',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'glass_court', intensity: 2 },
   },
   final_metro_line: {
@@ -2682,11 +2135,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#444458', '#dedee8', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#e27e56', '#18040a', '#320a16', '#541026', '#7a1a3a', '#aa2a52', '#d84c78', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#1a2030', '#2e384c', '#5c1608', '#9a280c', '#d85012', '#e29cfc'
     ],
     atmosphere: 'sparks',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'main_theme', intensity: 3 },
   },
   forbidden_stacks: {
@@ -2699,11 +2148,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#0a0a12', '#161622', '#18040a', '#320a16', '#541026', '#7a1a3a', '#d84c78', '#42124e', '#7d3c98', '#b062d4'
     ],
     atmosphere: 'dust',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'last_archive', intensity: 2 },
   },
   forgotten_platform: {
@@ -2716,11 +2161,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#444458', '#dedee8', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#e27e56', '#18040a', '#320a16', '#541026', '#7a1a3a', '#aa2a52', '#d84c78', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#1a2030', '#2e384c', '#5c1608', '#9a280c', '#d85012', '#e29cfc'
     ],
     atmosphere: 'dust',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'tunnel_bed', intensity: 1 },
   },
   gate_antechamber: {
@@ -2733,11 +2174,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#161622', '#0e121e', '#42124e', '#7d3c98', '#b062d4', '#e29cfc'
     ],
     atmosphere: 'sparks',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'main_theme', intensity: 3 },
   },
   gate_fragment_chamber: {
@@ -2750,11 +2187,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#161622', '#0e121e', '#42124e', '#7d3c98', '#b062d4', '#e29cfc'
     ],
     atmosphere: 'sparks',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'main_theme', intensity: 2 },
   },
   glass_court_ascension: {
@@ -2767,11 +2200,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#161622', '#282838', '#dedee8', '#102832', '#1c404e', '#2a5a6a', '#3e8094', '#6ac0d6', '#0e121e', '#1a2030', '#2e384c', '#4c5c76', '#7a889e', '#b0bac8', '#122430', '#1c3848', '#2c546a', '#447a96'
     ],
     atmosphere: 'fog',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'glass_court', intensity: 3 },
   },
   glass_gate: {
@@ -2784,11 +2213,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#161622', '#282838', '#dedee8', '#102832', '#1c404e', '#2a5a6a', '#3e8094', '#6ac0d6', '#0e121e', '#1a2030', '#2e384c', '#4c5c76', '#7a889e', '#b0bac8', '#122430', '#1c3848', '#2c546a', '#447a96'
     ],
     atmosphere: 'fog',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'glass_court', intensity: 2 },
   },
   hollow_children_future: {
@@ -2801,11 +2226,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#947e3c', '#282838', '#64503c', '#c6ab5a', '#6a5a2a', '#344a28', '#0a0a12', '#2e384c', '#1a2030', '#506e3a', '#749652', '#8a7458', '#1f0c08', '#423426', '#14100c', '#04020a', '#161622', '#0e121e', '#4e3e1c', '#444458', '#a4c47e', '#261e16', '#b85438', '#1c3848', '#342910', '#d85012', '#18040a', '#e27e56', '#8e3a2a', '#1e2e1a', '#f89824', '#3d1810'
     ],
     atmosphere: 'embers',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'hollow_children', intensity: 2 },
   },
   hollow_lecture_hall: {
@@ -2818,11 +2239,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#0a0a12', '#161622', '#18040a', '#320a16', '#541026', '#7a1a3a', '#d84c78', '#42124e', '#7d3c98', '#b062d4'
     ],
     atmosphere: 'dust',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'last_archive', intensity: 1 },
   },
   hunger_gallery: {
@@ -2835,11 +2252,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#506e3a', '#1e2e1a', '#749652', '#04020a', '#a4c47e', '#344a28', '#6a5a2a', '#64503c', '#423426', '#dedee8', '#2a5a6a', '#121a10', '#8a7458', '#0a0a12', '#4e3e1c', '#b6a080', '#947e3c', '#14100c', '#102832', '#08161c', '#c6ab5a', '#e27e56', '#1f0c08', '#2ecc71', '#342910', '#1c404e', '#b85438', '#261e16', '#1c3848', '#3e8094', '#1c1608', '#18040a'
     ],
     atmosphere: 'dust',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'hollow_children', intensity: 2 },
   },
   infected_nursery: {
@@ -2852,11 +2265,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#947e3c', '#282838', '#64503c', '#c6ab5a', '#6a5a2a', '#344a28', '#0a0a12', '#2e384c', '#1a2030', '#506e3a', '#749652', '#8a7458', '#1f0c08', '#423426', '#14100c', '#04020a', '#161622', '#0e121e', '#4e3e1c', '#444458', '#a4c47e', '#261e16', '#b85438', '#1c3848', '#342910', '#d85012', '#18040a', '#e27e56', '#8e3a2a', '#1e2e1a', '#f89824', '#3d1810'
     ],
     atmosphere: 'fog',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'hollow_children', intensity: 2 },
   },
   ink_chapel: {
@@ -2869,11 +2278,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#18040a', '#320a16', '#541026', '#7a1a3a', '#aa2a52', '#d84c78', '#5c1608', '#9a280c', '#d85012'
     ],
     atmosphere: 'embers',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'red_choir', intensity: 2 },
   },
   iron_checkpoint: {
@@ -2886,11 +2291,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#dedee8', '#121a10', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#e27e56', '#1c1608', '#342910', '#4e3e1c', '#6a5a2a', '#947e3c', '#c6ab5a', '#18040a', '#320a16', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#5c1608', '#9a280c', '#d85012', '#f89824'
     ],
     atmosphere: 'snow-ash',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'iron_saints', intensity: 2 },
   },
   iron_saints_dominion: {
@@ -2903,11 +2304,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#dedee8', '#121a10', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#e27e56', '#1c1608', '#342910', '#4e3e1c', '#6a5a2a', '#947e3c', '#c6ab5a', '#18040a', '#320a16', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#5c1608', '#9a280c', '#d85012', '#f89824'
     ],
     atmosphere: 'snow-ash',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'iron_saints', intensity: 3 },
   },
   last_archive_revelation: {
@@ -2920,11 +2317,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#0a0a12', '#161622', '#18040a', '#320a16', '#541026', '#7a1a3a', '#d84c78', '#42124e', '#7d3c98', '#b062d4'
     ],
     atmosphere: 'dust',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'last_archive', intensity: 3 },
   },
   last_medicine_room: {
@@ -2937,11 +2330,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#1a2030', '#4c5c76', '#8e3a2a', '#444458', '#6e6e84', '#749652', '#423426', '#dedee8', '#2e384c', '#282838', '#7a889e', '#b0bac8', '#64503c', '#2c546a', '#a2a2b8', '#161622', '#e27e56', '#506e3a', '#b85438', '#b6a080', '#8a7458', '#0a0a12', '#a4c47e', '#18040a', '#541026', '#0e121e', '#344a28', '#68281a', '#7a1a3a', '#261e16', '#08161c'
     ],
     atmosphere: 'drip',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'calm_bed', intensity: 1 },
   },
   lone_wanderer_ending: {
@@ -2959,11 +2348,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#444458', '#6e6e84', '#a2a2b8', '#dedee8', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#342910', '#4e3e1c', '#18040a', '#320a16', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#1a2030', '#2e384c', '#4c5c76', '#7a889e', '#b0bac8', '#42124e', '#7d3c98', '#b062d4'
     ],
     atmosphere: 'ash',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'surface_bed', intensity: 2 },
   },
   machine_graveyard: {
@@ -2976,11 +2361,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#161622', '#0e121e', '#42124e', '#7d3c98', '#b062d4', '#e29cfc'
     ],
     atmosphere: 'sparks',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'tunnel_bed', intensity: 2 },
   },
   machine_nursery: {
@@ -2993,11 +2374,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#161622', '#0e121e', '#42124e', '#7d3c98', '#b062d4', '#e29cfc'
     ],
     atmosphere: 'sparks',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'hollow_children', intensity: 2 },
   },
   marked_shrine: {
@@ -3010,11 +2387,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#18040a', '#320a16', '#541026', '#7a1a3a', '#aa2a52', '#d84c78', '#0e121e', '#5c1608', '#9a280c'
     ],
     atmosphere: 'sparks',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'red_choir', intensity: 2 },
   },
   masked_heir_ending: {
@@ -3032,11 +2405,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#161622', '#282838', '#dedee8', '#102832', '#1c404e', '#2a5a6a', '#3e8094', '#6ac0d6', '#0e121e', '#1a2030', '#2e384c', '#4c5c76', '#7a889e', '#b0bac8', '#122430', '#1c3848', '#2c546a', '#447a96'
     ],
     atmosphere: 'fog',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'glass_court', intensity: 3 },
   },
   memory_storm: {
@@ -3049,11 +2418,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#42124e', '#d84c78', '#7d3c98', '#aa2a52', '#444458', '#e27e56', '#161622', '#320a16', '#7a1a3a', '#18040a', '#0e121e', '#d85012', '#0a0a12', '#541026', '#b062d4', '#1a2030', '#e29cfc', '#4c5c76', '#6e6e84', '#b85438', '#04020a', '#dedee8', '#c6ab5a', '#b6a080', '#8a7458', '#5c1608', '#8e3a2a', '#9a280c', '#f89824', '#68281a', '#64503c', '#3d1810'
     ],
     atmosphere: 'sparks',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'main_theme', intensity: 3 },
   },
   memory_vault: {
@@ -3066,11 +2431,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#0a0a12', '#161622', '#18040a', '#320a16', '#541026', '#7a1a3a', '#d84c78', '#42124e', '#7d3c98', '#b062d4'
     ],
     atmosphere: 'dust',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'last_archive', intensity: 2 },
   },
   memory_wall: {
@@ -3083,11 +2444,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#0a0a12', '#161622', '#0e121e', '#1a2030', '#42124e', '#7d3c98', '#b062d4', '#e29cfc'
     ],
     atmosphere: 'dust',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'calm_bed', intensity: 1 },
   },
   mira_tomorrow: {
@@ -3100,11 +2457,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#444458', '#6e6e84', '#a2a2b8', '#dedee8', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#342910', '#4e3e1c', '#18040a', '#320a16', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#1a2030', '#2e384c', '#4c5c76', '#7a889e', '#b0bac8', '#42124e', '#7d3c98', '#b062d4'
     ],
     atmosphere: 'ash',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'calm_bed', intensity: 2 },
   },
   mirror_ballroom: {
@@ -3117,11 +2470,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#161622', '#282838', '#dedee8', '#102832', '#1c404e', '#2a5a6a', '#3e8094', '#6ac0d6', '#0e121e', '#1a2030', '#2e384c', '#4c5c76', '#7a889e', '#b0bac8', '#122430', '#1c3848', '#2c546a', '#447a96'
     ],
     atmosphere: 'fog',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'glass_court', intensity: 2 },
   },
   nameless_housing_block: {
@@ -3134,11 +2483,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#444458', '#6e6e84', '#a2a2b8', '#dedee8', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#342910', '#4e3e1c', '#18040a', '#320a16', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#1a2030', '#2e384c', '#4c5c76', '#7a889e', '#b0bac8', '#42124e', '#7d3c98', '#b062d4'
     ],
     atmosphere: 'ash',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'surface_bed', intensity: 1 },
   },
   old_signal_tower: {
@@ -3156,11 +2501,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#e27e56', '#18040a', '#320a16', '#541026', '#7a1a3a', '#aa2a52', '#d84c78', '#261e16', '#423426', '#5c1608', '#9a280c', '#d85012'
     ],
     atmosphere: 'sparks',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'main_theme', intensity: 2 },
   },
   orchid_clinic: {
@@ -3173,11 +2514,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#1c3848', '#447a96', '#04020a', '#2c546a', '#4c5c76', '#6ac0d6', '#64503c', '#444458', '#3e8094', '#dedee8', '#102832', '#7a889e', '#2e384c', '#0a0a12', '#6e6e84', '#122430', '#1c404e', '#282838', '#a2a2b8', '#0e121e', '#8a7458', '#2a5a6a', '#b0bac8', '#161622', '#18040a', '#1a2030', '#08161c', '#b6a080', '#d84c78', '#a4c47e', '#423426', '#e27e56'
     ],
     atmosphere: 'drip',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'calm_bed', intensity: 1 },
   },
   place_we_promised: {
@@ -3190,11 +2527,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#444458', '#6e6e84', '#a2a2b8', '#dedee8', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#342910', '#4e3e1c', '#18040a', '#320a16', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#1a2030', '#2e384c', '#4c5c76', '#7a889e', '#b0bac8', '#42124e', '#7d3c98', '#b062d4'
     ],
     atmosphere: 'embers',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'calm_bed', intensity: 2 },
   },
   prison_carts: {
@@ -3207,11 +2540,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#dedee8', '#121a10', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#e27e56', '#1c1608', '#342910', '#4e3e1c', '#6a5a2a', '#947e3c', '#c6ab5a', '#18040a', '#320a16', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#5c1608', '#9a280c', '#d85012', '#f89824'
     ],
     atmosphere: 'snow-ash',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'iron_saints', intensity: 2 },
   },
   private_auction_hall: {
@@ -3224,11 +2553,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#161622', '#282838', '#dedee8', '#102832', '#1c404e', '#2a5a6a', '#3e8094', '#6ac0d6', '#0e121e', '#1a2030', '#2e384c', '#4c5c76', '#7a889e', '#b0bac8', '#122430', '#1c3848', '#2c546a', '#447a96'
     ],
     atmosphere: 'fog',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'glass_court', intensity: 2 },
   },
   pulse_engine: {
@@ -3241,11 +2566,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#161622', '#0e121e', '#42124e', '#7d3c98', '#b062d4', '#e29cfc'
     ],
     atmosphere: 'sparks',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'main_theme', intensity: 3 },
   },
   pulse_tower: {
@@ -3258,11 +2579,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#18040a', '#320a16', '#541026', '#7a1a3a', '#aa2a52', '#d84c78', '#0e121e', '#5c1608', '#9a280c'
     ],
     atmosphere: 'sparks',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'red_choir', intensity: 3 },
   },
   purification_yard: {
@@ -3275,11 +2592,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#dedee8', '#121a10', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#e27e56', '#1c1608', '#342910', '#4e3e1c', '#6a5a2a', '#947e3c', '#c6ab5a', '#18040a', '#320a16', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#5c1608', '#9a280c', '#d85012', '#f89824'
     ],
     atmosphere: 'embers',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'iron_saints', intensity: 3 },
   },
   red_chapel: {
@@ -3292,11 +2605,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#18040a', '#320a16', '#541026', '#7a1a3a', '#aa2a52', '#d84c78', '#5c1608', '#9a280c', '#d85012'
     ],
     atmosphere: 'embers',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'red_choir', intensity: 2 },
   },
   red_choir_communion: {
@@ -3309,11 +2618,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#18040a', '#320a16', '#541026', '#7a1a3a', '#aa2a52', '#d84c78', '#5c1608', '#9a280c', '#d85012'
     ],
     atmosphere: 'embers',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'red_choir', intensity: 3 },
   },
   relic_machine_ending: {
@@ -3326,11 +2631,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#161622', '#0e121e', '#42124e', '#7d3c98', '#b062d4', '#e29cfc'
     ],
     atmosphere: 'sparks',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'main_theme', intensity: 3 },
   },
   relic_map_room: {
@@ -3343,11 +2644,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#0a0a12', '#161622', '#18040a', '#320a16', '#541026', '#7a1a3a', '#d84c78', '#42124e', '#7d3c98', '#b062d4'
     ],
     atmosphere: 'sparks',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'last_archive', intensity: 2 },
   },
   savior_ending: {
@@ -3365,11 +2662,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#444458', '#6e6e84', '#a2a2b8', '#dedee8', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#342910', '#4e3e1c', '#18040a', '#320a16', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#1a2030', '#2e384c', '#4c5c76', '#7a889e', '#b0bac8', '#42124e', '#7d3c98', '#b062d4'
     ],
     atmosphere: 'embers',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'main_theme', intensity: 3 },
   },
   scavenger_front: {
@@ -3382,11 +2675,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#1a2030', '#4c5c76', '#8e3a2a', '#444458', '#6e6e84', '#749652', '#423426', '#dedee8', '#2e384c', '#282838', '#7a889e', '#b0bac8', '#64503c', '#2c546a', '#a2a2b8', '#161622', '#e27e56', '#506e3a', '#b85438', '#b6a080', '#8a7458', '#0a0a12', '#a4c47e', '#18040a', '#541026', '#0e121e', '#344a28', '#68281a', '#7a1a3a', '#261e16', '#08161c'
     ],
     atmosphere: 'fog',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'tunnel_bed', intensity: 2 },
   },
   sealed_engine: {
@@ -3399,11 +2688,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#161622', '#0e121e', '#42124e', '#7d3c98', '#b062d4', '#e29cfc'
     ],
     atmosphere: 'dust',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'tunnel_bed', intensity: 2 },
   },
   secret_true_ending: {
@@ -3421,11 +2706,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#444458', '#6e6e84', '#dedee8', '#18040a', '#320a16', '#541026', '#7a1a3a', '#aa2a52', '#d84c78', '#0e121e', '#1a2030', '#4c5c76', '#42124e', '#7d3c98', '#b062d4', '#e29cfc'
     ],
     atmosphere: 'sparks',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'main_theme', intensity: 3 },
   },
   secret_unity_ending: {
@@ -3438,11 +2719,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#444458', '#6e6e84', '#a2a2b8', '#dedee8', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#342910', '#4e3e1c', '#18040a', '#320a16', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#1a2030', '#2e384c', '#4c5c76', '#7a889e', '#b0bac8', '#42124e', '#7d3c98', '#b062d4'
     ],
     atmosphere: 'embers',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'main_theme', intensity: 3 },
   },
   servant_quarters: {
@@ -3455,11 +2732,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#161622', '#282838', '#dedee8', '#102832', '#1c404e', '#2a5a6a', '#3e8094', '#6ac0d6', '#0e121e', '#1a2030', '#2e384c', '#4c5c76', '#7a889e', '#b0bac8', '#122430', '#1c3848', '#2c546a', '#447a96'
     ],
     atmosphere: 'fog',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'glass_court', intensity: 1 },
   },
   siege_tunnels: {
@@ -3472,11 +2745,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#0e121e', '#282838', '#4c5c76', '#444458', '#6e6e84', '#541026', '#8a7458', '#2e384c', '#161622', '#5c1608', '#b6a080', '#7a889e', '#1a2030', '#e27e56', '#0a0a12', '#64503c', '#04020a', '#68281a', '#b85438', '#9a280c', '#320a16', '#7a1a3a', '#8e3a2a', '#d84c78', '#423426', '#18040a', '#a2a2b8', '#aa2a52', '#3d1810', '#261e16', '#1f0c08', '#b0bac8'
     ],
     atmosphere: 'dust',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'combat_loop', intensity: 3 },
   },
   silent_ward: {
@@ -3489,11 +2758,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#1a2030', '#4c5c76', '#8e3a2a', '#444458', '#6e6e84', '#749652', '#423426', '#dedee8', '#2e384c', '#282838', '#7a889e', '#b0bac8', '#64503c', '#2c546a', '#a2a2b8', '#161622', '#e27e56', '#506e3a', '#b85438', '#b6a080', '#8a7458', '#0a0a12', '#a4c47e', '#18040a', '#541026', '#0e121e', '#344a28', '#68281a', '#7a1a3a', '#261e16', '#08161c'
     ],
     atmosphere: 'drip',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'calm_bed', intensity: 1 },
   },
   sky_garden: {
@@ -3506,11 +2771,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#0a0a12', '#161622', '#282838', '#444458', '#dedee8', '#a4c47e', '#08161c', '#102832', '#1c404e', '#2a5a6a', '#3e8094', '#6ac0d6', '#0e121e', '#1a2030', '#4c5c76', '#7a889e', '#b0bac8', '#122430', '#1c3848', '#2c546a', '#447a96', '#2ecc71'
     ],
     atmosphere: 'fog',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'glass_court', intensity: 1 },
   },
   sleeping_server: {
@@ -3523,11 +2784,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#0a0a12', '#161622', '#18040a', '#320a16', '#541026', '#7a1a3a', '#d84c78', '#42124e', '#7d3c98', '#b062d4'
     ],
     atmosphere: 'sparks',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'last_archive', intensity: 2 },
   },
   soldiers_grave: {
@@ -3540,11 +2797,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#444458', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#e27e56', '#c6ab5a', '#18040a', '#320a16', '#541026', '#7a1a3a', '#aa2a52', '#d84c78', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#1a2030', '#2e384c', '#5c1608', '#9a280c', '#d85012'
     ],
     atmosphere: 'ash',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'iron_saints', intensity: 1 },
   },
   tyrant_ending: {
@@ -3562,11 +2815,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#dedee8', '#121a10', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#e27e56', '#1c1608', '#342910', '#4e3e1c', '#6a5a2a', '#947e3c', '#c6ab5a', '#18040a', '#320a16', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#5c1608', '#9a280c', '#d85012', '#f89824'
     ],
     atmosphere: 'embers',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'iron_saints', intensity: 3 },
   },
   vein_market: {
@@ -3579,11 +2828,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#0a0a12', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#e27e56', '#c6ab5a', '#18040a', '#320a16', '#541026', '#7a1a3a', '#aa2a52', '#d84c78', '#14100c', '#261e16', '#423426', '#5c1608', '#9a280c', '#d85012', '#f89824'
     ],
     atmosphere: 'embers',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'red_choir', intensity: 2 },
   },
   war_council: {
@@ -3596,11 +2841,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#dedee8', '#121a10', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#e27e56', '#1c1608', '#342910', '#4e3e1c', '#6a5a2a', '#947e3c', '#c6ab5a', '#18040a', '#320a16', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#5c1608', '#9a280c', '#d85012', '#f89824'
     ],
     atmosphere: 'dust',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'iron_saints', intensity: 3 },
   },
   war_shrine: {
@@ -3613,11 +2854,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#e27e56', '#18040a', '#320a16', '#541026', '#7a1a3a', '#aa2a52', '#5c1608', '#9a280c', '#d85012'
     ],
     atmosphere: 'embers',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'iron_saints', intensity: 2 },
   },
   water_riot: {
@@ -3630,11 +2867,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#444458', '#dedee8', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#e27e56', '#18040a', '#320a16', '#541026', '#7a1a3a', '#aa2a52', '#d84c78', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#1a2030', '#2e384c', '#5c1608', '#9a280c', '#d85012', '#e29cfc'
     ],
     atmosphere: 'drip',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'combat_loop', intensity: 3 },
   },
   mb1_chalk_pillar: {
@@ -3652,11 +2885,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#0a0a12', '#161622', '#282838', '#444458', '#6e6e84', '#a2a2b8', '#0e121e', '#1a2030', '#2e384c', '#4c5c76', '#7a889e', '#42124e', '#7d3c98', '#b062d4'
     ],
     atmosphere: 'dust',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'hollow_children', intensity: 2 },
   },
   mb1_saints_sweep: {
@@ -3669,11 +2898,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#dedee8', '#121a10', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#e27e56', '#1c1608', '#342910', '#4e3e1c', '#6a5a2a', '#947e3c', '#c6ab5a', '#18040a', '#320a16', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#5c1608', '#9a280c', '#d85012', '#f89824'
     ],
     atmosphere: 'snow-ash',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'iron_saints', intensity: 2 },
   },
   mb1_aqueduct_climb: {
@@ -3686,11 +2911,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#b85438', '#423426', '#18040a', '#e27e56', '#64503c', '#8e3a2a', '#f89824', '#282838', '#261e16', '#1f0c08', '#68281a', '#d85012', '#320a16', '#3d1810', '#8a7458', '#c6ab5a', '#947e3c', '#161622', '#4e3e1c', '#5c1608', '#04020a', '#b6a080', '#6a5a2a', '#9a280c', '#14100c', '#0a0a12', '#dedee8', '#a4c47e', '#342910', '#1a2030', '#0e121e', '#f39c12'
     ],
     atmosphere: 'ash',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'last_archive', intensity: 2 },
   },
   mb2_subcarrier_console: {
@@ -3703,11 +2924,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#18040a', '#320a16', '#541026', '#7a1a3a', '#aa2a52', '#d84c78', '#5c1608', '#9a280c', '#d85012'
     ],
     atmosphere: 'sparks',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'red_choir', intensity: 2 },
   },
   mb2_velna_survey_camp: {
@@ -3725,11 +2942,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#b85438', '#423426', '#18040a', '#e27e56', '#64503c', '#8e3a2a', '#f89824', '#282838', '#261e16', '#1f0c08', '#68281a', '#d85012', '#320a16', '#3d1810', '#8a7458', '#c6ab5a', '#947e3c', '#161622', '#4e3e1c', '#5c1608', '#04020a', '#b6a080', '#6a5a2a', '#9a280c', '#14100c', '#0a0a12', '#dedee8', '#a4c47e', '#342910', '#1a2030', '#0e121e', '#f39c12'
     ],
     atmosphere: 'dust',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'last_archive', intensity: 2 },
   },
   mb2_old_aqueduct_exit: {
@@ -3742,11 +2955,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#444458', '#dedee8', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#e27e56', '#18040a', '#320a16', '#541026', '#7a1a3a', '#aa2a52', '#d84c78', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#1a2030', '#2e384c', '#5c1608', '#9a280c', '#d85012', '#e29cfc'
     ],
     atmosphere: 'drip',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'calm_bed', intensity: 1 },
   },
   mb3_grain_silo_catwalk: {
@@ -3759,11 +2968,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#261e16', '#64503c', '#04020a', '#8a7458', '#444458', '#b85438', '#b6a080', '#8e3a2a', '#423426', '#e27e56', '#282838', '#68281a', '#dedee8', '#18040a', '#749652', '#1a2030', '#541026', '#506e3a', '#b0bac8', '#14100c', '#0a0a12', '#6e6e84', '#aa2a52', '#161622', '#2e384c', '#c6ab5a', '#a4c47e', '#3d1810', '#1f0c08', '#d85012', '#344a28', '#4e3e1c'
     ],
     atmosphere: 'dust',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'combat_loop', intensity: 2 },
   },
   mb3_ration_forge_desk: {
@@ -3776,11 +2981,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#0a0a12', '#161622', '#18040a', '#320a16', '#541026', '#7a1a3a', '#d84c78', '#42124e', '#7d3c98', '#b062d4'
     ],
     atmosphere: 'dust',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'last_archive', intensity: 2 },
   },
   mb3_silo_floor_riot: {
@@ -3793,11 +2994,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#444458', '#dedee8', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#e27e56', '#c6ab5a', '#18040a', '#320a16', '#541026', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#0e121e', '#1a2030', '#2e384c', '#5c1608', '#9a280c', '#d85012', '#f89824'
     ],
     atmosphere: 'embers',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'combat_loop', intensity: 3 },
   },
   mb4_signal_tower_roof: {
@@ -3810,11 +3007,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#444458', '#1f0c08', '#3d1810', '#8e3a2a', '#b85438', '#e27e56', '#18040a', '#320a16', '#541026', '#7a1a3a', '#aa2a52', '#d84c78', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#0e121e', '#1a2030', '#2e384c', '#5c1608', '#42124e'
     ],
     atmosphere: 'snow-ash',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'combat_loop', intensity: 3 },
   },
   mb4_transmitter_booth: {
@@ -3832,11 +3025,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#161622', '#0e121e', '#1a2030', '#42124e', '#7d3c98', '#b062d4'
     ],
     atmosphere: 'sparks',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'main_theme', intensity: 3 },
   },
   mb4_tower_balcony_dawn: {
@@ -3849,11 +3038,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#444458', '#6e6e84', '#a2a2b8', '#dedee8', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#342910', '#4e3e1c', '#18040a', '#320a16', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#1a2030', '#2e384c', '#4c5c76', '#7a889e', '#b0bac8', '#42124e', '#7d3c98', '#b062d4'
     ],
     atmosphere: 'ash',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'calm_bed', intensity: 1 },
   },
   velna_descent: {
@@ -3871,11 +3056,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#dedee8', '#121a10', '#1e2e1a', '#344a28', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#b85438', '#e27e56', '#1c1608', '#342910', '#4e3e1c', '#6a5a2a', '#947e3c', '#c6ab5a', '#18040a', '#08161c', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#0e121e', '#5c1608', '#9a280c', '#d85012', '#f89824', '#f39c12'
     ],
     atmosphere: 'drip',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'epilogue_theme', intensity: 1 },
   },
   velna_camp: {
@@ -3893,11 +3074,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#b85438', '#423426', '#18040a', '#e27e56', '#64503c', '#8e3a2a', '#f89824', '#282838', '#261e16', '#1f0c08', '#68281a', '#d85012', '#320a16', '#3d1810', '#8a7458', '#c6ab5a', '#947e3c', '#161622', '#4e3e1c', '#5c1608', '#04020a', '#b6a080', '#6a5a2a', '#9a280c', '#14100c', '#0a0a12', '#dedee8', '#a4c47e', '#342910', '#1a2030', '#0e121e', '#f39c12'
     ],
     atmosphere: 'sparks',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'epilogue_theme', intensity: 2 },
   },
   signal_choir_cavern: {
@@ -3915,11 +3092,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#0a0a12', '#161622', '#282838', '#444458', '#e27e56', '#18040a', '#320a16', '#541026', '#7a1a3a', '#aa2a52', '#d84c78', '#0e121e', '#1a2030', '#5c1608', '#9a280c', '#42124e', '#7d3c98', '#b062d4', '#e29cfc'
     ],
     atmosphere: 'sparks',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'epilogue_theme', intensity: 2 },
   },
   vault_heart: {
@@ -3937,11 +3110,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#161622', '#0e121e', '#42124e', '#7d3c98', '#b062d4', '#e29cfc'
     ],
     atmosphere: 'sparks',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'epilogue_theme', intensity: 3 },
   },
   answer_chamber: {
@@ -3959,11 +3128,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#161622', '#0e121e', '#42124e', '#7d3c98', '#b062d4', '#e29cfc'
     ],
     atmosphere: 'sparks',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'epilogue_theme', intensity: 3 },
   },
   city_after: {
@@ -3981,11 +3146,7 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
       '#04020a', '#0a0a12', '#161622', '#282838', '#444458', '#6e6e84', '#a2a2b8', '#dedee8', '#1f0c08', '#3d1810', '#68281a', '#8e3a2a', '#342910', '#4e3e1c', '#18040a', '#320a16', '#14100c', '#261e16', '#423426', '#64503c', '#8a7458', '#b6a080', '#0e121e', '#1a2030', '#2e384c', '#4c5c76', '#7a889e', '#b0bac8', '#42124e', '#7d3c98', '#b062d4'
     ],
     atmosphere: 'ash',
-    cycles: [
-      { indices: [50, 51, 52, 53], speedMs: 550 },
-      { indices: [54, 55, 56, 57], speedMs: 320 },
-      { indices: [58, 59, 60, 61], speedMs: 2400 },
-    ],
+    cycles: DEFAULT_CYCLES,
     music: { theme: 'epilogue_theme', intensity: 2 },
   },
 };

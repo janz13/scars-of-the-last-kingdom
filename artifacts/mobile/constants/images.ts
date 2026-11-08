@@ -252,632 +252,635 @@ export const BACKGROUND_IMAGES: Record<string, any> = {
 // Used when a key is NOT in BACKGROUND_IMAGES, or as the ambient color during
 // cross-fade transitions. Each gradient should roughly match its image's mood.
 
+const S0 = { x: 0, y: 0 };
+const E01 = { x: 0, y: 1 };
+
 export const BACKGROUND_GRADIENTS: Record<string, GradientConfig> = {
   ruined_metro_station: {
     colors: ['#0d0408', '#1a0608', '#0d0408', '#080306'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   dark_metro_hallway: {
     colors: ['#050508', '#0a0a10', '#050508', '#030305'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   broken_vending_area: {
     colors: ['#0a0808', '#140e08', '#0a0808', '#070505'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   collapsed_tunnel: {
     colors: ['#080608', '#100810', '#080608', '#050405'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   tunnel_camp: {
     colors: ['#0d0a06', '#1a1208', '#0d0a06', '#08070404'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   surface_ruins: {
     colors: ['#0a0814', '#160e20', '#0a0814', '#07060e'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   iron_saints_checkpoint: {
     colors: ['#080a08', '#0e140a', '#080a08', '#050705'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   glass_tower_gate: {
     colors: ['#08081a', '#0e0e2a', '#08081a', '#050510'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   red_choir_chamber: {
     colors: ['#140404', '#200808', '#140404', '#0a0202'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   last_archive_door: {
     colors: ['#0a0814', '#120f1f', '#1a1030', '#0a0814'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   // Chapter 2 gradients
   surface_dawn: {
     colors: ['#1a0e08', '#2a1a0a', '#1a1208', '#0e0a06'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   ruined_street: {
     colors: ['#0e0c10', '#18141e', '#0e0c10', '#08080e'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   saints_patrol: {
     colors: ['#080c08', '#0e1810', '#080c08', '#050805'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   black_market_alley: {
     colors: ['#0c0808', '#1a1008', '#0c0808', '#080606'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   glass_tower_lobby: {
     colors: ['#08081e', '#0c0c2e', '#08081e', '#050510'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   choir_broadcast_point: {
     colors: ['#180404', '#280606', '#180404', '#0c0202'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   archive_ruin_wall: {
     colors: ['#0c0a18', '#14102a', '#1c1438', '#0c0a18'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   surface_night: {
     colors: ['#060608', '#0c0c14', '#060608', '#040406'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   // Chapter 3 gradients — Children of the Tunnels
   candle_market: {
     colors: ['#1a0e04', '#2a1a06', '#1a0e04', '#0e0802'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   bone_turnstile: {
     colors: ['#0e0c0a', '#18140e', '#0e0c0a', '#08080608'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   flooded_platform: {
     colors: ['#04080e', '#060e18', '#04080e', '#020408'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   nursery_of_knives: {
     colors: ['#0c0808', '#180e0e', '#0c0808', '#080404'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   chalk_map_wall: {
     colors: ['#0a0c10', '#12141c', '#0a0c10', '#060810'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   rat_king_gate: {
     colors: ['#0c0a06', '#18140a', '#0c0a06', '#080604'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   hidden_clinic: {
     colors: ['#080c0a', '#0e1810', '#080c0a', '#040806'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   relic_engine_room: {
     colors: ['#060414', '#0c0624', '#180a3a', '#060414'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   // Chapter 1 — examine mark
   examine_mark: {
     colors: ['#050508', '#0a0a12', '#050508', '#030305'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   // Chapter 4 — Saints in Iron
   iron_checkpoint: {
     colors: ['#080c08', '#0e1810', '#080c08', '#050805'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   chapel_of_chains: {
     colors: ['#100804', '#1e1006', '#100804', '#080402'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   purification_yard: {
     colors: ['#0c0c0a', '#181610', '#0c0c0a', '#080806'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   barracks_of_ash: {
     colors: ['#0e0c08', '#1a1610', '#0e0c08', '#080604'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   confession_hall: {
     colors: ['#0a0806', '#160e08', '#0a0806', '#060402'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   saint_furnace: {
     colors: ['#1a0402', '#2e0604', '#1a0402', '#0c0202'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   prison_carts: {
     colors: ['#060808', '#0c1010', '#060808', '#040606'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   war_shrine: {
     colors: ['#0a0810', '#14101c', '#0a0810', '#060608'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   // Chapter 5 — The Glass Court (dark luxury dystopian — elegant cold white/gold)
   glass_gate: {
     colors: ['#0c0c1e', '#141428', '#0c1020', '#080810'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   ascension_elevator: {
     colors: ['#101018', '#181824', '#101018', '#080810'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   white_atrium: {
     colors: ['#14141e', '#1c1c2c', '#14141e', '#0c0c14'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   hunger_gallery: {
     colors: ['#0e0e18', '#161622', '#0e0e18', '#08080e'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   orchid_clinic: {
     colors: ['#0a1010', '#0e1a16', '#0a1010', '#060a08'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   mirror_ballroom: {
     colors: ['#0e0c18', '#1a1428', '#0e0c18', '#08060e'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   servant_quarters: {
     colors: ['#0c0a08', '#161208', '#0c0a08', '#080604'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   experiment_ward: {
     colors: ['#0a0e10', '#10161a', '#0a0e10', '#060a0c'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   sky_garden: {
     colors: ['#0c1210', '#101c14', '#0c1210', '#080c0a'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   council_chamber: {
     colors: ['#0c0c20', '#14142e', '#0c0c20', '#080812'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   cracked_observatory: {
     colors: ['#080c18', '#0e1224', '#080c18', '#040610'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   private_auction_hall: {
     colors: ['#10080e', '#1c0e18', '#10080e', '#080408'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   // Chapter 6 — The Red Choir (deep crimson infection palette)
   bloodlit_underpass: {
     colors: ['#0e0204', '#1a0406', '#0e0204', '#080102'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   singing_hospital: {
     colors: ['#0a0c0a', '#121814', '#0a0c0a', '#060806'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   red_chapel: {
     colors: ['#180202', '#280404', '#180202', '#0c0101'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   vein_market: {
     colors: ['#120404', '#1e0606', '#120404', '#0a0202'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   choir_nest: {
     colors: ['#1a0206', '#2a0408', '#1a0206', '#0e0103'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   silent_ward: {
     colors: ['#080c0c', '#0e1616', '#080c0c', '#040808'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   pulse_tower: {
     colors: ['#100204', '#1e0408', '#100204', '#080102'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   drowned_choir_hall: {
     colors: ['#04080e', '#060e1a', '#040c14', '#020608'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   infected_nursery: {
     colors: ['#0e0606', '#180a0a', '#0e0606', '#080303'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   crimson_relay: {
     colors: ['#140204', '#200408', '#140204', '#0a0102'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   echo_chamber: {
     colors: ['#080812', '#0e0e1e', '#08081a', '#040410'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   // Chapter 7 — The Last Archive (deep indigo / muted amber archive palette)
   door_without_name: {
     colors: ['#080812', '#0e0e1c', '#080812', '#04040c'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   dust_library: {
     colors: ['#0c0a08', '#18140e', '#0c0a08', '#080705'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   memory_vault: {
     colors: ['#06080e', '#0c1018', '#060c14', '#040608'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   ink_chapel: {
     colors: ['#08080c', '#10101a', '#08080e', '#050508'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   broken_observatory: {
     colors: ['#0a0c10', '#121620', '#0a0c14', '#060810'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   relic_map_room: {
     colors: ['#080c0a', '#0e1810', '#080e0a', '#040806'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   forbidden_stacks: {
     colors: ['#060408', '#0c0810', '#060408', '#040306'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   archive_tribunal: {
     colors: ['#0a0808', '#160e0c', '#0a0808', '#070504'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   hollow_lecture_hall: {
     colors: ['#0c0c0a', '#181610', '#0c0c0a', '#080806'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   blackout_record_chamber: {
     colors: ['#080608', '#100c10', '#080608', '#050405'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   sleeping_server: {
     colors: ['#04080c', '#080e18', '#040c14', '#020608'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   empty_ration_square: {
     colors: ['#0c0a06', '#1a1408', '#0c0a06', '#080604'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   water_riot: {
     colors: ['#060a10', '#0c1420', '#060a10', '#040608'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   burned_clinic: {
     colors: ['#0e0808', '#1a1008', '#0e0808', '#090504'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   grain_vault: {
     colors: ['#080c08', '#101810', '#080c08', '#050806'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   bone_soup_kitchen: {
     colors: ['#0e0a04', '#1c1408', '#0e0a04', '#090704'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   scavenger_front: {
     colors: ['#080a08', '#101410', '#080a08', '#050705'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   broken_aqueduct: {
     colors: ['#060c10', '#0a1420', '#060c10', '#040810'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   famine_camp: {
     colors: ['#0c0804', '#180e06', '#0c0804', '#080504'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   dead_orchard: {
     colors: ['#080a06', '#101406', '#080a06', '#060704'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   siege_tunnels: {
     colors: ['#080608', '#100a10', '#080608', '#050405'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   starving_bridge: {
     colors: ['#0a0a0e', '#12121c', '#0a0a0e', '#070708'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   // Chapter 9 — The Mark Awakens
   relic_scar: {
     colors: ['#080414', '#120624', '#1a083a', '#080414'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   machine_graveyard: {
     colors: ['#06080a', '#0c1014', '#060a0e', '#040608'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   marked_shrine: {
     colors: ['#0a0810', '#14101e', '#0a0814', '#06060c'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   memory_storm: {
     colors: ['#080c1a', '#0c1430', '#060e24', '#040810'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   pulse_engine: {
     colors: ['#06041c', '#0a0630', '#12083e', '#060418'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   rust_cathedral: {
     colors: ['#100a04', '#1e1406', '#160e04', '#0a0702'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   broken_tram_core: {
     colors: ['#080808', '#101010', '#080808', '#060606'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   old_signal_tower: {
     colors: ['#0c0c10', '#16141e', '#0c0c14', '#080810'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   corruption_garden: {
     colors: ['#040e06', '#061808', '#04100a', '#020804'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   gate_fragment_chamber: {
     colors: ['#06040e', '#0e0820', '#160a30', '#06040c'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   dream_of_before: {
     colors: ['#0a0a16', '#12122a', '#0c0c20', '#060610'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   // Chapter 10 — Broken Companions
   quiet_safehouse: {
     colors: ['#080808', '#0e0e10', '#0a0a0c', '#060606'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   mira_hidden_clinic: {
     colors: ['#06080e', '#0a1018', '#060810', '#040608'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   cain_war_room: {
     colors: ['#0a0806', '#160e08', '#0e0a06', '#080604'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   broken_bridge_camp: {
     colors: ['#060a0c', '#0a1214', '#060a0e', '#04080a'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   betrayal_alley: {
     colors: ['#080810', '#10101e', '#080814', '#04040a'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   memory_shelter: {
     colors: ['#0a0c10', '#141620', '#0c0e16', '#06080c'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   companion_crossroads: {
     colors: ['#080a10', '#10121e', '#080a14', '#04060a'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   last_medicine_room: {
     colors: ['#060c0a', '#0a1610', '#060e0c', '#040806'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   soldiers_grave: {
     colors: ['#060608', '#0c0c10', '#080808', '#040406'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   place_we_promised: {
     colors: ['#08080e', '#10101a', '#0a0a12', '#060608'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   empty_chair: {
     colors: ['#040404', '#080808', '#060606', '#020202'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   // ── Chapter 12 gradients ──────────────────────────────────────────────────
   ashen_square: {
     colors: ['#100a06', '#1e1008', '#100a06', '#0a0704'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   war_council: {
     colors: ['#080a0c', '#10141a', '#080a0c', '#050608'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   burning_market: {
     colors: ['#140a06', '#241208', '#140a06', '#0e0704'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   saint_front: {
     colors: ['#0a0c08', '#14180e', '#0a0c08', '#060808'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   glass_barricade: {
     colors: ['#080c14', '#0e1422', '#080c14', '#05080e'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   red_choir_march: {
     colors: ['#14060a', '#240a10', '#14060a', '#0e0406'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   archive_siege: {
     colors: ['#060810', '#0a0e1e', '#060810', '#04060c'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   hollow_children_hideout: {
     colors: ['#080806', '#10100a', '#080806', '#060604'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   broken_throne: {
     colors: ['#0c080a', '#1a0e10', '#0c080a', '#080506'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   execution_plaza: {
     colors: ['#140606', '#240a0a', '#140606', '#0e0404'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   citywide_battlefield: {
     colors: ['#100c06', '#1e1608', '#100c06', '#0a0904'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
 
   // ── Chapter 11 gradients ──────────────────────────────────────────────────
   sub_city_gate: {
     colors: ['#060408', '#0c0810', '#060408', '#040306'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   forgotten_platform: {
     colors: ['#050508', '#0a0a12', '#050508', '#030306'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   underworld_district: {
     colors: ['#060508', '#0c0a10', '#060508', '#040306'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   relic_transit_line: {
     colors: ['#060810', '#0a0e1e', '#060810', '#04060c'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   sealed_engine: {
     colors: ['#080a06', '#10140a', '#080a06', '#050705'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   blackout_core: {
     colors: ['#0a0614', '#160a24', '#0a0614', '#07040e'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   nameless_housing_block: {
     colors: ['#0a0806', '#14100a', '#0a0806', '#070604'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   old_government_vault: {
     colors: ['#0c0a18', '#14102a', '#0c0a18', '#08060e'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   machine_nursery: {
     colors: ['#060a08', '#0a1410', '#060a08', '#040706'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   deep_archive: {
     colors: ['#080618', '#10082a', '#08061c', '#050410'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   first_gate: {
     colors: ['#0a0814', '#160e24', '#0a0814', '#07060e'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
 
   // ── Final Chapter 1 — The Last Gate ─────────────────────────────────────
   descent_stair: {
     colors: ['#060810', '#0a0c1a', '#060810', '#04060c'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   final_metro_line: {
     colors: ['#080614', '#100a22', '#080614', '#05040e'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   bone_platform: {
     colors: ['#0c0a08', '#1a1610', '#0c0a08', '#080706'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   gate_antechamber: {
     colors: ['#0a0814', '#160e24', '#0a0814', '#07060e'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   memory_wall: {
     colors: ['#080c18', '#0e1228', '#080c18', '#050810'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   companion_threshold: {
     colors: ['#0a0808', '#160e0c', '#0a0808', '#070605'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   faction_hall: {
     colors: ['#080a0c', '#10121a', '#080a0c', '#050608'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   corruption_mirror: {
     colors: ['#140608', '#221010', '#140608', '#0e0405'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   last_gate: {
     colors: ['#0c0814', '#1a1028', '#0c0814', '#08060e'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   door_of_no_return: {
     colors: ['#06060e', '#0a0a18', '#06060e', '#040410'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
 
   // ── Final Chapter 2 — Ending gradients ──────────────────────────────────
   savior_ending: {
     colors: ['#0a1a08', '#142808', '#0a1a08', '#081408'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   tyrant_ending: {
     colors: ['#0c0c1a', '#181828', '#0c0c1a', '#080812'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   iron_saints_dominion: {
     colors: ['#100810', '#1c0c1c', '#100810', '#0c060c'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   glass_court_ascension: {
     colors: ['#0a1018', '#101820', '#0a1018', '#080c12'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   hollow_children_future: {
     colors: ['#081008', '#101810', '#081008', '#060c06'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   red_choir_communion: {
     colors: ['#1a0808', '#280c0c', '#1a0808', '#120606'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   last_archive_revelation: {
     colors: ['#080a14', '#0c1020', '#080a14', '#06080e'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   mira_tomorrow: {
     colors: ['#14100a', '#201808', '#14100a', '#0e0c06'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   cain_last_stand_ending: {
     colors: ['#0c1010', '#101818', '#0c1010', '#080c0c'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   lone_wanderer_ending: {
     colors: ['#0e0c08', '#181408', '#0e0c08', '#0a0a06'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   corruption_god: {
     colors: ['#1a0608', '#280808', '#1a0608', '#140406'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   relic_machine_ending: {
     colors: ['#0c0814', '#14101e', '#0c0814', '#080610'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   city_sealed_forever: {
     colors: ['#080810', '#0e0e18', '#080810', '#06060c'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   city_opened_wastes: {
     colors: ['#0a1018', '#10182a', '#0a1018', '#080c14'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   masked_heir_ending: {
     colors: ['#100a18', '#18102a', '#100a18', '#0c0814'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   secret_unity_ending: {
     colors: ['#0c0820', '#14103a', '#0c0820', '#08061a'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
   secret_true_ending: {
     colors: ['#0a1420', '#102040', '#0a1420', '#081018'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
 
   // Generic fallback for any key not listed above
   default: {
     colors: ['#0a0a14', '#12121f', '#0a0a14', '#080810'],
-    start: { x: 0, y: 0 }, end: { x: 0, y: 1 },
+    start: S0, end: E01,
   },
 };
 

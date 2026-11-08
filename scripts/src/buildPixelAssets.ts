@@ -638,7 +638,6 @@ export function emitSceneManifest(
   for (const s of scenes) {
     registryEntries.push(`  ${s.key}_landscape: require('../assets/pixel/scenes/${s.key}_landscape.png'),`);
     registryEntries.push(`  ${s.key}_portrait: require('../assets/pixel/scenes/${s.key}_portrait.png'),`);
-    registryEntries.push(`  ${s.key}: require('../assets/pixel/scenes/${s.key}_landscape.png'),`);
 
     if (s.hasLayers) {
       registryEntries.push(`  ${s.key}_landscape_far: require('../assets/pixel/scenes/${s.key}_landscape_far.png'),`);
@@ -664,13 +663,9 @@ export function emitSceneManifest(
 
     manifestEntries.push(`    focus: { x: ${s.focus.x}, y: ${s.focus.y} },`);
     manifestEntries.push(`    textSafe: '${s.textSafe}',`);
-    manifestEntries.push(`    palette: [\n      ${s.paletteHex.map((h) => `'${h}'`).join(', ')}\n    ],`);
+    manifestEntries.push(`    palette: [${s.paletteHex.map((h) => `'${h}'`).join(', ')}],`);
     manifestEntries.push(`    atmosphere: '${s.atmosphere}',`);
-    manifestEntries.push(`    cycles: [`);
-    manifestEntries.push(`      { indices: [50, 51, 52, 53], speedMs: 550 },`);
-    manifestEntries.push(`      { indices: [54, 55, 56, 57], speedMs: 320 },`);
-    manifestEntries.push(`      { indices: [58, 59, 60, 61], speedMs: 2400 },`);
-    manifestEntries.push(`    ],`);
+    manifestEntries.push(`    cycles: DEFAULT_CYCLES,`);
     manifestEntries.push(`    music: { theme: '${s.music.theme}', intensity: ${s.music.intensity} },`);
     manifestEntries.push(`  },`);
   }
@@ -716,6 +711,12 @@ export interface SceneManifestEntry {
   sprites?: SpriteAnimConfig[];
   music?: { theme: string; intensity: number };
 }
+
+const DEFAULT_CYCLES: PaletteCycleConfig[] = [
+  { indices: [50, 51, 52, 53], speedMs: 550 },
+  { indices: [54, 55, 56, 57], speedMs: 320 },
+  { indices: [58, 59, 60, 61], speedMs: 2400 },
+];
 
 /**
  * Static asset require mapping for Metro bundler compatibility.

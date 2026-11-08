@@ -964,13 +964,13 @@ export const tier1Tests: TestCase[] = [
   },
   {
     id: 'T1-CODEX-06',
-    title: "Total registered endings count is exactly 228",
+    title: "Total registered endings count is 244 (with Story Expansion enabled)",
     featureId: 'F-CONT-05',
     tier: 1,
     fn: () => {
       const endingsData = tryLoadEndingsData();
       if (endingsData && Array.isArray(endingsData.ENDINGS)) {
-        expect(endingsData.ENDINGS.length).toBe(228);
+        expect(endingsData.ENDINGS.length).toBe(244);
       }
     },
   },
