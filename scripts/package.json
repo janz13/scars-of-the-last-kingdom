@@ -6,6 +6,8 @@
   "scripts": {
     "hello": "tsx ./src/hello.ts",
     "generate-icons": "tsx ./src/generate-icons.ts",
+    "test": "tsx ./src/engine.test.ts",
+    "audit": "tsx ./src/fullAudit.mts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "devDependencies": {

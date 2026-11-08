@@ -36,6 +36,7 @@ import {
   saveGame,
 } from '../logic/saveSystem';
 import { getCompanionEventTrigger } from '../logic/companionSystem';
+import { sound } from '../logic/audioEngine';
 
 const DEFAULT_COMPANIONS: CompanionPair = {
   mira: { present: false, trust: 0, alive: true },
@@ -232,6 +233,25 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     };
   }, [state]);
 
+  // Flush save on page hide / unload (guarantees no progress lost on tab close)
+  useEffect(() => {
+    if (Platform.OS !== 'web' || typeof window === 'undefined') return;
+    const flushSave = () => {
+      if (stateRef.current?.character) {
+        void saveGame(stateRef.current);
+        if (stateRef.current.endingsDiscovered.length > 0) {
+          void saveEndingsDiscovered(stateRef.current.endingsDiscovered);
+        }
+      }
+    };
+    window.addEventListener('pagehide', flushSave);
+    window.addEventListener('beforeunload', flushSave);
+    return () => {
+      window.removeEventListener('pagehide', flushSave);
+      window.removeEventListener('beforeunload', flushSave);
+    };
+  }, []);
+
   // ─── Core gameplay ──────────────────────────────────────────────────────────
 
   const startNewGame = useCallback((character: Character) => {
@@ -294,6 +314,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const makeChoice = useCallback((choiceId: string) => {
+    sound.playSFX('click');
     setState((prev) => {
       const node = getNodeById(prev.currentNodeId);
       if (!node) return prev;
@@ -353,18 +374,25 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
       // ── Check for endings ─────────────────────────────────────────────────
       const endingState = resolveEndingState(next, nextNodeId);
-      if (endingState) return endingState;
+      const finalNext = endingState || next;
 
-      return next;
-    });
-    void saveGame(stateRef.current).then(() => {
-      setHasSaveGame(true);
-      setHasActiveGame(true);
+      stateRef.current = finalNext;
+      void saveGame(finalNext).then(() => {
+        setHasSaveGame(true);
+        setHasActiveGame(true);
+      });
+
+      return finalNext;
     });
   }, []);
 
   const setScreen = useCallback((screen: GameScreen) => {
     setState((prev) => ({ ...prev, screen }));
+    if (screen === 'game') {
+      sound.startAmbient('metro');
+    } else if (screen === 'mainMenu' || screen === 'splash') {
+      sound.stopAmbient();
+    }
     if (screen === 'mainMenu' || screen === 'characterCreator' || screen === 'credits' || screen === 'routeCodex') {
       setHasActiveGame(false);
     }
@@ -383,10 +411,14 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     if (!node) return;
     const choice = node.choices.find((c) => c.id === choiceId);
     if (!choice?.diceCheck) return;
+    sound.playSFX('diceRoll');
     setPendingDiceRoll({ choiceId, choiceText: choice.text, diceCheck: choice.diceCheck });
   }, []);
 
   const commitDiceRoll = useCallback((choiceId: string, result: DiceResult) => {
+    if (result.outcome === 'criticalSuccess') sound.playSFX('diceCrit');
+    else if (result.outcome === 'criticalFailure' || result.outcome === 'failure') sound.playSFX('diceFail');
+    else sound.playSFX('diceSuccess');
     setState((prev) => {
       const node = getNodeById(prev.currentNodeId);
       if (!node) return prev;
@@ -438,9 +470,15 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
       // Check for endings
       const endingState = resolveEndingState(next, nextNodeId);
-      if (endingState) return endingState;
+      const finalNext = endingState || next;
 
-      return next;
+      stateRef.current = finalNext;
+      void saveGame(finalNext).then(() => {
+        setHasSaveGame(true);
+        setHasActiveGame(true);
+      });
+
+      return finalNext;
     });
     setPendingDiceRoll(null);
   }, []);
@@ -448,6 +486,10 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const continueGame = useCallback(async () => {
     const saved = await loadGame();
     if (saved) {
+      if (saved.settings?.soundEnabled) {
+        sound.setSoundEnabled(true);
+        sound.startAmbient();
+      }
       // Merge any endings from the separate persistence that aren't in the save
       const persistedEndings = await loadEndingsDiscovered();
       const mergedEndings = [...new Set([...saved.endingsDiscovered, ...persistedEndings])];
@@ -465,6 +507,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const deleteAndReset = useCallback(async () => {
+    sound.stopAmbient();
     // Preserve discovered endings across playthroughs — only resetAllData wipes them
     const preservedEndings = stateRef.current.endingsDiscovered;
     await deleteSaveStorage();
@@ -474,6 +517,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const resetAllData = useCallback(async () => {
+    sound.stopAmbient();
     await resetAllDataStorage();
     setHasSaveGame(false);
     setHasActiveGame(false);
@@ -481,6 +525,14 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const updateSettings = useCallback((settings: Partial<GameState['settings']>) => {
+    if (typeof settings.soundEnabled === 'boolean') {
+      sound.setSoundEnabled(settings.soundEnabled);
+      if (settings.soundEnabled) {
+        sound.startAmbient();
+      } else {
+        sound.stopAmbient();
+      }
+    }
     setState((prev) => ({
       ...prev,
       settings: { ...prev.settings, ...settings },
@@ -490,6 +542,13 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const importSave = useCallback(async (jsonStr: string): Promise<boolean> => {
     const result = await importSaveData(jsonStr);
     if (result.success && result.state) {
+      if (result.state.settings?.soundEnabled) {
+        sound.setSoundEnabled(true);
+        sound.startAmbient();
+      } else {
+        sound.setSoundEnabled(false);
+        sound.stopAmbient();
+      }
       setState(result.state);
       setHasSaveGame(true);
       setHasActiveGame(true);

@@ -50,14 +50,14 @@ export default function Root({ children }: PropsWithChildren) {
         <meta name="apple-mobile-web-app-title" content="Scars" />
 
         {/* ── Apple touch icon (home screen icon on iOS) ────────────── */}
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png" />
 
         {/* ── PWA manifest ─────────────────────────────────────────── */}
-        <link rel="manifest" href="/manifest.json" />
+        <link rel="manifest" href="./manifest.json" />
 
         {/* ── Favicon ──────────────────────────────────────────────── */}
-        <link rel="icon" type="image/png" href="/favicon.ico" />
+        <link rel="icon" type="image/png" href="./favicon.ico" />
 
         {/* ── Page metadata ─────────────────────────────────────────── */}
         <title>Scars of the Last Kingdom</title>
@@ -186,7 +186,7 @@ export default function Root({ children }: PropsWithChildren) {
             __html: `
               if ('serviceWorker' in navigator) {
                 window.addEventListener('load', function() {
-                  navigator.serviceWorker.register('/sw.js')
+                  navigator.serviceWorker.register('./sw.js')
                     .then(function(reg) {
                       console.log('[SW] Registered:', reg.scope);
                     })

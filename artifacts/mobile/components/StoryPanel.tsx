@@ -247,8 +247,8 @@ export default function StoryPanel() {
   // Mount web keyboard hotkeys
   useWebKeyboardControls();
 
-  const topPad = Platform.OS === 'web' ? 67 : insets.top;
-  const botPad = Platform.OS === 'web' ? 34 : insets.bottom;
+  const topPad = Platform.OS === 'web' ? (isDesktop ? 16 : 44) : insets.top;
+  const botPad = Platform.OS === 'web' ? (isDesktop ? 16 : 24) : insets.bottom;
 
   // Font size scaling based on user setting
   const fontScale = state.settings.fontSize;

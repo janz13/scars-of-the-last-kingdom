@@ -26,9 +26,7 @@
 #
 # ============================================================================
 packages:
-  - artifacts/*
-  - lib/*
-  - lib/integrations/*
+  - artifacts/mobile
   - scripts
 
 catalog:

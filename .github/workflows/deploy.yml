@@ -39,6 +39,15 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Run Typecheck
+        run: pnpm run typecheck
+
+      - name: Run Engine Tests
+        run: pnpm test
+
+      - name: Run Game Graph Audit
+        run: pnpm --filter @workspace/scripts run audit
+
       - name: Determine Expo Base URL
         id: expo-base-url
         run: |
