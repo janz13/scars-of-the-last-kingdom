@@ -37,11 +37,85 @@ export interface StorySheetProps {
   contentContainerStyle?: StyleProp<ViewStyle>;
 }
 
-const DEFAULT_SNAP_RATIOS = {
+export const DEFAULT_SNAP_RATIOS = {
   peek: 0.18,
   half: 0.52,
   full: 0.85,
 };
+
+/**
+ * Computes strictly monotonic snap heights clamped within the viewport [1, H].
+ * Guarantees: 1 <= peek <= half <= full <= H for any viewport height H.
+ * On standard viewports (H >= 640), effectiveMinPeek equals minPeekHeight (130px).
+ * On small viewports (H <= 250), peek scales down to <= 75% of half to maintain distinct snap points.
+ */
+export function computeSnapHeights(
+  viewportHeight: number,
+  minPeekHeight = 130,
+  snapRatios = DEFAULT_SNAP_RATIOS
+): Record<SheetSnapPoint, number> {
+  const safeH = Math.max(1, viewportHeight);
+  const full = Math.min(safeH, Math.max(1, Math.round(safeH * snapRatios.full)));
+  const half = Math.min(full, Math.max(1, Math.round(safeH * snapRatios.half)));
+  const effectiveMinPeek = Math.min(minPeekHeight, Math.max(1, Math.round(half * 0.75)));
+  const peek = Math.min(half, Math.max(effectiveMinPeek, Math.round(safeH * snapRatios.peek)));
+
+  return { peek, half, full };
+}
+
+/**
+ * Returns the next snap point in the cycle:
+ * peek -> half -> full -> half
+ */
+export function getNextSnapPoint(currentSnap: SheetSnapPoint): SheetSnapPoint {
+  if (currentSnap === 'peek') return 'half';
+  if (currentSnap === 'half') return 'full';
+  return 'half';
+}
+
+/**
+ * Calculates linear clamped height during continuous drag.
+ * Dragging upward decreases Y (negative dy), increasing sheet height.
+ */
+export function calculateDragHeight(
+  startHeight: number,
+  dy: number,
+  snapHeights: { peek: number; full: number }
+): number {
+  const target = startHeight - dy;
+  return Math.max(snapHeights.peek, Math.min(snapHeights.full, target));
+}
+
+/**
+ * Resolves the target snap point on release based on velocity (flick) or proximity.
+ */
+export function resolveReleaseSnap(
+  releasedHeight: number,
+  vy: number,
+  snapHeights: Record<SheetSnapPoint, number>
+): SheetSnapPoint {
+  // Fast swipe up
+  if (vy < -0.5) {
+    return releasedHeight < snapHeights.half ? 'half' : 'full';
+  }
+  // Fast swipe down
+  if (vy > 0.5) {
+    return releasedHeight > snapHeights.half ? 'half' : 'peek';
+  }
+
+  // Distance-based nearest snap point
+  const distPeek = Math.abs(releasedHeight - snapHeights.peek);
+  const distHalf = Math.abs(releasedHeight - snapHeights.half);
+  const distFull = Math.abs(releasedHeight - snapHeights.full);
+
+  if (distPeek <= distHalf && distPeek <= distFull) {
+    return 'peek';
+  }
+  if (distHalf <= distPeek && distHalf <= distFull) {
+    return 'half';
+  }
+  return 'full';
+}
 
 export default function StorySheet({
   children,
@@ -57,18 +131,16 @@ export default function StorySheet({
   const { height: windowHeight } = useWindowDimensions();
   const H = customHeight ?? windowHeight;
 
-  // Compute snap heights in pixels
-  const snapHeights: Record<SheetSnapPoint, number> = {
-    peek: Math.max(minPeekHeight, Math.round(H * snapRatios.peek)),
-    half: Math.round(H * snapRatios.half),
-    full: Math.round(H * snapRatios.full),
-  };
+  // Compute snap heights in pixels with monotonic clamping
+  const snapHeights = computeSnapHeights(H, minPeekHeight, snapRatios);
 
   const [currentSnap, setCurrentSnap] = useState<SheetSnapPoint>(snapPoint);
   const sheetHeightAnim = useRef(new Animated.Value(snapHeights[snapPoint])).current;
   const currentHeightRef = useRef(snapHeights[snapPoint]);
+  const dragStartHeightRef = useRef(snapHeights[snapPoint]);
+  const hasDraggedRef = useRef(false);
 
-  // Keep ref updated
+  // Keep currentHeightRef updated with the animated value
   useEffect(() => {
     const id = sheetHeightAnim.addListener(({ value }) => {
       currentHeightRef.current = value;
@@ -101,55 +173,59 @@ export default function StorySheet({
     }
   }, [snapPoint]);
 
+  // Adjust sheet height if viewport height H changes (e.g. window resize or rotation)
+  const prevHRef = useRef(H);
+  useEffect(() => {
+    if (prevHRef.current !== H) {
+      prevHRef.current = H;
+      animateToSnap(currentSnap);
+    }
+  }, [H, currentSnap]);
+
   // Cycle snap on handle tap: peek -> half -> full -> half
   const handleTap = () => {
-    if (currentSnap === 'peek') animateToSnap('half');
-    else if (currentSnap === 'half') animateToSnap('full');
-    else animateToSnap('half');
+    const next = getNextSnapPoint(currentSnap);
+    animateToSnap(next);
   };
 
   // PanResponder for drag handle
   const panResponder = useRef(
     PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
+      // Do NOT capture at start phase: allows child <Pressable> to receive taps without touch starvation
+      onStartShouldSetPanResponder: () => false,
+      onStartShouldSetPanResponderCapture: () => false,
+      // Claim responder once movement exceeds 5px threshold (drag gesture initiated)
       onMoveShouldSetPanResponder: (_, gesture) => Math.abs(gesture.dy) > 5,
+      onMoveShouldSetPanResponderCapture: (_, gesture) => Math.abs(gesture.dy) > 5,
+      onPanResponderGrant: () => {
+        // Record starting height at the exact moment drag begins
+        dragStartHeightRef.current = currentHeightRef.current;
+        hasDraggedRef.current = false;
+      },
       onPanResponderMove: (_, gesture) => {
-        // Dragging upwards decreases Y, so height increases
-        const newHeight = currentHeightRef.current - gesture.dy;
-        const clamped = Math.max(snapHeights.peek, Math.min(snapHeights.full, newHeight));
+        if (Math.abs(gesture.dy) > 5) {
+          hasDraggedRef.current = true;
+        }
+        // Linear finger tracking from fixed start height: avoids quadratic runaway
+        const clamped = calculateDragHeight(dragStartHeightRef.current, gesture.dy, snapHeights);
         sheetHeightAnim.setValue(clamped);
       },
       onPanResponderRelease: (_, gesture) => {
-        const releasedHeight = currentHeightRef.current - gesture.dy;
-        const vy = gesture.vy;
-
-        // Velocity-based snapping
-        if (vy < -0.5) {
-          // Fast swipe up
-          if (releasedHeight < snapHeights.half) animateToSnap('half');
-          else animateToSnap('full');
-          return;
-        }
-        if (vy > 0.5) {
-          // Fast swipe down
-          if (releasedHeight > snapHeights.half) animateToSnap('half');
-          else animateToSnap('peek');
+        // If movement was below drag threshold, treat as tap cycle fallback
+        if (!hasDraggedRef.current && Math.abs(gesture.dy) < 5 && Math.abs(gesture.dx) < 5) {
+          handleTap();
           return;
         }
 
-        // Distance-based nearest snap point
-        const distPeek = Math.abs(releasedHeight - snapHeights.peek);
-        const distHalf = Math.abs(releasedHeight - snapHeights.half);
-        const distFull = Math.abs(releasedHeight - snapHeights.full);
-
-        if (distPeek <= distHalf && distPeek <= distFull) {
-          animateToSnap('peek');
-        } else if (distHalf <= distPeek && distHalf <= distFull) {
-          animateToSnap('half');
-        } else {
-          animateToSnap('full');
-        }
+        const releasedHeight = dragStartHeightRef.current - gesture.dy;
+        const targetSnap = resolveReleaseSnap(releasedHeight, gesture.vy, snapHeights);
+        animateToSnap(targetSnap);
       },
+      onPanResponderTerminate: () => {
+        // Gesture interrupted by parent or system: snap back to current state
+        animateToSnap(currentSnap);
+      },
+      onPanResponderTerminationRequest: () => false,
     })
   ).current;
 
@@ -210,6 +286,10 @@ const styles = StyleSheet.create({
     borderBottomColor: 'rgba(155, 89, 182, 0.1)',
   },
   handleHitZone: {
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
     paddingVertical: 6,
     paddingHorizontal: 20,
   },

@@ -165,7 +165,7 @@ export function resolveLayoutMode(
   if (setting === 'column' && width >= 600) return 'column';
   if (setting === 'letterbox') return 'letterbox';
 
-  if (aspect >= 1.5) return 'column';
+  if (aspect >= 1.5 && width >= 768) return 'column';
   if (aspect >= 1.0) return 'letterbox';
   return 'sheet';
 }

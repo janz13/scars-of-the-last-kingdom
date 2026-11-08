@@ -80,6 +80,7 @@ const {
 const {
   SCENE_MANIFEST,
   getSceneManifestEntry,
+  resolveSceneAsset,
 } = require('../../artifacts/mobile/constants/sceneManifest.ts');
 
 const {
@@ -831,13 +832,51 @@ assert(resolveLayoutMode(390, 844) === 'sheet', '390x844 resolves to sheet mode'
 assert(resolveLayoutMode(1920, 1080, 'letterbox') === 'letterbox', 'User letterbox override respected');
 assert(resolveLayoutMode(1024, 768, 'column') === 'column', 'User column override respected on wide display');
 
-// 5. Scene manifest contract
+// 5. Scene manifest contract & orientation-aware asset resolution
 assert(Object.keys(SCENE_MANIFEST).length === 26, 'SCENE_MANIFEST registers all 26 scenes');
 const metroEntry = getSceneManifestEntry('ruined_metro_station');
 assert(metroEntry.key === 'ruined_metro_station', 'Manifest resolves ruined_metro_station correctly');
 assert(metroEntry.palette.length <= 32, 'Scene palette has <= 32 colors');
 const fallbackEntry = getSceneManifestEntry('unknown_scene_key');
 assert(fallbackEntry.key === 'ruined_metro_station', 'Unknown key falls back to ruined_metro_station');
+
+// Assert distinct landscape and portrait image sources for all 26 registered scenes
+const registeredSceneKeys = Object.keys(SCENE_MANIFEST);
+for (const key of registeredSceneKeys) {
+  const entry = getSceneManifestEntry(key);
+  assert(Boolean(entry), `Manifest entry exists for scene "${key}"`);
+
+  const landAsset = resolveSceneAsset(entry, 'landscape');
+  const portAsset = resolveSceneAsset(entry, 'portrait');
+
+  assert(Boolean(landAsset), `Landscape asset resolves for "${key}"`);
+  assert(Boolean(portAsset), `Portrait asset resolves for "${key}"`);
+  assert(
+    landAsset !== portAsset,
+    `Distinct landscape and portrait assets returned for "${key}"`
+  );
+
+  if (typeof landAsset === 'string') {
+    assert(
+      landAsset.includes('landscape'),
+      `Landscape asset path for "${key}" contains "landscape"`
+    );
+  }
+  if (typeof portAsset === 'string') {
+    assert(
+      portAsset.includes('portrait'),
+      `Portrait asset path for "${key}" contains "portrait"`
+    );
+  }
+}
+
+// Fallback asset resolution test for unmanifested scene keys
+const unmanifestedEntry = getSceneManifestEntry('nonexistent_custom_scene');
+const unmanifestedLand = resolveSceneAsset(unmanifestedEntry, 'landscape');
+const unmanifestedPort = resolveSceneAsset(unmanifestedEntry, 'portrait');
+assert(Boolean(unmanifestedLand), 'Unmanifested key falls back to valid landscape asset');
+assert(Boolean(unmanifestedPort), 'Unmanifested key falls back to valid portrait asset');
+assert(unmanifestedLand !== unmanifestedPort, 'Unmanifested fallback preserves distinct orientations');
 
 // 6. Motion & Quality tier configurations
 assert(MOTION_DURATIONS.normal === 260, 'Normal motion duration is 260ms');

@@ -29,6 +29,11 @@ import {
   type GradientConfig,
 } from '../../constants/images';
 import { resolveImageUri } from '../../hooks/useChoiceImagePreloader';
+import {
+  getSceneManifestEntry,
+  resolveSceneAsset,
+  SCENE_MANIFEST,
+} from '../../constants/sceneManifest';
 
 export interface PixelStageProps {
   /** imageKey from current StoryNode */
@@ -54,6 +59,24 @@ export default function PixelStage(props: PixelStageProps) {
     return <WebPixelStage {...props} />;
   }
   return <NativePixelStage {...props} />;
+}
+
+/**
+ * Resolves the image source for the current scene and orientation.
+ * 1. Checks SCENE_MANIFEST and resolves orientation variant via resolveSceneAsset.
+ * 2. If not found in manifest, falls back to legacy getBackgroundImage(key).
+ * 3. If still not found, falls back to ruined_metro_station orientation variant.
+ */
+function resolveSceneSource(key: string, activeOrientation: 'landscape' | 'portrait'): any {
+  if (SCENE_MANIFEST[key]) {
+    const entry = getSceneManifestEntry(key);
+    const asset = resolveSceneAsset(entry, activeOrientation);
+    if (asset) return asset;
+  }
+  const fallback = getBackgroundImage(key);
+  if (fallback) return fallback;
+
+  return resolveSceneAsset(getSceneManifestEntry('ruined_metro_station'), activeOrientation);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -88,23 +111,42 @@ function WebPixelStage({
   const frontBufferRef = useRef<HTMLCanvasElement | null>(null);
   const backBufferRef = useRef<HTMLCanvasElement | null>(null);
 
-  const currentImageKeyRef = useRef<string | null>(null);
+  const currentRenderKeyRef = useRef<string | null>(null);
   const animFrameRef = useRef<number | null>(null);
+  const activeTransitionIdRef = useRef<number>(0);
+  const lastDimensionsRef = useRef<{ w: number; h: number } | null>(null);
 
-  // Helper to lazily instantiate offscreen canvases
+  // Helper to lazily instantiate and dimension-sync offscreen canvases
   const getBuffers = () => {
-    if (!frontBufferRef.current && typeof document !== 'undefined') {
+    if (typeof document === 'undefined') {
+      return { front: null, back: null };
+    }
+    if (!frontBufferRef.current) {
       const f = document.createElement('canvas');
       f.width = masterW;
       f.height = masterH;
       frontBufferRef.current = f;
+    } else if (
+      frontBufferRef.current.width !== masterW ||
+      frontBufferRef.current.height !== masterH
+    ) {
+      frontBufferRef.current.width = masterW;
+      frontBufferRef.current.height = masterH;
     }
-    if (!backBufferRef.current && typeof document !== 'undefined') {
+
+    if (!backBufferRef.current) {
       const b = document.createElement('canvas');
       b.width = masterW;
       b.height = masterH;
       backBufferRef.current = b;
+    } else if (
+      backBufferRef.current.width !== masterW ||
+      backBufferRef.current.height !== masterH
+    ) {
+      backBufferRef.current.width = masterW;
+      backBufferRef.current.height = masterH;
     }
+
     return { front: frontBufferRef.current, back: backBufferRef.current };
   };
 
@@ -140,6 +182,8 @@ function WebPixelStage({
   const drawSceneToBuffer = (
     targetCanvas: HTMLCanvasElement,
     targetKey: string,
+    activeOrientation: 'landscape' | 'portrait',
+    transitionId: number,
     callback: () => void
   ) => {
     const ctx = targetCanvas.getContext('2d');
@@ -147,34 +191,64 @@ function WebPixelStage({
 
     ctx.imageSmoothingEnabled = false;
 
-    const bgSource = getBackgroundImage(targetKey);
+    const bgSource = resolveSceneSource(targetKey, activeOrientation);
     const uri = bgSource ? resolveImageUri(bgSource) : null;
 
     if (uri && typeof window !== 'undefined') {
       const img = new window.Image();
       img.crossOrigin = 'anonymous';
-      img.onload = () => {
+      let fired = false;
+
+      const handleSuccess = () => {
+        if (fired) return;
+        fired = true;
+        img.onload = null;
+        img.onerror = null;
+
+        if (transitionId !== activeTransitionIdRef.current) return;
+
         // Aspect-ratio cover fit
-        const s = Math.max(masterW / img.naturalWidth, masterH / img.naturalHeight);
-        const dw = img.naturalWidth * s;
-        const dh = img.naturalHeight * s;
+        const s = Math.max(
+          masterW / (img.naturalWidth || 1),
+          masterH / (img.naturalHeight || 1)
+        );
+        const dw = (img.naturalWidth || masterW) * s;
+        const dh = (img.naturalHeight || masterH) * s;
         const dx = Math.round((masterW - dw) / 2);
         const dy = Math.round((masterH - dh) / 2);
 
+        ctx.imageSmoothingEnabled = false;
         ctx.clearRect(0, 0, masterW, masterH);
         ctx.drawImage(img, dx, dy, dw, dh);
         callback();
       };
-      img.onerror = () => {
-        // Fallback to gradient if image fails to load
+
+      const handleError = () => {
+        if (fired) return;
+        fired = true;
+        img.onload = null;
+        img.onerror = null;
+
+        if (transitionId !== activeTransitionIdRef.current) return;
+
+        ctx.imageSmoothingEnabled = false;
         drawGradientFallback(ctx, targetKey, masterW, masterH);
         callback();
       };
+
+      img.onload = handleSuccess;
+      img.onerror = handleError;
       img.src = uri;
+
       if (img.complete) {
-        img.onload?.(new Event('load'));
+        if (img.naturalWidth > 0) {
+          handleSuccess();
+        } else {
+          handleError();
+        }
       }
     } else {
+      ctx.imageSmoothingEnabled = false;
       drawGradientFallback(ctx, targetKey, masterW, masterH);
       callback();
     }
@@ -182,6 +256,8 @@ function WebPixelStage({
 
   // Scene transition orchestration
   useEffect(() => {
+    const transitionId = ++activeTransitionIdRef.current;
+
     const { front, back } = getBuffers();
     if (!front || !back || !canvasRef.current) return;
 
@@ -191,34 +267,68 @@ function WebPixelStage({
 
     displayCtx.imageSmoothingEnabled = false;
 
-    // First mount initialization
-    if (currentImageKeyRef.current === null) {
-      currentImageKeyRef.current = imageKey;
-      drawSceneToBuffer(front, imageKey, () => {
+    const renderKey = `${imageKey}:${orientation}`;
+
+    // Detect buffer dimension changes (e.g. orientation changes between landscape and portrait)
+    const dimensionsChanged =
+      !lastDimensionsRef.current ||
+      lastDimensionsRef.current.w !== masterW ||
+      lastDimensionsRef.current.h !== masterH;
+
+    lastDimensionsRef.current = { w: masterW, h: masterH };
+
+    // On orientation or dimension change, cancel any active animation, immediately draw
+    // the current scene to the resized front buffer, and blit to the display canvas.
+    if (dimensionsChanged) {
+      if (animFrameRef.current) {
+        cancelAnimationFrame(animFrameRef.current);
+        animFrameRef.current = null;
+      }
+      currentRenderKeyRef.current = renderKey;
+      drawSceneToBuffer(front, imageKey, orientation, transitionId, () => {
+        if (transitionId !== activeTransitionIdRef.current) return;
+        displayCtx.imageSmoothingEnabled = false;
         displayCtx.clearRect(0, 0, masterW, masterH);
         displayCtx.drawImage(front, 0, 0);
       });
       return;
     }
 
-    // If image hasn't changed, retain current display
-    if (currentImageKeyRef.current === imageKey) {
+    // First mount initialization
+    if (currentRenderKeyRef.current === null) {
+      currentRenderKeyRef.current = renderKey;
+      drawSceneToBuffer(front, imageKey, orientation, transitionId, () => {
+        if (transitionId !== activeTransitionIdRef.current) return;
+        displayCtx.imageSmoothingEnabled = false;
+        displayCtx.clearRect(0, 0, masterW, masterH);
+        displayCtx.drawImage(front, 0, 0);
+      });
       return;
     }
 
-    currentImageKeyRef.current = imageKey;
+    // If image hasn't changed and dimensions haven't changed, retain current display
+    if (currentRenderKeyRef.current === renderKey) {
+      return;
+    }
+
+    currentRenderKeyRef.current = renderKey;
 
     // Load next scene into back buffer while front buffer remains displayed
-    drawSceneToBuffer(back, imageKey, () => {
+    drawSceneToBuffer(back, imageKey, orientation, transitionId, () => {
+      if (transitionId !== activeTransitionIdRef.current) return;
+
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
 
       const startTime = performance.now();
       const duration = Math.max(16, fadeDuration);
 
       const step = (now: number) => {
+        if (transitionId !== activeTransitionIdRef.current) return;
+
         const elapsed = now - startTime;
         const t = Math.min(1, elapsed / duration);
 
+        displayCtx.imageSmoothingEnabled = false;
         displayCtx.clearRect(0, 0, masterW, masterH);
         displayCtx.globalAlpha = 1.0;
         displayCtx.drawImage(front, 0, 0);
@@ -232,9 +342,11 @@ function WebPixelStage({
           // Transition complete: blit back to front buffer
           const fCtx = front.getContext('2d');
           if (fCtx) {
+            fCtx.imageSmoothingEnabled = false;
             fCtx.clearRect(0, 0, masterW, masterH);
             fCtx.drawImage(back, 0, 0);
           }
+          animFrameRef.current = null;
         }
       };
 
@@ -242,9 +354,13 @@ function WebPixelStage({
     });
 
     return () => {
-      if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
+      activeTransitionIdRef.current++;
+      if (animFrameRef.current) {
+        cancelAnimationFrame(animFrameRef.current);
+        animFrameRef.current = null;
+      }
     };
-  }, [imageKey, sceneKey, fadeDuration, masterW, masterH]);
+  }, [imageKey, sceneKey, orientation, fadeDuration, masterW, masterH]);
 
   const overlayColors = [
     `rgba(4,2,10,0.15)`,
@@ -344,6 +460,7 @@ function NativePixelStage({
   style,
   children,
 }: PixelStageProps) {
+  const { orientation } = useIntegerScale();
   const [currentKey, setCurrentKey] = useState(imageKey);
   const [prevKey, setPrevKey] = useState<string | null>(null);
   const fadeAnim = useRef(new Animated.Value(1)).current;
@@ -372,7 +489,7 @@ function NativePixelStage({
   ];
 
   const renderLayer = (key: string, opacity: any) => {
-    const bgImage = getBackgroundImage(key);
+    const bgImage = resolveSceneSource(key, orientation);
     const gradient = getBackgroundGradient(key);
 
     return (

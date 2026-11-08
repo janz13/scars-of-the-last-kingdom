@@ -40,34 +40,93 @@ export interface SceneManifestEntry {
 
 /**
  * Static asset require mapping for Metro bundler compatibility.
+ * Maps both landscape (720×400) and portrait (400×760) pixel placeholder assets,
+ * with bare-key fallbacks.
  */
 export const SCENE_ASSET_REGISTRY: Record<string, any> = {
-  ruined_metro_station: require('../assets/images/ruined_metro_station.png'),
-  dark_metro_hallway: require('../assets/images/dark_metro_hallway.png'),
-  broken_vending_area: require('../assets/images/broken_vending_area.png'),
-  collapsed_tunnel: require('../assets/images/collapsed_tunnel.png'),
-  tunnel_camp: require('../assets/images/tunnel_camp.png'),
-  surface_ruins: require('../assets/images/surface_ruins.png'),
-  iron_saints_checkpoint: require('../assets/images/iron_saints_checkpoint.png'),
-  glass_tower_gate: require('../assets/images/glass_tower_gate.png'),
-  red_choir_chamber: require('../assets/images/red_choir_chamber.png'),
-  surface_dawn: require('../assets/images/surface_dawn.png'),
-  ruined_street: require('../assets/images/ruined_street.png'),
-  saints_patrol: require('../assets/images/saints_patrol.png'),
-  black_market_alley: require('../assets/images/black_market_alley.png'),
-  glass_tower_lobby: require('../assets/images/glass_tower_lobby.png'),
-  choir_broadcast_point: require('../assets/images/choir_broadcast_point.png'),
-  archive_ruin_wall: require('../assets/images/archive_ruin_wall.png'),
-  surface_night: require('../assets/images/surface_night.png'),
-  last_archive_door: require('../assets/images/last_archive_door.png'),
-  candle_market: require('../assets/images/candle_market.png'),
-  bone_turnstile: require('../assets/images/bone_turnstile.png'),
-  flooded_platform: require('../assets/images/flooded_platform.png'),
-  nursery_of_knives: require('../assets/images/nursery_of_knives.png'),
-  chalk_map_wall: require('../assets/images/chalk_map_wall.png'),
-  rat_king_gate: require('../assets/images/rat_king_gate.png'),
-  hidden_clinic: require('../assets/images/hidden_clinic.png'),
-  relic_engine_room: require('../assets/images/relic_engine_room.png'),
+  // ─── 720×400 Landscape Placeholders ──────────────────────────────────────
+  ruined_metro_station_landscape: require('../assets/pixel/placeholders/ruined_metro_station_landscape.png'),
+  dark_metro_hallway_landscape: require('../assets/pixel/placeholders/dark_metro_hallway_landscape.png'),
+  broken_vending_area_landscape: require('../assets/pixel/placeholders/broken_vending_area_landscape.png'),
+  collapsed_tunnel_landscape: require('../assets/pixel/placeholders/collapsed_tunnel_landscape.png'),
+  tunnel_camp_landscape: require('../assets/pixel/placeholders/tunnel_camp_landscape.png'),
+  surface_ruins_landscape: require('../assets/pixel/placeholders/surface_ruins_landscape.png'),
+  iron_saints_checkpoint_landscape: require('../assets/pixel/placeholders/iron_saints_checkpoint_landscape.png'),
+  glass_tower_gate_landscape: require('../assets/pixel/placeholders/glass_tower_gate_landscape.png'),
+  red_choir_chamber_landscape: require('../assets/pixel/placeholders/red_choir_chamber_landscape.png'),
+  surface_dawn_landscape: require('../assets/pixel/placeholders/surface_dawn_landscape.png'),
+  ruined_street_landscape: require('../assets/pixel/placeholders/ruined_street_landscape.png'),
+  saints_patrol_landscape: require('../assets/pixel/placeholders/saints_patrol_landscape.png'),
+  black_market_alley_landscape: require('../assets/pixel/placeholders/black_market_alley_landscape.png'),
+  glass_tower_lobby_landscape: require('../assets/pixel/placeholders/glass_tower_lobby_landscape.png'),
+  choir_broadcast_point_landscape: require('../assets/pixel/placeholders/choir_broadcast_point_landscape.png'),
+  archive_ruin_wall_landscape: require('../assets/pixel/placeholders/archive_ruin_wall_landscape.png'),
+  surface_night_landscape: require('../assets/pixel/placeholders/surface_night_landscape.png'),
+  last_archive_door_landscape: require('../assets/pixel/placeholders/last_archive_door_landscape.png'),
+  candle_market_landscape: require('../assets/pixel/placeholders/candle_market_landscape.png'),
+  bone_turnstile_landscape: require('../assets/pixel/placeholders/bone_turnstile_landscape.png'),
+  flooded_platform_landscape: require('../assets/pixel/placeholders/flooded_platform_landscape.png'),
+  nursery_of_knives_landscape: require('../assets/pixel/placeholders/nursery_of_knives_landscape.png'),
+  chalk_map_wall_landscape: require('../assets/pixel/placeholders/chalk_map_wall_landscape.png'),
+  rat_king_gate_landscape: require('../assets/pixel/placeholders/rat_king_gate_landscape.png'),
+  hidden_clinic_landscape: require('../assets/pixel/placeholders/hidden_clinic_landscape.png'),
+  relic_engine_room_landscape: require('../assets/pixel/placeholders/relic_engine_room_landscape.png'),
+
+  // ─── 400×760 Portrait Placeholders ───────────────────────────────────────
+  ruined_metro_station_portrait: require('../assets/pixel/placeholders/ruined_metro_station_portrait.png'),
+  dark_metro_hallway_portrait: require('../assets/pixel/placeholders/dark_metro_hallway_portrait.png'),
+  broken_vending_area_portrait: require('../assets/pixel/placeholders/broken_vending_area_portrait.png'),
+  collapsed_tunnel_portrait: require('../assets/pixel/placeholders/collapsed_tunnel_portrait.png'),
+  tunnel_camp_portrait: require('../assets/pixel/placeholders/tunnel_camp_portrait.png'),
+  surface_ruins_portrait: require('../assets/pixel/placeholders/surface_ruins_portrait.png'),
+  iron_saints_checkpoint_portrait: require('../assets/pixel/placeholders/iron_saints_checkpoint_portrait.png'),
+  glass_tower_gate_portrait: require('../assets/pixel/placeholders/glass_tower_gate_portrait.png'),
+  red_choir_chamber_portrait: require('../assets/pixel/placeholders/red_choir_chamber_portrait.png'),
+  surface_dawn_portrait: require('../assets/pixel/placeholders/surface_dawn_portrait.png'),
+  ruined_street_portrait: require('../assets/pixel/placeholders/ruined_street_portrait.png'),
+  saints_patrol_portrait: require('../assets/pixel/placeholders/saints_patrol_portrait.png'),
+  black_market_alley_portrait: require('../assets/pixel/placeholders/black_market_alley_portrait.png'),
+  glass_tower_lobby_portrait: require('../assets/pixel/placeholders/glass_tower_lobby_portrait.png'),
+  choir_broadcast_point_portrait: require('../assets/pixel/placeholders/choir_broadcast_point_portrait.png'),
+  archive_ruin_wall_portrait: require('../assets/pixel/placeholders/archive_ruin_wall_portrait.png'),
+  surface_night_portrait: require('../assets/pixel/placeholders/surface_night_portrait.png'),
+  last_archive_door_portrait: require('../assets/pixel/placeholders/last_archive_door_portrait.png'),
+  candle_market_portrait: require('../assets/pixel/placeholders/candle_market_portrait.png'),
+  bone_turnstile_portrait: require('../assets/pixel/placeholders/bone_turnstile_portrait.png'),
+  flooded_platform_portrait: require('../assets/pixel/placeholders/flooded_platform_portrait.png'),
+  nursery_of_knives_portrait: require('../assets/pixel/placeholders/nursery_of_knives_portrait.png'),
+  chalk_map_wall_portrait: require('../assets/pixel/placeholders/chalk_map_wall_portrait.png'),
+  rat_king_gate_portrait: require('../assets/pixel/placeholders/rat_king_gate_portrait.png'),
+  hidden_clinic_portrait: require('../assets/pixel/placeholders/hidden_clinic_portrait.png'),
+  relic_engine_room_portrait: require('../assets/pixel/placeholders/relic_engine_room_portrait.png'),
+
+  // ─── Bare Key Fallbacks (defaults to landscape variant) ───────────────────
+  ruined_metro_station: require('../assets/pixel/placeholders/ruined_metro_station_landscape.png'),
+  dark_metro_hallway: require('../assets/pixel/placeholders/dark_metro_hallway_landscape.png'),
+  broken_vending_area: require('../assets/pixel/placeholders/broken_vending_area_landscape.png'),
+  collapsed_tunnel: require('../assets/pixel/placeholders/collapsed_tunnel_landscape.png'),
+  tunnel_camp: require('../assets/pixel/placeholders/tunnel_camp_landscape.png'),
+  surface_ruins: require('../assets/pixel/placeholders/surface_ruins_landscape.png'),
+  iron_saints_checkpoint: require('../assets/pixel/placeholders/iron_saints_checkpoint_landscape.png'),
+  glass_tower_gate: require('../assets/pixel/placeholders/glass_tower_gate_landscape.png'),
+  red_choir_chamber: require('../assets/pixel/placeholders/red_choir_chamber_landscape.png'),
+  surface_dawn: require('../assets/pixel/placeholders/surface_dawn_landscape.png'),
+  ruined_street: require('../assets/pixel/placeholders/ruined_street_landscape.png'),
+  saints_patrol: require('../assets/pixel/placeholders/saints_patrol_landscape.png'),
+  black_market_alley: require('../assets/pixel/placeholders/black_market_alley_landscape.png'),
+  glass_tower_lobby: require('../assets/pixel/placeholders/glass_tower_lobby_landscape.png'),
+  choir_broadcast_point: require('../assets/pixel/placeholders/choir_broadcast_point_landscape.png'),
+  archive_ruin_wall: require('../assets/pixel/placeholders/archive_ruin_wall_landscape.png'),
+  surface_night: require('../assets/pixel/placeholders/surface_night_landscape.png'),
+  last_archive_door: require('../assets/pixel/placeholders/last_archive_door_landscape.png'),
+  candle_market: require('../assets/pixel/placeholders/candle_market_landscape.png'),
+  bone_turnstile: require('../assets/pixel/placeholders/bone_turnstile_landscape.png'),
+  flooded_platform: require('../assets/pixel/placeholders/flooded_platform_landscape.png'),
+  nursery_of_knives: require('../assets/pixel/placeholders/nursery_of_knives_landscape.png'),
+  chalk_map_wall: require('../assets/pixel/placeholders/chalk_map_wall_landscape.png'),
+  rat_king_gate: require('../assets/pixel/placeholders/rat_king_gate_landscape.png'),
+  hidden_clinic: require('../assets/pixel/placeholders/hidden_clinic_landscape.png'),
+  relic_engine_room: require('../assets/pixel/placeholders/relic_engine_room_landscape.png'),
 };
 
 const DEFAULT_METRO_PALETTE = [
@@ -79,8 +138,8 @@ const DEFAULT_METRO_PALETTE = [
 export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
   ruined_metro_station: {
     key: 'ruined_metro_station',
-    landscape: 'ruined_metro_station',
-    portrait: 'ruined_metro_station',
+    landscape: 'ruined_metro_station_landscape',
+    portrait: 'ruined_metro_station_portrait',
     focus: { x: 320, y: 180 },
     textSafe: 'left',
     palette: DEFAULT_METRO_PALETTE,
@@ -89,8 +148,8 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
   },
   dark_metro_hallway: {
     key: 'dark_metro_hallway',
-    landscape: 'dark_metro_hallway',
-    portrait: 'dark_metro_hallway',
+    landscape: 'dark_metro_hallway_landscape',
+    portrait: 'dark_metro_hallway_portrait',
     focus: { x: 320, y: 180 },
     textSafe: 'right',
     palette: DEFAULT_METRO_PALETTE,
@@ -99,8 +158,8 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
   },
   broken_vending_area: {
     key: 'broken_vending_area',
-    landscape: 'broken_vending_area',
-    portrait: 'broken_vending_area',
+    landscape: 'broken_vending_area_landscape',
+    portrait: 'broken_vending_area_portrait',
     focus: { x: 280, y: 180 },
     textSafe: 'right',
     palette: DEFAULT_METRO_PALETTE,
@@ -109,8 +168,8 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
   },
   collapsed_tunnel: {
     key: 'collapsed_tunnel',
-    landscape: 'collapsed_tunnel',
-    portrait: 'collapsed_tunnel',
+    landscape: 'collapsed_tunnel_landscape',
+    portrait: 'collapsed_tunnel_portrait',
     focus: { x: 340, y: 180 },
     textSafe: 'left',
     palette: DEFAULT_METRO_PALETTE,
@@ -119,8 +178,8 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
   },
   tunnel_camp: {
     key: 'tunnel_camp',
-    landscape: 'tunnel_camp',
-    portrait: 'tunnel_camp',
+    landscape: 'tunnel_camp_landscape',
+    portrait: 'tunnel_camp_portrait',
     focus: { x: 360, y: 180 },
     textSafe: 'left',
     palette: DEFAULT_METRO_PALETTE,
@@ -129,8 +188,8 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
   },
   surface_ruins: {
     key: 'surface_ruins',
-    landscape: 'surface_ruins',
-    portrait: 'surface_ruins',
+    landscape: 'surface_ruins_landscape',
+    portrait: 'surface_ruins_portrait',
     focus: { x: 320, y: 160 },
     textSafe: 'bottom',
     palette: DEFAULT_METRO_PALETTE,
@@ -139,8 +198,8 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
   },
   iron_saints_checkpoint: {
     key: 'iron_saints_checkpoint',
-    landscape: 'iron_saints_checkpoint',
-    portrait: 'iron_saints_checkpoint',
+    landscape: 'iron_saints_checkpoint_landscape',
+    portrait: 'iron_saints_checkpoint_portrait',
     focus: { x: 320, y: 180 },
     textSafe: 'right',
     palette: DEFAULT_METRO_PALETTE,
@@ -149,8 +208,8 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
   },
   glass_tower_gate: {
     key: 'glass_tower_gate',
-    landscape: 'glass_tower_gate',
-    portrait: 'glass_tower_gate',
+    landscape: 'glass_tower_gate_landscape',
+    portrait: 'glass_tower_gate_portrait',
     focus: { x: 320, y: 160 },
     textSafe: 'left',
     palette: DEFAULT_METRO_PALETTE,
@@ -159,8 +218,8 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
   },
   red_choir_chamber: {
     key: 'red_choir_chamber',
-    landscape: 'red_choir_chamber',
-    portrait: 'red_choir_chamber',
+    landscape: 'red_choir_chamber_landscape',
+    portrait: 'red_choir_chamber_portrait',
     focus: { x: 320, y: 180 },
     textSafe: 'bottom',
     palette: DEFAULT_METRO_PALETTE,
@@ -169,8 +228,8 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
   },
   surface_dawn: {
     key: 'surface_dawn',
-    landscape: 'surface_dawn',
-    portrait: 'surface_dawn',
+    landscape: 'surface_dawn_landscape',
+    portrait: 'surface_dawn_portrait',
     focus: { x: 320, y: 160 },
     textSafe: 'bottom',
     palette: DEFAULT_METRO_PALETTE,
@@ -179,8 +238,8 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
   },
   ruined_street: {
     key: 'ruined_street',
-    landscape: 'ruined_street',
-    portrait: 'ruined_street',
+    landscape: 'ruined_street_landscape',
+    portrait: 'ruined_street_portrait',
     focus: { x: 320, y: 180 },
     textSafe: 'left',
     palette: DEFAULT_METRO_PALETTE,
@@ -189,8 +248,8 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
   },
   saints_patrol: {
     key: 'saints_patrol',
-    landscape: 'saints_patrol',
-    portrait: 'saints_patrol',
+    landscape: 'saints_patrol_landscape',
+    portrait: 'saints_patrol_portrait',
     focus: { x: 300, y: 180 },
     textSafe: 'right',
     palette: DEFAULT_METRO_PALETTE,
@@ -199,8 +258,8 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
   },
   black_market_alley: {
     key: 'black_market_alley',
-    landscape: 'black_market_alley',
-    portrait: 'black_market_alley',
+    landscape: 'black_market_alley_landscape',
+    portrait: 'black_market_alley_portrait',
     focus: { x: 280, y: 180 },
     textSafe: 'right',
     palette: DEFAULT_METRO_PALETTE,
@@ -209,8 +268,8 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
   },
   glass_tower_lobby: {
     key: 'glass_tower_lobby',
-    landscape: 'glass_tower_lobby',
-    portrait: 'glass_tower_lobby',
+    landscape: 'glass_tower_lobby_landscape',
+    portrait: 'glass_tower_lobby_portrait',
     focus: { x: 320, y: 180 },
     textSafe: 'left',
     palette: DEFAULT_METRO_PALETTE,
@@ -219,8 +278,8 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
   },
   choir_broadcast_point: {
     key: 'choir_broadcast_point',
-    landscape: 'choir_broadcast_point',
-    portrait: 'choir_broadcast_point',
+    landscape: 'choir_broadcast_point_landscape',
+    portrait: 'choir_broadcast_point_portrait',
     focus: { x: 320, y: 160 },
     textSafe: 'bottom',
     palette: DEFAULT_METRO_PALETTE,
@@ -229,8 +288,8 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
   },
   archive_ruin_wall: {
     key: 'archive_ruin_wall',
-    landscape: 'archive_ruin_wall',
-    portrait: 'archive_ruin_wall',
+    landscape: 'archive_ruin_wall_landscape',
+    portrait: 'archive_ruin_wall_portrait',
     focus: { x: 320, y: 180 },
     textSafe: 'left',
     palette: DEFAULT_METRO_PALETTE,
@@ -239,8 +298,8 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
   },
   surface_night: {
     key: 'surface_night',
-    landscape: 'surface_night',
-    portrait: 'surface_night',
+    landscape: 'surface_night_landscape',
+    portrait: 'surface_night_portrait',
     focus: { x: 320, y: 160 },
     textSafe: 'bottom',
     palette: DEFAULT_METRO_PALETTE,
@@ -249,8 +308,8 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
   },
   last_archive_door: {
     key: 'last_archive_door',
-    landscape: 'last_archive_door',
-    portrait: 'last_archive_door',
+    landscape: 'last_archive_door_landscape',
+    portrait: 'last_archive_door_portrait',
     focus: { x: 320, y: 180 },
     textSafe: 'right',
     palette: DEFAULT_METRO_PALETTE,
@@ -259,8 +318,8 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
   },
   candle_market: {
     key: 'candle_market',
-    landscape: 'candle_market',
-    portrait: 'candle_market',
+    landscape: 'candle_market_landscape',
+    portrait: 'candle_market_portrait',
     focus: { x: 320, y: 180 },
     textSafe: 'left',
     palette: DEFAULT_METRO_PALETTE,
@@ -269,8 +328,8 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
   },
   bone_turnstile: {
     key: 'bone_turnstile',
-    landscape: 'bone_turnstile',
-    portrait: 'bone_turnstile',
+    landscape: 'bone_turnstile_landscape',
+    portrait: 'bone_turnstile_portrait',
     focus: { x: 320, y: 180 },
     textSafe: 'right',
     palette: DEFAULT_METRO_PALETTE,
@@ -279,8 +338,8 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
   },
   flooded_platform: {
     key: 'flooded_platform',
-    landscape: 'flooded_platform',
-    portrait: 'flooded_platform',
+    landscape: 'flooded_platform_landscape',
+    portrait: 'flooded_platform_portrait',
     focus: { x: 320, y: 180 },
     textSafe: 'left',
     palette: DEFAULT_METRO_PALETTE,
@@ -289,8 +348,8 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
   },
   nursery_of_knives: {
     key: 'nursery_of_knives',
-    landscape: 'nursery_of_knives',
-    portrait: 'nursery_of_knives',
+    landscape: 'nursery_of_knives_landscape',
+    portrait: 'nursery_of_knives_portrait',
     focus: { x: 300, y: 180 },
     textSafe: 'right',
     palette: DEFAULT_METRO_PALETTE,
@@ -299,8 +358,8 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
   },
   chalk_map_wall: {
     key: 'chalk_map_wall',
-    landscape: 'chalk_map_wall',
-    portrait: 'chalk_map_wall',
+    landscape: 'chalk_map_wall_landscape',
+    portrait: 'chalk_map_wall_portrait',
     focus: { x: 320, y: 180 },
     textSafe: 'right',
     palette: DEFAULT_METRO_PALETTE,
@@ -309,8 +368,8 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
   },
   rat_king_gate: {
     key: 'rat_king_gate',
-    landscape: 'rat_king_gate',
-    portrait: 'rat_king_gate',
+    landscape: 'rat_king_gate_landscape',
+    portrait: 'rat_king_gate_portrait',
     focus: { x: 320, y: 180 },
     textSafe: 'left',
     palette: DEFAULT_METRO_PALETTE,
@@ -319,8 +378,8 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
   },
   hidden_clinic: {
     key: 'hidden_clinic',
-    landscape: 'hidden_clinic',
-    portrait: 'hidden_clinic',
+    landscape: 'hidden_clinic_landscape',
+    portrait: 'hidden_clinic_portrait',
     focus: { x: 320, y: 180 },
     textSafe: 'right',
     palette: DEFAULT_METRO_PALETTE,
@@ -329,8 +388,8 @@ export const SCENE_MANIFEST: Record<string, SceneManifestEntry> = {
   },
   relic_engine_room: {
     key: 'relic_engine_room',
-    landscape: 'relic_engine_room',
-    portrait: 'relic_engine_room',
+    landscape: 'relic_engine_room_landscape',
+    portrait: 'relic_engine_room_portrait',
     focus: { x: 320, y: 180 },
     textSafe: 'bottom',
     palette: DEFAULT_METRO_PALETTE,
@@ -351,11 +410,20 @@ export function getSceneManifestEntry(key?: string): SceneManifestEntry {
 
 /**
  * Resolves the underlying image asset resource for Expo Image or Canvas rendering.
+ * Selects the orientation-specific variant with multiple fallback levels.
  */
 export function resolveSceneAsset(
   entry: SceneManifestEntry,
   orientation: 'landscape' | 'portrait'
 ): any {
-  const assetKey = orientation === 'landscape' ? entry.landscape : entry.portrait;
-  return SCENE_ASSET_REGISTRY[assetKey] || SCENE_ASSET_REGISTRY.ruined_metro_station;
+  const primaryKey = orientation === 'landscape' ? entry.landscape : entry.portrait;
+  return (
+    SCENE_ASSET_REGISTRY[primaryKey] ||
+    SCENE_ASSET_REGISTRY[`${entry.key}_${orientation}`] ||
+    SCENE_ASSET_REGISTRY[entry.key] ||
+    (orientation === 'landscape'
+      ? SCENE_ASSET_REGISTRY.ruined_metro_station_landscape
+      : SCENE_ASSET_REGISTRY.ruined_metro_station_portrait) ||
+    SCENE_ASSET_REGISTRY.ruined_metro_station
+  );
 }

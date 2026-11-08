@@ -110,11 +110,19 @@ export function probeFps(sampleFrames: number = 30): Promise<number> {
     return Promise.resolve(60);
   }
 
+  if (typeof document !== 'undefined' && document.hidden) {
+    return Promise.resolve(60);
+  }
+
   return new Promise((resolve) => {
     let frameCount = 0;
     let startTime = performance.now();
 
     const loop = (now: number) => {
+      if (typeof document !== 'undefined' && document.hidden) {
+        resolve(60);
+        return;
+      }
       frameCount++;
       if (frameCount >= sampleFrames) {
         const elapsed = now - startTime;
