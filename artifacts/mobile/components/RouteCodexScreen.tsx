@@ -17,6 +17,8 @@ import { useGame } from '../context/GameContext';
 import { ENDINGS, ENDING_CATEGORIES, CANONICAL_CATEGORIES, EndingDefinition } from '../data/story/endings';
 import { getBackgroundImage, getBackgroundGradient } from '../constants/images';
 import { BACKGROUNDS, CLASSES } from '../data/characterOptions';
+import { CinematicView } from './scene/CinematicView';
+import { getEndingLoopTimeline } from '../data/cinematics/endingLoops';
 
 // ─── Palette ──────────────────────────────────────────────────────────────────
 
@@ -660,23 +662,21 @@ function EndingsTab() {
               </View>
 
               <View style={styles.modalArtContainer}>
-                {discoveredSet.has(inspectedEnding.id) && inspectedEnding.imageKey && getBackgroundImage(inspectedEnding.imageKey) ? (
-                  <Image source={getBackgroundImage(inspectedEnding.imageKey)} style={styles.modalImage} resizeMode="cover" />
+                {discoveredSet.has(inspectedEnding.id) ? (
+                  <CinematicView
+                    timeline={getEndingLoopTimeline(inspectedEnding.category as any, inspectedEnding.imageKey)}
+                    showSkipButton={false}
+                    style={styles.modalImage}
+                  />
                 ) : (
                   <LinearGradient
-                    colors={
-                      (discoveredSet.has(inspectedEnding.id)
-                        ? getBackgroundGradient(inspectedEnding.imageKey || inspectedEnding.category).colors
-                        : ['#161524', '#090910']) as any
-                    }
+                    colors={['#161524', '#090910'] as any}
                     style={styles.modalImage}
                   >
-                    {!discoveredSet.has(inspectedEnding.id) && (
-                      <View style={styles.modalLockedOverlay}>
-                        <Feather name="lock" size={36} color="#6a5e50" />
-                        <Text style={styles.modalLockedNotice}>UNDISCOVERED ENDING</Text>
-                      </View>
-                    )}
+                    <View style={styles.modalLockedOverlay}>
+                      <Feather name="lock" size={36} color="#6a5e50" />
+                      <Text style={styles.modalLockedNotice}>UNDISCOVERED ENDING</Text>
+                    </View>
                   </LinearGradient>
                 )}
               </View>

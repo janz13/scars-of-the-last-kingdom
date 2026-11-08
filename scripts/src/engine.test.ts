@@ -143,6 +143,23 @@ const {
   midiToFreq,
 } = require('../../artifacts/mobile/logic/music/voices.ts');
 
+const {
+  CinematicPlayer,
+} = require('../../artifacts/mobile/engine/pixel/cinematicPlayer.ts');
+
+const {
+  INTRO_BLACKOUT_TIMELINE,
+} = require('../../artifacts/mobile/data/cinematics/introBlackout.ts');
+
+const {
+  ENDING_LOOP_TIMELINES,
+  getEndingLoopTimeline,
+} = require('../../artifacts/mobile/data/cinematics/endingLoops.ts');
+
+const {
+  TRAILER_75S_TIMELINE,
+} = require('../../artifacts/mobile/data/cinematics/trailerTimeline.ts');
+
 let passedTests = 0;
 let failedTests = 0;
 
@@ -1064,6 +1081,41 @@ assert(getUnlockedChapters(unlockedViaArchive).includes('Epilogue'), 'Epilogue u
 const epiJumpState = getChapterInitialState('Epilogue');
 assert(epiJumpState.currentNodeId === 'epi_01', 'Epilogue jump state starts at epi_01');
 assert(epiJumpState.flags.velna_coordinates === true, 'Epilogue jump state sets velna_coordinates flag');
+
+// ============================================================================
+// SUITE 17: WAVE 6 — CINEMATICS & OFFLINE TRAILER PIPELINE
+// ============================================================================
+console.log('\n--- Suite 17: Wave 6 Cinematics & Offline Trailer Pipeline ---');
+
+assert(INTRO_BLACKOUT_TIMELINE.totalDurationSec === 36, 'INTRO_BLACKOUT_TIMELINE is 36 seconds long');
+assert(INTRO_BLACKOUT_TIMELINE.shots.length === 6, 'INTRO_BLACKOUT_TIMELINE has 6 shots');
+
+const introPlayer = new CinematicPlayer(INTRO_BLACKOUT_TIMELINE);
+introPlayer.play();
+const f0 = introPlayer.evaluateAt(2);
+assert(f0.shotIndex === 0, 'At t=2s, Intro player is on shot 0 (skyline pre-collapse)');
+assert(Boolean(f0.activeTitleCard), 'At t=2s, Intro shot 0 displays title card');
+
+const f3 = introPlayer.evaluateAt(19);
+assert(f3.shotIndex === 3, 'At t=19s, Intro player is on shot 3 (first Hollow rising)');
+assert(Number.isInteger(f3.panOffset.x) && Number.isInteger(f3.panOffset.y), 'CinematicPlayer camera pan offsets are integer-snapped');
+
+const fEnd = introPlayer.step(36);
+assert(fEnd.isComplete === true, 'Non-looping Intro timeline completes at t=36s');
+
+// Verify all 10 ending loop timelines
+const endingCategories = ['death', 'betrayal', 'corruption', 'savior', 'sacrifice', 'tyrant', 'companion', 'faction', 'secret', 'wanderer'];
+for (const cat of endingCategories) {
+  const tl = getEndingLoopTimeline(cat, 'ending_savior');
+  assert(tl.loop === true && tl.totalDurationSec === 8, `Ending loop timeline for "${cat}" loops every 8s`);
+  const loopPlayer = new CinematicPlayer(tl);
+  loopPlayer.play();
+  const loopFrame = loopPlayer.step(9.5);
+  assert(loopFrame.isComplete === false && loopFrame.elapsedSec < 8, `Looping ending timeline for "${cat}" wraps around cleanly`);
+}
+
+assert(TRAILER_75S_TIMELINE.totalDurationSec === 75, 'TRAILER_75S_TIMELINE is 75 seconds long');
+assert(TRAILER_75S_TIMELINE.shots.length === 10, 'TRAILER_75S_TIMELINE has 10 shots');
 
 console.log(`\n========================================`);
 console.log(`TOTAL TESTS: ${passedTests + failedTests}`);

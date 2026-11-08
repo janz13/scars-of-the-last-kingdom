@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import Animated, {
   interpolate,
@@ -17,6 +17,9 @@ import { useGame } from '../context/GameContext';
 import { getEndingById, ENDINGS } from '../data/endings';
 import { MOTION_SPRINGS } from '../constants/motion';
 import { sound } from '../logic/audioEngine';
+import { CinematicView } from './scene/CinematicView';
+import { getEndingLoopTimeline } from '../data/cinematics/endingLoops';
+import { exportEndingClip, isClipExportSupported } from '../logic/clipExporter';
 
 const CHAPTER_END_DATA = {
   id: 'chapter1_end',
@@ -42,6 +45,7 @@ const ENDING_ICONS: Record<string, string> = {
 
 export default function EndingScreen() {
   const { state, setScreen, deleteAndReset } = useGame();
+  const [exportStatus, setExportStatus] = useState<'idle' | 'recording' | 'done' | 'error'>('idle');
   const insets = useSafeAreaInsets();
   const { activeEnding, endingsDiscovered, routeHistory } = state;
 
@@ -259,6 +263,29 @@ export default function EndingScreen() {
             <View style={[styles.separatorLine, { backgroundColor: `${accentColor}30` }]} />
           </View>
 
+          {/* Ending Cinematic Loop (Wave 6) */}
+          {ending?.type && (
+            <View
+              style={{
+                width: '100%',
+                height: 200,
+                borderRadius: 8,
+                overflow: 'hidden',
+                borderWidth: 1,
+                borderColor: `${accentColor}44`,
+                marginBottom: 22,
+              }}
+              testID="ending-cinematic-loop"
+            >
+              <CinematicView
+                timeline={getEndingLoopTimeline(ending.type)}
+                compact={true}
+                height={200}
+                corruption={state.stats.corruption}
+              />
+            </View>
+          )}
+
           {/* Description */}
           <Text style={styles.endingText}>{ending?.description ?? ''}</Text>
 
@@ -333,6 +360,33 @@ export default function EndingScreen() {
                   color="#1abc9c"
                   onPress={() => setScreen('routeCodex')}
                 />
+                {isClipExportSupported() && ending && (
+                  <EndingButton
+                    label={
+                      exportStatus === 'recording'
+                        ? 'RENDERING 1080P CLIP...'
+                        : exportStatus === 'done'
+                          ? 'CLIP SAVED / SHARED!'
+                          : 'SHARE ENDING CLIP'
+                    }
+                    icon="video"
+                    color="#c9a84c"
+                    onPress={async () => {
+                      if (exportStatus === 'recording') return;
+                      setExportStatus('recording');
+                      const res = await exportEndingClip({
+                        endingId: ending.id,
+                        endingTitle: ending.title,
+                        endingSubtitle: ending.subtitle ?? 'ENDING',
+                        endingType: ending.type,
+                        accentColor,
+                        choicesCount: routeHistory.length,
+                        durationMs: 4000,
+                      });
+                      setExportStatus(res.success ? 'done' : 'error');
+                    }}
+                  />
+                )}
               </>
             )}
 

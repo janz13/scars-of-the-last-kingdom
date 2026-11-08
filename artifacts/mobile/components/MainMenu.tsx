@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Modal, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, {
   interpolate,
   useAnimatedStyle,
@@ -20,12 +20,15 @@ import { CLASSES } from '../data/characterOptions';
 import { getStorySummary } from '../logic/storyValidator';
 import { APP_VERSION } from '../constants/version';
 import { MOTION_SPRINGS } from '../constants/motion';
+import { CinematicView } from './scene/CinematicView';
+import { INTRO_BLACKOUT_TIMELINE } from '../data/cinematics/introBlackout';
 
 const _summary = getStorySummary();
 const FOOTER_STATS = `${_summary.totalNodes} NODES  ·  ${ENDINGS.length} ENDINGS  ·  ${CLASSES.length} CLASSES`;
 
 export default function MainMenu() {
   const { hasSaveGame, continueGame, setScreen, state } = useGame();
+  const [showIntroModal, setShowIntroModal] = useState(false);
   const insets = useSafeAreaInsets();
   const topPad = Platform.OS === 'web' ? 67 : insets.top;
   const botPad = Platform.OS === 'web' ? 34 : insets.bottom;
@@ -191,6 +194,14 @@ export default function MainMenu() {
 
           <AnimatedMenuButton
             anim={nextAnim()}
+            label="REPLAY INTRO: THE BLACKOUT"
+            icon="film"
+            color="#c9a84c"
+            onPress={() => setShowIntroModal(true)}
+          />
+
+          <AnimatedMenuButton
+            anim={nextAnim()}
             label="CREDITS"
             icon="star"
             color="#8a7a60"
@@ -216,6 +227,24 @@ export default function MainMenu() {
           <View style={styles.footerLine} />
         </Animated.View>
       </View>
+
+      {showIntroModal && (
+        <Modal
+          visible={true}
+          animationType="fade"
+          transparent={false}
+          onRequestClose={() => setShowIntroModal(false)}
+        >
+          <View style={{ flex: 1, backgroundColor: '#05040a' }}>
+            <CinematicView
+              timeline={INTRO_BLACKOUT_TIMELINE}
+              showSkipButton={true}
+              skipLabel="SKIP INTRO"
+              onComplete={() => setShowIntroModal(false)}
+            />
+          </View>
+        </Modal>
+      )}
     </LinearGradient>
   );
 }
