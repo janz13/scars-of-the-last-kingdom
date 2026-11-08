@@ -1,4 +1,6 @@
 import type { StoryNode } from '../types';
+import { ENABLE_EXPANSION } from '../../constants/featureFlags';
+import { MB3_NODES } from './branches/mb3';
 
 // ══════════════════════════════════════════════════════════════════════════════
 //  CHAPTER 8 — HUNGER WAR
@@ -2058,6 +2060,15 @@ export const CHAPTER_8_NODES: StoryNode[] = [
         text: 'Continue to the Bridge.',
         nextNode: 'c8_bridge_crowds',
       },
+      ...(ENABLE_EXPANSION
+        ? [
+            {
+              id: 'c8_enter_mb3_ledger',
+              text: 'Detour to the Junction Twelve Grain Vault before the midnight hoppers drop.',
+              nextNode: 'mb3_01',
+            },
+          ]
+        : []),
     ],
   },
 
@@ -2389,4 +2400,5 @@ export const CHAPTER_8_NODES: StoryNode[] = [
     endingType: 'death',
   },
 
+  ...(ENABLE_EXPANSION ? MB3_NODES : []),
 ];

@@ -1,4 +1,6 @@
 import type { StoryNode } from '../types';
+import { ENABLE_EXPANSION } from '../../constants/featureFlags';
+import { MB1_NODES } from './branches/mb1';
 
 // ══════════════════════════════════════════════════════════════════════════════
 //  CHAPTER 3 — CHILDREN OF THE TUNNELS
@@ -2021,7 +2023,17 @@ export const CHAPTER_3_NODES: StoryNode[] = [
         text: 'Follow the mark deeper. The surface has more to show you.',
         nextNode: 'chapter4_start',
       },
+      ...(ENABLE_EXPANSION
+        ? [
+            {
+              id: 'c3_enter_mb1_census',
+              text: 'Before climbing to the surface, inspect the yellow chalk tally at Pillar 14.',
+              nextNode: 'mb1_01',
+            },
+          ]
+        : []),
     ],
   },
 
+  ...(ENABLE_EXPANSION ? MB1_NODES : []),
 ];

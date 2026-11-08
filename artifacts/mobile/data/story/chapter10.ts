@@ -1,4 +1,6 @@
 import type { StoryNode } from '../types';
+import { ENABLE_EXPANSION } from '../../constants/featureFlags';
+import { MB4_NODES } from './branches/mb4';
 
 // ══════════════════════════════════════════════════════════════════════════════
 //  CHAPTER 10 — BROKEN COMPANIONS
@@ -2706,6 +2708,15 @@ export const CHAPTER_10_NODES: StoryNode[] = [
         text: 'Descend into the City Beneath the City. The mark points down.',
         nextNode: 'chapter11_start',
       },
+      ...(ENABLE_EXPANSION
+        ? [
+            {
+              id: 'c10_enter_mb4_broadcast',
+              text: 'Climb to the civil-defense signal mast on Sector 10 Ridge where the mercury tubes are glowing.',
+              nextNode: 'mb4_01',
+            },
+          ]
+        : []),
     ],
   },
 
@@ -2960,4 +2971,5 @@ export const CHAPTER_10_NODES: StoryNode[] = [
     endingType: 'secret',
   },
 
+  ...(ENABLE_EXPANSION ? MB4_NODES : []),
 ];

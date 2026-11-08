@@ -104,6 +104,12 @@ function ChapterCard({
             {entry.nodeCount !== undefined && (
               <Text style={styles.nodeCount}>{entry.nodeCount} nodes</Text>
             )}
+            {entry.branchBadge && (
+              <View style={[styles.completeBadge, { borderColor: ACCENT_ORANGE + '66', backgroundColor: ACCENT_ORANGE + '18' }]}>
+                <Feather name="git-branch" size={10} color={ACCENT_ORANGE} />
+                <Text style={[styles.completeText, { color: ACCENT_ORANGE }]}>{entry.branchBadge}</Text>
+              </View>
+            )}
           </View>
           <Text style={styles.cardTitle}>{entry.title}</Text>
           <Text style={styles.cardSubtitle}>"{entry.subtitle}"</Text>

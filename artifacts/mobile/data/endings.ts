@@ -1,4 +1,5 @@
 import type { EndingType } from './types';
+import { ENABLE_EXPANSION } from '../constants/featureFlags';
 
 export interface EndingDefinition {
   id: string;
@@ -3031,6 +3032,200 @@ export const ENDINGS: EndingDefinition[] = [
     chapter: 'Final Chapter',
     isSecret: true,
   },
+
+  ...(ENABLE_EXPANSION
+    ? ([
+        // ── Mid-Game Branch 1: The Census of Small Names (Chapter 3) ─────────
+        {
+          id: 'ending_mb1_chalk_and_ash',
+          title: 'Chalk and Ash',
+          type: 'sacrifice',
+          subtitle: 'Branch 1 — The Census of Small Names',
+          description:
+            "You jammed the cast-iron sluice wheel in the dry gallery while Mael led thirty-two children under the weir. Two days later, in a dry pipe under Sector Seven, Talla writes a four-hundred-and-thirteenth name at the top of the yellow chalk column.",
+          color: '#c9a84c',
+          hint: 'Protect the oilcloth census in Chapter 3, draw Sergeant Krell into the dry gallery, and hold the sluice wheel until the line clears.',
+          chapter: 'Chapter 3',
+        },
+        {
+          id: 'ending_mb1_price_of_a_name',
+          title: 'The Price of a Name',
+          type: 'betrayal',
+          subtitle: 'Branch 1 — The Census of Small Names',
+          description:
+            "You traded Mael's stitched oilcloth census to Sergeant Krell for a warm billet above the grate and Commander Varr's counter-signature in red ink. Your stove has coal all winter, though the yellow chalk dust never quite washes out from under your fingernails.",
+          color: '#8e1c1c',
+          hint: 'Sell the oilcloth census to Sergeant Krell at the east grate and accept his permanent billet in the Ration Registry.',
+          chapter: 'Chapter 3',
+        },
+
+        // ── Mid-Game Branch 2: Velna's Trail (Chapter 6) ─────────────────────
+        {
+          id: 'ending_mb2_static_hymn',
+          title: 'Static Hymn',
+          type: 'corruption',
+          subtitle: "Branch 2 — Velna's Trail",
+          description:
+            'In Survey Camp Nine below Sluice 19, you opened the receiver gain all the way and locked your transmitter key closed. Months later, Red Choir operators hear two voices braided together forty kilohertz below their evening liturgy—reading rock densities and keeping the line open.',
+          color: '#6c3483',
+          hint: "Follow Velna's twin-lead wire in Chapter 6, open the deep receiver gain, and stay on the carrier line.",
+          chapter: 'Chapter 6',
+        },
+        {
+          id: 'ending_mb2_left_the_light_on',
+          title: 'Left the Light On',
+          type: 'wanderer',
+          subtitle: "Branch 2 — Velna's Trail",
+          description:
+            "You followed Velna's second copper chart down four miles of dry brick aqueduct past the city boundary into the clean rain of the western valley—leaving her trickle-charged orange lantern burning on its hook for anyone else who decides the city has taken enough.",
+          color: '#7f8c8d',
+          hint: "Discover the western inspection hatch in Velna's survey camp and walk out through the dry aqueduct.",
+          chapter: 'Chapter 6',
+        },
+
+        // ── Mid-Game Branch 3: The Grain Ledger (Chapter 8) ──────────────────
+        {
+          id: 'ending_mb3_full_bellies_empty_streets',
+          title: 'Full Bellies, Empty Streets',
+          type: 'faction',
+          subtitle: 'Branch 3 — The Grain Ledger',
+          description:
+            'You locked the master allocation card into the Junction Twelve scale-loom for your chosen faction and sealed the lower Warrens blast doors. By the third week of winter, the barracks smell of fresh soup and the lower corridors are spotless and completely silent.',
+          color: '#2c3e50',
+          hint: 'Route the full forty-ton grain reserve to the Iron Saints or Glass Court at Junction Twelve and enforce the closure.',
+          chapter: 'Chapter 8',
+        },
+        {
+          id: 'ending_mb3_bread_riot',
+          title: 'The Bread Riot',
+          type: 'death',
+          subtitle: 'Branch 3 — The Grain Ledger',
+          description:
+            'When the dumped silo chutes threw up a blinding wall of suspended wheat dust, a single rifle flash ignited the dock. The four-second flash fire left warm roasted grain drifted like golden snow—and the two Warrens runners you shielded scrambling safely under the turnstile.',
+          color: '#8e1c1c',
+          hint: 'Smash the brass pin-reader at Junction Twelve and leap down to shield the Warrens runners when the flour dust ignites.',
+          chapter: 'Chapter 8',
+        },
+        {
+          id: 'ending_mb3_nobody_starves_tonight',
+          title: 'Nobody Starves Tonight',
+          type: 'savior',
+          subtitle: 'Branch 3 — The Grain Ledger',
+          description:
+            'Through three razor-thin checks—punching the staggered four-gate plate, freeing the Belt D clutch over a thirty-foot drop, and calling the tonnage truce from the weigh-house horn—all four conveyors ran at midnight without a single shot fired.',
+          color: '#27ae60',
+          hint: 'Succeed on all three consecutive skill checks (Intelligence, Agility, Charisma) at the Junction Twelve scale-hopper and accept the joint warrant as Steward of the Scales.',
+          chapter: 'Chapter 8',
+          isSecret: true,
+        },
+
+        // ── Mid-Game Branch 4: The Last Broadcast (Chapter 10) ───────────────
+        {
+          id: 'ending_mb4_every_radio_in_the_city',
+          title: 'Every Radio in the City',
+          type: 'secret',
+          subtitle: 'Branch 4 — The Last Broadcast',
+          description:
+            "You held the civil-defense mast on Sector 10 Ridge while Director Kael's original wax cylinder played across fifty kilowatts of night air. By noon, checkpoints unbolt their turnstiles and a city without lies tries to figure out how to survive the afternoon.",
+          color: '#c9a84c',
+          hint: "Defend the antenna feed in Studio B until Kael's wax cylinder airs and wire it to repeat on an endless loop.",
+          chapter: 'Chapter 10',
+          isSecret: true,
+        },
+        {
+          id: 'ending_mb4_voice_of_the_crown',
+          title: 'The Voice of the Crown',
+          type: 'tyrant',
+          subtitle: 'Branch 4 — The Last Broadcast',
+          description:
+            'You crushed the amber wax cylinder, bolted Studio B from the inside, and took the fifty-kilowatt microphone for yourself. Every evening at six, eighty thousand people stop with their spoons halfway to their mouths to hear which sectors have earned water pressure for the night.',
+          color: '#c0392b',
+          hint: 'Smash the wax cylinder in Studio B, seize the fifty-kilowatt transmitter, and make the signal tower your throne.',
+          chapter: 'Chapter 10',
+        },
+        {
+          id: 'ending_mb4_off_the_air',
+          title: 'Off the Air',
+          type: 'companion',
+          subtitle: 'Branch 4 — The Last Broadcast',
+          description:
+            'You pulled the master knife-switch on the mercury-arc rectifiers, letting the strike teams withdraw down the ridge. Sixty feet above the sleet on the sheltered east balcony, two people sit by a coal brazier listening to nothing louder than the kettle coming to a boil.',
+          color: '#e67e22',
+          hint: 'Cut the mercury-arc power before the mortar crews range the roof and stay on the sheltered balcony with your companion.',
+          chapter: 'Chapter 10',
+        },
+
+        // ── Epilogue: The Response (Post-FC2) ────────────────────────────────
+        {
+          id: 'ending_epilogue_yes_were_here',
+          title: "Yes, We're Here",
+          type: 'savior',
+          subtitle: 'Epilogue — The Response',
+          description:
+            'In the Answer Chamber beneath Sub-Level 16, you pressed your palm to the mercury bridge with Mira, Cain, and Velna beside you—sending a bounded human reply. Across the city above, the surviving copper bus bars warm by three degrees at a voltage human wire can carry.',
+          color: '#27ae60',
+          hint: 'Reach the Answer Chamber in the Epilogue and send the honest, bounded human signal: "Yes, We\'re Here."',
+          chapter: 'Epilogue',
+        },
+        {
+          id: 'ending_epilogue_no_one_is_left',
+          title: 'No One Is Left',
+          type: 'sacrifice',
+          subtitle: 'Epilogue — The Response',
+          description:
+            'You inverted the phase on Velna\'s oscillator and sent a dead-line termination code down the shaft. Every relic shard in the city cooled to ordinary slate and your wrist mark grounded out into a pale white scar—leaving humanity to rebuild with coal and iron, completely free.',
+          color: '#e67e22',
+          hint: 'Send the phase-inverted dead-line termination packet in the Answer Chamber so the deep structure seals itself forever.',
+          chapter: 'Epilogue',
+        },
+        {
+          id: 'ending_epilogue_velna_answers',
+          title: 'Velna Answers',
+          type: 'companion',
+          subtitle: 'Epilogue — The Response',
+          description:
+            'You held the outer resistor bus for eleven seconds while Velna poured eighteen hundred days of recorded human notes, weather tables, and Warrens names into the stone. Her voice was left in the rock, but she sits by the window of Mira\'s surface clinic watching the snow melt off quiet roofs.',
+          color: '#e67e22',
+          hint: 'Hold the outer bridge in the Answer Chamber and let Velna transmit her five-year Archive record.',
+          chapter: 'Epilogue',
+        },
+        {
+          id: 'ending_epilogue_second_question',
+          title: 'The Second Question',
+          type: 'secret',
+          subtitle: 'Epilogue — The Response',
+          description:
+            'Instead of answering the compliance check, you keyed the Last Archive Founders\' counterfactual query back down the line. Seventeen seconds later, the mercury parted into a pre-glacial continental map showing Station Seven of twenty—and the other nineteen stations just heard you pick up the line.',
+          color: '#c9a84c',
+          hint: 'With Intelligence ≥ 13, key the Archive Founders\' diagnostic query into the Answer Chamber terminal.',
+          chapter: 'Epilogue',
+          isSecret: true,
+        },
+        {
+          id: 'ending_epilogue_mark_goes_quiet',
+          title: 'The Mark Goes Quiet',
+          type: 'wanderer',
+          subtitle: 'Epilogue — The Response',
+          description:
+            'You drove the bronze grounding bar straight through the mercury bridge, dropping forty feet of dry basalt counterweights across the Sub-Level 16 shaft without sending a reply. By the top of the spiral stair, your left wrist is just skin again—beating only at the speed of your own heart.',
+          color: '#7f8c8d',
+          hint: 'Throw the manual bronze shunt bar in the Answer Chamber to sever the secondary conductors without replying.',
+          chapter: 'Epilogue',
+        },
+        {
+          id: 'ending_epilogue_chorus',
+          title: 'Chorus',
+          type: 'corruption',
+          subtitle: 'Epilogue — The Response',
+          description:
+            'With the signal lattice fully awake in your nerves, you stepped into the mineral pool under the basalt pipes and closed the forty-one-hour interval forever. Up in the metro tunnels, the horn speakers stop hissing static and hum a warm, steady fifth that keeps the frost off the rails all winter.',
+          color: '#6c3483',
+          hint: 'Reach the Answer Chamber with Corruption ≥ 80 and step into the mercury channel to become the permanent carrier.',
+          chapter: 'Epilogue',
+          isSecret: true,
+        },
+      ] as EndingDefinition[])
+    : []),
 ];
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────

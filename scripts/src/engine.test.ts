@@ -70,6 +70,15 @@ const {
 } = require('../../artifacts/mobile/data/story/index.ts');
 
 const {
+  STORY_NODES: ALL_STORY_NODES,
+  getNodeById: getSyncNodeById,
+} = require('../../artifacts/mobile/data/story/allNodesSync.ts');
+
+const {
+  ENABLE_EXPANSION,
+} = require('../../artifacts/mobile/constants/featureFlags.ts');
+
+const {
   computeViewportScale,
   computeFocalShift,
   getOrientation,
@@ -744,7 +753,8 @@ console.log('\n--- 10. Testing declarative conditional endings (F-CONT-04 & F-CO
 // ─── 11. Testing story endings and canonical categories (F-CONT-05) ─────────
 console.log('\n--- 11. Testing story endings and canonical categories (F-CONT-05) ---');
 {
-  assert(Array.isArray(STORY_ENDINGS) && STORY_ENDINGS.length === 228, 'STORY_ENDINGS length is exactly 228');
+  const expectedEndingCount = ENABLE_EXPANSION ? 244 : 228;
+  assert(Array.isArray(STORY_ENDINGS) && STORY_ENDINGS.length === expectedEndingCount, `STORY_ENDINGS length is exactly ${expectedEndingCount}`);
   assert(Array.isArray(STORY_ENDING_CATEGORIES) && STORY_ENDING_CATEGORIES.length === 8, 'STORY_ENDING_CATEGORIES array has 8 canonical categories');
   assert(STORY_ENDING_CATEGORIES['death'] !== undefined && STORY_ENDING_CATEGORIES['secret'] !== undefined, 'STORY_ENDING_CATEGORIES supports dictionary lookup');
 
@@ -1012,6 +1022,48 @@ assert(seq.getMusicMode() === 'adaptive', 'MusicSequencer switches back to adapt
 
 const totalTrailerSec = TRAILER_75S_ARRANGEMENT.reduce((acc: number, s: any) => acc + s.durationSec, 0);
 assert(totalTrailerSec === 75, `TRAILER_75S_ARRANGEMENT totals exactly 75 seconds (found ${totalTrailerSec}s)`);
+
+// ============================================================================
+// SUITE 16: WAVE 5 — STORY EXPANSION (MB1–MB4, EPILOGUE, 244 ENDINGS, 169 SCENES)
+// ============================================================================
+console.log('\n--- Suite 16: Wave 5 Story Expansion (MB1–MB4, Epilogue, 244 Endings, 169 Scenes) ---');
+
+assert(Object.keys(SCENE_MANIFEST).length === 169, `SCENE_MANIFEST has all 169 scenes (found ${Object.keys(SCENE_MANIFEST).length})`);
+assert(ALL_STORY_NODES.length === 1635, `ALL_STORY_NODES has 1,635 total nodes (found ${ALL_STORY_NODES.length})`);
+
+// Verify MB1..MB4 and Epilogue entry/exit nodes exist
+for (const nid of ['mb1_01', 'mb1_29', 'mb1_30', 'mb2_01', 'mb2_34', 'mb2_35', 'mb3_01', 'mb3_33', 'mb3_34', 'mb3_35', 'mb4_01', 'mb4_28', 'mb4_29', 'mb4_30', 'epi_01', 'epi_55', 'epi_56', 'epi_57', 'epi_58', 'epi_59', 'epi_60']) {
+  assert(Boolean(getSyncNodeById(nid)), `Expansion story node ${nid} exists in story graph`);
+}
+
+// Verify Epilogue unlock rule in getUnlockedChapters
+const lockedEpiState = {
+  currentNodeId: 'prologue_start',
+  routeHistory: [],
+  endingsDiscovered: ['ending_fc2_gate_madness'], // death ending shouldn't unlock
+  flags: { velna_coordinates: true },
+  factionRep: { ironSaints: 0, glassCourt: 0, hollowChildren: 0, redChoir: 0, lastArchive: 0 },
+};
+assert(!getUnlockedChapters(lockedEpiState).includes('Epilogue'), 'Epilogue stays locked if only FC2 death ending discovered');
+
+const unlockedViaVelna = {
+  ...lockedEpiState,
+  endingsDiscovered: ['ending_fc2_city_opened_wastes'],
+  flags: { velna_coordinates: true },
+};
+assert(getUnlockedChapters(unlockedViaVelna).includes('Epilogue'), 'Epilogue unlocks with non-death FC2 ending + velna_coordinates');
+
+const unlockedViaArchive = {
+  ...lockedEpiState,
+  endingsDiscovered: ['ending_last_kingdom_remembers'],
+  flags: {},
+  factionRep: { ironSaints: 0, glassCourt: 0, hollowChildren: 0, redChoir: 0, lastArchive: 75 },
+};
+assert(getUnlockedChapters(unlockedViaArchive).includes('Epilogue'), 'Epilogue unlocks with non-death FC2 ending + lastArchive >= 70');
+
+const epiJumpState = getChapterInitialState('Epilogue');
+assert(epiJumpState.currentNodeId === 'epi_01', 'Epilogue jump state starts at epi_01');
+assert(epiJumpState.flags.velna_coordinates === true, 'Epilogue jump state sets velna_coordinates flag');
 
 console.log(`\n========================================`);
 console.log(`TOTAL TESTS: ${passedTests + failedTests}`);

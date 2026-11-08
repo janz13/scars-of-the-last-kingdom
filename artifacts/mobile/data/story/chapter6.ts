@@ -1,4 +1,6 @@
 import type { StoryNode } from '../types';
+import { ENABLE_EXPANSION } from '../../constants/featureFlags';
+import { MB2_NODES } from './branches/mb2';
 
 // ══════════════════════════════════════════════════════════════════════════════
 //  CHAPTER 6 — THE RED CHOIR
@@ -2313,6 +2315,15 @@ export const CHAPTER_6_NODES: StoryNode[] = [
         text: 'Follow the Archive signal. The deepest truth lies ahead.',
         nextNode: 'chapter7_start',
       },
+      ...(ENABLE_EXPANSION
+        ? [
+            {
+              id: 'c6_enter_mb2_velna',
+              text: 'Investigate the sub-carrier pulse forty kilohertz below the Choir repeater.',
+              nextNode: 'mb2_01',
+            },
+          ]
+        : []),
     ],
   },
 
@@ -2488,4 +2499,5 @@ export const CHAPTER_6_NODES: StoryNode[] = [
     endingId: 'ending_ch6_psychic_memory',
     isSecret: true,
   } as StoryNode & { isSecret?: boolean },
+  ...(ENABLE_EXPANSION ? MB2_NODES : []),
 ];

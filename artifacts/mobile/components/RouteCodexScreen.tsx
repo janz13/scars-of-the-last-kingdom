@@ -480,6 +480,12 @@ function EndingsTab() {
 
   const filteredEndings = useMemo(() => {
     if (selectedCategory === 'all') return ENDINGS;
+    if (selectedCategory === 'branches') {
+      return ENDINGS.filter((e) => e.id.startsWith('ending_mb'));
+    }
+    if (selectedCategory === 'epilogue') {
+      return ENDINGS.filter((e) => e.id.startsWith('ending_epilogue_'));
+    }
     return ENDINGS.filter((e) => e.category === selectedCategory);
   }, [selectedCategory]);
 
@@ -518,6 +524,24 @@ function EndingsTab() {
         >
           <Text style={[styles.categoryPillText, selectedCategory === 'all' && styles.categoryPillTextActive]}>
             ALL ({totalEndings})
+          </Text>
+        </Pressable>
+        <Pressable
+          style={[styles.categoryPill, selectedCategory === 'branches' && styles.categoryPillActive]}
+          onPress={() => setSelectedCategory('branches')}
+        >
+          <Feather name="git-branch" size={11} color={selectedCategory === 'branches' ? GOLD : MUTED} style={{ marginRight: 4 }} />
+          <Text style={[styles.categoryPillText, selectedCategory === 'branches' && styles.categoryPillTextActive]}>
+            BRANCHES ({ENDINGS.filter((e) => e.id.startsWith('ending_mb') && discoveredSet.has(e.id)).length}/{ENDINGS.filter((e) => e.id.startsWith('ending_mb')).length})
+          </Text>
+        </Pressable>
+        <Pressable
+          style={[styles.categoryPill, selectedCategory === 'epilogue' && styles.categoryPillActive]}
+          onPress={() => setSelectedCategory('epilogue')}
+        >
+          <Feather name="radio" size={11} color={selectedCategory === 'epilogue' ? GOLD : MUTED} style={{ marginRight: 4 }} />
+          <Text style={[styles.categoryPillText, selectedCategory === 'epilogue' && styles.categoryPillTextActive]}>
+            EPILOGUE ({ENDINGS.filter((e) => e.id.startsWith('ending_epilogue_') && discoveredSet.has(e.id)).length}/{ENDINGS.filter((e) => e.id.startsWith('ending_epilogue_')).length})
           </Text>
         </Pressable>
         {CANONICAL_CATEGORIES.map((cat) => {

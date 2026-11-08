@@ -163,11 +163,12 @@ for (const ch of expectedChapters) {
 // ─── 7. IMAGE KEY VALIDATION ─────────────────────────────────────────────────
 console.log('🔍 [7/17] Image keys...');
 const usedImageKeys = new Set<string>();
+const sceneManifestKeySet = new Set(Object.keys(SCENE_MANIFEST));
 for (const node of STORY) {
   if (node.imageKey) {
     usedImageKeys.add(node.imageKey);
-    if (!IMAGE_KEYS.has(node.imageKey))
-      issues.push({ severity: 'warning', category: 'story-missing-image', location: node.id, message: `imageKey "${node.imageKey}" is not registered in BACKGROUND_IMAGES` });
+    if (!IMAGE_KEYS.has(node.imageKey) && !sceneManifestKeySet.has(node.imageKey))
+      issues.push({ severity: 'warning', category: 'story-missing-image', location: node.id, message: `imageKey "${node.imageKey}" is not registered in BACKGROUND_IMAGES or SCENE_MANIFEST` });
   }
 }
 
@@ -296,7 +297,7 @@ for (const node of STORY) {
   const key = node.imageKey;
   if (!key) {
     issues.push({
-      severity: 'warning',
+      severity: 'error',
       category: 'art-missing',
       location: node.id,
       message: `Story node "${node.id}" has no imageKey defined`,
@@ -308,7 +309,7 @@ for (const node of STORY) {
     if (!missingSceneNodes[key]) missingSceneNodes[key] = [];
     missingSceneNodes[key].push(node.id);
     issues.push({
-      severity: 'warning', // In Wave 5: escalate to 'error'
+      severity: 'error',
       category: 'art-missing',
       location: node.id,
       message: `Story node "${node.id}" references unmapped scene key "${key}" (falls back to default ruined_metro_station)`,
@@ -359,7 +360,7 @@ for (const [key, entry] of Object.entries(SCENE_MANIFEST) as [string, any][]) {
 
   if (missingFiles.length > 0) {
     issues.push({
-      severity: 'warning', // In Wave 5: escalate to 'error'
+      severity: 'error',
       category: 'art-orientation',
       location: key,
       message: `Scene "${key}" failed orientation asset validation: ${missingFiles.join('; ')}`,
