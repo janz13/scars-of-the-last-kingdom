@@ -3,6 +3,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "strict": true,
+    "skipLibCheck": true,
+    "types": [],
     "paths": {
       "@/*": [
         "./*"
@@ -14,10 +16,5 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-  ],
-  "references": [
-    {
-      "path": "../../lib/api-client-react"
-    }
   ]
 }
