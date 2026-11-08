@@ -9,6 +9,7 @@
   },
   "private": true,
   "devDependencies": {
+    "expo-router": "~6.0.17",
     "prettier": "^3.8.1",
     "tsx": "catalog:",
     "typescript": "~5.9.2"
