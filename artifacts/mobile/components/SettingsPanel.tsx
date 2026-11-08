@@ -297,6 +297,52 @@ export default function SettingsPanel() {
 
         <View style={styles.divider} />
 
+        <Text style={styles.sectionHeader}>PROSE FONT</Text>
+        <View style={styles.buttonGroup}>
+          {(['inter', 'pixel'] as const).map((font) => (
+            <Pressable
+              key={font}
+              style={[styles.optionBtn, (settings.proseFont ?? 'inter') === font && styles.optionBtnActive]}
+              onPress={() => updateSettings({ proseFont: font })}
+              accessibilityRole="button"
+              accessibilityLabel={`Prose font: ${font === 'inter' ? 'Inter Clean' : 'Pixelify Retro'}`}
+            >
+              <Text style={[styles.optionText, (settings.proseFont ?? 'inter') === font && styles.optionTextActive]}>
+                {font === 'inter' ? 'INTER (CLEAN)' : 'PIXEL (RETRO)'}
+              </Text>
+            </Pressable>
+          ))}
+        </View>
+
+        <View style={styles.divider} />
+
+        <Text style={styles.sectionHeader}>TEXT LAYOUT</Text>
+        <View style={styles.buttonGroup}>
+          {(['auto', 'column', 'letterbox'] as const).map((mode) => (
+            <Pressable
+              key={mode}
+              style={[
+                styles.optionBtn,
+                (settings.textLayout ?? 'auto') === mode && styles.optionBtnActive,
+              ]}
+              onPress={() => updateSettings({ textLayout: mode })}
+              accessibilityRole="button"
+              accessibilityLabel={`Text layout: ${mode}`}
+            >
+              <Text
+                style={[
+                  styles.optionText,
+                  (settings.textLayout ?? 'auto') === mode && styles.optionTextActive,
+                ]}
+              >
+                {mode.toUpperCase()}
+              </Text>
+            </Pressable>
+          ))}
+        </View>
+
+        <View style={styles.divider} />
+
         <Text style={styles.sectionHeader}>AUTO-SAVE</Text>
         <Pressable
           style={styles.toggleRow}

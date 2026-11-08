@@ -69,7 +69,17 @@ export const INITIAL_STATE: GameState = {
   factionRep: DEFAULT_FACTION_REP,
   routeHistory: [],
   endingsDiscovered: [],
-  settings: { textSpeed: 'normal', fontSize: 'normal', soundEnabled: false, autoSave: true, skipDiceAnimation: false },
+  settings: {
+    textSpeed: 'normal',
+    fontSize: 'normal',
+    soundEnabled: false,
+    autoSave: true,
+    skipDiceAnimation: false,
+    textLayout: 'auto',
+    proseFont: 'inter',
+    qualityTier: 'auto',
+    reducedMotion: false,
+  },
   activeEnding: null,
   pendingReturnNodeId: undefined,
 };

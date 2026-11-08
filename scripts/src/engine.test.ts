@@ -8,6 +8,12 @@ import { resolve } from 'node:path';
 
 const require = createRequire(import.meta.url);
 
+if (typeof require !== 'undefined' && (require as any).extensions) {
+  (require as any).extensions['.png'] = (module: any, filename: string) => {
+    module.exports = filename;
+  };
+}
+
 const {
   checkRequirements,
   applyEffects,
@@ -62,6 +68,31 @@ const {
 const {
   getStartNodeId,
 } = require('../../artifacts/mobile/data/story/index.ts');
+
+const {
+  computeViewportScale,
+  computeFocalShift,
+  getOrientation,
+  resolveLayoutMode,
+  PIXEL_GRID,
+} = require('../../artifacts/mobile/constants/pixelGrid.ts');
+
+const {
+  SCENE_MANIFEST,
+  getSceneManifestEntry,
+} = require('../../artifacts/mobile/constants/sceneManifest.ts');
+
+const {
+  MOTION_DURATIONS,
+  MOTION_SPRINGS,
+  steppedEasing,
+  snapToPixel,
+} = require('../../artifacts/mobile/constants/motion.ts');
+
+const {
+  TIER_CONFIGS,
+  resolveActiveTier,
+} = require('../../artifacts/mobile/constants/pixelTiers.ts');
 
 let passedTests = 0;
 let failedTests = 0;
@@ -711,6 +742,110 @@ console.log('\n--- 11. Testing story endings and canonical categories (F-CONT-05
     assert(registeredSet.has(id), `Orphan ending ${id} is present in STORY_ENDINGS`);
   }
 }
+
+// --- 11. Testing Pixel Grid, Integer Scaling & Layout Dispatch ---
+console.log('\n--- 11. Testing Pixel Grid, Integer Scaling & Layout Dispatch ---');
+
+// 1. Orientation detection
+assert(getOrientation(1920, 1080) === 'landscape', '1920x1080 is landscape');
+assert(getOrientation(390, 844) === 'portrait', '390x844 is portrait');
+assert(getOrientation(640, 640) === 'landscape', 'Square 640x640 defaults to landscape');
+
+// 2. 7 Viewports from spec
+// Viewport 1: 390x844 (iPhone 12/13/14 portrait)
+const v1 = computeViewportScale(390, 844);
+assert(v1.orientation === 'portrait', '390x844 orientation is portrait');
+assert(v1.scale === 1, '390x844 scale is 1');
+assert(v1.displayWidth === 400 && v1.displayHeight === 760, '390x844 display size is 400x760');
+assert(v1.offsetX === -5, '390x844 offsetX is -5');
+assert(v1.offsetY === 42, '390x844 offsetY is 42');
+assert(v1.isUltrawide === false, '390x844 is not ultrawide');
+
+// Viewport 2: 430x932 (iPhone Pro Max portrait)
+const v2 = computeViewportScale(430, 932);
+assert(v2.orientation === 'portrait', '430x932 orientation is portrait');
+assert(v2.scale === 1, '430x932 scale is 1');
+assert(v2.displayWidth === 400 && v2.displayHeight === 760, '430x932 display size is 400x760');
+assert(v2.offsetX === 15, '430x932 offsetX is 15');
+assert(v2.offsetY === 86, '430x932 offsetY is 86');
+assert(v2.isUltrawide === false, '430x932 is not ultrawide');
+
+// Viewport 3: 768x1024 (iPad portrait)
+const v3 = computeViewportScale(768, 1024);
+assert(v3.orientation === 'portrait', '768x1024 orientation is portrait');
+assert(v3.scale === 1, '768x1024 scale is 1');
+assert(v3.displayWidth === 400 && v3.displayHeight === 760, '768x1024 display size is 400x760');
+assert(v3.offsetX === 184, '768x1024 offsetX is 184');
+assert(v3.offsetY === 132, '768x1024 offsetY is 132');
+assert(v3.isUltrawide === false, '768x1024 is not ultrawide');
+
+// Viewport 4: 1280x720 (720p HD landscape)
+const v4 = computeViewportScale(1280, 720);
+assert(v4.orientation === 'landscape', '1280x720 orientation is landscape');
+assert(v4.scale === 2, '1280x720 scale is 2');
+assert(v4.displayWidth === 1440 && v4.displayHeight === 800, '1280x720 display size is 1440x800');
+assert(v4.offsetX === -80, '1280x720 offsetX is -80');
+assert(v4.offsetY === -40, '1280x720 offsetY is -40');
+assert(v4.isUltrawide === false, '1280x720 is not ultrawide');
+
+// Viewport 5: 1920x1080 (1080p FHD landscape)
+const v5 = computeViewportScale(1920, 1080);
+assert(v5.orientation === 'landscape', '1920x1080 orientation is landscape');
+assert(v5.scale === 3, '1920x1080 scale is 3');
+assert(v5.displayWidth === 2160 && v5.displayHeight === 1200, '1920x1080 display size is 2160x1200');
+assert(v5.offsetX === -120, '1920x1080 offsetX is -120');
+assert(v5.offsetY === -60, '1920x1080 offsetY is -60');
+assert(v5.isUltrawide === false, '1920x1080 is not ultrawide');
+
+// Viewport 6: 2560x1440 (1440p QHD landscape)
+const v6 = computeViewportScale(2560, 1440);
+assert(v6.orientation === 'landscape', '2560x1440 orientation is landscape');
+assert(v6.scale === 4, '2560x1440 scale is 4');
+assert(v6.displayWidth === 2880 && v6.displayHeight === 1600, '2560x1440 display size is 2880x1600');
+assert(v6.offsetX === -160, '2560x1440 offsetX is -160');
+assert(v6.offsetY === -80, '2560x1440 offsetY is -80');
+assert(v6.isUltrawide === false, '2560x1440 is not ultrawide');
+
+// Viewport 7: 3440x1440 (21:9 Ultrawide landscape)
+const v7 = computeViewportScale(3440, 1440);
+assert(v7.orientation === 'landscape', '3440x1440 orientation is landscape');
+assert(v7.scale === 4, '3440x1440 scale is 4');
+assert(v7.displayWidth === 2880 && v7.displayHeight === 1600, '3440x1440 display size is 2880x1600');
+assert(v7.offsetX === 280, '3440x1440 offsetX is 280');
+assert(v7.offsetY === -80, '3440x1440 offsetY is -80');
+assert(v7.isUltrawide === true, '3440x1440 is ultrawide');
+assert(v7.pillarboxWidth === 280, '3440x1440 pillarboxWidth is 280');
+
+// 3. Focal shift math
+const shiftRight = computeFocalShift({ x: 420, y: 180 }, 'landscape', 'right');
+assert(shiftRight.shiftX < 0, 'Landscape right text-safe shifts scene left');
+const shiftLeft = computeFocalShift({ x: 260, y: 180 }, 'landscape', 'left');
+assert(shiftLeft.shiftX > 0, 'Landscape left text-safe shifts scene right');
+const shiftBottom = computeFocalShift({ x: 200, y: 500 }, 'portrait', 'bottom');
+assert(shiftBottom.shiftY < 0, 'Portrait bottom text-safe shifts scene up');
+
+// 4. Adaptive layout resolution
+assert(resolveLayoutMode(1920, 1080) === 'column', '1920x1080 resolves to column mode');
+assert(resolveLayoutMode(1024, 768) === 'letterbox', '1024x768 resolves to letterbox mode');
+assert(resolveLayoutMode(390, 844) === 'sheet', '390x844 resolves to sheet mode');
+assert(resolveLayoutMode(1920, 1080, 'letterbox') === 'letterbox', 'User letterbox override respected');
+assert(resolveLayoutMode(1024, 768, 'column') === 'column', 'User column override respected on wide display');
+
+// 5. Scene manifest contract
+assert(Object.keys(SCENE_MANIFEST).length === 26, 'SCENE_MANIFEST registers all 26 scenes');
+const metroEntry = getSceneManifestEntry('ruined_metro_station');
+assert(metroEntry.key === 'ruined_metro_station', 'Manifest resolves ruined_metro_station correctly');
+assert(metroEntry.palette.length <= 32, 'Scene palette has <= 32 colors');
+const fallbackEntry = getSceneManifestEntry('unknown_scene_key');
+assert(fallbackEntry.key === 'ruined_metro_station', 'Unknown key falls back to ruined_metro_station');
+
+// 6. Motion & Quality tier configurations
+assert(MOTION_DURATIONS.normal === 260, 'Normal motion duration is 260ms');
+assert(snapToPixel(14.7) === 15, 'snapToPixel correctly rounds 14.7 to 15');
+const highTier = resolveActiveTier('high');
+assert(highTier.tier === 'high' && highTier.maxParticles === 150, 'High tier has 150 max particles');
+const lowTier = resolveActiveTier('low');
+assert(lowTier.tier === 'low' && lowTier.maxParticles === 0, 'Low tier disables particles');
 
 console.log(`\n========================================`);
 console.log(`TOTAL TESTS: ${passedTests + failedTests}`);
