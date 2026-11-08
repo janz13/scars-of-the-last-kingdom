@@ -34,6 +34,8 @@ import {
   resolveSceneAsset,
   SCENE_MANIFEST,
 } from '../../constants/sceneManifest';
+import { useQualityTier } from '../../constants/pixelTiers';
+import { PaletteCycler } from '../../engine/pixel/palette';
 
 export interface PixelStageProps {
   /** imageKey from current StoryNode */
@@ -113,8 +115,11 @@ function WebPixelStage({
 
   const currentRenderKeyRef = useRef<string | null>(null);
   const animFrameRef = useRef<number | null>(null);
+  const cycleFrameRef = useRef<number | null>(null);
+  const paletteCyclerRef = useRef<PaletteCycler | null>(null);
   const activeTransitionIdRef = useRef<number>(0);
   const lastDimensionsRef = useRef<{ w: number; h: number } | null>(null);
+  const tierCaps = useQualityTier();
 
   // Helper to lazily instantiate and dimension-sync offscreen canvases
   const getBuffers = () => {
@@ -258,6 +263,11 @@ function WebPixelStage({
   useEffect(() => {
     const transitionId = ++activeTransitionIdRef.current;
 
+    if (cycleFrameRef.current) {
+      cancelAnimationFrame(cycleFrameRef.current);
+      cycleFrameRef.current = null;
+    }
+
     const { front, back } = getBuffers();
     if (!front || !back || !canvasRef.current) return;
 
@@ -268,6 +278,49 @@ function WebPixelStage({
     displayCtx.imageSmoothingEnabled = false;
 
     const renderKey = `${imageKey}:${orientation}`;
+
+    const startPaletteCycle = () => {
+      if (!tierCaps.paletteCycling) return;
+      if (cycleFrameRef.current) {
+        cancelAnimationFrame(cycleFrameRef.current);
+        cycleFrameRef.current = null;
+      }
+      const fCtx = front.getContext('2d');
+      if (!fCtx) return;
+
+      try {
+        const imgData = fCtx.getImageData(0, 0, masterW, masterH);
+        const manifestEntry = getSceneManifestEntry(imageKey);
+        const cycler = new PaletteCycler();
+
+        if (manifestEntry?.cycles && manifestEntry.cycles.length > 0) {
+          cycler.setCycles(
+            manifestEntry.cycles.map((c, i) => ({
+              id: `cycle_${i}`,
+              startIndex: c.indices[0] ?? 50,
+              length: c.indices.length,
+              rateHz: 1000 / Math.max(16, c.speedMs),
+              mode: 'cycle',
+              blend: true,
+            }))
+          );
+        }
+
+        const indexed = cycler.extractIndexMapFromImageData(imgData);
+        cycler.attachCanvas(displayCtx, masterW, masterH, indexed);
+        paletteCyclerRef.current = cycler;
+
+        const cycleLoop = (now: number) => {
+          if (transitionId !== activeTransitionIdRef.current) return;
+          cycler.update(now);
+          cycler.render(displayCtx);
+          cycleFrameRef.current = requestAnimationFrame(cycleLoop);
+        };
+        cycleFrameRef.current = requestAnimationFrame(cycleLoop);
+      } catch {
+        // Non-fatal if context reading is constrained
+      }
+    };
 
     // Detect buffer dimension changes (e.g. orientation changes between landscape and portrait)
     const dimensionsChanged =
@@ -290,6 +343,7 @@ function WebPixelStage({
         displayCtx.imageSmoothingEnabled = false;
         displayCtx.clearRect(0, 0, masterW, masterH);
         displayCtx.drawImage(front, 0, 0);
+        startPaletteCycle();
       });
       return;
     }
@@ -302,12 +356,14 @@ function WebPixelStage({
         displayCtx.imageSmoothingEnabled = false;
         displayCtx.clearRect(0, 0, masterW, masterH);
         displayCtx.drawImage(front, 0, 0);
+        startPaletteCycle();
       });
       return;
     }
 
     // If image hasn't changed and dimensions haven't changed, retain current display
     if (currentRenderKeyRef.current === renderKey) {
+      startPaletteCycle();
       return;
     }
 
@@ -347,6 +403,7 @@ function WebPixelStage({
             fCtx.drawImage(back, 0, 0);
           }
           animFrameRef.current = null;
+          startPaletteCycle();
         }
       };
 
@@ -359,8 +416,12 @@ function WebPixelStage({
         cancelAnimationFrame(animFrameRef.current);
         animFrameRef.current = null;
       }
+      if (cycleFrameRef.current) {
+        cancelAnimationFrame(cycleFrameRef.current);
+        cycleFrameRef.current = null;
+      }
     };
-  }, [imageKey, sceneKey, orientation, fadeDuration, masterW, masterH]);
+  }, [imageKey, sceneKey, orientation, fadeDuration, masterW, masterH, tierCaps.paletteCycling]);
 
   const overlayColors = [
     `rgba(4,2,10,0.15)`,

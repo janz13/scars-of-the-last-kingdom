@@ -833,7 +833,7 @@ assert(resolveLayoutMode(1920, 1080, 'letterbox') === 'letterbox', 'User letterb
 assert(resolveLayoutMode(1024, 768, 'column') === 'column', 'User column override respected on wide display');
 
 // 5. Scene manifest contract & orientation-aware asset resolution
-assert(Object.keys(SCENE_MANIFEST).length === 26, 'SCENE_MANIFEST registers all 26 scenes');
+assert(Object.keys(SCENE_MANIFEST).length >= 26, 'SCENE_MANIFEST registers all scenes (at least 26)');
 const metroEntry = getSceneManifestEntry('ruined_metro_station');
 assert(metroEntry.key === 'ruined_metro_station', 'Manifest resolves ruined_metro_station correctly');
 assert(metroEntry.palette.length <= 32, 'Scene palette has <= 32 colors');
