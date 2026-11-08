@@ -51,9 +51,11 @@ jobs:
           fi
 
       - name: Build web export
-        run: pnpm --filter @workspace/mobile run build:web
+        working-directory: artifacts/mobile
+        run: pnpm run build:web
         env:
           EXPO_BASE_URL: ${{ vars.EXPO_BASE_URL || steps.expo-base-url.outputs.base_url }}
+          EXPO_ROUTER_APP_ROOT: ./app
 
       - name: Ensure .nojekyll exists
         run: touch artifacts/mobile/dist/.nojekyll
