@@ -22,6 +22,7 @@ if ((require as any).extensions) {
 }
 
 const LIVE_URL = 'https://janz13.github.io/scars-of-the-last-kingdom/';
+declare const document: { body: { innerText: string } };
 
 const { ENDINGS, ENDING_CATEGORIES } = require('../../artifacts/mobile/data/endings.ts');
 const { CONDITIONAL_ENDINGS, evaluateConditionalEnding } = require('../../artifacts/mobile/data/conditionalEndings.ts');

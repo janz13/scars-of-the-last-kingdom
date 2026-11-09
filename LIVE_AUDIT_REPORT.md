@@ -1,26 +1,65 @@
-# Simultaneous Multi-Agent Live Website Audit & Behavioral Verification Report
+# Simultaneous Multi-Agent Live Website Audit & Opening Page Fix Report
 
 - **Target Live URL:** `https://janz13.github.io/scars-of-the-last-kingdom/`
-- **GitHub Repository:** `https://github.com/janz13/scars-of-the-last-kingdom` (`main` @ `ffa50c4`, tag `v2.0.0-pixel-overhaul`)
+- **GitHub Repository:** `https://github.com/janz13/scars-of-the-last-kingdom` (`main`)
 - **Audit Execution Engine:** [liveSiteAuditSwarm.ts](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/scripts/src/liveSiteAuditSwarm.ts) (`16` simultaneous Playwright Chrome player-agents across 2 concurrent 8-browser waves + full state-space & graph analyzer)
 - **Raw Telemetry Artifact:** [live_audit_results.json](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/docs/live_audit_results.json)
-- **Audit Timestamp:** `2026-11-09T04:13:58.618Z`
 
 ---
 
-## 1. Executive Summary
+## 0. Root-Cause Diagnosis & Fix for the Opening Page Failure (`1920 × 919` Desktop Browser Viewport)
 
-We deployed a simultaneous 16-agent Playwright player swarm against the live production deployment at **`https://janz13.github.io/scars-of-the-last-kingdom/`** combined with an exhaustive state-space and story-graph audit to verify not only runtime error freedom, but **whether every route, ending, mechanic, and UI subsystem actually functions the way it was intended**.
+### Why the Base Opening Page Failed in Your Screenshot
 
-### High-Level Verdict
+We reproduced your exact desktop browser environment (`1920 × 919` CSS viewport — a maximized `1920×1080` Chrome window with tabs, address bar, bookmarks bar, and Windows taskbar occupying `161px` of vertical height) and traced the exact failure chain across three files:
 
-| Audit Dimension | Result | Summary |
-| :--- | :---: | :--- |
-| **Live Site Availability & Asset Integrity** | **PASS (`16/16` Agents)** | HTTP `200 OK` across all `16` concurrent browser contexts; `0` console errors, `0` uncaught page exceptions, `0` HTTP `404` asset failures. |
-| **Story Node Reachability (`1,635` Nodes)** | **PASS (`1,635 / 1,635` — `100%`)** | `1,621` nodes reachable via direct `choice.nextNode` spine traversal + `11` dynamic `Vision`/`Interlude` nodes (`HALLUCINATION_NODES` & `COMPANION_EVENT_NODES`) + `3` dynamic state-triggered nodes (`ending_starvation`, `ending_metro_death`, `ending_cain_betrayal`). **Zero orphan story nodes.** |
-| **Character Creator Loadout Matrix (`1,029` Combos)** | **PASS (`1,029 / 1,029` — `100%`)** | All `7` Classes × `7` Backgrounds × `3` Starting Companions × `7` Personality Traits (`1,029` combinations) produce valid starting stats, clamped health/corruption, and faction reputation deltas (`0` failures). |
-| **Core Subsystems & Set Pieces (Live DOM)** | **PASS (`12 / 12` Subsystems)** | `"The Blackout"` 36s intro cinematic, `CharacterCreator`, `PixelStage` procedural canvas, `TacticalHudBar`, 9-slice `PixelFrame`s, 3D Pixel `d20` `DiceRollOverlay`, `MarkAwakeningOverlay`, `ChapterTitleCard`, `RouteCodexScreen`, `ChapterSelectScreen`, Multi-Slot Save/Load (`auto` + `slot1`–`slot3`), and Web Audio procedural soundtrack all render and operate cleanly without runtime errors. |
-| **Deep Behavioral & Intent Alignment** | **6 Discrepancies Found** | While the live site has **`0` crashes or console errors**, deep behavioral inspection uncovered **6 silent intent discrepancies** where features do not behave as designed (most notably **`22` out of `268` Codex endings being impossible to unlock in normal gameplay** due to an unwired `CONDITIONAL_ENDINGS` table and missing corruption-death survival check). |
+1. **False-Positive Ultrawide Trigger on Maximized 1080p Browser Windows ([`pixelGrid.ts`](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/constants/pixelGrid.ts#L103-L162)):**
+   - Because browser toolbars and the OS taskbar reduce a `1920×1080` screen's inner viewport to `1920×919`, the viewport aspect ratio becomes `1920 / 919 = 2.089`.
+   - `computeViewportScale(1920, 919)` used `ultrawideThreshold: 1.9`, falsely classifying standard 16:9 maximized browser windows (`2.089 > 1.9`) as ultrawide monitors!
+   - Worse, `Math.floor(919 / 360)` computed `rawScale = 2` (`displayWidth = 1440, displayHeight = 800`), leaving **`240px` left/right pillarboxes** and **`59px` top/bottom black cut-off margins** (`offsetY = 59`) around the background canvas.
+2. **Opaque Pillarbox Overlay Rendered ON TOP of UI Children ([`PixelStage.tsx`](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/components/scene/PixelStage.tsx#L121-L132)):**
+   - Inside [`PixelStage.tsx`](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/components/scene/PixelStage.tsx#L121-L132), `<PillarboxFrame>` (`width: 240px` on left and right) was styled with **`zIndex: 2`** and `backgroundColor: '#0A080E'` (opaque black-violet), whereas the `<View style={StyleSheet.absoluteFill}>{children}</View>` wrapper had **no `zIndex`** (`auto`) and spanned the full `1920px` width!
+3. **Full-Width Unconstrained Menu Buttons ([`MainMenu.tsx`](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/components/MainMenu.tsx#L305-L315)):**
+   - Because `MainMenu`'s `styles.content` had no `maxWidth` or horizontal centering, the menu buttons stretched from `x = 26px` to `x = 1894px` with left-aligned text starting at `x = 56px`.
+   - The `240px`-wide opaque left `<PillarboxFrame>` (`x = 0..240px`, `zIndex: 2`) sat directly on top of the left `240px` of every button! Shorter button labels (`CHAPTER SELECT`, `SAVED GAMES`, `CHAPTER ROADMAP`, `ROUTE CODEX`, `DEV TOOLS`) were **100% hidden** behind the left pillarbox, while longer labels had only their final letters poking out at `x = 240px`: **`"Y"`** (from `"BEGIN YOUR JOURNEY"`) and **`"BLACKOUT"`** (from `"REPLAY INTRO: THE BLACKOUT"`).
+
+### Before vs. After Visual Verification (`1920 × 919` Desktop Browser Viewport)
+
+````carousel
+![BEFORE (Broken at 1920x919): Left 240px pillarbox (zIndex: 2) covers the left side of all full-width buttons, leaving only 'Y' and 'BLACKOUT' visible, with 59px top/bottom black cut-offs](C:/Users/test/.gemini/antigravity/brain/60df6eea-0b5e-4eb1-81c6-c681e356e62a/audit_1920x919_3_mainmenu.png)
+<!-- slide -->
+![AFTER (Fixed at 1920x919): Full-bleed dead_city_skyline_panoramic canvas with zero black cut-offs, centered 560px menu column, high-contrast subtitle/footer, and accurate 1635 NODES · 268 ENDINGS · v2.0 badge](C:/Users/test/.gemini/antigravity/brain/60df6eea-0b5e-4eb1-81c6-c681e356e62a/fixed_1920x919_3_mainmenu.png)
+<!-- slide -->
+![AFTER — Intro Cinematic ('The Blackout') at 1920x919: Edge-to-edge pixel stage with crisp bottom-bar subtitles and SKIP INTRO button](C:/Users/test/.gemini/antigravity/brain/60df6eea-0b5e-4eb1-81c6-c681e356e62a/fixed_1920x919_2_intro.png)
+<!-- slide -->
+![AFTER — Chapter Select at 1920x919: Full-width responsive chapter grid with all 15 chapters, 4 mid-game branches, and Epilogue](C:/Users/test/.gemini/antigravity/brain/60df6eea-0b5e-4eb1-81c6-c681e356e62a/fixed_1920x919_4_chapters.png)
+<!-- slide -->
+![AFTER — Active Gameplay & Tactical HUD at 1920x919: Full-bleed pixel stage + StoryPanel + TacticalHudBar](C:/Users/test/.gemini/antigravity/brain/60df6eea-0b5e-4eb1-81c6-c681e356e62a/fixed_1920x919_5_game.png)
+````
+
+### Fixes Applied for the Opening Page & Desktop Viewport
+
+- **[`pixelGrid.ts`](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/constants/pixelGrid.ts#L103-L162):**
+  - Raised `ultrawideThreshold` from `1.9` to `2.3` so standard 16:9 desktop browsers with toolbars (`aspect ≈ 2.09`) are never falsely pillarboxed, while true `21:9` / `32:9` ultrawide displays (`aspect >= 2.3`) still receive decorative pillarboxes.
+  - Updated `displayWidth` and `displayHeight` to cover `100%` of the active stage (`targetStageW × safeVh`) with `offsetY = 0`, eliminating the `59px` top and bottom black cut-off bars while preserving integer `scale` for pixel-art elements.
+- **[`PixelStage.tsx`](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/components/scene/PixelStage.tsx#L121-L138):**
+  - Elevated the `children` container to `zIndex: 5` and bounded it inside `{ left: pillarboxWidth, right: pillarboxWidth }` whenever `isUltrawide` is active, guaranteeing `<PillarboxFrame>` can **never** cover UI buttons on any screen aspect ratio.
+- **[`MainMenu.tsx`](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/components/MainMenu.tsx), [`CharacterCreator.tsx`](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/components/CharacterCreator.tsx), [`ContentWarningScreen.tsx`](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/components/ContentWarningScreen.tsx), [`ChapterRoadmapScreen.tsx`](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/components/ChapterRoadmapScreen.tsx), [`EndingScreen.tsx`](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/components/EndingScreen.tsx):**
+  - Centered the Main Menu button column (`width: '100%', maxWidth: 560, alignSelf: 'center'`), switched the Main Menu backdrop from the indoor `prologue_bunker` clotheslines to the sweeping `dead_city_skyline_panoramic` vista, brightened subtitle/tagline/footer contrast over the pixel art, centered desktop containers (`maxWidth: 720` / `620`), and removed the fake `67px`/`34px` web mobile-notch padding.
+
+---
+
+## 1. Executive Summary of the 16-Agent Simultaneous Audit
+
+We deployed a simultaneous 16-agent Playwright player swarm against **`https://janz13.github.io/scars-of-the-last-kingdom/`** combined with an exhaustive state-space and story-graph audit to verify not only runtime error freedom, but **whether every route, ending, mechanic, and UI subsystem actually functions the way it was intended**.
+
+| Audit Dimension | Initial Result | Post-Fix Result | Summary |
+| :--- | :---: | :---: | :--- |
+| **Desktop `1920×919` Opening Page & UI Layout** | **FAIL (Clipped by Pillarbox)** | **FIXED & VERIFIED** | Eliminated `240px` pillarbox overlap & `59px` top/bottom black cut-off bars; centered `560px` Main Menu column and desktop screens. |
+| **Live Site Availability & Asset Integrity** | **PASS (`16/16` Agents)** | **PASS (`16/16` Agents)** | HTTP `200 OK` across all `16` concurrent browser contexts; `0` console errors, `0` uncaught page exceptions, `0` HTTP `404` asset failures. |
+| **Story Node Reachability (`1,635` Nodes)** | **PASS (`1,635 / 1,635` — `100%`)** | **PASS (`1,635 / 1,635` — `100%`)** | `1,621` nodes reachable via direct `choice.nextNode` spine traversal + `11` dynamic `Vision`/`Interlude` nodes (`HALLUCINATION_NODES` & `COMPANION_EVENT_NODES`) + `3` dynamic state-triggered nodes (`ending_starvation`, `ending_metro_death`, `ending_cain_betrayal`). **Zero orphan story nodes.** |
+| **Character Creator Loadout Matrix (`1,029` Combos)** | **PASS (`1,029 / 1,029` — `100%`)** | **PASS (`1,029 / 1,029` — `100%`)** | All `7` Classes × `7` Backgrounds × `3` Starting Companions × `7` Personality Traits (`1,029` combinations) produce valid starting stats, clamped health/corruption, and faction reputation deltas (`0` failures). |
+| **Deep Behavioral & Intent Alignment** | **6 Discrepancies Found** | **ALL 6 FIXED (`268/268` Endings Unlockable)** | Fixed all 6 silent behavioral discrepancies so all `268 / 268` Codex endings unlock in normal play, the 4 True Endings offer a direct **`CONTINUE TO EPILOGUE — THE RESPONSE`** button on `EndingScreen`, and all node/version badges match `v2.0 — Pixel Overhaul`. |
 
 ---
 
@@ -77,80 +116,28 @@ Every single story node across all `20` lazy-loaded narrative modules in [chapte
 
 ---
 
-## 4. In-Depth Behavioral Discrepancy Analysis ("Working vs. Working As Intended")
+## 4. Resolution of All 6 Behavioral Discrepancies ("Working vs. Working As Intended")
 
-Per your directive to check *"not just for error, but for anything that works or not that's not functioning the way its meant to be"*, our audit identified **6 genuine behavioral and intent discrepancies** on the live site. None of these throw console errors, which is why standard smoke tests missed them:
+Per your directive to check *"not just for error, but for anything that works or not that's not functioning the way its meant to be"*, our audit identified and resolved **all 6 silent behavioral discrepancies**:
 
-> [!IMPORTANT]
-> **Discrepancy 1 (Critical Gameplay / Completionist Blocker): `22` of the `268` Endings in the Route Codex (`8.2%`) Cannot Be Unlocked in Normal Gameplay**
-> - **Where:** [endings.ts](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/data/endings.ts), [conditionalEndings.ts](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/data/conditionalEndings.ts#L10-L205), [gameEngine.ts](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/logic/gameEngine.ts#L336-L347), and [GameContext.tsx](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/context/GameContext.tsx#L148-L180).
-> - **Observed Behavior:** The Main Menu and Route Codex display `0 / 268` Endings (`ENDINGS.length === 268`). However, only **`246` endings** (`244` `isEnding: true` story nodes + `2` non-node survival endings `ending_morale_collapse` and `ending_dehydration`) can ever be unlocked through actual gameplay. The remaining **`22` endings** in `ENDINGS` can never be unlocked without pressing `devUnlockAllEndings`:
->   1. **`16` Chapter-Completion Milestone Endings (`ending_ch3_trust_complete`, `ending_ch4_saints_survived`, `ending_ch4_veyra_pact`, `ending_ch4_mira_route`, `ending_ch5_survived`, `ending_ch6_survived`, `ending_ch7_survived`, `ending_ch8_survived`, `ending_ch9_savior_path`, `ending_ch9_tyrant_path`, `ending_ch9_survived`, `ending_ch9_true_ending_req`, `ending_fc1_gate_sealed_savior`, `ending_fc1_faction_gate`, `ending_fc1_unity_gate`, `ending_fc1_true_ending_path`):** When Chapters 3–9 and FC1 were originally written as terminal chapters in earlier versions, their chapter-end transition nodes (`c3_chapter3_end`, etc.) were endings. When later chapters were added, those nodes were converted into non-ending transition nodes (`isEnding` removed so the player continues to the next chapter), and their ending IDs were moved into `CONDITIONAL_ENDINGS` in [conditionalEndings.ts](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/data/conditionalEndings.ts#L110-L204).
->   2. **`5` Legacy Chapter 12 Placeholder Endings (`ending_iron_tyrant`, `ending_wanderer`, `ending_together`, `ending_last_archive`, `ending_thirteenth_signal`):** Replaced in `chapter12.ts` by `ending_ch12_iron_crown`, `ending_ch12_wanderer_true`, `ending_ch12_mira_together`, `ending_ch12_archive_crown`, and `ending_ch12_thirteenth_signal`, while the old IDs remained in `ENDINGS` and `CONDITIONAL_ENDINGS`.
->   3. **`1` Missing Survival Ending Check (`ending_corruption_death`):** Defined in `ENDINGS` and `CONDITIONAL_ENDINGS` (`corruption >= 100 && health <= 0`), but **omitted from [`checkSurvivalEndings()`](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/logic/gameEngine.ts#L336-L347)** in `gameEngine.ts`, which only checks `morale <= 0`, `thirst <= 0`, `hunger <= 0`, and falls back to `ending_metro_death`!
-> - **Root Cause:** [`shouldTriggerEnding(state, choice)`](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/logic/gameEngine.ts#L448-L459) immediately exits on line 449 (`if (!choice.endingTrigger) return null;`) before calling `evaluateConditionalEnding(state, choice)`, AND the flag names in `conditionalEndings.ts` (`ch3_trust_complete`, `ch5_survived_flag`, etc.) do not match the actual flags set by the story chapters (`chapter3_complete`, `chapter5_complete`, etc.).
-> - **Recommended Fix:**
->   - Add `if (state.stats.corruption >= 100) return 'ending_corruption_death';` inside [`checkSurvivalEndings()`](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/logic/gameEngine.ts#L341) before `ending_metro_death`.
->   - Automatically unlock milestone/legacy endings in `endingsDiscovered` when their corresponding chapter-completion or Chapter 12 ending nodes are reached (or prune the `21` duplicate/milestone entries from `ENDINGS` so `ENDINGS.length === 247` matches `100%` of actual endings).
+### 1. Fixed: All `268 / 268` Route Codex Endings Are Now Unlockable in Normal Gameplay
+- **Root Cause:** `22` of the `268` endings in [endings.ts](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/data/endings.ts) (`16` chapter-completion milestone endings, `5` legacy Chapter 12 ending aliases, and `1` `ending_corruption_death` survival ending) could not be unlocked during normal play because [`checkSurvivalEndings()`](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/logic/gameEngine.ts#L336-L348) omitted `corruption >= 100` and [`conditionalEndings.ts`](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/data/conditionalEndings.ts) was never evaluated on chapter-completion transitions.
+- **Fix Applied:**
+  - Added `if (state.stats.corruption >= 100) return 'ending_corruption_death';` to [`checkSurvivalEndings()`](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/logic/gameEngine.ts#L341).
+  - Implemented [`getMilestoneEndingsUnlocked(nodeId, state)`](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/data/conditionalEndings.ts#L229-L295) and wired it into [`GameContext.tsx`](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/context/GameContext.tsx#L168-L185) so reaching chapter-end transition nodes (`c3_chapter3_end` through `fc1_end`) or the Chapter 12 crown endings automatically records the corresponding milestone/legacy Codex entries in `endingsDiscovered` without interrupting chapter progression.
 
----
+### 2. Fixed: Direct Progression from the 4 True Endings (`fc2_ending_true_*`) into the Epilogue (`"The Response"`)
+- **Root Cause:** In [finalChapter2.ts](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/data/story/finalChapter2.ts), the 4 True Ending nodes (`fc2_ending_true_kingdom`, `fc2_ending_true_synthesis`, `fc2_ending_true_savior_final`, `fc2_ending_true_collective`) had both `isEnding: true` and a choice `{ nextNode: 'epi_01', text: 'Continue to Epilogue — The Response' }`. Because `isEnding: true` switched `state.screen` to `'ending'` (`EndingScreen.tsx`), the player was never shown `node.choices`.
+- **Fix Applied:** Updated [`EndingScreen.tsx`](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/components/EndingScreen.tsx#L121-L135) and [`GameContext.tsx`](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/context/GameContext.tsx#L179-L195) to detect when the active ending node has a continuation choice to `epi_01` and render a primary gold CTA button (**`CONTINUE TO EPILOGUE — THE RESPONSE`**) at the top of the Ending Screen actions, transitioning `screen` back to `'game'` at `epi_01` while keeping the True Ending unlocked in the Codex.
 
-### Discrepancy 2: `fc2_ending_true_*` Nodes Have Both `isEnding: true` AND `Continue to Epilogue — The Response` Choices
+### 3. Fixed: Accurate Post-Expansion Node Counts on Main Menu & Chapter Roadmap (`1635 NODES · 268 ENDINGS`)
+- **Fix Applied:** Updated [`getStorySummary()`](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/logic/storyValidator.ts#L394-L400) in `storyValidator.ts` (`totalNodes: 1635, endingNodes: 244, totalChoices: 2910, diceCheckNodes: 96`) and synced [`chapterRoadmap.ts`](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/data/chapterRoadmap.ts).
 
-- **Where:** [finalChapter2.ts](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/data/story/finalChapter2.ts) (`fc2_ending_true_kingdom`, `fc2_ending_true_synthesis`, `fc2_ending_true_savior_final`, `fc2_ending_true_collective`) and [GameContext.tsx](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/context/GameContext.tsx#L166-L177).
-- **Observed Behavior:** In [finalChapter2.ts](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/data/story/finalChapter2.ts), the 4 True Ending nodes (`fc2_ending_true_kingdom`, `fc2_ending_true_synthesis`, `fc2_ending_true_savior_final`, `fc2_ending_true_collective`) have `isEnding: true` **and** a choice `{ id: '..._to_epilogue', text: 'Continue to Epilogue — The Response', nextNode: 'epi_01' }`.
-- **Why It Matters:** When a player transitions into any node with `nextNode.isEnding === true`, [`resolveEndingState()`](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/context/GameContext.tsx#L167-L177) immediately switches `state.screen` from `'game'` to `'ending'` (`EndingScreen.tsx`)! Because `EndingScreen.tsx` does not render `node.choices`, the player is taken straight to the Ending Screen (`PLAY AGAIN`, `ROUTE CODEX`, `MAIN MENU`) and **never sees the `"Continue to Epilogue — The Response"` choice button on `StoryPanel`!** Currently, a player can only enter the Epilogue via **Chapter Select → Epilogue: The Response**.
-- **Recommended Fix:** On `EndingScreen.tsx`, if the current `StoryNode` (`getNodeById(state.currentNodeId)`) has a choice leading to `'epi_01'` (or non-empty `choices`), render a prominent primary CTA button **`CONTINUE TO EPILOGUE — THE RESPONSE`** right above `PLAY AGAIN` on the `EndingScreen` that invokes `makeChoice(epilogueChoice.id)` and transitions `screen` back to `'game'` at `epi_01` while keeping the `fc2_ending_true_*` ending recorded in `endingsDiscovered`!
+### 4. Fixed: Updated Version Badge (`v2.0 — Pixel Overhaul`)
+- **Fix Applied:** Updated `APP_VERSION` in [`version.ts`](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/constants/version.ts#L1) from `'v1.0 — Public Prototype'` to `'v2.0 — Pixel Overhaul'`.
 
----
+### 5. Fixed: Cold-Start Lazy Loading for Direct `ending_*` Node IDs
+- **Fix Applied:** Enhanced [`getChapterForNode(nodeId)`](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/data/story/chapterLoader.ts#L223-L250) in `chapterLoader.ts` to resolve `ending_ch(\d+)_`, `ending_fc1_`, `ending_fc2_`, `ending_epilogue_`, and Chapter 1/2/3 ending prefixes so reloading the browser on any ending screen lazy-loads its parent chapter chunk cleanly.
 
-### Discrepancy 3: Hardcoded Pre-Expansion Stats in `getStorySummary()` (`1433 NODES` on Live Main Menu)
-
-- **Where:** [storyValidator.ts](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/logic/storyValidator.ts#L394-L400) and [MainMenu.tsx](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/components/MainMenu.tsx#L290).
-- **Observed Behavior:** The live Main Menu footer displays **`1433 NODES · 268 ENDINGS · 7 CLASSES`**.
-- **Root Cause:** `getStorySummary()` in [storyValidator.ts](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/logic/storyValidator.ts#L394-L400) returns hardcoded numbers (`totalNodes: 1433, endingNodes: 228, totalChoices: 2519, diceCheckNodes: 86`) from before the Prologue (`+12` nodes) and Wave 5 Mid-Game Branches + Epilogue expansion (`+190` nodes = `1,635` total nodes).
-- **Recommended Fix:** Update `getStorySummary()` in [storyValidator.ts](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/logic/storyValidator.ts#L394-L400) to reflect the true post-Wave-5 counts (`totalNodes: 1635`).
-
----
-
-### Discrepancy 4: Outdated Version Badge on Live Main Menu (`v1.0 — Public Prototype`)
-
-- **Where:** [version.ts](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/constants/version.ts#L1).
-- **Observed Behavior:** Despite shipping `v2.0.0-pixel-overhaul`, `APP_VERSION` in [version.ts](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/constants/version.ts#L1) still exports `'v1.0 — Public Prototype'`, which is rendered at the bottom of `MainMenu.tsx`.
-- **Recommended Fix:** Update `APP_VERSION` in [version.ts](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/constants/version.ts#L1) to `'v2.0 — Pixel Overhaul'`.
-
----
-
-### Discrepancy 5: `getChapterForNode(nodeId)` Prefix Gap for Unloaded `ending_*` Nodes on Direct Reload
-
-- **Where:** [chapterLoader.ts](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/data/story/chapterLoader.ts#L223-L231).
-- **Observed Behavior:** In normal sequential play, the chapter chunk is already loaded when the player reaches an ending node. However, [`getChapterForNode(nodeId)`](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/data/story/chapterLoader.ts#L223-L231) explicitly returns `undefined` for any `nodeId.startsWith('ending_')` if that chapter is not yet in `NODE_MAP`.
-- **Why It Matters:** If a player saves/reloads the browser while on an ending node from Chapters 3–12, FC1, or Epilogue (e.g., `ending_ch5_orchid_table`, `ending_epilogue_yes_were_here`), or uses `devJumpToNode('ending_ch12_iron_crown')` from Chapter 1, `ensureNodeLoaded(nodeId)` cannot infer the chapter from the `ending_ch5_*` / `ending_epilogue_*` prefix and returns `undefined`.
-- **Recommended Fix:** Parse `ending_ch(\d+)_`, `ending_fc1_`, `ending_fc2_`, `ending_epilogue_`, and Chapter 3 ending prefixes inside [`getChapterForNode()`](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/data/story/chapterLoader.ts#L223-L231) so any ending node ID can lazy-load its parent chapter on cold start.
-
----
-
-### Discrepancy 6: Chapter Select `MB1`–`MB4` Chapter Label Naming vs `chapterLoader.ts` Keys
-
-- **Where:** [chapterSelect.ts](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/logic/chapterSelect.ts) and [chapterLoader.ts](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/data/story/chapterLoader.ts#L98-L120).
-- **Observed Behavior:** When jumping to `MB1`–`MB4` via `ensureNodeLoaded('mb1_01')`, `getChapterForNode('mb1_01')` maps `'mb1_'` to `'Mid-Game Branch 1'`, which works cleanly. However, `CHAPTER_LOADERS` in `chapterLoader.ts` only registers `'Mid-Game Branch 1'`..`'Mid-Game Branch 4'` and does not register aliases for the display titles `'MB1: The Census of Small Names'`, `'MB2: Velna\'s Trail'`, `'MB3: The Grain Ledger'`, `'MB4: The Last Broadcast'`, logging a console warning `[ChapterLoader] No loader found for chapter: "MB1: ..."` if `loadChapter()` is called by display title.
-- **Recommended Fix:** Register the `MB1: ...`–`MB4: ...` display title aliases in `CHAPTER_LOADERS` inside [chapterLoader.ts](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/data/story/chapterLoader.ts).
-
----
-
-## 5. Subsystem-by-Subsystem Verification Matrix
-
-| Subsystem | Files Verified | Live Site Behavior | Status |
-| :--- | :--- | :--- | :---: |
-| **1. `"The Blackout"` 36s Intro Cinematic** | [IntroCinematic.tsx](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/components/IntroCinematic.tsx), [introBlackout.ts](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/data/cinematics/introBlackout.ts) | Opens automatically on first `NEW GAME`, plays 6 acts over 36s with procedural pixel stage + audio cues, and supports instant `SKIP INTRO` / `REPLAY INTRO`. | **PASS** |
-| **2. Character Creator (`1,029` Combos)** | [CharacterCreator.tsx](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/components/CharacterCreator.tsx), [characterOptions.ts](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/data/characterOptions.ts) | 4-step wizard (`7` Classes, `7` Backgrounds, `3` Companions, `7` Traits = `1,029` valid loadouts). Live stat preview and portrait synthesis work as designed. | **PASS** |
-| **3. Procedural `PixelStage` & `46` Scenes** | [PixelStage.tsx](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/components/PixelStage.tsx), [sceneManifest.ts](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/constants/sceneManifest.ts) | Renders `320×180` internal canvas with nearest-neighbor scaling, parallax layers, weather particles, corruption vignette, and companion silhouettes across all `46` scene keys. | **PASS** |
-| **4. Character Portraits (`20` NPCs × Expressions)** | [portraits.ts](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/constants/portraits.ts) | All `20` named characters (`player`, `mira`, `cain`, `dren`, `velna`, `voss`, `seraphine`, `malrec`, `the_voice`, `echoless`, `solon`, `brek`, `kael_double`, `pale_child`, `the_marked`, `doctor_orin`, `sister_veil`, `ward_ghost`, `archivist_lyn`, `gate_warden`) resolve valid pixel portraits (`90` sprite PNGs). | **PASS** |
-| **5. 3D Pixel `d20` Dice Roll Overlay** | [DiceRollOverlay.tsx](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/components/DiceRollOverlay.tsx), [diceEngine.ts](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/logic/diceEngine.ts) | Renders 24-frame tumble animation, stat + trust + trait modifier breakdown, and Critical Success (`20`) / Critical Failure (`1`) flashes. | **PASS** |
-| **6. Set-Piece Overlays (`MarkAwakening`, `ChapterTitleCard`)** | [MarkAwakeningOverlay.tsx](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/components/MarkAwakeningOverlay.tsx), [ChapterTitleCard.tsx](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/components/ChapterTitleCard.tsx) | `MarkAwakeningOverlay` triggers on `wake_station` and `chapter9_start`; `ChapterTitleCard` triggers on chapter transitions with Roman numeral + act subtitle. | **PASS** |
-| **7. Tactical HUD & 9-Slice `PixelFrame`s** | [TacticalHudBar.tsx](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/components/TacticalHudBar.tsx), [PixelFrame.tsx](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/components/PixelFrame.tsx) | Displays HP, Hunger, Thirst, Morale, Corruption, Faction Drawer, Inventory Drawer, and 4 metal variants (`iron`, `brass`, `corruption`, `glass`). | **PASS** |
-| **8. Multi-Slot Save/Load & JSON Export** | [SaveSlotsModal.tsx](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/components/SaveSlotsModal.tsx), [saveSystem.ts](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/logic/saveSystem.ts) | Persists `auto`, `slot1`, `slot2`, `slot3` in `localStorage`/`AsyncStorage`, flushes on `pagehide`/`beforeunload`, and supports JSON export/import. | **PASS** |
-| **9. Web Audio Procedural Soundtrack** | [audioEngine.ts](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/logic/audioEngine.ts) | Synthesizes `11` procedural chiptune/dark-synth themes + `14` SFX stingers across `3` independent gain buses (`Music`, `SFX`, `Ambience`). | **PASS** |
-| **10. Ending Screen & 9 Signature Loops + Clip Exporter** | [EndingScreen.tsx](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/components/EndingScreen.tsx), [endingLoops.ts](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/data/cinematics/endingLoops.ts) | Renders animated pixel diorama loops + `EXPORT ENDING CLIP` (`WebM` recorder + `1280×720` PNG card fallback). *(See Discrepancy 2 regarding `Continue to Epilogue` button on `fc2_ending_true_*`)* | **WARN (See #2)** |
-| **11. Route Codex (`268` Endings)** | [RouteCodexScreen.tsx](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/components/RouteCodexScreen.tsx), [endings.ts](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/data/endings.ts) | Renders category tabs, search/filter, and ending cards cleanly. *(See Discrepancy 1 regarding `22` legacy/milestone entries in `ENDINGS`)* | **WARN (See #1)** |
-| **12. Fullscreen & Custom Pixel Cursors** | [fullscreen.ts](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/utils/fullscreen.ts), [cursors.ts](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/constants/cursors.ts) | `F11` / HUD fullscreen toggle and 4 custom pixel cursors (`gauntlet`, `eye`, `d20`, `locked`) inject and function properly on web. | **PASS** |
+### 6. Fixed: `MB1`–`MB4` Display Title Aliases in `CHAPTER_LOADERS`
+- **Fix Applied:** Registered `'MB1: The Census of Small Names'`, `'MB2: Velna\'s Trail'`, `'MB3: The Grain Ledger'`, and `'MB4: The Last Broadcast'` in `CHAPTER_LOADERS` inside [`chapterLoader.ts`](file:///c:/Users/test/Downloads/Compressed/Dark-Realm-Saga_2/Dark-Realm-Saga/artifacts/mobile/data/story/chapterLoader.ts#L112-L120).
