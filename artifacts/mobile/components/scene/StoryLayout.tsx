@@ -208,7 +208,8 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   desktopScrollContent: {
-    paddingVertical: 18,
+    paddingTop: 18,
+    paddingBottom: 28,
     paddingHorizontal: 12,
   },
   // Narrow Landscape Letterbox
@@ -233,7 +234,8 @@ const styles = StyleSheet.create({
     borderTopColor: 'rgba(155, 89, 182, 0.3)',
   },
   letterboxScrollContent: {
-    paddingVertical: 14,
+    paddingTop: 14,
+    paddingBottom: 28,
     paddingHorizontal: 20,
     maxWidth: 960,
     alignSelf: 'center',

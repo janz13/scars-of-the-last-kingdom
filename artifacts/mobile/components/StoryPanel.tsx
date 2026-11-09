@@ -299,7 +299,36 @@ export default function StoryPanel({ onOpenHotkeys }: { onOpenHotkeys?: () => vo
     isTyping,
     skip: skipTypewriter,
   } = useTypewriter({
-    text: currentNode?.text ?? '',
+    text: (() => {
+      let txt = currentNode?.text ?? '';
+      if (!txt) return txt;
+      const miraInParty = Boolean(state.companions.mira.present && state.companions.mira.alive);
+      const cainInParty = Boolean(state.companions.cain.present && state.companions.cain.alive);
+      if (!miraInParty && !cainInParty) {
+        txt = txt.replace('Mira and Cain are not registered and therefore do not exist as far as the Saints are concerned, which is the safest kind of existence in this city. ', '');
+      } else if (!miraInParty && cainInParty) {
+        txt = txt.replace('Mira and Cain are not registered', 'Cain is not registered');
+      } else if (miraInParty && !cainInParty) {
+        txt = txt.replace('Mira and Cain are not registered', 'Mira is not registered');
+      }
+      if (!miraInParty) {
+        txt = txt
+          .replace('Mira points north, toward a clinic she knows. ', '')
+          .replace('Mira tends to whatever needs tending. ', '')
+          .replace('Mira walks beside you with her hands empty and her face composed into the expression she uses when there is no good option and she is choosing not to make it worse by naming it. ', '');
+      }
+      if (!cainInParty) {
+        txt = txt
+          .replace('Cain points east. ', '')
+          .replace("Cain sharpens things he doesn't have. ", '')
+          .replace('Cain has already moved to the right-side alcove. He is watching the timing.', 'You move to the right-side alcove and watch the patrol timing.')
+          .replace('Cain is already ten paces ahead. ', '');
+        if (currentNode?.id === 'c3_cain_tactical_moment') {
+          txt = "You pause in the alcove where the tunnel geometry narrows. Studying the three exits, the low ceiling, and the patrol interval ahead, you note that the Rat King's gate guards rotate on a rigid tunnel schedule — though without Cain's inside knowledge of the eastern channel lock sequence, you will have to face the toll gate directly.";
+        }
+      }
+      return txt;
+    })(),
     dialogue: currentNode?.dialogue,
     textSpeed: state.settings.textSpeed,
     reducedMotion,

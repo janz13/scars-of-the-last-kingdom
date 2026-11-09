@@ -229,7 +229,7 @@ export default function SettingsPanel() {
     if (!slot.isEmpty) {
       const confirmMsg = `Overwrite ${slot.label}?\nExisting save data will be replaced.`;
       if (Platform.OS === 'web') {
-        if (!window.confirm(confirmMsg)) return;
+        if (!confirmMsg.startsWith('Load ') && !window.confirm(confirmMsg)) return;
       }
     }
     const success = await saveToSlot(slot.slotId);
@@ -245,7 +245,7 @@ export default function SettingsPanel() {
     if (slot.isEmpty) return;
     const confirmMsg = `Load ${slot.label}?\nAny unsaved progress in your current timeline will be lost.`;
     if (Platform.OS === 'web') {
-      if (!window.confirm(confirmMsg)) return;
+      if (!confirmMsg.startsWith('Load ') && !window.confirm(confirmMsg)) return;
     }
     const success = await loadSlot(slot.slotId);
     if (success) {
@@ -259,7 +259,7 @@ export default function SettingsPanel() {
     if (slot.isEmpty) return;
     const confirmMsg = `Delete ${slot.label}?\nThis will permanently delete this save file.`;
     if (Platform.OS === 'web') {
-      if (!window.confirm(confirmMsg)) return;
+      if (!confirmMsg.startsWith('Load ') && !window.confirm(confirmMsg)) return;
     }
     const success = await deleteSlotData(slot.slotId);
     if (success) {

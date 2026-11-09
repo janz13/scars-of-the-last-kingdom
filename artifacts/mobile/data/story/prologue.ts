@@ -24,17 +24,17 @@ export const PROLOGUE_NODES: StoryNode[] = [
     choices: [
       {
         id: 'prologue_choice_stampede',
-        text: 'Trapped in the lower concourse as the panicked crowds rushed the gates (Wasteland Orphan)',
+        text: 'Trapped in the lower concourse as the panicked crowds rushed the gates (Wasteland Orphan / Black Market Courier / Underground Medic)',
         nextNode: 'prologue_metro_stampede',
       },
       {
         id: 'prologue_choice_saints',
-        text: 'On perimeter patrol at the Iron Saints northern garrison checkpoint (Exiled Soldier)',
+        text: 'On perimeter patrol at the Iron Saints northern garrison checkpoint (Exiled Soldier / Fallen Noble)',
         nextNode: 'prologue_saints_soldier',
       },
       {
         id: 'prologue_choice_scholar',
-        text: 'In the restricted sub-level archives monitoring the sealed containment doors (Forgotten Scholar)',
+        text: 'In the restricted sub-level archives monitoring the sealed containment doors (Forgotten Scholar / Runaway Experiment)',
         nextNode: 'prologue_scholar_basement',
       },
     ],

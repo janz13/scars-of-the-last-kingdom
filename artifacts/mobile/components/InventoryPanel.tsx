@@ -25,9 +25,22 @@ interface ResourceCardProps {
   color: string;
   description: string;
   delay?: number;
+  actionLabel?: string;
+  canUse?: boolean;
+  onUse?: () => void;
 }
 
-function ResourceCard({ label, value, icon, color, description, delay = 0 }: ResourceCardProps) {
+function ResourceCard({
+  label,
+  value,
+  icon,
+  color,
+  description,
+  delay = 0,
+  actionLabel,
+  canUse,
+  onUse,
+}: ResourceCardProps) {
   const fadeAnim = useSharedValue(0);
   const slideAnim = useSharedValue(12);
 
@@ -60,8 +73,28 @@ function ResourceCard({ label, value, icon, color, description, delay = 0 }: Res
           <Text style={[styles.cardLabel, { color: empty ? '#3a3450' : '#9a8898' }]}>{label}</Text>
           <Text style={[styles.cardValue, { color: empty ? '#3a3450' : color }]}>{value}</Text>
         </View>
+        {actionLabel && onUse ? (
+          <Pressable
+            onPress={canUse ? onUse : undefined}
+            disabled={!canUse}
+            style={[
+              styles.useBtn,
+              {
+                borderColor: canUse ? `${color}66` : 'rgba(60,55,75,0.35)',
+                backgroundColor: canUse ? `${color}18` : 'rgba(20,18,30,0.4)',
+                opacity: canUse ? 1 : 0.45,
+              },
+            ]}
+          >
+            <Text style={[styles.useBtnText, { color: canUse ? color : '#5a5068' }]}>
+              {actionLabel}
+            </Text>
+          </Pressable>
+        ) : null}
       </View>
-      <Text style={[styles.cardDesc, empty && { color: '#2a2838' }]} numberOfLines={2}>{description}</Text>
+      <Text style={[styles.cardDesc, empty && { color: '#2a2838' }]} numberOfLines={2}>
+        {description}
+      </Text>
     </Animated.View>
   );
 }
@@ -76,9 +109,9 @@ function SectionLabel({ title }: { title: string }) {
 }
 
 export default function InventoryPanel() {
-  const { state, setScreen } = useGame();
+  const { state, setScreen, useConsumable } = useGame();
   const insets = useSafeAreaInsets();
-  const { inventory } = state;
+  const { inventory, stats } = state;
 
   const topPad = Platform.OS === 'web' ? 67 : insets.top;
   const botPad = Platform.OS === 'web' ? 34 : insets.bottom;
@@ -125,6 +158,12 @@ export default function InventoryPanel() {
       >
 
         <SectionLabel title="CONSUMABLES" />
+        <View style={styles.advisoryNote}>
+          <Feather name="info" size={12} color="#c9a84c" />
+          <Text style={styles.advisoryText}>
+            Consume supplies here to restore vitals, or conserve stock for story gates (e.g., Rat King's Toll Gate or treating wounded companions).
+          </Text>
+        </View>
         <View style={styles.grid}>
           <ResourceCard
             label="Food"
@@ -133,6 +172,9 @@ export default function InventoryPanel() {
             color="#e67e22"
             description="Ration paste, salvaged cans. Keeps hunger at bay."
             delay={80}
+            actionLabel="USE (+15)"
+            canUse={inventory.food > 0 && stats.hunger < 100}
+            onUse={() => useConsumable('food')}
           />
           <ResourceCard
             label="Water"
@@ -141,6 +183,9 @@ export default function InventoryPanel() {
             color="#3d9ad1"
             description="Bottled, filtered, or collected. Thirst kills faster."
             delay={140}
+            actionLabel="USE (+15)"
+            canUse={inventory.water > 0 && stats.thirst < 100}
+            onUse={() => useConsumable('water')}
           />
           <ResourceCard
             label="Medicine"
@@ -149,6 +194,9 @@ export default function InventoryPanel() {
             color="#2ecc71"
             description="Bandages, antiseptic. Extends your window."
             delay={200}
+            actionLabel="USE (+20 HP)"
+            canUse={inventory.medicine > 0 && stats.health < stats.maxHealth}
+            onUse={() => useConsumable('medicine')}
           />
         </View>
 
@@ -255,6 +303,25 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: 'rgba(42,38,58,0.4)',
   },
+  advisoryNote: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    backgroundColor: 'rgba(201,168,76,0.08)',
+    borderWidth: 1,
+    borderColor: 'rgba(201,168,76,0.22)',
+    borderRadius: 4,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    marginBottom: 12,
+  },
+  advisoryText: {
+    flex: 1,
+    fontSize: 11,
+    color: '#b8a272',
+    fontFamily: 'Inter_400Regular',
+    lineHeight: 16,
+  },
 
   grid: {
     flexDirection: 'row',
@@ -303,6 +370,17 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontFamily: 'Inter_700Bold',
     lineHeight: 28,
+  },
+  useBtn: {
+    paddingHorizontal: 8,
+    paddingVertical: 5,
+    borderRadius: 4,
+    borderWidth: 1,
+  },
+  useBtnText: {
+    fontSize: 9,
+    fontFamily: 'Inter_700Bold',
+    letterSpacing: 0.8,
   },
   cardDesc: {
     fontSize: 11,

@@ -273,7 +273,8 @@ export default function StoryText({
 
 const styles = StyleSheet.create({
   storySection: {
-    paddingHorizontal: 24,
+    paddingLeft: 24,
+    paddingRight: 28,
     paddingTop: 28,
     paddingBottom: 22,
   },

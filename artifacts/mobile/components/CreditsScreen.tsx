@@ -12,7 +12,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Feather } from '@expo/vector-icons';
 import { useGame } from '../context/GameContext';
 import { APP_VERSION, BUILD_DATE } from '../constants/version';
-import { ENDINGS } from '../data/endings';
+import { ENDINGS } from '../data/story/endings';
 import { CLASSES, BACKGROUNDS } from '../data/characterOptions';
 import { getStorySummary } from '../logic/storyValidator';
 

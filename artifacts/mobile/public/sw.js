@@ -9,7 +9,7 @@
  * or subpaths (e.g. GitHub Pages: /scars-of-the-last-kingdom/).
  */
 
-const CACHE_VERSION = 'sotlk-v5';
+const CACHE_VERSION = 'sotlk-v6';
 
 function getBasePath() {
   const scopePath = new URL(self.registration.scope).pathname;

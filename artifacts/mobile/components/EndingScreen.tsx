@@ -15,7 +15,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Feather } from '@expo/vector-icons';
 import { useGame } from '../context/GameContext';
 import { ensureNodeLoaded } from '../data/storyNodes';
-import { getEndingById, ENDINGS } from '../data/endings';
+import { getEndingById } from '../data/endings';
+import { ENDINGS } from '../data/story/endings';
 import { MOTION_SPRINGS } from '../constants/motion';
 import { sound } from '../logic/audioEngine';
 import { CinematicView } from './scene/CinematicView';
@@ -289,7 +290,18 @@ export default function EndingScreen() {
           )}
 
           {/* Description */}
-          <Text style={styles.endingText}>{ending?.description ?? ''}</Text>
+          <Text style={styles.endingText}>
+            {(() => {
+              let desc = ending?.description ?? '';
+              if (!state.companions.mira.present) {
+                desc = desc.replace('Mira walks with her hands empty. ', '');
+              }
+              if (!state.companions.cain.present) {
+                desc = desc.replace('Cain is already ten paces ahead. ', '');
+              }
+              return desc;
+            })()}
+          </Text>
 
           {/* Run summary card */}
           <View style={[styles.summaryCard, { borderColor: `${accentColor}18` }]}>

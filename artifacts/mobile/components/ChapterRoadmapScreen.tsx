@@ -12,7 +12,7 @@ import { Feather } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useGame } from '../context/GameContext';
 import { CHAPTER_ROADMAP, ChapterEntry } from '../data/chapterRoadmap';
-import { ENDINGS } from '../data/endings';
+import { ENDINGS } from '../data/story/endings';
 import { generateRouteRecap, getUnlockedChapters } from '../logic/chapterSelect';
 import { getStorySummary } from '../logic/storyValidator';
 

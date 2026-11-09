@@ -366,7 +366,8 @@ export const CHAPTER_3_NODES: StoryNode[] = [
         id: 'c3_trade_supplies',
         text: 'Trade some of your supplies for things they need more than you.',
         nextNode: 'c3_market_trade',
-        effects: { food: -2, water: -1, medicine: 1, hollowChildren: 8 },
+        requirements: { scrap: 1 },
+        effects: { scrap: -1, food: 1, water: 1, medicine: 1, hollowChildren: 8 },
       },
       {
         id: 'c3_courier_market_read',
@@ -572,7 +573,8 @@ export const CHAPTER_3_NODES: StoryNode[] = [
         id: 'c3_feed_sera',
         text: 'Give her food from your pack.',
         nextNode: 'c3_sera_kindness',
-        effects: { food: -2, morale: 2, hollowChildren: 10, miraTrust: 2 },
+        requirements: { food: 1 },
+        effects: { food: -1, morale: 2, hollowChildren: 10, miraTrust: 2, setFlags: ['fed_sera'] },
       },
       {
         id: 'c3_talk_to_sera',
@@ -602,7 +604,7 @@ export const CHAPTER_3_NODES: StoryNode[] = [
     location: 'The Candle Market — Corner',
     imageKey: 'candle_market',
     text: `Sera eats with the controlled desperation of someone who has learned not to eat too fast because eating too fast after not eating comes with consequences. She doesn't say thank you immediately. She says: "Are you the one with the mark on their wrist?" When you confirm, she says: "Mother Chalk will want to see you." She has already been told to watch for you. She has been watching all afternoon. The hunger was real. The assignment was also real. Sera is eight years old and already understands how information has value. The Hollow Children start early.`,
-    effectsOnEnter: { corruption: -5, setFlags: ['sera_helped', 'sera_saved_ch3', 'sera_alive'] },
+    effectsOnEnter: { morale: 1, setFlags: ['sera_helped', 'sera_saved_ch3', 'sera_alive'] },
     choices: [
       {
         id: 'c3_follow_sera_lead',
@@ -1389,12 +1391,14 @@ export const CHAPTER_3_NODES: StoryNode[] = [
         id: 'c3_take_cain_intel',
         text: '"Then we time the gate approach for the shift change. Good work."',
         nextNode: 'c3_cain_respect_gained',
+        requirements: { flags: ['cain_joins_party'], cainPresent: true },
         effects: { cainTrust: 2, intelligence: 1 },
       },
       {
         id: 'c3_question_cain_intel',
         text: '"How do you know the mechanical sequence for the Rat King\'s gate?"',
         nextNode: 'c3_cain_respect_gained',
+        requirements: { flags: ['cain_joins_party'], cainPresent: true },
         effects: { cainTrust: 1, intelligence: 2 },
       },
       {
@@ -1444,7 +1448,7 @@ export const CHAPTER_3_NODES: StoryNode[] = [
         id: 'c3_cain_shift_approach',
         text: 'Use Cain\'s timing information. Wait for the shift change and approach the eastern channel.',
         nextNode: 'c3_rat_king_demand',
-        requirements: { flags: ['cain_respect_earned_ch3'] },
+        requirements: { flags: ['cain_joins_party', 'cain_respect_earned_ch3'], cainPresent: true },
         effects: { intelligence: 1, cainTrust: 1 },
       },
     ],

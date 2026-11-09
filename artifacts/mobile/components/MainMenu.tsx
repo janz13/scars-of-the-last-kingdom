@@ -15,7 +15,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Feather } from '@expo/vector-icons';
 import { useGame } from '../context/GameContext';
-import { ENDINGS } from '../data/endings';
+import { ENDINGS } from '../data/story/endings';
 import { CLASSES } from '../data/characterOptions';
 import { getStorySummary } from '../logic/storyValidator';
 import { APP_VERSION } from '../constants/version';

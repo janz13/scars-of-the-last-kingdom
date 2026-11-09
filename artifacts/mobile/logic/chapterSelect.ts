@@ -142,6 +142,31 @@ export function getUnlockedChapters(
 
   if (endingsDiscovered.length > 0) {
     for (const ending of endingsDiscovered) {
+      if (ending.startsWith('c2_ending_') || ending === 'ending_glass_court_prisoner') {
+        unlocked.add('Chapter 2');
+        unlocked.add('Chapter 3');
+      }
+      if (
+        ending.startsWith('ending_ch3_') ||
+        ending.endsWith('_ch3') ||
+        ending === 'ending_market_lynching' ||
+        ending === 'ending_platform_drowned' ||
+        ending === 'ending_nursery_trap_death' ||
+        ending === 'ending_saints_overwhelmed' ||
+        ending === 'ending_rat_king_enslaved' ||
+        ending === 'ending_hollow_children_massacred'
+      ) {
+        unlocked.add('Chapter 2');
+        unlocked.add('Chapter 3');
+        unlocked.add('Chapter 4');
+      }
+      for (let c = 4; c <= 12; c++) {
+        if (ending.startsWith(`ending_ch${c}_`)) {
+          for (let prev = 2; prev <= Math.min(12, c + 1); prev++) {
+            unlocked.add(`Chapter ${prev}`);
+          }
+        }
+      }
       if (ending.includes('fc2') || ending.includes('true_ending') || ending === 'ending_last_kingdom_remembers') {
         unlocked.add('Final Chapter 2');
         if (!FC2_DEATH_ENDINGS.has(ending)) {
@@ -174,6 +199,35 @@ export function getUnlockedChapters(
   }
 
   // Preserve canonical display order
+  if (arg1 && typeof arg1 === 'object' && !Array.isArray(arg1) && 'currentNodeId' in arg1) {
+    const currentNodeId = (arg1 as GameState).currentNodeId || '';
+    for (let c = 1; c <= 12; c++) {
+      if (currentNodeId.startsWith(`c${c}_`) || currentNodeId.startsWith(`chapter${c}_`)) {
+        unlocked.add(`Chapter ${c}`);
+      }
+    }
+    try {
+      if (typeof localStorage !== 'undefined') {
+        const raw = localStorage.getItem('scars_meta_progress');
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed?.unlockedChapters)) {
+            for (const ch of parsed.unlockedChapters) {
+              if (typeof ch === 'string') unlocked.add(ch);
+            }
+          }
+        }
+        if (unlocked.size > 2) {
+          localStorage.setItem(
+            'scars_meta_progress',
+            JSON.stringify({ unlockedChapters: ALL_CHAPTERS.filter((ch) => unlocked.has(ch)) })
+          );
+        }
+      }
+    } catch {
+      // Ignore storage access errors
+    }
+  }
   return ALL_CHAPTERS.filter((ch) => unlocked.has(ch));
 }
 

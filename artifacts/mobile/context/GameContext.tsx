@@ -18,7 +18,7 @@ import { buildStartingStats, DEFAULT_INVENTORY, DEFAULT_STATS } from '../data/ch
 import { getNodeById, getStartNodeId, ensureNodeLoaded } from '../data/storyNodes';
 import { ENDINGS } from '../data/endings';
 import { getMilestoneEndingsUnlocked } from '../data/conditionalEndings';
-import { CHAPTER_START_NODES, buildChapterJumpState } from '../logic/chapterSelect';
+import { CHAPTER_START_NODES, buildChapterJumpState, getUnlockedChapters } from '../logic/chapterSelect';
 import {
   applyEffects,
   checkSurvivalEndings,
@@ -106,6 +106,7 @@ interface GameContextValue {
   // Core gameplay
   startNewGame: (character: Character) => void;
   makeChoice: (choiceId: string) => void;
+  useConsumable: (item: 'food' | 'water' | 'medicine') => void;
   jumpToChapter: (chapterId: string) => Promise<boolean>;
   setScreen: (screen: GameScreen) => void;
   continueGame: () => Promise<void>;
@@ -429,6 +430,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       // ── Check for endings ─────────────────────────────────────────────────
       const endingState = resolveEndingState(next, nextNodeId);
       const finalNext = endingState || next;
+      getUnlockedChapters(finalNext);
 
       stateRef.current = finalNext;
       void saveGame(finalNext).then(() => {
@@ -544,6 +546,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       // Check for endings
       const endingState = resolveEndingState(next, nextNodeId);
       const finalNext = endingState || next;
+      getUnlockedChapters(finalNext);
 
       stateRef.current = finalNext;
       void saveGame(finalNext).then(() => {
@@ -571,7 +574,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       setHasActiveGame(false);
       return true;
     }
-    setState({ ...saved, endingsDiscovered: mergedEndings, screen: 'game' });
+    await ensureNodeLoaded(saved.currentNodeId);
+    setState({ ...saved, endingsDiscovered: mergedEndings, screen: 'game', activeEnding: null });
     setHasSaveGame(true);
     setHasActiveGame(true);
     return true;
@@ -579,7 +583,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
   const saveToSlot = useCallback(async (slotId: SaveSlotId): Promise<boolean> => {
     if (!state.character) return false;
-    const ok = await saveGameToSlot(state, slotId);
+    const ok = await saveGameToSlot({ ...state, screen: 'game' }, slotId);
     if (ok) {
       setHasSaveGame(true);
       setHasActiveGame(true);
@@ -634,7 +638,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         setHasActiveGame(false);
         return;
       }
-      setState({ ...saved, endingsDiscovered: mergedEndings, screen: 'game' });
+      await ensureNodeLoaded(saved.currentNodeId);
+    setState({ ...saved, endingsDiscovered: mergedEndings, screen: 'game', activeEnding: null });
       setHasSaveGame(true);
       setHasActiveGame(true);
     }
@@ -865,6 +870,22 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
 
   // ─── Derived values ─────────────────────────────────────────────────────────
 
+  const useConsumable = useCallback((item: 'food' | 'water' | 'medicine') => {
+    sound.playSFX('click');
+    setState((prev) => {
+      if (item === 'food' && prev.inventory.food > 0 && prev.stats.hunger < 100) {
+        return applyEffects(prev, { food: -1, hunger: 15 });
+      }
+      if (item === 'water' && prev.inventory.water > 0 && prev.stats.thirst < 100) {
+        return applyEffects(prev, { water: -1, thirst: 15 });
+      }
+      if (item === 'medicine' && prev.inventory.medicine > 0 && prev.stats.health < prev.stats.maxHealth) {
+        return applyEffects(prev, { medicine: -1, health: 20 });
+      }
+      return prev;
+    });
+  }, []);
+
   const currentNode = getNodeById(state.currentNodeId);
   const availableChoices = getChoicesWithStatus(state);
 
@@ -879,6 +900,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         availableChoices,
         startNewGame,
         makeChoice,
+        useConsumable,
         jumpToChapter,
         setScreen,
         continueGame,

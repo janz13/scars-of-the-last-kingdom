@@ -64,6 +64,29 @@ const INV_NAMES: Partial<Record<keyof Inventory, string>> = {
   reputation: 'Reputation',
 };
 
+const FLAG_REQUIREMENT_LABELS: Record<string, string> = {
+  mira_joins_party: 'Requires Companion: Mira',
+  cain_joins_party: 'Requires Companion: Cain',
+  met_mira: 'Requires Meeting Mira (East Wing Clinic)',
+  met_cain: 'Requires Meeting Cain (Northern Checkpoint)',
+  knows_blackout_origin: 'Requires Intel: Archive Blackout Records',
+  knows_archive_exists: 'Requires Intel: Last Archive Location',
+  found_archive_door: 'Requires Intel: Unsealed Archive Door',
+  found_relic_cache: 'Requires Item: Resonance Relic Cache',
+  knows_saints_sign: 'Requires Intel: Iron Saints Clearance Sign',
+  mark_ignited: 'Requires Mark State: Ignited Sigil',
+  cain_respect_earned_ch3: 'Requires Cain Tactical Briefing',
+  cain_knows_mark: 'Requires Cain Knowing About Your Mark',
+  mira_knows_mark: 'Requires Mira Knowing About Your Mark',
+  fed_sera: 'Requires Feeding Sera at the Candle Market',
+};
+
+function formatFlagRequirement(flag: string): string {
+  if (FLAG_REQUIREMENT_LABELS[flag]) return FLAG_REQUIREMENT_LABELS[flag];
+  const readable = flag.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+  return `Requires: ${readable}`;
+}
+
 // ─── checkRequirements ────────────────────────────────────────────────────
 
 export function checkRequirements(state: GameState, req?: ChoiceRequirements): RequirementResult {
@@ -103,7 +126,7 @@ export function checkRequirements(state: GameState, req?: ChoiceRequirements): R
   if (req.flags) {
     for (const flag of req.flags) {
       if (!state.flags[flag]) {
-        reasons.push(`Missing required condition`);
+        reasons.push(formatFlagRequirement(flag));
       }
     }
   }
@@ -214,11 +237,16 @@ export function applyEffects(state: GameState, effects?: ChoiceEffects): GameSta
     cain: { ...companions.cain },
   };
 
+  const isPrologue = Boolean(state.currentNodeId?.startsWith('prologue'));
   if (effects.miraTrust !== undefined) {
-    newCompanions.mira.trust = clamp(newCompanions.mira.trust + effects.miraTrust, 0, 10);
+    if (!isPrologue && (effects.miraTrust > 0 || companions.mira.present || flags['met_mira'] || companions.mira.trust === 0)) {
+      newCompanions.mira.trust = clamp(newCompanions.mira.trust + effects.miraTrust, 0, 10);
+    }
   }
   if (effects.cainTrust !== undefined) {
-    newCompanions.cain.trust = clamp(newCompanions.cain.trust + effects.cainTrust, 0, 10);
+    if (!isPrologue && (effects.cainTrust > 0 || companions.cain.present || flags['met_cain'] || companions.cain.trust === 0)) {
+      newCompanions.cain.trust = clamp(newCompanions.cain.trust + effects.cainTrust, 0, 10);
+    }
   }
 
   // Companion presence flags
@@ -408,10 +436,11 @@ export function getSurvivalWarnings(state: GameState): SurvivalWarning[] {
   }
 
   // ── Companions ───────────────────────────────────────────────────────────
-  if (companions.mira.present && companions.mira.alive && companions.mira.trust <= 2) {
+  const isPrologue = Boolean(state.currentNodeId?.startsWith('prologue'));
+  if (!isPrologue && companions.mira.present && companions.mira.alive && companions.mira.trust <= 2) {
     warnings.push({ message: 'Mira is watching your choices carefully.', severity: 'warning', type: 'companion' });
   }
-  if (companions.cain.present && companions.cain.alive && companions.cain.trust <= 2) {
+  if (!isPrologue && companions.cain.present && companions.cain.alive && companions.cain.trust <= 2) {
     warnings.push({ message: 'Cain no longer trusts your judgment.', severity: 'warning', type: 'companion' });
   }
 
@@ -480,19 +509,30 @@ export function getChoicesWithStatus(state: GameState) {
   const node = getNodeById(state.currentNodeId);
   if (!node) return [];
 
-  return node.choices
-    .map((choice) => {
+  const choices = node.choices
+    .map((choice, idx) => {
       const result = checkRequirements(state, choice.requirements);
+      const isBuildPerk = Boolean(
+        result.met &&
+          (choice.requirements?.classes?.length ||
+            choice.requirements?.backgrounds?.length ||
+            /^\[[A-Za-z\s/]+\]/.test(choice.text))
+      );
       return {
         choice,
         met: result.met,
         reasons: result.reasons,
+        _sortPriority: isBuildPerk ? 0 : 1,
+        _originalIdx: idx,
       };
     })
     .filter((c) => {
       if (c.choice.isHidden && !c.met) return false;
       return true;
-    });
+    })
+    .sort((a, b) => a._sortPriority - b._sortPriority || a._originalIdx - b._originalIdx);
+
+  return choices.map(({ choice, met, reasons }) => ({ choice, met, reasons }));
 }
 
 export { evaluateConditionalEnding };
