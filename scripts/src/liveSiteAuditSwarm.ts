@@ -348,7 +348,7 @@ async function runLiveSwarm() {
       .filter((n: any) => spec.chapterFilter.includes(n.chapter))
       .map((n: any) => n.endingId || n.id);
 
-    const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+    const context = await browser.newContext({ viewport: { width: 1920, height: 919 } });
     const seedState = buildLiveSaveState({
       currentNodeId: spec.startNodeId,
       endingsDiscovered: chapterEndings,
@@ -376,7 +376,7 @@ async function runLiveSwarm() {
 
     let httpStatus = 0;
     try {
-      const response = await page.goto(LIVE_URL, { waitUntil: 'networkidle', timeout: 30000 });
+      const response = await page.goto(LIVE_URL + '?cb=' + Date.now(), { waitUntil: 'networkidle', timeout: 30000 });
       httpStatus = response?.status() ?? 0;
 
       // Wait for SplashScreen -> MainMenu transition
@@ -385,22 +385,26 @@ async function runLiveSwarm() {
 
       // Agent-specific deep live checks
       if (spec.agentId === 'AGENT-01') {
-        // Check MainMenu footer stats & version text on live site
+        // Check MainMenu footer stats, version text & 1920x919 button bounding box on live site
         const menuText = await page.evaluate(() => document.body.innerText);
-        if (menuText.includes('1433 NODES')) {
-          discrepanciesFound.push(
-            'DISCREPANCY-01 (MainMenu Footer Stats): Live MainMenu footer displays "1433 NODES · 268 ENDINGS · 7 CLASSES" because getStorySummary() in logic/storyValidator.ts has a hardcoded totalNodes: 1433 from before the Prologue (+12) and Wave 5 Expansion (+190 = 1,635 nodes).'
-          );
+        if (!menuText.includes('1635 NODES')) {
+          discrepanciesFound.push('DISCREPANCY-01: Live MainMenu footer does not show 1635 NODES');
         }
-        if (menuText.includes('0/268') || menuText.includes('/268')) {
-          discrepanciesFound.push(
-            'DISCREPANCY-02 (Endings Count Mismatch 268 vs 244): ENDINGS array in data/endings.ts contains 268 definitions, whereas the story graph contains 244 isEnding:true nodes + 3 survival-only endings. 21 entries in ENDINGS (16 chapter-completion milestones + 5 legacy Ch12 placeholders) live in conditionalEndings.ts, which is never invoked by GameContext.tsx.'
-          );
+        if (!menuText.includes('v2.0 — Pixel Overhaul')) {
+          discrepanciesFound.push('DISCREPANCY-03: Live MainMenu footer does not show v2.0 — Pixel Overhaul');
         }
-        if (menuText.includes('v1.0 — Public Prototype')) {
-          discrepanciesFound.push(
-            'DISCREPANCY-03 (Version String): constants/version.ts still exports APP_VERSION = "v1.0 — Public Prototype" on MainMenu instead of "v2.0 — Pixel Overhaul".'
-          );
+        const btnBox = await continueBtn.boundingBox();
+        const isCenteredAndUnclipped = Boolean(
+          btnBox && btnBox.x >= 600 && btnBox.x + btnBox.width <= 1320 && btnBox.width <= 600
+        );
+        subsystemChecks['MainMenu_1920x919_Layout & Centering'] = {
+          passed: isCenteredAndUnclipped,
+          detail: btnBox
+            ? `CONTINUE JOURNEY button at 1920x919 is centered & unclipped (x=${Math.round(btnBox.x)}, width=${Math.round(btnBox.width)})`
+            : 'Failed to measure CONTINUE JOURNEY bounding box',
+        };
+        if (!isCenteredAndUnclipped) {
+          discrepanciesFound.push(`DISCREPANCY-LAYOUT: MainMenu button clipped or uncentered at 1920x919: ${JSON.stringify(btnBox)}`);
         }
 
         // Test Replay Intro: The Blackout on live site

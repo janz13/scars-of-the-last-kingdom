@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-11-09T04:13:58.618Z",
+  "timestamp": "2026-11-09T05:07:30.994Z",
   "liveUrl": "https://janz13.github.io/scars-of-the-last-kingdom/",
   "totalStoryNodes": 1635,
   "reachableFromSpine": 1621,
@@ -29,6 +29,10 @@
       "consoleErrors": [],
       "network404s": [],
       "subsystemChecks": {
+        "MainMenu_1920x919_Layout & Centering": {
+          "passed": true,
+          "detail": "CONTINUE JOURNEY button at 1920x919 is centered & unclipped (x=716, width=438)"
+        },
         "IntroCinematic_TheBlackout": {
           "passed": true,
           "detail": "36s \"The Blackout\" intro cinematic modal opened and rendered SKIP INTRO control on live site"
@@ -38,12 +42,8 @@
           "detail": "Character Creator screen loaded on live site"
         }
       },
-      "discrepanciesFound": [
-        "DISCREPANCY-01 (MainMenu Footer Stats): Live MainMenu footer displays \"1433 NODES · 268 ENDINGS · 7 CLASSES\" because getStorySummary() in logic/storyValidator.ts has a hardcoded totalNodes: 1433 from before the Prologue (+12) and Wave 5 Expansion (+190 = 1,635 nodes).",
-        "DISCREPANCY-02 (Endings Count Mismatch 268 vs 244): ENDINGS array in data/endings.ts contains 268 definitions, whereas the story graph contains 244 isEnding:true nodes + 3 survival-only endings. 21 entries in ENDINGS (16 chapter-completion milestones + 5 legacy Ch12 placeholders) live in conditionalEndings.ts, which is never invoked by GameContext.tsx.",
-        "DISCREPANCY-03 (Version String): constants/version.ts still exports APP_VERSION = \"v1.0 — Public Prototype\" on MainMenu instead of \"v2.0 — Pixel Overhaul\"."
-      ],
-      "durationMs": 7633
+      "discrepanciesFound": [],
+      "durationMs": 7439
     },
     {
       "agentId": "AGENT-02",
@@ -69,7 +69,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 7458
+      "durationMs": 28359
     },
     {
       "agentId": "AGENT-03",
@@ -95,7 +95,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 8494
+      "durationMs": 9175
     },
     {
       "agentId": "AGENT-04",
@@ -121,7 +121,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 30494
+      "durationMs": 29550
     },
     {
       "agentId": "AGENT-05",
@@ -147,7 +147,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 8260
+      "durationMs": 11771
     },
     {
       "agentId": "AGENT-06",
@@ -173,7 +173,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 9249
+      "durationMs": 9423
     },
     {
       "agentId": "AGENT-07",
@@ -199,7 +199,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 8282
+      "durationMs": 29767
     },
     {
       "agentId": "AGENT-08",
@@ -225,7 +225,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 8723
+      "durationMs": 11545
     },
     {
       "agentId": "AGENT-09",
@@ -251,7 +251,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 30424
+      "durationMs": 9483
     },
     {
       "agentId": "AGENT-10",
@@ -277,7 +277,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 10956
+      "durationMs": 32322
     },
     {
       "agentId": "AGENT-11",
@@ -303,7 +303,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 9045
+      "durationMs": 9066
     },
     {
       "agentId": "AGENT-12",
@@ -329,7 +329,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 29338
+      "durationMs": 9546
     },
     {
       "agentId": "AGENT-13",
@@ -355,7 +355,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 9074
+      "durationMs": 9189
     },
     {
       "agentId": "AGENT-14",
@@ -381,7 +381,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 9410
+      "durationMs": 30380
     },
     {
       "agentId": "AGENT-15",
@@ -407,7 +407,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 9211
+      "durationMs": 9936
     },
     {
       "agentId": "AGENT-16",
@@ -427,7 +427,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 7069
+      "durationMs": 6763
     }
   ]
 }
