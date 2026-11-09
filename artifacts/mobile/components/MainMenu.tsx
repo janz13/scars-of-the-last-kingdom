@@ -22,6 +22,8 @@ import { APP_VERSION } from '../constants/version';
 import { MOTION_SPRINGS } from '../constants/motion';
 import { CinematicView } from './scene/CinematicView';
 import { INTRO_BLACKOUT_TIMELINE } from '../data/cinematics/introBlackout';
+import PixelStage from './scene/PixelStage';
+import { hasSeenIntro, markIntroSeen } from '../logic/saveSystem';
 
 const _summary = getStorySummary();
 const FOOTER_STATS = `${_summary.totalNodes} NODES  ·  ${ENDINGS.length} ENDINGS  ·  ${CLASSES.length} CLASSES`;
@@ -46,6 +48,13 @@ export default function MainMenu() {
   const footerFade = useSharedValue(0);
   const glowPulse = useSharedValue(0.03);
 
+  // Mark-glyph logo ignition shared values
+  const ignitionScale = useSharedValue(0.2);
+  const ignitionGlow = useSharedValue(0.1);
+  const ignitionFlare = useSharedValue(0);
+  const haloScale = useSharedValue(0.6);
+  const haloOpacity = useSharedValue(0);
+
   const btnAnims = [btn0, btn1, btn2, btn3, btn4, btn5, btn6, btn7];
 
   const discovered = state.endingsDiscovered.filter(id => id !== 'chapter1_end').length;
@@ -54,8 +63,71 @@ export default function MainMenu() {
   const endingsBarColor = discoveredPct >= 80 ? '#c9a84c' : discoveredPct >= 40 ? '#27ae60' : '#9b59b6';
 
   useEffect(() => {
+    // Check first-launch auto-play for "The Blackout" intro
+    let isMounted = true;
+    hasSeenIntro().then((seen) => {
+      if (!seen && isMounted) {
+        setShowIntroModal(true);
+        markIntroSeen();
+      }
+    }).catch((err) => {
+      console.warn('hasSeenIntro check failed:', err);
+    });
+
     headerFade.value = withTiming(1, { duration: 700 });
     headerSlide.value = withTiming(0, { duration: 550 });
+
+    // Mark-glyph logo ignition animation sequence
+    ignitionScale.value = withDelay(
+      300,
+      withSequence(
+        withTiming(1.65, { duration: 420 }),
+        withSpring(1.0, MOTION_SPRINGS.snappy)
+      )
+    );
+    ignitionFlare.value = withDelay(
+      300,
+      withSequence(
+        withTiming(1, { duration: 380 }),
+        withTiming(0, { duration: 700 })
+      )
+    );
+    ignitionGlow.value = withDelay(
+      300,
+      withSequence(
+        withTiming(1, { duration: 450 }),
+        withRepeat(
+          withSequence(
+            withTiming(0.65, { duration: 1800 }),
+            withTiming(1, { duration: 1800 })
+          ),
+          -1,
+          true
+        )
+      )
+    );
+    haloScale.value = withDelay(
+      420,
+      withRepeat(
+        withSequence(
+          withTiming(2.3, { duration: 2200 }),
+          withTiming(1.0, { duration: 0 })
+        ),
+        -1,
+        false
+      )
+    );
+    haloOpacity.value = withDelay(
+      420,
+      withRepeat(
+        withSequence(
+          withTiming(0.7, { duration: 250 }),
+          withTiming(0, { duration: 1950 })
+        ),
+        -1,
+        false
+      )
+    );
 
     const delays = [200, 300, 400, 500, 600, 700, 800, 900];
     btnAnims.forEach((anim, i) => {
@@ -72,6 +144,10 @@ export default function MainMenu() {
       -1,
       false
     );
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const glowStyle = useAnimatedStyle(() => ({
@@ -81,6 +157,21 @@ export default function MainMenu() {
   const headerStyle = useAnimatedStyle(() => ({
     opacity: headerFade.value,
     transform: [{ translateY: headerSlide.value }],
+  }));
+
+  const markGlyphStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: ignitionScale.value }],
+    opacity: Math.max(0.7, ignitionGlow.value),
+  }));
+
+  const markGlowHaloStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: haloScale.value }, { rotate: '45deg' }],
+    opacity: haloOpacity.value,
+  }));
+
+  const markFlareStyle = useAnimatedStyle(() => ({
+    opacity: ignitionFlare.value,
+    transform: [{ scale: interpolate(ignitionFlare.value, [0, 1], [0.8, 1.8]) }],
   }));
 
   const footerStyle = useAnimatedStyle(() => ({
@@ -97,8 +188,10 @@ export default function MainMenu() {
   }));
 
   return (
-    <LinearGradient
-      colors={['#030108', '#06030f', '#0a0516', '#04020a']}
+    <PixelStage
+      imageKey="surface_night"
+      sceneKey="main_menu_skyline"
+      overlayOpacity={0.62}
       style={styles.container}
     >
       <Animated.View style={[styles.topGlow, glowStyle]} />
@@ -109,7 +202,14 @@ export default function MainMenu() {
         <Animated.View style={[styles.titleGroup, headerStyle]}>
           <View style={styles.runeRow}>
             <View style={styles.runeLine} />
-            <View style={styles.runeDiamond} />
+            <View style={styles.markIgnitionWrapper}>
+              <Animated.View style={[styles.markHalo, markGlowHaloStyle]} />
+              <Animated.View style={[styles.markFlare, markFlareStyle]} />
+              <Animated.View style={[styles.markGlyphOuter, markGlyphStyle]}>
+                <View style={styles.markGlyphInner} />
+                <View style={styles.markGlyphCore} />
+              </Animated.View>
+            </View>
             <View style={styles.runeLine} />
           </View>
 
@@ -245,7 +345,7 @@ export default function MainMenu() {
           </View>
         </Modal>
       )}
-    </LinearGradient>
+    </PixelStage>
   );
 }
 
@@ -347,6 +447,53 @@ const styles = StyleSheet.create({
     width: 48,
     height: 1,
     backgroundColor: 'rgba(155,89,182,0.3)',
+  },
+  markIgnitionWrapper: {
+    width: 28,
+    height: 28,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+  },
+  markHalo: {
+    position: 'absolute',
+    width: 18,
+    height: 18,
+    borderWidth: 1,
+    borderColor: '#f39c12',
+    borderRadius: 2,
+  },
+  markFlare: {
+    position: 'absolute',
+    width: 24,
+    height: 24,
+    backgroundColor: 'rgba(243, 156, 18, 0.45)',
+    borderRadius: 12,
+  },
+  markGlyphOuter: {
+    width: 14,
+    height: 14,
+    backgroundColor: '#9b59b6',
+    transform: [{ rotate: '45deg' }],
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#c39bd3',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.9,
+    shadowRadius: 10,
+  },
+  markGlyphInner: {
+    width: 8,
+    height: 8,
+    backgroundColor: '#f39c12',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  markGlyphCore: {
+    position: 'absolute',
+    width: 3,
+    height: 3,
+    backgroundColor: '#ffffff',
   },
   runeDiamond: {
     width: 7,

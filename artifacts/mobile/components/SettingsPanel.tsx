@@ -7,6 +7,12 @@ import { useGame } from '../context/GameContext';
 import { APP_VERSION, BUILD_DATE } from '../constants/version';
 import { exportSaveData } from '../logic/saveSystem';
 import { requestDeviceTiltPermission } from '../engine/pixel/camera';
+import {
+  isFullscreenSupported,
+  isFullscreenActive,
+  toggleFullscreen,
+  subscribeFullscreenChange,
+} from '../logic/fullscreen';
 import type { SaveSlotMetadata } from '../data/types';
 
 export default function SettingsPanel() {
@@ -30,6 +36,17 @@ export default function SettingsPanel() {
   const [isImporting, setIsImporting] = useState(false);
   const [slots, setSlots] = useState<SaveSlotMetadata[]>([]);
   const [isLoadingSlots, setIsLoadingSlots] = useState(true);
+
+  const [fullscreenActive, setFullscreenActive] = useState(isFullscreenActive());
+  const fullscreenSupported = isFullscreenSupported();
+
+  useEffect(() => {
+    if (!fullscreenSupported) return;
+    const unsub = subscribeFullscreenChange((active) => {
+      setFullscreenActive(active);
+    });
+    return unsub;
+  }, [fullscreenSupported]);
 
   const refreshSlots = useCallback(async () => {
     try {
@@ -509,6 +526,58 @@ export default function SettingsPanel() {
             <View style={[styles.toggleThumb, settings.reducedMotion && styles.toggleThumbOn]} />
           </View>
         </Pressable>
+
+        <View style={styles.divider} />
+
+        <Text style={styles.sectionHeader}>DISPLAY & FULLSCREEN</Text>
+        <Pressable
+          style={[styles.toggleRow, !fullscreenSupported && { opacity: 0.55 }]}
+          onPress={async () => {
+            if (!fullscreenSupported) {
+              Alert.alert('Fullscreen Unsupported', 'Fullscreen is not supported in this browser or device environment.');
+              return;
+            }
+            await toggleFullscreen();
+          }}
+          accessibilityRole="button"
+          accessibilityLabel="Toggle immersive fullscreen display"
+        >
+          <View style={{ flex: 1, paddingRight: 10 }}>
+            <Text style={styles.toggleLabel}>Immersive Fullscreen</Text>
+            <Text style={styles.toggleDesc}>
+              {fullscreenSupported
+                ? (fullscreenActive
+                    ? 'Active: game occupies full display without browser chrome.'
+                    : 'Expand game to fill the entire monitor or device screen.')
+                : 'Fullscreen API is not supported in this browser.'}
+            </Text>
+          </View>
+          <View style={[styles.toggle, fullscreenActive && styles.toggleOn]}>
+            <View style={[styles.toggleThumb, fullscreenActive && styles.toggleThumbOn]} />
+          </View>
+        </Pressable>
+
+        {fullscreenSupported && (
+          <View style={{ marginTop: 8 }}>
+            <Pressable
+              style={styles.fullscreenBtn}
+              onPress={async () => {
+                await toggleFullscreen();
+              }}
+              accessibilityRole="button"
+              accessibilityLabel={fullscreenActive ? 'Exit Fullscreen' : 'Enter Fullscreen'}
+            >
+              <Feather
+                name={fullscreenActive ? 'minimize-2' : 'maximize-2'}
+                size={14}
+                color={fullscreenActive ? '#2ecc71' : '#c9a84c'}
+              />
+              <Text style={[styles.fullscreenBtnText, fullscreenActive && { color: '#2ecc71' }]}>
+                {fullscreenActive ? 'EXIT FULLSCREEN' : 'ENTER FULLSCREEN'}
+              </Text>
+            </Pressable>
+          </View>
+        )}
 
         <View style={styles.divider} />
 
@@ -1005,5 +1074,23 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter_400Regular',
     letterSpacing: 0.5,
     marginTop: 2,
+  },
+  fullscreenBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    backgroundColor: '#12121c',
+    borderWidth: 1,
+    borderColor: 'rgba(201, 168, 76, 0.35)',
+    borderRadius: 4,
+  },
+  fullscreenBtnText: {
+    fontSize: 12,
+    fontFamily: 'Inter_700Bold',
+    color: '#c9a84c',
+    letterSpacing: 1,
   },
 });

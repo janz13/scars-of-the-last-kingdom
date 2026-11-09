@@ -31,6 +31,7 @@ export const SLOT_STORAGE_KEYS: Record<SaveSlotId, string> = {
 export const SAVE_META_KEY = '@scars_save_meta';
 export const LEGACY_SAVE_KEY = '@scars_save_v1';
 export const CONTENT_WARNING_KEY = '@scars_content_warning_v1';
+export const INTRO_SEEN_KEY = '@scars_intro_seen_v1';
 export const ENDINGS_KEY = '@scars_endings_v1';
 
 // ─── Helper Functions ───────────────────────────────────────────────────────
@@ -313,6 +314,24 @@ export async function markContentWarningSeen(storage: any = AsyncStorage): Promi
   }
 }
 
+export async function hasSeenIntro(storage: any = AsyncStorage): Promise<boolean> {
+  try {
+    const val = await storage.getItem(INTRO_SEEN_KEY);
+    return val === 'true';
+  } catch (error) {
+    console.warn('hasSeenIntro failed:', error);
+    return false;
+  }
+}
+
+export async function markIntroSeen(storage: any = AsyncStorage): Promise<void> {
+  try {
+    await storage.setItem(INTRO_SEEN_KEY, 'true');
+  } catch (error) {
+    console.warn('markIntroSeen failed:', error);
+  }
+}
+
 export async function resetAllData(storage: any = AsyncStorage): Promise<void> {
   try {
     const keys = [
@@ -320,6 +339,7 @@ export async function resetAllData(storage: any = AsyncStorage): Promise<void> {
       SAVE_META_KEY,
       LEGACY_SAVE_KEY,
       CONTENT_WARNING_KEY,
+      INTRO_SEEN_KEY,
       ENDINGS_KEY,
     ];
     if (typeof storage.multiRemove === 'function') {

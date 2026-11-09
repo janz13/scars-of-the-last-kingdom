@@ -8,6 +8,7 @@ import {
   View,
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
+import PixelFrame from './scene/PixelFrame';
 
 interface HotkeyCheatSheetModalProps {
   visible: boolean;
@@ -105,7 +106,7 @@ export default function HotkeyCheatSheetModal({
     >
       <Pressable style={styles.backdropDismiss} onPress={onClose} accessibilityLabel="Close modal backdrop" />
 
-      <View style={styles.card}>
+      <PixelFrame variant="lastArchive" cornerSize={6} borderWidth={2} glow style={styles.card}>
         {/* Header */}
         <View style={styles.header}>
           <View style={styles.titleRow}>
@@ -159,7 +160,7 @@ export default function HotkeyCheatSheetModal({
             Press <Text style={styles.footerHighlight}>?</Text> or <Text style={styles.footerHighlight}>Esc</Text> at any time to toggle this guide
           </Text>
         </View>
-      </View>
+      </PixelFrame>
     </View>
   );
 }
@@ -182,9 +183,6 @@ const styles = StyleSheet.create({
     maxWidth: 520,
     maxHeight: '85%',
     backgroundColor: '#0e0c18',
-    borderWidth: 1,
-    borderColor: 'rgba(201,168,76,0.3)',
-    borderRadius: 8,
     padding: 24,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 10 },

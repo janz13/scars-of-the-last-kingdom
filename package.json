@@ -11,6 +11,8 @@
     "audit": "pnpm --filter @workspace/scripts run audit",
     "build:pixel-assets": "pnpm --filter @workspace/scripts build:pixel-assets",
     "build:contact-sheet": "pnpm --filter @workspace/scripts build:contact-sheet",
+    "build:portrait-sheet": "pnpm --filter @workspace/scripts build:portrait-sheet",
+    "export:audio": "pnpm --filter @workspace/scripts export:audio",
     "lighthouse": "lhci autorun --config=./lighthouserc.json"
   },
   "private": true,

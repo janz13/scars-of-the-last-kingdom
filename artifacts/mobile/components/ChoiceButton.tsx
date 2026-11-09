@@ -12,6 +12,7 @@ import { Feather } from '@expo/vector-icons';
 import type { DiceCheck } from '../data/types';
 import { DICE_STAT_LABELS } from '../logic/diceEngine';
 import { MOTION_EASINGS, MOTION_SPRINGS } from '../constants/motion';
+import PixelFrame, { type FactionTint } from './scene/PixelFrame';
 
 interface Props {
   choiceId: string;
@@ -51,6 +52,14 @@ export default function ChoiceButton({
   const reasonText = reasons.length > 0 ? reasons.join(' · ') : (flavorText ?? '');
   const hasDice = Boolean(diceCheck);
   const [isHovered, setIsHovered] = useState(false);
+
+  const choiceVariant: FactionTint = !met
+    ? 'neutral'
+    : isHovered
+    ? 'ironSaints'
+    : hasDice
+    ? 'lastArchive'
+    : 'neutral';
 
   const scaleAnim = useSharedValue(1);
   const pressY = useSharedValue(0);
@@ -142,24 +151,38 @@ export default function ChoiceButton({
         focusable={met}
         {...({ dataSet: { choiceButton: 'true' } } as any)}
         style={({ focused }: any) => [
-          styles.button,
-          met ? styles.buttonActive : styles.buttonLocked,
-          hasDice && met && styles.buttonDice,
-          isHovered && met && styles.buttonHovered,
+          styles.pressable,
           focused && styles.buttonFocused,
         ]}
       >
-        {/* Left accent bar */}
-        {met && (
-          <View
-            style={[
-              styles.accentBar,
-              { backgroundColor: hasDice ? '#b87de0' : isHovered ? '#f39c12' : '#e67e22' },
-            ]}
-          />
-        )}
+        <PixelFrame
+          variant={choiceVariant}
+          cornerSize={4}
+          borderWidth={isHovered && met ? 2 : 1}
+          fillColor={
+            !met
+              ? 'rgba(8,6,14,0.7)'
+              : isHovered
+              ? 'rgba(28,18,46,0.96)'
+              : hasDice
+              ? 'rgba(20,10,38,0.95)'
+              : 'rgba(18,12,32,0.92)'
+          }
+          glow={isHovered && met}
+          style={styles.frame}
+        >
+          <View style={styles.buttonRow}>
+            {/* Left accent bar */}
+            {met && (
+              <View
+                style={[
+                  styles.accentBar,
+                  { backgroundColor: hasDice ? '#b87de0' : isHovered ? '#f39c12' : '#e67e22' },
+                ]}
+              />
+            )}
 
-        <View style={styles.inner}>
+            <View style={styles.inner}>
           <View style={styles.row}>
             {showHotkey && (
               <View style={[styles.hotkeyBadge, !met && styles.hotkeyBadgeLocked]}>
@@ -209,7 +232,9 @@ export default function ChoiceButton({
               <Text style={styles.reason}>{reasonText}</Text>
             </View>
           )}
-        </View>
+            </View>
+          </View>
+        </PixelFrame>
       </Pressable>
     </Animated.View>
   );
@@ -219,11 +244,17 @@ const styles = StyleSheet.create({
   wrapper: {
     marginBottom: 8,
   },
-  button: {
-    borderWidth: 1,
-    borderRadius: 3,
+  pressable: {
+    width: '100%',
     overflow: 'hidden',
+    ...(Platform.OS === 'web' ? { cursor: 'pointer' as any } : {}),
+  },
+  frame: {
+    width: '100%',
+  },
+  buttonRow: {
     flexDirection: 'row',
+    alignItems: 'stretch',
   },
   buttonActive: {
     backgroundColor: 'rgba(18,12,32,0.92)',

@@ -21,9 +21,12 @@ import { useGame } from '../context/GameContext';
 import SaveNotification from './SaveNotification';
 import { getSurvivalWarnings } from '../logic/gameEngine';
 import type { SurvivalWarning, SurvivalWarningSeverity, SurvivalWarningType } from '../logic/gameEngine';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import PixelStage from './scene/PixelStage';
 import ChoiceButton from './ChoiceButton';
 import DiceRollOverlay from './DiceRollOverlay';
+import ChapterTitleCard from './scene/ChapterTitleCard';
+import MarkAwakeningOverlay from './scene/MarkAwakeningOverlay';
 import DesktopSidebarHUD from './DesktopSidebarHUD';
 import StoryLayout from './scene/StoryLayout';
 import StoryText from './scene/StoryText';
@@ -337,19 +340,48 @@ export default function StoryPanel({ onOpenHotkeys }: { onOpenHotkeys?: () => vo
   const titleSlide = useSharedValue(0);
   const prevNodeId = useRef<string | undefined>(undefined);
   const prevChapter = useRef<string | undefined>(undefined);
-  const [showBanner, setShowBanner] = useState(false);
-  const bannerTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [showTitleCard, setShowTitleCard] = useState(false);
+  const titleCardTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Mark Awakening overlay state & persistent seen tracking (Chapter 1 & 9)
+  const seenAwakeningsRef = useRef<Set<string>>(new Set());
+  const [activeMarkAwakening, setActiveMarkAwakening] = useState<'ch1' | 'ch9' | null>(null);
 
   useEffect(() => {
     if (!currentNode) return;
 
     if (prevChapter.current !== undefined && prevChapter.current !== currentNode.chapter) {
-      if (bannerTimeoutRef.current) clearTimeout(bannerTimeoutRef.current);
-      setShowBanner(true);
-      sound.playStinger('chapter_card');
-      bannerTimeoutRef.current = setTimeout(() => setShowBanner(false), 2200);
+      if (titleCardTimeoutRef.current) clearTimeout(titleCardTimeoutRef.current);
+      setShowTitleCard(true);
+      titleCardTimeoutRef.current = setTimeout(() => setShowTitleCard(false), 4000);
     }
     prevChapter.current = currentNode.chapter;
+
+    // Check for Mark Awakening nodes (Ch 1: chapter1_start / examine_wrist_mark, Ch 9: chapter9_start / c9_mark_first_pulse)
+    const isCh1 = currentNode.id === 'chapter1_start' || currentNode.id === 'examine_wrist_mark';
+    const isCh9 = currentNode.id === 'chapter9_start' || currentNode.id === 'c9_mark_first_pulse';
+
+    if (isCh1 && !seenAwakeningsRef.current.has('ch1')) {
+      seenAwakeningsRef.current.add('ch1');
+      AsyncStorage.getItem('@scars_mark_awakening_seen_ch1').then((val) => {
+        if (!val) {
+          AsyncStorage.setItem('@scars_mark_awakening_seen_ch1', '1').catch(() => {});
+          setActiveMarkAwakening('ch1');
+        }
+      }).catch(() => {
+        setActiveMarkAwakening('ch1');
+      });
+    } else if (isCh9 && !seenAwakeningsRef.current.has('ch9')) {
+      seenAwakeningsRef.current.add('ch9');
+      AsyncStorage.getItem('@scars_mark_awakening_seen_ch9').then((val) => {
+        if (!val) {
+          AsyncStorage.setItem('@scars_mark_awakening_seen_ch9', '1').catch(() => {});
+          setActiveMarkAwakening('ch9');
+        }
+      }).catch(() => {
+        setActiveMarkAwakening('ch9');
+      });
+    }
 
     if (prevNodeId.current === currentNode.id) return;
     prevNodeId.current = currentNode.id;
@@ -371,7 +403,7 @@ export default function StoryPanel({ onOpenHotkeys }: { onOpenHotkeys?: () => vo
     }
 
     return () => {
-      if (bannerTimeoutRef.current) clearTimeout(bannerTimeoutRef.current);
+      if (titleCardTimeoutRef.current) clearTimeout(titleCardTimeoutRef.current);
     };
   }, [currentNode?.id, currentNode?.chapter, currentNode?.imageKey, reducedMotion, titleFade, titleSlide]);
 
@@ -542,7 +574,25 @@ export default function StoryPanel({ onOpenHotkeys }: { onOpenHotkeys?: () => vo
       storyContent={storyContent}
       overlays={
         <>
-          {showBanner && <ChapterBanner key={currentNode.chapter} chapter={currentNode.chapter} />}
+          {showTitleCard && (
+            <ChapterTitleCard
+              key={currentNode.chapter}
+              chapter={currentNode.chapter}
+              imageKey={currentNode.imageKey}
+              onDismiss={() => {
+                if (titleCardTimeoutRef.current) clearTimeout(titleCardTimeoutRef.current);
+                setShowTitleCard(false);
+              }}
+              reducedMotion={reducedMotion}
+            />
+          )}
+          {activeMarkAwakening && (
+            <MarkAwakeningOverlay
+              chapter={activeMarkAwakening}
+              onDismiss={() => setActiveMarkAwakening(null)}
+              reducedMotion={reducedMotion}
+            />
+          )}
           {pendingDiceRoll && (
             <DiceRollOverlay
               diceCheck={pendingDiceRoll.diceCheck}

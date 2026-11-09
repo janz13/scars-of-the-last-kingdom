@@ -664,7 +664,7 @@ function EndingsTab() {
               <View style={styles.modalArtContainer}>
                 {discoveredSet.has(inspectedEnding.id) ? (
                   <CinematicView
-                    timeline={getEndingLoopTimeline(inspectedEnding.category as any, inspectedEnding.imageKey)}
+                    timeline={getEndingLoopTimeline(inspectedEnding.category as any, inspectedEnding.id ?? inspectedEnding.imageKey)}
                     showSkipButton={false}
                     style={styles.modalImage}
                   />

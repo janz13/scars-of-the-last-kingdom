@@ -65,9 +65,17 @@ export default function Root({ children }: PropsWithChildren) {
         <meta property="og:description" content="A dark fantasy survival visual novel RPG. Make choices. Survive the surface. Carry the mark." />
         <meta property="og:image" content="https://janz13.github.io/scars-of-the-last-kingdom/icon-512.png" />
         <meta property="og:url" content="https://janz13.github.io/scars-of-the-last-kingdom/" />
+        <meta property="og:video" content="https://dark-realm-saga.vercel.app/video/trailer_75s_1080p.mp4" />
+        <meta property="og:video:secure_url" content="https://dark-realm-saga.vercel.app/video/trailer_75s_1080p.mp4" />
+        <meta property="og:video:type" content="video/mp4" />
+        <meta property="og:video:width" content="1920" />
+        <meta property="og:video:height" content="1080" />
 
         {/* ── Twitter Cards ─────────────────────────────────────────── */}
-        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:card" content="player" />
+        <meta name="twitter:player" content="https://dark-realm-saga.vercel.app/video/trailer_75s_1080p.mp4" />
+        <meta name="twitter:player:width" content="1920" />
+        <meta name="twitter:player:height" content="1080" />
         <meta name="twitter:title" content="Scars of the Last Kingdom" />
         <meta name="twitter:description" content="A dark fantasy survival visual novel RPG. Make choices. Survive the surface. Carry the mark." />
         <meta name="twitter:image" content="https://janz13.github.io/scars-of-the-last-kingdom/icon-512.png" />
@@ -209,6 +217,26 @@ export default function Root({ children }: PropsWithChildren) {
               max-width: 1920px;
               margin: 0 auto;
               box-shadow: 0 0 80px rgba(0, 0, 0, 0.85), 0 0 30px rgba(155, 89, 182, 0.12);
+            }
+          }
+
+          /* ── Desktop Pixel-Art Cursor System ──────────────────────── */
+          @media (hover: hover) and (pointer: fine) {
+            html, body, #root, * {
+              cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' shape-rendering='crispEdges'%3E%3Cpath fill='%2304020a' d='M0,0 v16 h4 v-1 h1 v-1 h2 v4 h2 v2 h2 v2 h2 v-3 h-2 v-2 h-2 v-3 h4 v-2 h-2 v-2 h-2 v-2 h-2 v-2 h-2 v-2 h-2 v-2 z' /%3E%3Cpath fill='%23ede0c4' d='M1,2 v12 h2 v-1 h2 v-1 h2 v-2 h1 v-2 h-1 v-2 h-2 v-2 h-2 v-2 z' /%3E%3Cpath fill='%23ffffff' d='M1,2 v10 h1 v-8 h6 v-1 z' /%3E%3Cpath fill='%23c9a84c' d='M7,12 h2 v3 h-2 z M9,15 h2 v3 h-2 z' /%3E%3C/svg%3E") 0 0, auto !important;
+            }
+
+            [data-choice-button="true"],
+            [data-choice-button="true"]:hover,
+            [data-choice-button],
+            [data-choice-button]:hover,
+            [data-choice-button="true"] *,
+            [data-choice-button] * {
+              cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' shape-rendering='crispEdges'%3E%3Cpath fill='%2304020a' d='M2,2 h3 v1 h2 v1 h2 v-2 h2 v2 h2 v-1 h2 v-1 h3 v3 h-1 v2 h-1 v2 h2 v2 h-2 v2 h1 v2 h1 v3 h-3 v-1 h-2 v-1 h-2 v2 h-2 v-2 h-2 v1 h-2 v1 h-3 v-3 h1 v-2 h1 v-2 h-2 v-2 h2 v-2 h-1 v-2 h-1 z'/%3E%3Cpath fill='%239b59b6' d='M3,3 h2 v2 h2 v-1 h2 v2 h2 v-2 h2 v1 h2 v-2 h2 v2 h-1 v2 h-1 v2 h1 v2 h-1 v2 h1 v2 h-2 v-1 h-2 v2 h-2 v-2 h-2 v1 h-2 v-2 h-2 v-2 h1 v-2 h-1 v-2 h1 v-2 z'/%3E%3Cpath fill='%23f39c12' d='M6,6 h4 v1 h2 v2 h1 v2 h-1 v2 h-2 v1 h-4 v-1 h-2 v-2 h-1 v-2 h1 v-2 h2 z'/%3E%3Cpath fill='%23ffffff' d='M8,8 h2 v2 h-2 z M5,3 h2 v1 h-2 z M11,1 h2 v2 h-2 z M11,11 h2 v2 h-2 z'/%3E%3C/svg%3E") 2 2, pointer !important;
+            }
+
+            a, button, [role="button"], input[type="button"], input[type="submit"] {
+              cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' shape-rendering='crispEdges'%3E%3Cpath fill='%2304020a' d='M0,0 v16 h4 v-1 h1 v-1 h2 v4 h2 v2 h2 v2 h2 v-3 h-2 v-2 h-2 v-3 h4 v-2 h-2 v-2 h-2 v-2 h-2 v-2 h-2 v-2 h-2 v-2 z' /%3E%3Cpath fill='%23ede0c4' d='M1,2 v12 h2 v-1 h2 v-1 h2 v-2 h1 v-2 h-1 v-2 h-2 v-2 h-2 v-2 z' /%3E%3Cpath fill='%23ffffff' d='M1,2 v10 h1 v-8 h6 v-1 z' /%3E%3Cpath fill='%23c9a84c' d='M7,12 h2 v3 h-2 z M9,15 h2 v3 h-2 z' /%3E%3C/svg%3E") 0 0, pointer !important;
             }
           }
 

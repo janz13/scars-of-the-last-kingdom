@@ -278,7 +278,7 @@ export default function EndingScreen() {
               testID="ending-cinematic-loop"
             >
               <CinematicView
-                timeline={getEndingLoopTimeline(ending.type)}
+                timeline={getEndingLoopTimeline(ending.type, ending.id ?? (ending as any).imageKey)}
                 compact={true}
                 height={200}
                 corruption={state.stats.corruption}
