@@ -2,8 +2,9 @@
  * Simultaneous Multi-Agent Live Website Audit & Full Path/Ending Traversal Swarm
  * Target: https://janz13.github.io/scars-of-the-last-kingdom/
  *
- * Launches 16 concurrent Playwright player/auditor agents against the live GitHub Pages site
+ * Launches 21 concurrent Playwright player/auditor agents across 3 batches against the live GitHub Pages site
  * AND performs exhaustive graph + ending + subsystem behavioral verification.
+ * Complies strictly with PROJECT.md Section 4.1 LiveSwarmTelemetry schema.
  */
 
 import { chromium, type Browser, type BrowserContext, type Page } from '@playwright/test';
@@ -35,23 +36,56 @@ const { getEndingLoopTimeline } = require('../../artifacts/mobile/data/cinematic
 const { INTRO_BLACKOUT_TIMELINE } = require('../../artifacts/mobile/data/cinematics/introBlackout.ts');
 const { CHAPTER_ROADMAP } = require('../../artifacts/mobile/data/chapterRoadmap.ts');
 
-interface AgentPlaythroughResult {
+export interface LiveChoiceRecord {
+  fromNode: string;
+  choiceId: string;
+  toNode: string;
+}
+
+export interface AgentPlaythroughResult {
   agentId: string;
   role: string;
   assignedChapterOrBranch: string;
+  chapter: string;
+  startNodeId: string;
   liveUrlVisited: string;
   httpStatus: number;
+  nodesVisited: string[];
+  endingsReached: string[];
+  choicesTaken: LiveChoiceRecord[];
   nodesVisitedCount: number;
   endingsUnlockedCount: number;
   sampleEndingsUnlocked: string[];
   consoleErrors: string[];
   network404s: string[];
+  errors: string[];
   subsystemChecks: Record<string, { passed: boolean; detail: string }>;
   discrepanciesFound: string[];
   durationMs: number;
 }
 
 function buildLiveSaveState(overrides: Record<string, any> = {}) {
+  const flags: Record<string, boolean> = {
+    prologue_complete: true,
+    met_mira: true,
+    met_cain: true,
+    velna_coordinates: true,
+    toma_cipher_learned: true,
+    small_names_memorized: true,
+    velna_alive: true,
+    velna_voice_sample: true,
+    silo_d_shared: true,
+    array_calibrated_early: true,
+    fc1_complete: true,
+    final_chapter1_complete: true,
+    unlocked_finalChapter2: true,
+    final_chapter2_true_path: true,
+    epilogue_unlocked: true,
+  };
+  for (let c = 1; c <= 12; c++) {
+    flags[`chapter${c}_complete`] = true;
+  }
+
   return {
     screen: 'story',
     character: {
@@ -85,18 +119,7 @@ function buildLiveSaveState(overrides: Record<string, any> = {}) {
       reputation: 10,
     },
     currentNodeId: 'chapter1_start',
-    flags: {
-      prologue_complete: true,
-      met_mira: true,
-      met_cain: true,
-      velna_coordinates: true,
-      toma_cipher_learned: true,
-      small_names_memorized: true,
-      velna_alive: true,
-      velna_voice_sample: true,
-      silo_d_shared: true,
-      array_calibrated_early: true,
-    },
+    flags,
     companions: {
       mira: { present: true, trust: 8, alive: true },
       cain: { present: true, trust: 8, alive: true },
@@ -115,7 +138,7 @@ function buildLiveSaveState(overrides: Record<string, any> = {}) {
       fontSize: 'normal',
       soundEnabled: true,
       autoSave: true,
-      skipDiceAnimation: false,
+      skipDiceAnimation: true,
       textLayout: 'auto',
       proseFont: 'inter',
       qualityTier: 'high',
@@ -127,7 +150,7 @@ function buildLiveSaveState(overrides: Record<string, any> = {}) {
 
 async function runLiveSwarm() {
   console.log('================================================================================');
-  console.log('🚀 LAUNCHING SIMULTANEOUS LIVE WEBSITE AUDIT & PLAYER SWARM');
+  console.log('🚀 LAUNCHING SIMULTANEOUS LIVE WEBSITE AUDIT & PLAYER SWARM (21 AGENTS)');
   console.log(`🌐 Target URL: ${LIVE_URL}`);
   console.log('================================================================================\n');
 
@@ -164,7 +187,7 @@ async function runLiveSwarm() {
     adj.set(node.id, edges);
   }
 
-  // BFS from root seeds (`prologue_start`, `chapter1_start`, plus special pools `halluc_*`, `mira_event_*`, `cain_event_*`)
+  // BFS from root seeds (`prologue_start`, `chapter1_start`)
   const visitedFromSpine = new Map<string, { depth: number; parent: string | null; via: string }>();
   const queue: string[] = ['prologue_start', 'chapter1_start'];
   for (const seed of queue) {
@@ -217,13 +240,17 @@ async function runLiveSwarm() {
   const unreachableNodes = allNodes.filter((n: any) => !visitedWithDynamicPools.has(n.id));
   const isEndingNodes = allNodes.filter((n: any) => n.isEnding && n.id !== 'chapter1_end');
 
-  // 3. Partition all 244 story ending nodes + chapters across 16 simultaneous browser agents
-  const browser = await chromium.launch({ headless: true, channel: 'chrome' });
+  const browser = await chromium.launch({
+    headless: true,
+    channel: process.env.PLAYWRIGHT_CHANNEL || 'chrome',
+  });
 
+  // 21-Agent Partition Matrix covering all 16 chapter spines, 4 mid-game branches, and Codex/Subsystems
   const agentSpecs = [
     {
       agentId: 'AGENT-01',
       role: 'Main Menu, Intro Cinematic & Character Creator Inspector',
+      chapter: 'Prologue & MainMenu',
       branch: 'Prologue & MainMenu',
       startNodeId: 'prologue_start',
       chapterFilter: ['Prologue'],
@@ -231,6 +258,7 @@ async function runLiveSwarm() {
     {
       agentId: 'AGENT-02',
       role: 'Chapter 1 & Mark Awakening / 3D d20 Set-Piece Player',
+      chapter: 'Chapter 1',
       branch: 'Chapter 1 (The Ruined Station)',
       startNodeId: 'chapter1_start',
       chapterFilter: ['Chapter 1', 'DiceOutcomes'],
@@ -238,128 +266,200 @@ async function runLiveSwarm() {
     {
       agentId: 'AGENT-03',
       role: 'Chapter 2 Player (The Market Below)',
+      chapter: 'Chapter 2',
       branch: 'Chapter 2',
       startNodeId: 'chapter2_start',
       chapterFilter: ['Chapter 2'],
     },
     {
       agentId: 'AGENT-04',
-      role: 'Chapter 3 & MB1 (The Census of Small Names) Player',
-      branch: 'Chapter 3 + MB1',
-      startNodeId: 'mb1_01',
+      role: 'Chapter 3 Spine Player (The Sunken Library)',
+      chapter: 'Chapter 3',
+      branch: 'Chapter 3 Main Spine',
+      startNodeId: 'chapter3_start',
       chapterFilter: ['Chapter 3'],
     },
     {
       agentId: 'AGENT-05',
+      role: 'Mid-Game Branch 1 Player (The Census of Small Names)',
+      chapter: 'Mid-Game Branch 1 (MB1)',
+      branch: 'MB1: The Census of Small Names',
+      startNodeId: 'mb1_01',
+      chapterFilter: ['Chapter 3'],
+    },
+    {
+      agentId: 'AGENT-06',
       role: 'Chapter 4 Player (The Iron Toll)',
+      chapter: 'Chapter 4',
       branch: 'Chapter 4',
       startNodeId: 'chapter4_start',
       chapterFilter: ['Chapter 4'],
     },
     {
-      agentId: 'AGENT-06',
+      agentId: 'AGENT-07',
       role: 'Chapter 5 Player (The Glass Court)',
+      chapter: 'Chapter 5',
       branch: 'Chapter 5',
       startNodeId: 'chapter5_start',
       chapterFilter: ['Chapter 5'],
     },
     {
-      agentId: 'AGENT-07',
-      role: 'Chapter 6 & MB2 (Velna\'s Trail) Player',
-      branch: 'Chapter 6 + MB2',
+      agentId: 'AGENT-08',
+      role: 'Chapter 6 Spine Player (The Rust Garden)',
+      chapter: 'Chapter 6',
+      branch: 'Chapter 6 Main Spine',
+      startNodeId: 'chapter6_start',
+      chapterFilter: ['Chapter 6'],
+    },
+    {
+      agentId: 'AGENT-09',
+      role: 'Mid-Game Branch 2 Player (Velna\'s Trail)',
+      chapter: 'Mid-Game Branch 2 (MB2)',
+      branch: 'MB2: Velna\'s Trail',
       startNodeId: 'mb2_01',
       chapterFilter: ['Chapter 6'],
     },
     {
-      agentId: 'AGENT-08',
+      agentId: 'AGENT-10',
       role: 'Chapter 7 Player (The Last Archive)',
+      chapter: 'Chapter 7',
       branch: 'Chapter 7',
       startNodeId: 'chapter7_start',
       chapterFilter: ['Chapter 7'],
     },
     {
-      agentId: 'AGENT-09',
-      role: 'Chapter 8 & MB3 (The Grain Ledger) Player',
-      branch: 'Chapter 8 + MB3',
+      agentId: 'AGENT-11',
+      role: 'Chapter 8 Spine Player (The Red Stair)',
+      chapter: 'Chapter 8',
+      branch: 'Chapter 8 Main Spine',
+      startNodeId: 'chapter8_start',
+      chapterFilter: ['Chapter 8'],
+    },
+    {
+      agentId: 'AGENT-12',
+      role: 'Mid-Game Branch 3 Player (The Grain Ledger)',
+      chapter: 'Mid-Game Branch 3 (MB3)',
+      branch: 'MB3: The Grain Ledger',
       startNodeId: 'mb3_01',
       chapterFilter: ['Chapter 8'],
     },
     {
-      agentId: 'AGENT-10',
+      agentId: 'AGENT-13',
       role: 'Chapter 9 & Mark Pulse Set-Piece Player',
+      chapter: 'Chapter 9',
       branch: 'Chapter 9',
       startNodeId: 'chapter9_start',
       chapterFilter: ['Chapter 9'],
     },
     {
-      agentId: 'AGENT-11',
-      role: 'Chapter 10 & MB4 (The Last Broadcast) Player',
-      branch: 'Chapter 10 + MB4',
+      agentId: 'AGENT-14',
+      role: 'Chapter 10 Spine Player (The Obsidian Spire)',
+      chapter: 'Chapter 10',
+      branch: 'Chapter 10 Main Spine',
+      startNodeId: 'chapter10_start',
+      chapterFilter: ['Chapter 10'],
+    },
+    {
+      agentId: 'AGENT-15',
+      role: 'Mid-Game Branch 4 Player (The Last Broadcast)',
+      chapter: 'Mid-Game Branch 4 (MB4)',
+      branch: 'MB4: The Last Broadcast',
       startNodeId: 'mb4_01',
       chapterFilter: ['Chapter 10'],
     },
     {
-      agentId: 'AGENT-12',
+      agentId: 'AGENT-16',
       role: 'Chapter 11 Player (The Fracture)',
+      chapter: 'Chapter 11',
       branch: 'Chapter 11',
       startNodeId: 'chapter11_start',
       chapterFilter: ['Chapter 11'],
     },
     {
-      agentId: 'AGENT-13',
+      agentId: 'AGENT-17',
       role: 'Chapter 12 Player (The Convergence)',
+      chapter: 'Chapter 12',
       branch: 'Chapter 12',
       startNodeId: 'chapter12_start',
       chapterFilter: ['Chapter 12'],
     },
     {
-      agentId: 'AGENT-14',
-      role: 'Final Chapter 1 & Final Chapter 2 Player',
-      branch: 'Final Chapters 1 & 2',
+      agentId: 'AGENT-18',
+      role: 'Final Chapter 1 Player (The Gate of Teeth)',
+      chapter: 'Final Chapter 1',
+      branch: 'Final Chapter 1',
       startNodeId: 'final_chapter1_start',
-      chapterFilter: ['Final Chapter 1', 'Final Chapter 2'],
+      chapterFilter: ['Final Chapter 1'],
     },
     {
-      agentId: 'AGENT-15',
-      role: 'Epilogue ("The Response") All 6 Endings Player',
+      agentId: 'AGENT-19',
+      role: 'Final Chapter 2 Player (The Last Throne)',
+      chapter: 'Final Chapter 2',
+      branch: 'Final Chapter 2',
+      startNodeId: 'final_chapter2_start',
+      chapterFilter: ['Final Chapter 2'],
+    },
+    {
+      agentId: 'AGENT-20',
+      role: 'Epilogue ("The Response") All Endings Player',
+      chapter: 'Epilogue',
       branch: 'Epilogue: The Response',
       startNodeId: 'epi_01',
       chapterFilter: ['Epilogue'],
     },
     {
-      agentId: 'AGENT-16',
-      role: 'Route Codex, Multi-Slot Save/Load, Audio & Ending Clip Exporter Auditor',
+      agentId: 'AGENT-21',
+      role: 'Route Codex, Multi-Slot Save/Load & Subsystem Auditor',
+      chapter: 'Route Codex & Subsystems',
       branch: 'All 268 Codex Endings & Subsystems',
-      startNodeId: 'ending_epilogue_yes_were_here',
+      startNodeId: 'epi_55',
       chapterFilter: ['Corruption', 'Interlude'],
     },
   ];
 
-  // Run all 16 Playwright agents IN PARALLEL (batches of 8 for clean network concurrency)
+  // Run Playwright agents in 3 batches of 7 for clean concurrency
   async function runSingleAgent(spec: (typeof agentSpecs)[number]): Promise<AgentPlaythroughResult> {
     const startMs = Date.now();
     const consoleErrors: string[] = [];
     const network404s: string[] = [];
     const subsystemChecks: Record<string, { passed: boolean; detail: string }> = {};
     const discrepanciesFound: string[] = [];
-
-    const chapterNodes = allNodes.filter((n: any) => spec.chapterFilter.includes(n.chapter));
-    const chapterEndings = isEndingNodes
-      .filter((n: any) => spec.chapterFilter.includes(n.chapter))
-      .map((n: any) => n.endingId || n.id);
+    const nodesVisited: string[] = [];
+    const endingsReached: string[] = [];
+    const choicesTaken: LiveChoiceRecord[] = [];
 
     const context = await browser.newContext({ viewport: { width: 1920, height: 919 } });
     const seedState = buildLiveSaveState({
       currentNodeId: spec.startNodeId,
-      endingsDiscovered: chapterEndings,
     });
+    const seedStateJson = JSON.stringify(seedState);
+    const metaPayload = {
+      auto: {
+        slotId: 'auto',
+        label: 'Autosave',
+        timestamp: Date.now(),
+        chapter: spec.chapter,
+        location: 'Audit Sector',
+        characterName: seedState.character.name,
+        characterClass: seedState.character.characterClass,
+        isEmpty: false,
+      },
+      slot1: { slotId: 'slot1', label: 'Manual Slot 1', timestamp: 0, chapter: '', location: '', characterName: '', characterClass: '', isEmpty: true },
+      slot2: { slotId: 'slot2', label: 'Manual Slot 2', timestamp: 0, chapter: '', location: '', characterName: '', characterClass: '', isEmpty: true },
+      slot3: { slotId: 'slot3', label: 'Manual Slot 3', timestamp: 0, chapter: '', location: '', characterName: '', characterClass: '', isEmpty: true },
+    };
 
     await context.addInitScript((payload) => {
       localStorage.setItem('@scars_content_warning_v1', 'true');
       localStorage.setItem('@scars_intro_seen_v1', 'true');
-      localStorage.setItem('@scars_save_v1', JSON.stringify(payload.seedState));
-      localStorage.setItem('@scars_endings_v1', JSON.stringify(payload.endings));
-    }, { seedState, endings: chapterEndings });
+      localStorage.setItem('@scars_save_v1', payload.seedStateJson);
+      localStorage.setItem('@scars_save_slot_auto', payload.seedStateJson);
+      localStorage.setItem('@scars_save_meta', JSON.stringify(payload.metaPayload));
+
+      window.addEventListener('unhandledrejection', (event: any) => {
+        console.error('UNHANDLED_REJECTION: ' + (event.reason?.stack || event.reason?.message || event.reason));
+      });
+    }, { seedStateJson, metaPayload });
 
     const page = await context.newPage();
     page.on('pageerror', (err) => consoleErrors.push(`PAGEERROR: ${err.message}`));
@@ -367,6 +467,12 @@ async function runLiveSwarm() {
       if (msg.type() === 'error') {
         consoleErrors.push(`CONSOLE_ERROR: ${msg.text()}`);
       }
+    });
+    (page as any).on('unhandledrejection', (err: any) => {
+      consoleErrors.push(`UNHANDLED_REJECTION: ${err?.message || err}`);
+    });
+    page.on('requestfailed', (req) => {
+      network404s.push(`FAILED_REQUEST: ${req.failure()?.errorText || 'failed'} ${req.url()}`);
     });
     page.on('response', (res) => {
       if (res.status() >= 400) {
@@ -379,13 +485,22 @@ async function runLiveSwarm() {
       const response = await page.goto(LIVE_URL + '?cb=' + Date.now(), { waitUntil: 'networkidle', timeout: 30000 });
       httpStatus = response?.status() ?? 0;
 
-      // Wait for SplashScreen -> MainMenu transition
       const continueBtn = page.getByText('CONTINUE JOURNEY', { exact: true });
-      await continueBtn.waitFor({ state: 'visible', timeout: 10000 });
+      await continueBtn.waitFor({ state: 'visible', timeout: 15000 });
 
-      // Agent-specific deep live checks
+      const getLiveSave = async () => {
+        try {
+          const raw = await page.evaluate(() =>
+            localStorage.getItem('@scars_save_slot_auto') || localStorage.getItem('@scars_save_v1')
+          );
+          return raw ? JSON.parse(raw) : null;
+        } catch {
+          return null;
+        }
+      };
+
       if (spec.agentId === 'AGENT-01') {
-        // Check MainMenu footer stats, version text & 1920x919 button bounding box on live site
+        // MainMenu layout & footer stats audit
         const menuText = await page.evaluate(() => document.body.innerText);
         if (!menuText.includes('1635 NODES')) {
           discrepanciesFound.push('DISCREPANCY-01: Live MainMenu footer does not show 1635 NODES');
@@ -407,7 +522,7 @@ async function runLiveSwarm() {
           discrepanciesFound.push(`DISCREPANCY-LAYOUT: MainMenu button clipped or uncentered at 1920x919: ${JSON.stringify(btnBox)}`);
         }
 
-        // Test Replay Intro: The Blackout on live site
+        // Test Intro Cinematic
         const replayBtn = page.getByText('REPLAY INTRO: THE BLACKOUT', { exact: true });
         if ((await replayBtn.count()) > 0) {
           await replayBtn.click();
@@ -426,7 +541,7 @@ async function runLiveSwarm() {
           }
         }
 
-        // Test Character Creator on live site
+        // Test Character Creator
         const newTimelineBtn = page.getByText('START NEW TIMELINE', { exact: true });
         if ((await newTimelineBtn.count()) > 0) {
           await newTimelineBtn.click();
@@ -438,17 +553,41 @@ async function runLiveSwarm() {
             detail: 'Character Creator screen loaded on live site',
           };
         }
-      } else if (spec.agentId === 'AGENT-02') {
-        // Enter gameplay in Chapter 1, test Mark Awakening and Dice Roll
-        await continueBtn.click();
+
+        // Enter Prologue
+        await page.goto(LIVE_URL + '?cb=' + Date.now(), { waitUntil: 'networkidle', timeout: 30000 });
+        const contPrologue = page.getByText('CONTINUE JOURNEY', { exact: true });
+        await contPrologue.waitFor({ state: 'visible', timeout: 15000 });
+        await contPrologue.click();
         await page.waitForTimeout(1500);
-        const bodyText = await page.evaluate(() => document.body.innerText);
-        const inCh1 = bodyText.includes('The Ruined Station') || bodyText.includes('TAP OR SPACE TO SKIP');
-        subsystemChecks['Chapter1_LiveGameplay & MarkAwakening'] = {
-          passed: inCh1,
-          detail: 'Entered Chapter 1 on live site and verified MarkAwakeningOverlay / StoryPanel render',
-        };
-      } else if (spec.agentId === 'AGENT-16') {
+
+        let curSave = await getLiveSave();
+        let curId = curSave?.currentNodeId || 'prologue_start';
+        if (!nodesVisited.includes(curId)) nodesVisited.push(curId);
+
+        // Take 2 prologue choices
+        for (let s = 0; s < 2; s++) {
+          const skipPrompt = page.getByText('[ TAP OR SPACE TO SKIP ]');
+          if ((await skipPrompt.count()) > 0) {
+            await skipPrompt.first().click().catch(() => {});
+            await page.waitForTimeout(200);
+          }
+          const choiceBtns = page.locator('text=/\\[[1-9]\\]/');
+          if ((await choiceBtns.count()) > 0) {
+            const nodeDef = nodeMap.get(curId);
+            const choiceId = nodeDef?.choices?.[0]?.id || 'prologue_choice';
+            await choiceBtns.first().click().catch(() => {});
+            await page.waitForTimeout(600);
+            const nxt = await getLiveSave();
+            const nxtId = nxt?.currentNodeId || curId;
+            if (nxtId !== curId) {
+              choicesTaken.push({ fromNode: curId, choiceId, toNode: nxtId });
+              if (!nodesVisited.includes(nxtId)) nodesVisited.push(nxtId);
+              curId = nxtId;
+            }
+          }
+        }
+      } else if (spec.agentId === 'AGENT-21') {
         // Open Route Codex on live site and verify endings & categories
         const codexBtn = page.getByText('VIEW ROUTE CODEX', { exact: true });
         await codexBtn.click();
@@ -459,13 +598,31 @@ async function runLiveSwarm() {
           passed: hasCodex,
           detail: 'Route Codex screen opened and rendered ending categories on live site',
         };
+
+        // Return to Main Menu and continue to ending screen
+        await page.goto(LIVE_URL + '?cb=' + Date.now(), { waitUntil: 'networkidle', timeout: 30000 });
+        const contEnding = page.getByText('CONTINUE JOURNEY', { exact: true });
+        await contEnding.waitFor({ state: 'visible', timeout: 15000 });
+        await contEnding.click();
+        await page.waitForTimeout(1500);
+
+        const endSave = await getLiveSave();
+        const endNodeId = endSave?.currentNodeId || spec.startNodeId;
+        nodesVisited.push(endNodeId);
+        const endingId = endSave?.activeEnding || nodeMap.get(endNodeId)?.endingId || endNodeId;
+        endingsReached.push(endingId);
       } else {
-        // Click CONTINUE JOURNEY to load the assigned chapter/branch on the live site!
+        // Core Story Agent Traversal (AGENT-02 to AGENT-20)
         await continueBtn.click();
         await page.waitForTimeout(1800);
-        const screenText = await page.evaluate(() => document.body.innerText);
+
+        let currSave = await getLiveSave();
+        let currNodeId = currSave?.currentNodeId || spec.startNodeId;
+        if (!nodesVisited.includes(currNodeId)) nodesVisited.push(currNodeId);
+
         const loadedNode = nodeMap.get(spec.startNodeId);
         const expectedTitle = loadedNode?.title || '';
+        const screenText = await page.evaluate(() => document.body.innerText);
         const rendered =
           screenText.includes(expectedTitle) ||
           screenText.includes('TACTICAL HUD') ||
@@ -475,17 +632,92 @@ async function runLiveSwarm() {
           detail: `Loaded node "${spec.startNodeId}" (${expectedTitle}) on live site and verified dynamic chunk + pixel stage`,
         };
 
-        // Make 2 live choice clicks to advance along the branch in the live browser!
-        for (let step = 0; step < 2; step++) {
+        if (spec.agentId === 'AGENT-02') {
+          subsystemChecks['Chapter1_LiveGameplay & MarkAwakening'] = {
+            passed: screenText.includes('The Ruined Station') || screenText.includes('TAP OR SPACE TO SKIP'),
+            detail: 'Entered Chapter 1 on live site and verified MarkAwakeningOverlay / StoryPanel render',
+          };
+        }
+
+        // Multi-Step Live Traversal Loop (Up to 8 steps or terminal ending)
+        for (let step = 0; step < 8; step++) {
+          if (currSave?.screen === 'ending' || currSave?.activeEnding || nodeMap.get(currNodeId)?.isEnding) {
+            const endId = currSave?.activeEnding || nodeMap.get(currNodeId)?.endingId || currNodeId;
+            if (!endingsReached.includes(endId)) endingsReached.push(endId);
+            break;
+          }
+
+          // Skip typewriter prompt if displayed
           const skipPrompt = page.getByText('[ TAP OR SPACE TO SKIP ]');
           if ((await skipPrompt.count()) > 0) {
             await skipPrompt.first().click().catch(() => {});
+            await page.waitForTimeout(150);
+          }
+
+          // Handle any active dice roll
+          const dicePrompt = page.getByText(/ROLL D20|TAP TO ROLL|D20 CHECK/i);
+          if ((await dicePrompt.count()) > 0) {
+            await dicePrompt.first().click().catch(() => {});
+            await page.keyboard.press('Space').catch(() => {});
             await page.waitForTimeout(300);
           }
-          const choice1 = page.locator('text=/\\[1\\]/');
-          if ((await choice1.count()) > 0) {
-            await choice1.first().click().catch(() => {});
-            await page.waitForTimeout(700);
+
+          const choiceButtons = page.locator('text=/\\[[1-9]\\]/');
+          let count = await choiceButtons.count();
+          if (count === 0) {
+            await page.keyboard.press('Space').catch(() => {});
+            await page.waitForTimeout(400);
+            count = await choiceButtons.count();
+          }
+          if (count === 0) {
+            const returnBtn = page.getByText('RETURN TO MAIN MENU');
+            if ((await returnBtn.count()) > 0) {
+              if (nodeMap.get(currNodeId)?.isEnding) {
+                const endId = nodeMap.get(currNodeId)?.endingId || currNodeId;
+                if (!endingsReached.includes(endId)) endingsReached.push(endId);
+              }
+            }
+            break;
+          }
+
+          const choiceIdx = step % count;
+          const nodeDef = nodeMap.get(currNodeId);
+          const choiceId = nodeDef?.choices?.[choiceIdx]?.id || `choice_${choiceIdx + 1}`;
+
+          await choiceButtons.nth(choiceIdx).click().catch(() => {});
+          await page.waitForTimeout(600);
+
+          const rollPrompt = page.getByText(/ROLL D20|TAP TO ROLL|D20 CHECK/i);
+          if ((await rollPrompt.count()) > 0) {
+            await page.keyboard.press('Space').catch(() => {});
+            await page.waitForTimeout(400);
+          }
+
+          const nextSave = await getLiveSave();
+          const nextNodeId = nextSave?.currentNodeId || currNodeId;
+
+          if (nextNodeId !== currNodeId) {
+            choicesTaken.push({ fromNode: currNodeId, choiceId, toNode: nextNodeId });
+            if (!nodesVisited.includes(nextNodeId)) nodesVisited.push(nextNodeId);
+            currNodeId = nextNodeId;
+            currSave = nextSave;
+
+            if (currSave?.screen === 'ending' || currSave?.activeEnding || nodeMap.get(currNodeId)?.isEnding) {
+              const endId = currSave?.activeEnding || nodeMap.get(currNodeId)?.endingId || currNodeId;
+              if (!endingsReached.includes(endId)) endingsReached.push(endId);
+              break;
+            }
+          } else {
+            await page.keyboard.press('Space').catch(() => {});
+            await page.waitForTimeout(300);
+            const retrySave = await getLiveSave();
+            if (retrySave?.currentNodeId && retrySave.currentNodeId !== currNodeId) {
+              choicesTaken.push({ fromNode: currNodeId, choiceId, toNode: retrySave.currentNodeId });
+              currNodeId = retrySave.currentNodeId;
+              if (!nodesVisited.includes(currNodeId)) nodesVisited.push(currNodeId);
+            } else {
+              break;
+            }
           }
         }
       }
@@ -495,34 +727,45 @@ async function runLiveSwarm() {
       await context.close();
     }
 
+    const allErrors = [...consoleErrors, ...network404s, ...discrepanciesFound];
     return {
       agentId: spec.agentId,
       role: spec.role,
       assignedChapterOrBranch: spec.branch,
+      chapter: spec.chapter,
+      startNodeId: spec.startNodeId,
       liveUrlVisited: LIVE_URL,
       httpStatus,
-      nodesVisitedCount: chapterNodes.length,
-      endingsUnlockedCount: chapterEndings.length,
-      sampleEndingsUnlocked: chapterEndings.slice(0, 5),
+      nodesVisited,
+      endingsReached,
+      choicesTaken,
+      nodesVisitedCount: nodesVisited.length,
+      endingsUnlockedCount: endingsReached.length,
+      sampleEndingsUnlocked: endingsReached.slice(0, 5),
       consoleErrors,
       network404s,
+      errors: allErrors,
       subsystemChecks,
       discrepanciesFound,
       durationMs: Date.now() - startMs,
     };
   }
 
-  console.log('⏳ Dispatching Batch 1 (Agents 01–08) simultaneously against live site...');
-  const batch1Results = await Promise.all(agentSpecs.slice(0, 8).map(runSingleAgent));
+  console.log('⏳ Dispatching Batch 1 (Agents 01–07) simultaneously against live site...');
+  const batch1Results = await Promise.all(agentSpecs.slice(0, 7).map(runSingleAgent));
   console.log('✅ Batch 1 complete.');
 
-  console.log('⏳ Dispatching Batch 2 (Agents 09–16) simultaneously against live site...');
-  const batch2Results = await Promise.all(agentSpecs.slice(8, 16).map(runSingleAgent));
-  console.log('✅ Batch 2 complete.\n');
+  console.log('⏳ Dispatching Batch 2 (Agents 08–14) simultaneously against live site...');
+  const batch2Results = await Promise.all(agentSpecs.slice(7, 14).map(runSingleAgent));
+  console.log('✅ Batch 2 complete.');
+
+  console.log('⏳ Dispatching Batch 3 (Agents 15–21) simultaneously against live site...');
+  const batch3Results = await Promise.all(agentSpecs.slice(14, 21).map(runSingleAgent));
+  console.log('✅ Batch 3 complete.\n');
 
   await browser.close();
 
-  const allAgentResults = [...batch1Results, ...batch2Results];
+  const allAgentResults = [...batch1Results, ...batch2Results, ...batch3Results];
 
   // 4. Exhaustive Character Creation Matrix Check (7 classes × 7 backgrounds × 3 companions × 7 traits = 1,029 combinations)
   let charComboCount = 0;
@@ -547,15 +790,37 @@ async function runLiveSwarm() {
   // 6. Check getChapterForNode(endingNodeId) for non-Chapter-1 ending nodes
   const endingNodesFailingChapterLookup = isEndingNodes.filter((n: any) => {
     if (n.chapter === 'Chapter 1' || n.chapter === 'Prologue') return false;
-    // Before chapter is loaded, getChapterForNode relies on prefix matching
     if (n.id.startsWith('ending_')) {
       return true;
     }
     return false;
   });
 
+  const liveUniqueNodes = new Set<string>();
+  const liveUniqueEndings = new Set<string>();
+  for (const a of allAgentResults) {
+    for (const n of a.nodesVisited) liveUniqueNodes.add(n);
+    for (const e of a.endingsReached) liveUniqueEndings.add(e);
+  }
+
+  const totalConsoleErrors = allAgentResults.reduce((acc, a) => acc + a.consoleErrors.length, 0);
+  const totalNetworkErrors = allAgentResults.reduce((acc, a) => acc + a.network404s.length, 0);
+  const totalDiscrepancies = allAgentResults.reduce((acc, a) => acc + a.discrepanciesFound.length, 0);
+  const totalErrors = totalConsoleErrors + totalNetworkErrors + totalDiscrepancies;
+
   const summaryJson = {
     timestamp: new Date().toISOString(),
+    targetUrl: LIVE_URL,
+    totalAgents: allAgentResults.length,
+    agents: allAgentResults,
+    globalStats: {
+      totalUniqueNodes: liveUniqueNodes.size,
+      totalUniqueEndings: liveUniqueEndings.size,
+      totalErrors,
+      totalConsoleExceptions: totalConsoleErrors,
+    },
+    // Backwards-compatible aliases and static audit metrics
+    agentResults: allAgentResults,
     liveUrl: LIVE_URL,
     totalStoryNodes: allNodes.length,
     reachableFromSpine: visitedFromSpine.size,
@@ -568,15 +833,28 @@ async function runLiveSwarm() {
     characterCreatorFailures: charComboFailures,
     mainMenuSceneInManifest,
     endingNodesWithPrefixLookupGapCount: endingNodesFailingChapterLookup.length,
-    agentResults: allAgentResults,
+    staticGraphAudit: {
+      totalStoryNodes: allNodes.length,
+      totalEndingNodes: isEndingNodes.length,
+      reachableFromSpine: visitedFromSpine.size,
+      reachableWithDynamicPools: visitedWithDynamicPools.size,
+      unreachableNodesCount: unreachableNodes.length,
+      unreachableNodeIds: unreachableNodes.map((n: any) => n.id),
+      endingsRegistryLength: ENDINGS.length,
+      characterCreatorCombinationsTested: charComboCount,
+      characterCreatorFailures: charComboFailures,
+    },
   };
 
   const outJsonPath = path.resolve(ROOT_DIR, 'docs/live_audit_results.json');
   fs.writeFileSync(outJsonPath, JSON.stringify(summaryJson, null, 2));
   console.log(`📄 Saved raw audit telemetry to ${outJsonPath}`);
-  console.log(`   • Total Story Nodes Verified: ${allNodes.length} / 1,635`);
-  console.log(`   • Reachable Story Nodes:      ${visitedWithDynamicPools.size} / ${allNodes.length}`);
-  console.log(`   • Story Ending Nodes:         ${isEndingNodes.length}`);
+  console.log(`   • Total Agents Dispatched:    ${allAgentResults.length}`);
+  console.log(`   • Live Unique Nodes Visited:  ${liveUniqueNodes.size}`);
+  console.log(`   • Live Endings Reached:       ${liveUniqueEndings.size}`);
+  console.log(`   • Static Story Nodes Valid:   ${allNodes.length} / 1,635`);
+  console.log(`   • Static Reachable Nodes:     ${visitedWithDynamicPools.size} / ${allNodes.length}`);
+  console.log(`   • Static Ending Nodes:        ${isEndingNodes.length}`);
   console.log(`   • ENDINGS Registry Entries:   ${ENDINGS.length}`);
   console.log(`   • Character Loadout Combos:   ${charComboCount} (${charComboFailures} failures)`);
 }

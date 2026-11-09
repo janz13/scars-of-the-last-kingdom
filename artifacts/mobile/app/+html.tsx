@@ -264,10 +264,18 @@ export default function Root({ children }: PropsWithChildren) {
                 }
               }).observe(document.querySelector('title') || document.head, { childList: true, subtree: true, characterData: true });
               if ('serviceWorker' in navigator) {
+                var refreshing = false;
+                navigator.serviceWorker.addEventListener('controllerchange', function() {
+                  if (!refreshing) {
+                    refreshing = true;
+                    window.location.reload();
+                  }
+                });
                 window.addEventListener('load', function() {
                   navigator.serviceWorker.register('./sw.js')
                     .then(function(reg) {
                       console.log('[SW] Registered:', reg.scope);
+                      reg.update();
                     })
                     .catch(function(err) {
                       console.log('[SW] Registration failed:', err);
