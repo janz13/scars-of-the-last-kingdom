@@ -14,6 +14,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Feather } from '@expo/vector-icons';
 import { useGame } from '../context/GameContext';
+import { ensureNodeLoaded } from '../data/storyNodes';
 import { getEndingById, ENDINGS } from '../data/endings';
 import { MOTION_SPRINGS } from '../constants/motion';
 import { sound } from '../logic/audioEngine';
@@ -44,13 +45,14 @@ const ENDING_ICONS: Record<string, string> = {
 };
 
 export default function EndingScreen() {
-  const { state, setScreen, deleteAndReset } = useGame();
+  const { state, currentNode, makeChoice, setScreen, deleteAndReset } = useGame();
   const [exportStatus, setExportStatus] = useState<'idle' | 'recording' | 'done' | 'error'>('idle');
   const insets = useSafeAreaInsets();
   const { activeEnding, endingsDiscovered, routeHistory } = state;
+  const epilogueChoice = currentNode?.choices?.find((c) => c.nextNode === 'epi_01');
 
-  const topPad = Platform.OS === 'web' ? 67 : insets.top;
-  const botPad = Platform.OS === 'web' ? 34 : insets.bottom;
+  const topPad = Platform.OS === 'web' ? 16 : insets.top;
+  const botPad = Platform.OS === 'web' ? 16 : insets.bottom;
 
   // ── Are we in "endings gallery" mode (no activeEnding)? ─────────────────────
   const isGallery = activeEnding === null;
@@ -347,12 +349,24 @@ export default function EndingScreen() {
               </>
             ) : (
               <>
+                {epilogueChoice && (
+                  <EndingButton
+                    label="CONTINUE TO EPILOGUE — THE RESPONSE"
+                    icon="sunrise"
+                    color="#c9a84c"
+                    onPress={async () => {
+                      await ensureNodeLoaded('epi_01');
+                      makeChoice(epilogueChoice.id);
+                    }}
+                    primary
+                  />
+                )}
                 <EndingButton
                   label="START NEW TIMELINE"
                   icon="refresh-cw"
                   color={accentColor}
                   onPress={() => deleteAndReset()}
-                  primary
+                  primary={!epilogueChoice}
                 />
                 <EndingButton
                   label="VIEW ROUTE CODEX"

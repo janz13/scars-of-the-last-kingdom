@@ -27,7 +27,7 @@ export const PIXEL_GRID: Record<ScreenOrientation, GridDimensions> = {
     bleedY: 20,
     aspect: 16 / 9,
     masterAspect: 720 / 400, // 1.8
-    ultrawideThreshold: 1.9, // 720 / 400 + 0.1
+    ultrawideThreshold: 2.3, // Only true 21:9 (2.33+) and 32:9 displays; never 16:9 windows with browser chrome (e.g. 1920x919 = 2.09)
   },
   portrait: {
     safeW: 360,
@@ -45,15 +45,15 @@ export const PIXEL_GRID: Record<ScreenOrientation, GridDimensions> = {
 export interface ViewportScale {
   /** Integer scale multiplier: max(1, floor(min(vw / safeW, vh / safeH))) */
   scale: number;
-  /** Scaled master width in CSS pixels: masterW * scale */
+  /** Scaled master width in CSS pixels covering the active stage */
   displayWidth: number;
-  /** Scaled master height in CSS pixels: masterH * scale */
+  /** Scaled master height in CSS pixels covering the active stage */
   displayHeight: number;
   /** Centering horizontal offset: floor((vw - displayWidth) / 2) */
   offsetX: number;
   /** Centering vertical offset: floor((vh - displayHeight) / 2) */
   offsetY: number;
-  /** True when aspect ratio exceeds 1.9 in landscape mode */
+  /** True when aspect ratio exceeds 2.3 in landscape mode (true 21:9 / 32:9 ultrawides) */
   isUltrawide: boolean;
   /** Viewport orientation based on aspect ratio */
   orientation: ScreenOrientation;
@@ -91,14 +91,22 @@ export function computeViewportScale(vw: number, vh: number, dpr = 1): ViewportS
   const rawScale = Math.min(safeVw / grid.safeW, safeVh / grid.safeH);
   const scale = Math.max(1, Math.floor(rawScale));
 
-  const displayWidth = grid.masterW * scale;
-  const displayHeight = grid.masterH * scale;
+  const aspect = safeVw / safeVh;
+  const isUltrawide = orientation === 'landscape' && aspect > grid.ultrawideThreshold;
+
+  // Ensure the nearest-neighbor pixel canvas always covers 100% of the stage height
+  // and 100% of the stage width so windowed/maximized desktop browsers (e.g. 1920x919)
+  // never show top/bottom/side black cut-off margins.
+  const targetStageW = isUltrawide ? Math.round(safeVh * 2.15) : safeVw;
+  const coverScale = Math.max(targetStageW / grid.masterW, safeVh / grid.masterH);
+
+  const displayWidth = isUltrawide
+    ? Math.min(safeVw, Math.ceil(grid.masterW * coverScale))
+    : Math.max(safeVw, Math.ceil(grid.masterW * coverScale));
+  const displayHeight = Math.max(safeVh, Math.ceil(grid.masterH * coverScale));
 
   const offsetX = Math.floor((safeVw - displayWidth) / 2);
   const offsetY = Math.floor((safeVh - displayHeight) / 2);
-
-  const aspect = safeVw / safeVh;
-  const isUltrawide = orientation === 'landscape' && aspect > grid.ultrawideThreshold;
   const pillarboxWidth = isUltrawide ? Math.max(0, offsetX) : 0;
 
   return {

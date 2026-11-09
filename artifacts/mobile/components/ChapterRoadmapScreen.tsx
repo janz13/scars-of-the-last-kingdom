@@ -12,7 +12,9 @@ import { Feather } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useGame } from '../context/GameContext';
 import { CHAPTER_ROADMAP, ChapterEntry } from '../data/chapterRoadmap';
+import { ENDINGS } from '../data/endings';
 import { generateRouteRecap, getUnlockedChapters } from '../logic/chapterSelect';
+import { getStorySummary } from '../logic/storyValidator';
 
 const ACCENT = '#9b59b6';
 const ACCENT_ORANGE = '#e67e22';
@@ -195,14 +197,14 @@ function ChapterCard({
 export default function ChapterRoadmapScreen() {
   const { state, jumpToChapter, setScreen } = useGame();
   const insets = useSafeAreaInsets();
-  const topPad = Platform.OS === 'web' ? 67 : insets.top;
-  const botPad = Platform.OS === 'web' ? 34 : insets.bottom;
+  const topPad = Platform.OS === 'web' ? 16 : insets.top;
+  const botPad = Platform.OS === 'web' ? 16 : insets.bottom;
 
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [filterStatus, setFilterStatus] = useState<'all' | 'complete' | 'planned'>('all');
 
-  const totalNodes = CHAPTER_ROADMAP.reduce((s, c) => s + (c.nodeCount ?? 0), 0);
-  const totalEndings = CHAPTER_ROADMAP.reduce((s, c) => s + c.possibleEndings.length, 0);
+  const totalNodes = getStorySummary().totalNodes;
+  const totalEndings = ENDINGS.length;
   const completeCount = CHAPTER_ROADMAP.filter((c) => c.status === 'complete').length;
 
   const unlockedChapters = getUnlockedChapters(state);

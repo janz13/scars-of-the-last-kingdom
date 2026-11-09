@@ -1,2 +1,2 @@
-export const APP_VERSION = 'v1.0 — Public Prototype';
-export const BUILD_DATE = 'May 2026';
+export const APP_VERSION = 'v2.0 — Pixel Overhaul';
+export const BUILD_DATE = 'Nov 2026';

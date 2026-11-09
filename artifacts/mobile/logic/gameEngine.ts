@@ -339,6 +339,7 @@ export function checkSurvivalEndings(state: GameState): string | null {
 
   if (state.stats.morale <= 0) return 'ending_morale_collapse';
   if (state.stats.health <= 0) {
+    if (state.stats.corruption >= 100) return 'ending_corruption_death';
     if (state.stats.thirst <= 0) return 'ending_dehydration';
     if (state.stats.hunger <= 0) return 'ending_starvation';
     return 'ending_metro_death';

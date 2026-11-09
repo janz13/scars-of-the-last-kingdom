@@ -63,8 +63,8 @@ export default function CharacterCreator() {
   const fadeAnim = useSharedValue(1);
   const slideAnim = useSharedValue(0);
 
-  const topPad = Platform.OS === 'web' ? 67 : insets.top;
-  const botPad = Platform.OS === 'web' ? 34 : insets.bottom;
+  const topPad = Platform.OS === 'web' ? 16 : insets.top;
+  const botPad = Platform.OS === 'web' ? 16 : insets.bottom;
 
   const animateStep = (nextStep: number, direction: number = 1) => {
     fadeAnim.value = withTiming(0, { duration: 140 });
@@ -392,6 +392,9 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
 
   header: {
+    width: '100%',
+    maxWidth: 720,
+    alignSelf: 'center',
     paddingHorizontal: 20,
     paddingBottom: 14,
     flexDirection: 'row',
@@ -437,7 +440,13 @@ const styles = StyleSheet.create({
   },
 
   scroll: { flex: 1 },
-  scrollContent: { flexGrow: 1, paddingHorizontal: 20 },
+  scrollContent: {
+    flexGrow: 1,
+    width: '100%',
+    maxWidth: 720,
+    alignSelf: 'center',
+    paddingHorizontal: 20,
+  },
   stepContent: { paddingTop: 24 },
 
   stepTitle: {
@@ -582,6 +591,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(4,2,10,0.6)',
   },
   nextBtn: {
+    width: '100%',
+    maxWidth: 680,
+    alignSelf: 'center',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',

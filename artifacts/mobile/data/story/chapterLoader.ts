@@ -56,6 +56,14 @@ const CHAPTER_KEY_ALIASES: Record<string, string> = {
   epilogue: 'Epilogue',
   'epilogue: the response': 'Epilogue',
   epilogue_the_response: 'Epilogue',
+  'mb1: the census of small names': 'Chapter 3',
+  'mid-game branch 1': 'Chapter 3',
+  'mb2: velna\'s trail': 'Chapter 6',
+  'mid-game branch 2': 'Chapter 6',
+  'mb3: the grain ledger': 'Chapter 8',
+  'mid-game branch 3': 'Chapter 8',
+  'mb4: the last broadcast': 'Chapter 10',
+  'mid-game branch 4': 'Chapter 10',
   prologue: 'Prologue',
   'chapter 1': 'Chapter 1',
   chapter1: 'Chapter 1',
@@ -192,6 +200,16 @@ export function preloadNextChapter(currentChapter: string): void {
 // ── Cross-Chapter Special Node Registry ──────────────────────────────────────
 const CROSS_CHAPTER_NODE_MAP: Record<string, string> = {
   ending_glass_court_prisoner: 'Chapter 2',
+  ending_market_lynching: 'Chapter 3',
+  ending_platform_drowned: 'Chapter 3',
+  ending_nursery_trap_death: 'Chapter 3',
+  ending_saints_overwhelmed: 'Chapter 3',
+  ending_iron_saints_captured_ch3: 'Chapter 3',
+  ending_rat_king_enslaved: 'Chapter 3',
+  ending_mira_abandoned_ch3: 'Chapter 3',
+  ending_hollow_children_massacred: 'Chapter 3',
+  ending_mira_neglected_ch3: 'Chapter 3',
+  ending_hollow_stalemate_ch3: 'Chapter 3',
 };
 
 // ── O(1) Prefix-Based Chapter Resolver ───────────────────────────────────────
@@ -204,19 +222,19 @@ export function getChapterForNode(nodeId: string): string | undefined {
   if (cached) return cached.chapter;
 
   if (nodeId.startsWith('c2_') || nodeId.startsWith('chapter2_')) return 'Chapter 2';
-  if (nodeId.startsWith('c3_') || nodeId.startsWith('chapter3_') || nodeId.startsWith('mb1_')) return 'Chapter 3';
-  if (nodeId.startsWith('c4_') || nodeId.startsWith('chapter4_')) return 'Chapter 4';
-  if (nodeId.startsWith('c5_') || nodeId.startsWith('chapter5_')) return 'Chapter 5';
-  if (nodeId.startsWith('c6_') || nodeId.startsWith('chapter6_') || nodeId.startsWith('mb2_')) return 'Chapter 6';
-  if (nodeId.startsWith('c7_') || nodeId.startsWith('chapter7_')) return 'Chapter 7';
-  if (nodeId.startsWith('c8_') || nodeId.startsWith('chapter8_') || nodeId.startsWith('mb3_')) return 'Chapter 8';
-  if (nodeId.startsWith('c9_') || nodeId.startsWith('chapter9_')) return 'Chapter 9';
-  if (nodeId.startsWith('c10_') || nodeId.startsWith('chapter10_') || nodeId.startsWith('mb4_')) return 'Chapter 10';
-  if (nodeId.startsWith('c11_') || nodeId.startsWith('chapter11_')) return 'Chapter 11';
-  if (nodeId.startsWith('c12_') || nodeId.startsWith('chapter12_')) return 'Chapter 12';
-  if (nodeId.startsWith('fc1_') || nodeId.startsWith('final_chapter1_')) return 'Final Chapter 1';
-  if (nodeId.startsWith('fc2_') || nodeId.startsWith('final_chapter2_')) return 'Final Chapter 2';
-  if (nodeId.startsWith('epi_') || nodeId.startsWith('epilogue_')) return 'Epilogue';
+  if (nodeId.startsWith('c3_') || nodeId.startsWith('chapter3_') || nodeId.startsWith('mb1_') || nodeId.startsWith('ending_ch3_')) return 'Chapter 3';
+  if (nodeId.startsWith('c4_') || nodeId.startsWith('chapter4_') || nodeId.startsWith('ending_ch4_')) return 'Chapter 4';
+  if (nodeId.startsWith('c5_') || nodeId.startsWith('chapter5_') || nodeId.startsWith('ending_ch5_')) return 'Chapter 5';
+  if (nodeId.startsWith('c6_') || nodeId.startsWith('chapter6_') || nodeId.startsWith('mb2_') || nodeId.startsWith('ending_ch6_')) return 'Chapter 6';
+  if (nodeId.startsWith('c7_') || nodeId.startsWith('chapter7_') || nodeId.startsWith('ending_ch7_')) return 'Chapter 7';
+  if (nodeId.startsWith('c8_') || nodeId.startsWith('chapter8_') || nodeId.startsWith('mb3_') || nodeId.startsWith('ending_ch8_')) return 'Chapter 8';
+  if (nodeId.startsWith('c9_') || nodeId.startsWith('chapter9_') || nodeId.startsWith('ending_ch9_')) return 'Chapter 9';
+  if (nodeId.startsWith('c10_') || nodeId.startsWith('chapter10_') || nodeId.startsWith('mb4_') || nodeId.startsWith('ending_ch10_')) return 'Chapter 10';
+  if (nodeId.startsWith('c11_') || nodeId.startsWith('chapter11_') || nodeId.startsWith('ending_ch11_')) return 'Chapter 11';
+  if (nodeId.startsWith('c12_') || nodeId.startsWith('chapter12_') || nodeId.startsWith('ending_ch12_')) return 'Chapter 12';
+  if (nodeId.startsWith('fc1_') || nodeId.startsWith('final_chapter1_') || nodeId.startsWith('ending_fc1_')) return 'Final Chapter 1';
+  if (nodeId.startsWith('fc2_') || nodeId.startsWith('final_chapter2_') || nodeId.startsWith('ending_fc2_')) return 'Final Chapter 2';
+  if (nodeId.startsWith('epi_') || nodeId.startsWith('epilogue_') || nodeId.startsWith('ending_epilogue_')) return 'Epilogue';
   if (nodeId.startsWith('prologue_')) return 'Prologue';
   if (nodeId.startsWith('chapter1_')) return 'Chapter 1';
 

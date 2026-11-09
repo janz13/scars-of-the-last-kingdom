@@ -17,6 +17,7 @@ import type { DiceResult } from '../logic/diceEngine';
 import { buildStartingStats, DEFAULT_INVENTORY, DEFAULT_STATS } from '../data/characterOptions';
 import { getNodeById, getStartNodeId, ensureNodeLoaded } from '../data/storyNodes';
 import { ENDINGS } from '../data/endings';
+import { getMilestoneEndingsUnlocked } from '../data/conditionalEndings';
 import { CHAPTER_START_NODES, buildChapterJumpState } from '../logic/chapterSelect';
 import {
   applyEffects,
@@ -149,6 +150,15 @@ function resolveEndingState(
   next: GameState,
   nextNodeId: string,
 ): GameState | null {
+  // 0. Automatically unlock any newly satisfied chapter-milestone or archetype endings
+  let updatedEndings = next.endingsDiscovered;
+  const milestoneUnlocks = getMilestoneEndingsUnlocked(next);
+  for (const mId of milestoneUnlocks) {
+    if (!updatedEndings.includes(mId)) {
+      updatedEndings = [...updatedEndings, mId];
+    }
+  }
+
   // 1. Survival check (after tick)
   const survivalEnding = checkSurvivalEndings(next);
   if (survivalEnding) {
@@ -156,9 +166,9 @@ function resolveEndingState(
       ...next,
       screen: 'ending',
       activeEnding: survivalEnding,
-      endingsDiscovered: next.endingsDiscovered.includes(survivalEnding)
-        ? next.endingsDiscovered
-        : [...next.endingsDiscovered, survivalEnding],
+      endingsDiscovered: updatedEndings.includes(survivalEnding)
+        ? updatedEndings
+        : [...updatedEndings, survivalEnding],
     };
   }
 
@@ -170,9 +180,16 @@ function resolveEndingState(
       ...next,
       screen: 'ending',
       activeEnding: endingId,
-      endingsDiscovered: next.endingsDiscovered.includes(endingId)
-        ? next.endingsDiscovered
-        : [...next.endingsDiscovered, endingId],
+      endingsDiscovered: updatedEndings.includes(endingId)
+        ? updatedEndings
+        : [...updatedEndings, endingId],
+    };
+  }
+
+  if (updatedEndings !== next.endingsDiscovered) {
+    return {
+      ...next,
+      endingsDiscovered: updatedEndings,
     };
   }
 
@@ -390,8 +407,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         if (autoRedirect) nextNodeId = autoRedirect;
       }
 
-      // Navigate to the node
-      next = { ...next, currentNodeId: nextNodeId };
+      // Navigate to the node (also reset screen to 'game' if continuing from an ending node into Epilogue)
+      next = { ...next, screen: 'game', activeEnding: null, currentNodeId: nextNodeId };
 
       // Apply the new node's entry effects
       const nextNode = getNodeById(nextNodeId);

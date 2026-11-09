@@ -705,8 +705,17 @@ function WebPixelStage({
         </>
       )}
 
-      {/* Persistent Children (Prose, Choices, HUD) */}
-      <View style={StyleSheet.absoluteFill} pointerEvents="box-none">
+      {/* Persistent Children (Prose, Choices, HUD) — always above pillarboxes and bounded to active stage */}
+      <View
+        style={[
+          StyleSheet.absoluteFill,
+          { zIndex: 5 },
+          isUltrawide && pillarboxWidth > 0
+            ? { left: pillarboxWidth, right: pillarboxWidth }
+            : null,
+        ]}
+        pointerEvents="box-none"
+      >
         {children}
       </View>
     </View>

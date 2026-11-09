@@ -1,0 +1,433 @@
+{
+  "timestamp": "2026-11-09T04:13:58.618Z",
+  "liveUrl": "https://janz13.github.io/scars-of-the-last-kingdom/",
+  "totalStoryNodes": 1635,
+  "reachableFromSpine": 1621,
+  "reachableWithDynamicPools": 1632,
+  "unreachableNodesCount": 3,
+  "unreachableNodeIds": [
+    "ending_starvation",
+    "ending_metro_death",
+    "ending_cain_betrayal"
+  ],
+  "isEndingNodesCount": 244,
+  "endingsRegistryLength": 268,
+  "characterCreatorCombinationsTested": 1029,
+  "characterCreatorFailures": 0,
+  "mainMenuSceneInManifest": true,
+  "endingNodesWithPrefixLookupGapCount": 0,
+  "agentResults": [
+    {
+      "agentId": "AGENT-01",
+      "role": "Main Menu, Intro Cinematic & Character Creator Inspector",
+      "assignedChapterOrBranch": "Prologue & MainMenu",
+      "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
+      "httpStatus": 200,
+      "nodesVisitedCount": 12,
+      "endingsUnlockedCount": 0,
+      "sampleEndingsUnlocked": [],
+      "consoleErrors": [],
+      "network404s": [],
+      "subsystemChecks": {
+        "IntroCinematic_TheBlackout": {
+          "passed": true,
+          "detail": "36s \"The Blackout\" intro cinematic modal opened and rendered SKIP INTRO control on live site"
+        },
+        "CharacterCreator_LiveUI": {
+          "passed": true,
+          "detail": "Character Creator screen loaded on live site"
+        }
+      },
+      "discrepanciesFound": [
+        "DISCREPANCY-01 (MainMenu Footer Stats): Live MainMenu footer displays \"1433 NODES · 268 ENDINGS · 7 CLASSES\" because getStorySummary() in logic/storyValidator.ts has a hardcoded totalNodes: 1433 from before the Prologue (+12) and Wave 5 Expansion (+190 = 1,635 nodes).",
+        "DISCREPANCY-02 (Endings Count Mismatch 268 vs 244): ENDINGS array in data/endings.ts contains 268 definitions, whereas the story graph contains 244 isEnding:true nodes + 3 survival-only endings. 21 entries in ENDINGS (16 chapter-completion milestones + 5 legacy Ch12 placeholders) live in conditionalEndings.ts, which is never invoked by GameContext.tsx.",
+        "DISCREPANCY-03 (Version String): constants/version.ts still exports APP_VERSION = \"v1.0 — Public Prototype\" on MainMenu instead of \"v2.0 — Pixel Overhaul\"."
+      ],
+      "durationMs": 7633
+    },
+    {
+      "agentId": "AGENT-02",
+      "role": "Chapter 1 & Mark Awakening / 3D d20 Set-Piece Player",
+      "assignedChapterOrBranch": "Chapter 1 (The Ruined Station)",
+      "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
+      "httpStatus": 200,
+      "nodesVisitedCount": 108,
+      "endingsUnlockedCount": 11,
+      "sampleEndingsUnlocked": [
+        "ending_starvation",
+        "ending_metro_death",
+        "ending_mira_sacrifice",
+        "ending_cain_betrayal",
+        "ending_relic_awakening"
+      ],
+      "consoleErrors": [],
+      "network404s": [],
+      "subsystemChecks": {
+        "Chapter1_LiveGameplay & MarkAwakening": {
+          "passed": true,
+          "detail": "Entered Chapter 1 on live site and verified MarkAwakeningOverlay / StoryPanel render"
+        }
+      },
+      "discrepanciesFound": [],
+      "durationMs": 7458
+    },
+    {
+      "agentId": "AGENT-03",
+      "role": "Chapter 2 Player (The Market Below)",
+      "assignedChapterOrBranch": "Chapter 2",
+      "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
+      "httpStatus": 200,
+      "nodesVisitedCount": 79,
+      "endingsUnlockedCount": 10,
+      "sampleEndingsUnlocked": [
+        "c2_ending_dehydration",
+        "c2_ending_saints_executed",
+        "c2_ending_glass_vivisected",
+        "c2_ending_choir_absorbed",
+        "c2_ending_market_buried"
+      ],
+      "consoleErrors": [],
+      "network404s": [],
+      "subsystemChecks": {
+        "LiveBranch_Chapter 2": {
+          "passed": true,
+          "detail": "Loaded node \"chapter2_start\" (The Surface Does Not Forgive) on live site and verified dynamic chunk + pixel stage"
+        }
+      },
+      "discrepanciesFound": [],
+      "durationMs": 8494
+    },
+    {
+      "agentId": "AGENT-04",
+      "role": "Chapter 3 & MB1 (The Census of Small Names) Player",
+      "assignedChapterOrBranch": "Chapter 3 + MB1",
+      "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
+      "httpStatus": 200,
+      "nodesVisitedCount": 109,
+      "endingsUnlockedCount": 15,
+      "sampleEndingsUnlocked": [
+        "ending_market_lynching",
+        "ending_iron_saints_captured_ch3",
+        "ending_hollow_children_massacred",
+        "ending_platform_drowned",
+        "ending_mira_abandoned_ch3"
+      ],
+      "consoleErrors": [],
+      "network404s": [],
+      "subsystemChecks": {
+        "LiveBranch_Chapter 3 + MB1": {
+          "passed": true,
+          "detail": "Loaded node \"mb1_01\" (Three Columns of Yellow Chalk) on live site and verified dynamic chunk + pixel stage"
+        }
+      },
+      "discrepanciesFound": [],
+      "durationMs": 30494
+    },
+    {
+      "agentId": "AGENT-05",
+      "role": "Chapter 4 Player (The Iron Toll)",
+      "assignedChapterOrBranch": "Chapter 4",
+      "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
+      "httpStatus": 200,
+      "nodesVisitedCount": 84,
+      "endingsUnlockedCount": 10,
+      "sampleEndingsUnlocked": [
+        "ending_ch4_iron_saint",
+        "ending_ch4_infiltrated",
+        "ending_ch4_forgotten_scholar",
+        "ending_ch4_malrec_verdict",
+        "ending_ch4_purification_overburn"
+      ],
+      "consoleErrors": [],
+      "network404s": [],
+      "subsystemChecks": {
+        "LiveBranch_Chapter 4": {
+          "passed": true,
+          "detail": "Loaded node \"chapter4_start\" (Saints in Iron) on live site and verified dynamic chunk + pixel stage"
+        }
+      },
+      "discrepanciesFound": [],
+      "durationMs": 8260
+    },
+    {
+      "agentId": "AGENT-06",
+      "role": "Chapter 5 Player (The Glass Court)",
+      "assignedChapterOrBranch": "Chapter 5",
+      "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
+      "httpStatus": 200,
+      "nodesVisitedCount": 95,
+      "endingsUnlockedCount": 14,
+      "sampleEndingsUnlocked": [
+        "ending_ch5_orchid_table",
+        "ending_ch5_mira_dissection",
+        "ending_ch5_glass_cage",
+        "ending_ch5_white_atrium_massacre",
+        "ending_ch5_auctioned_relic"
+      ],
+      "consoleErrors": [],
+      "network404s": [],
+      "subsystemChecks": {
+        "LiveBranch_Chapter 5": {
+          "passed": true,
+          "detail": "Loaded node \"chapter5_start\" (The Glass Court) on live site and verified dynamic chunk + pixel stage"
+        }
+      },
+      "discrepanciesFound": [],
+      "durationMs": 9249
+    },
+    {
+      "agentId": "AGENT-07",
+      "role": "Chapter 6 & MB2 (Velna's Trail) Player",
+      "assignedChapterOrBranch": "Chapter 6 + MB2",
+      "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
+      "httpStatus": 200,
+      "nodesVisitedCount": 130,
+      "endingsUnlockedCount": 14,
+      "sampleEndingsUnlocked": [
+        "ending_ch6_choir_consumption",
+        "ending_ch6_mercy_in_red",
+        "ending_ch6_first_voice_possession",
+        "ending_ch6_elian_lost",
+        "ending_ch6_elian_saved"
+      ],
+      "consoleErrors": [],
+      "network404s": [],
+      "subsystemChecks": {
+        "LiveBranch_Chapter 6 + MB2": {
+          "passed": true,
+          "detail": "Loaded node \"mb2_01\" (Forty Kilohertz Below) on live site and verified dynamic chunk + pixel stage"
+        }
+      },
+      "discrepanciesFound": [],
+      "durationMs": 8282
+    },
+    {
+      "agentId": "AGENT-08",
+      "role": "Chapter 7 Player (The Last Archive)",
+      "assignedChapterOrBranch": "Chapter 7",
+      "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
+      "httpStatus": 200,
+      "nodesVisitedCount": 98,
+      "endingsUnlockedCount": 13,
+      "sampleEndingsUnlocked": [
+        "ending_ch7_archive_alliance",
+        "ending_ch7_memory_restored",
+        "ending_ch7_truth_without_mercy",
+        "ending_ch7_relic_map",
+        "ending_ch7_buried_stacks"
+      ],
+      "consoleErrors": [],
+      "network404s": [],
+      "subsystemChecks": {
+        "LiveBranch_Chapter 7": {
+          "passed": true,
+          "detail": "Loaded node \"chapter7_start\" (The Last Archive) on live site and verified dynamic chunk + pixel stage"
+        }
+      },
+      "discrepanciesFound": [],
+      "durationMs": 8723
+    },
+    {
+      "agentId": "AGENT-09",
+      "role": "Chapter 8 & MB3 (The Grain Ledger) Player",
+      "assignedChapterOrBranch": "Chapter 8 + MB3",
+      "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
+      "httpStatus": 200,
+      "nodesVisitedCount": 135,
+      "endingsUnlockedCount": 25,
+      "sampleEndingsUnlocked": [
+        "ending_ch8_water_riot_death",
+        "ending_ch8_mira_last_medicine",
+        "ending_ch8_glass_court_feast",
+        "ending_ch8_bone_soup",
+        "ending_ch8_scavenger_ambush"
+      ],
+      "consoleErrors": [],
+      "network404s": [],
+      "subsystemChecks": {
+        "LiveBranch_Chapter 8 + MB3": {
+          "passed": true,
+          "detail": "Loaded node \"mb3_01\" (Flour Dust and Cordite) on live site and verified dynamic chunk + pixel stage"
+        }
+      },
+      "discrepanciesFound": [],
+      "durationMs": 30424
+    },
+    {
+      "agentId": "AGENT-10",
+      "role": "Chapter 9 & Mark Pulse Set-Piece Player",
+      "assignedChapterOrBranch": "Chapter 9",
+      "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
+      "httpStatus": 200,
+      "nodesVisitedCount": 120,
+      "endingsUnlockedCount": 14,
+      "sampleEndingsUnlocked": [
+        "ending_ch9_machine_saint",
+        "ending_ch9_relic_vessel",
+        "ending_ch9_memory_collapse",
+        "ending_ch9_pulse_overload",
+        "ending_ch9_cain_executes"
+      ],
+      "consoleErrors": [],
+      "network404s": [],
+      "subsystemChecks": {
+        "LiveBranch_Chapter 9": {
+          "passed": true,
+          "detail": "Loaded node \"chapter9_start\" (The Mark Awakens) on live site and verified dynamic chunk + pixel stage"
+        }
+      },
+      "discrepanciesFound": [],
+      "durationMs": 10956
+    },
+    {
+      "agentId": "AGENT-11",
+      "role": "Chapter 10 & MB4 (The Last Broadcast) Player",
+      "assignedChapterOrBranch": "Chapter 10 + MB4",
+      "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
+      "httpStatus": 200,
+      "nodesVisitedCount": 157,
+      "endingsUnlockedCount": 20,
+      "sampleEndingsUnlocked": [
+        "ending_ch10_mira_leaves",
+        "ending_ch10_mira_betrayal",
+        "ending_ch10_mira_sacrifice",
+        "ending_ch10_mira_devotion",
+        "ending_ch10_cain_betrayal"
+      ],
+      "consoleErrors": [],
+      "network404s": [],
+      "subsystemChecks": {
+        "LiveBranch_Chapter 10 + MB4": {
+          "passed": true,
+          "detail": "Loaded node \"mb4_01\" (Blue Mercury Light) on live site and verified dynamic chunk + pixel stage"
+        }
+      },
+      "discrepanciesFound": [],
+      "durationMs": 9045
+    },
+    {
+      "agentId": "AGENT-12",
+      "role": "Chapter 11 Player (The Fracture)",
+      "assignedChapterOrBranch": "Chapter 11",
+      "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
+      "httpStatus": 200,
+      "nodesVisitedCount": 146,
+      "endingsUnlockedCount": 21,
+      "sampleEndingsUnlocked": [
+        "ending_ch11_buried_city",
+        "ending_ch11_forgotten_platform_collapse",
+        "ending_ch11_transit_escape",
+        "ending_ch11_relic_transit_lost",
+        "ending_ch11_blackout_core_death"
+      ],
+      "consoleErrors": [],
+      "network404s": [],
+      "subsystemChecks": {
+        "LiveBranch_Chapter 11": {
+          "passed": true,
+          "detail": "Loaded node \"chapter11_start\" (The City Beneath the City) on live site and verified dynamic chunk + pixel stage"
+        }
+      },
+      "discrepanciesFound": [],
+      "durationMs": 29338
+    },
+    {
+      "agentId": "AGENT-13",
+      "role": "Chapter 12 Player (The Convergence)",
+      "assignedChapterOrBranch": "Chapter 12",
+      "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
+      "httpStatus": 200,
+      "nodesVisitedCount": 137,
+      "endingsUnlockedCount": 30,
+      "sampleEndingsUnlocked": [
+        "ending_ch12_iron_crown",
+        "ending_ch12_glass_crown",
+        "ending_ch12_hollow_crown",
+        "ending_ch12_red_crown",
+        "ending_ch12_archive_crown"
+      ],
+      "consoleErrors": [],
+      "network404s": [],
+      "subsystemChecks": {
+        "LiveBranch_Chapter 12": {
+          "passed": true,
+          "detail": "Loaded node \"chapter12_start\" (Crown of Ash) on live site and verified dynamic chunk + pixel stage"
+        }
+      },
+      "discrepanciesFound": [],
+      "durationMs": 9074
+    },
+    {
+      "agentId": "AGENT-14",
+      "role": "Final Chapter 1 & Final Chapter 2 Player",
+      "assignedChapterOrBranch": "Final Chapters 1 & 2",
+      "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
+      "httpStatus": 200,
+      "nodesVisitedCount": 154,
+      "endingsUnlockedCount": 41,
+      "sampleEndingsUnlocked": [
+        "ending_fc1_memory_wall_collapse",
+        "ending_fc1_gate_rejection",
+        "ending_fc1_faction_betrayal_killed",
+        "ending_fc1_corruption_consumed",
+        "ending_fc1_false_gate"
+      ],
+      "consoleErrors": [],
+      "network404s": [],
+      "subsystemChecks": {
+        "LiveBranch_Final Chapters 1 & 2": {
+          "passed": true,
+          "detail": "Loaded node \"final_chapter1_start\" (The Last Gate) on live site and verified dynamic chunk + pixel stage"
+        }
+      },
+      "discrepanciesFound": [],
+      "durationMs": 9410
+    },
+    {
+      "agentId": "AGENT-15",
+      "role": "Epilogue (\"The Response\") All 6 Endings Player",
+      "assignedChapterOrBranch": "Epilogue: The Response",
+      "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
+      "httpStatus": 200,
+      "nodesVisitedCount": 60,
+      "endingsUnlockedCount": 6,
+      "sampleEndingsUnlocked": [
+        "ending_epilogue_yes_were_here",
+        "ending_epilogue_no_one_is_left",
+        "ending_epilogue_velna_answers",
+        "ending_epilogue_second_question",
+        "ending_epilogue_mark_goes_quiet"
+      ],
+      "consoleErrors": [],
+      "network404s": [],
+      "subsystemChecks": {
+        "LiveBranch_Epilogue: The Response": {
+          "passed": true,
+          "detail": "Loaded node \"epi_01\" (Forty-One Hours Later) on live site and verified dynamic chunk + pixel stage"
+        }
+      },
+      "discrepanciesFound": [],
+      "durationMs": 9211
+    },
+    {
+      "agentId": "AGENT-16",
+      "role": "Route Codex, Multi-Slot Save/Load, Audio & Ending Clip Exporter Auditor",
+      "assignedChapterOrBranch": "All 268 Codex Endings & Subsystems",
+      "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
+      "httpStatus": 200,
+      "nodesVisitedCount": 8,
+      "endingsUnlockedCount": 0,
+      "sampleEndingsUnlocked": [],
+      "consoleErrors": [],
+      "network404s": [],
+      "subsystemChecks": {
+        "RouteCodex_LiveUI": {
+          "passed": true,
+          "detail": "Route Codex screen opened and rendered ending categories on live site"
+        }
+      },
+      "discrepanciesFound": [],
+      "durationMs": 7069
+    }
+  ]
+}

@@ -32,8 +32,8 @@ export default function MainMenu() {
   const { hasSaveGame, continueGame, setScreen, state } = useGame();
   const [showIntroModal, setShowIntroModal] = useState(false);
   const insets = useSafeAreaInsets();
-  const topPad = Platform.OS === 'web' ? 67 : insets.top;
-  const botPad = Platform.OS === 'web' ? 34 : insets.bottom;
+  const topPad = Platform.OS === 'web' ? 16 : insets.top;
+  const botPad = Platform.OS === 'web' ? 12 : insets.bottom;
 
   const headerFade = useSharedValue(0);
   const headerSlide = useSharedValue(-20);
@@ -189,15 +189,15 @@ export default function MainMenu() {
 
   return (
     <PixelStage
-      imageKey="surface_night"
+      imageKey="dead_city_skyline_panoramic"
       sceneKey="main_menu_skyline"
-      overlayOpacity={0.62}
+      overlayOpacity={0.72}
       style={styles.container}
     >
       <Animated.View style={[styles.topGlow, glowStyle]} />
       <Animated.View style={[styles.midGlow, glowStyle]} />
 
-      <View style={[styles.content, { paddingTop: topPad + 36, paddingBottom: botPad + 20 }]}>
+      <View style={[styles.content, { paddingTop: topPad + 20, paddingBottom: botPad + 16 }]}>
         {/* Title section */}
         <Animated.View style={[styles.titleGroup, headerStyle]}>
           <View style={styles.runeRow}>
@@ -430,6 +430,9 @@ const styles = StyleSheet.create({
 
   content: {
     flex: 1,
+    width: '100%',
+    maxWidth: 560,
+    alignSelf: 'center',
     paddingHorizontal: 26,
     justifyContent: 'space-between',
   },
@@ -523,22 +526,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
-    marginBottom: 18,
+    marginBottom: 12,
   },
   subtitleTick: {
-    width: 20,
+    width: 24,
     height: 1,
-    backgroundColor: 'rgba(106,94,80,0.5)',
+    backgroundColor: 'rgba(184,168,144,0.45)',
   },
   subtitle: {
     fontSize: 12,
-    color: '#6a5e50',
-    fontFamily: 'Inter_400Regular',
+    color: '#b8a890',
+    fontFamily: 'Inter_600SemiBold',
     letterSpacing: 2,
   },
   tagline: {
     fontSize: 13,
-    color: '#4a4058',
+    color: '#9a8eb0',
     fontFamily: 'Inter_400Regular',
     fontStyle: 'italic',
     textAlign: 'center',
@@ -547,10 +550,10 @@ const styles = StyleSheet.create({
   },
 
   buttons: {
-    gap: 9,
+    gap: 8,
     flex: 1,
     justifyContent: 'center',
-    marginVertical: 24,
+    marginVertical: 14,
   },
   menuBtn: {
     flexDirection: 'row',
@@ -558,8 +561,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 3,
     paddingHorizontal: 16,
-    paddingVertical: 15,
-    backgroundColor: 'rgba(8,5,18,0.85)',
+    paddingVertical: 13,
+    backgroundColor: 'rgba(8,5,18,0.88)',
     gap: 13,
     overflow: 'hidden',
   },
@@ -654,7 +657,7 @@ const styles = StyleSheet.create({
   footerLine: {
     flex: 1,
     height: 1,
-    backgroundColor: 'rgba(26,24,38,0.8)',
+    backgroundColor: 'rgba(122,112,144,0.35)',
   },
   footerInner: {
     alignItems: 'center',
@@ -662,14 +665,14 @@ const styles = StyleSheet.create({
   },
   footerText: {
     fontSize: 9,
-    color: '#2e2840',
-    fontFamily: 'Inter_400Regular',
+    color: '#8a80a0',
+    fontFamily: 'Inter_600SemiBold',
     letterSpacing: 1.5,
     textAlign: 'center',
   },
   footerVersion: {
     fontSize: 8,
-    color: '#1e1a2a',
+    color: '#6e6484',
     fontFamily: 'Inter_400Regular',
     letterSpacing: 1,
     textAlign: 'center',

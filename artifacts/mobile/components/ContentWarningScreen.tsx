@@ -100,8 +100,11 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
+    width: '100%',
+    maxWidth: 620,
+    alignSelf: 'center',
     justifyContent: 'center',
-    paddingTop: 60,
+    paddingTop: 32,
   },
   iconRow: {
     alignItems: 'center',

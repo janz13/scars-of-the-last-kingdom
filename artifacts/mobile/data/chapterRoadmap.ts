@@ -47,7 +47,7 @@ export const CHAPTER_ROADMAP: ChapterEntry[] = [
     ],
     routesUnlocked: ['Chapter 1 — The Ruined Station'],
     status: 'complete',
-    nodeCount: 3,
+    nodeCount: 12,
   },
 
   {
@@ -105,7 +105,7 @@ export const CHAPTER_ROADMAP: ChapterEntry[] = [
       'Chapter 4 — Saints in Iron (if saints_registered)',
     ],
     status: 'complete',
-    nodeCount: 98,
+    nodeCount: 119,
   },
 
   {
@@ -152,7 +152,7 @@ export const CHAPTER_ROADMAP: ChapterEntry[] = [
       'Chapter 6 — The Red Choir (if red_choir_contact)',
     ],
     status: 'complete',
-    nodeCount: 77,
+    nodeCount: 79,
   },
 
   {
@@ -198,7 +198,7 @@ export const CHAPTER_ROADMAP: ChapterEntry[] = [
       'Chapter 11 — The City Beneath the City (partial unlock)',
     ],
     status: 'complete',
-    nodeCount: 261,
+    nodeCount: 109,
     branchBadge: 'MB1: The Census of Small Names',
   },
 
@@ -245,7 +245,7 @@ export const CHAPTER_ROADMAP: ChapterEntry[] = [
       'Chapter 8 — Hunger War (if Saints dismantled)',
     ],
     status: 'complete',
-    nodeCount: 259,
+    nodeCount: 84,
   },
 
   {
@@ -339,7 +339,7 @@ export const CHAPTER_ROADMAP: ChapterEntry[] = [
       'Chapter 9 — The Mark Awakens (accelerated if lattice_network_known)',
     ],
     status: 'complete',
-    nodeCount: 104,
+    nodeCount: 95,
   },
 
   {
@@ -421,7 +421,7 @@ export const CHAPTER_ROADMAP: ChapterEntry[] = [
       'Chapter 12 — Crown of Ash (if choir_alliance_complete)',
     ],
     status: 'complete',
-    nodeCount: 115,
+    nodeCount: 130,
   },
 
   {
@@ -561,7 +561,7 @@ export const CHAPTER_ROADMAP: ChapterEntry[] = [
       'Gate Three Approach (if gate_card_taken)',
     ],
     status: 'complete',
-    nodeCount: 109,
+    nodeCount: 98,
   },
 
   {
@@ -606,7 +606,7 @@ export const CHAPTER_ROADMAP: ChapterEntry[] = [
       'Chapter 12 — Crown of Ash (crisis path)',
     ],
     status: 'complete',
-    nodeCount: 105,
+    nodeCount: 135,
   },
 
   {
@@ -763,7 +763,7 @@ export const CHAPTER_ROADMAP: ChapterEntry[] = [
       'Final Chapter 1 (secret bond route priority entry)',
     ],
     status: 'complete',
-    nodeCount: 126,
+    nodeCount: 157,
   },
 
   {
@@ -929,7 +929,7 @@ export const CHAPTER_ROADMAP: ChapterEntry[] = [
     ],
     routesUnlocked: ['New Game Plus — with carried flags', 'Epilogue — The Response (if Velna coordinates or Archive standing)'],
     status: 'complete',
-    nodeCount: 72,
+    nodeCount: 70,
   },
 
   ...(ENABLE_EXPANSION
