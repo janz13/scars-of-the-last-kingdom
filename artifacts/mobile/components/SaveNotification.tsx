@@ -1,5 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Animated, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 import { Feather } from '@expo/vector-icons';
 
 interface SaveNotificationProps {
@@ -9,32 +14,34 @@ interface SaveNotificationProps {
 
 export default function SaveNotification({ visible, message = 'Saved' }: SaveNotificationProps) {
   const [show, setShow] = useState(false);
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-  const slideAnim = useRef(new Animated.Value(-20)).current;
+  const fadeAnim = useSharedValue(0);
+  const slideAnim = useSharedValue(-20);
 
   useEffect(() => {
     if (visible) {
       setShow(true);
-      Animated.parallel([
-        Animated.timing(fadeAnim, { toValue: 1, duration: 200, useNativeDriver: true }),
-        Animated.timing(slideAnim, { toValue: 0, duration: 200, useNativeDriver: true }),
-      ]).start();
+      fadeAnim.value = withTiming(1, { duration: 200 });
+      slideAnim.value = withTiming(0, { duration: 200 });
 
       const timer = setTimeout(() => {
-        Animated.parallel([
-          Animated.timing(fadeAnim, { toValue: 0, duration: 400, useNativeDriver: true }),
-          Animated.timing(slideAnim, { toValue: -20, duration: 400, useNativeDriver: true }),
-        ]).start(() => setShow(false));
+        fadeAnim.value = withTiming(0, { duration: 400 });
+        slideAnim.value = withTiming(-20, { duration: 400 });
+        setTimeout(() => setShow(false), 410);
       }, 1800);
 
       return () => clearTimeout(timer);
     }
   }, [visible]);
 
+  const animStyle = useAnimatedStyle(() => ({
+    opacity: fadeAnim.value,
+    transform: [{ translateY: slideAnim.value }],
+  }));
+
   if (!show) return null;
 
   return (
-    <Animated.View style={[styles.container, { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}>
+    <Animated.View style={[styles.container, animStyle]}>
       <Feather name="check-circle" size={12} color="#27ae60" />
       <Text style={styles.text}>{message}</Text>
     </Animated.View>

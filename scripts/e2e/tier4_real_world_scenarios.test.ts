@@ -3,7 +3,17 @@
  * E2E Testing Track — Scars of the Last Kingdom
  */
 
+import { createRequire } from 'node:module';
+import { existsSync, statSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { expect, createMockStorage, createMockWindow, createBaseGameState, TestCase } from './types.js';
+
+const require = createRequire(import.meta.url);
+if (typeof require !== 'undefined' && (require as any).extensions) {
+  (require as any).extensions['.png'] = (module: any, filename: string) => {
+    module.exports = filename;
+  };
+}
 import {
   tryLoadEngineModule,
   tryLoadDiceEngine,
@@ -397,6 +407,148 @@ export const tier4Tests: TestCase[] = [
       const recapBullets = fullHistory.map(h => `• ${h.chapter}: ${h.choiceText}`);
       expect(recapBullets.length).toBe(3);
       expect(recapBullets[2]).toContain('Glass Court pavilion');
+    },
+  },
+
+  // ──────────────────────────────────────────────────────────────────────────
+  // SCENARIO 6: 6-Viewport Pixel Stage & Adaptive Layout Matrix Verification
+  // ──────────────────────────────────────────────────────────────────────────
+  {
+    id: 'T4-SCENARIO-06',
+    title: 'Playthrough Scenario 6: 6-Viewport Pixel Stage & Adaptive Layout Matrix (375x812, 390x844, 768x1024, 1280x720, 1920x1080, 2560x1080)',
+    featureId: 'E2E-VIEWPORT-MATRIX',
+    tier: 4,
+    fn: async () => {
+      const { computeViewportScale, resolveLayoutMode } = require('../../artifacts/mobile/constants/pixelGrid.ts');
+      const viewports = [
+        { w: 375, h: 812, expectedOrientation: 'portrait', expectedLayout: 'sheet' },
+        { w: 390, h: 844, expectedOrientation: 'portrait', expectedLayout: 'sheet' },
+        { w: 768, h: 1024, expectedOrientation: 'portrait', expectedLayout: 'sheet' },
+        { w: 1280, h: 720, expectedOrientation: 'landscape', expectedLayout: 'column' },
+        { w: 1920, h: 1080, expectedOrientation: 'landscape', expectedLayout: 'column' },
+        { w: 2560, h: 1080, expectedOrientation: 'landscape', expectedLayout: 'column' },
+      ];
+
+      for (const vp of viewports) {
+        const scale = computeViewportScale(vp.w, vp.h);
+        expect(scale.orientation).toBe(vp.expectedOrientation);
+        expect(scale.scale).toBeGreaterThanOrEqual(1);
+        expect(resolveLayoutMode(vp.w, vp.h, 'auto')).toBe(vp.expectedLayout);
+      }
+      // Ultrawide pillarbox triggers at 2560x1080
+      expect(computeViewportScale(2560, 1080).isUltrawide).toBe(true);
+    },
+  },
+
+  // ──────────────────────────────────────────────────────────────────────────
+  // SCENARIO 7: Mid-Game Branches (MB1-MB4) & Epilogue ("The Response") Playthrough
+  // ──────────────────────────────────────────────────────────────────────────
+  {
+    id: 'T4-SCENARIO-07',
+    title: 'Playthrough Scenario 7: Mid-Game Branches (MB1-MB4) & Epilogue ("The Response", 1,635 nodes, 244 endings)',
+    featureId: 'E2E-STORY-EXPANSION',
+    tier: 4,
+    fn: async () => {
+      const { STORY_NODES, getNodeById } = require('../../artifacts/mobile/data/story/allNodesSync.ts');
+      const { ENDINGS } = require('../../artifacts/mobile/data/story/endings.ts');
+      const { getUnlockedChapters } = require('../../artifacts/mobile/logic/chapterSelect.ts');
+
+      expect(STORY_NODES.length).toBe(1635);
+      expect(ENDINGS.length).toBe(244);
+
+      // Walk MB2 -> velna_coordinates -> FC2 -> Epilogue -> ending_epilogue_silence_kept
+      const mb2End = getNodeById('mb2_33');
+      expect(Boolean(mb2End)).toBe(true);
+      const epiStart = getNodeById('epi_01');
+      expect(Boolean(epiStart)).toBe(true);
+      const epiEnd = getNodeById('epi_55');
+      expect(epiEnd.endingId).toBe('ending_epilogue_yes_were_here');
+
+      const unlocked = getUnlockedChapters({
+        currentNodeId: 'epi_01',
+        routeHistory: [],
+        endingsDiscovered: ['ending_fc2_city_opened_wastes'],
+        flags: { velna_coordinates: true },
+        factionRep: { ironSaints: 0, glassCourt: 0, hollowChildren: 0, redChoir: 0, lastArchive: 0 },
+      });
+      expect(unlocked.includes('Epilogue')).toBe(true);
+    },
+  },
+
+  // ──────────────────────────────────────────────────────────────────────────
+  // SCENARIO 8: Cinematics ("The Blackout", 10 Ending Loops) & Offline Trailers
+  // ──────────────────────────────────────────────────────────────────────────
+  {
+    id: 'T4-SCENARIO-08',
+    title: 'Playthrough Scenario 8: Intro Cinematic ("The Blackout"), 10 Ending Loops & Offline 1080p Trailers',
+    featureId: 'E2E-CINEMATICS-VIDEO',
+    tier: 4,
+    fn: async () => {
+      const { CinematicPlayer } = require('../../artifacts/mobile/engine/pixel/cinematicPlayer.ts');
+      const { INTRO_BLACKOUT_TIMELINE } = require('../../artifacts/mobile/data/cinematics/introBlackout.ts');
+      const { getEndingLoopTimeline } = require('../../artifacts/mobile/data/cinematics/endingLoops.ts');
+
+      const player = new CinematicPlayer(INTRO_BLACKOUT_TIMELINE);
+      player.play();
+      const mid = player.step(18);
+      expect(mid.isComplete).toBe(false);
+      const fin = player.step(20);
+      expect(fin.isComplete).toBe(true);
+
+      const loop = getEndingLoopTimeline('savior');
+      expect(loop.loop).toBe(true);
+      expect(loop.totalDurationSec).toBe(8);
+
+      const videoDir = resolve(import.meta.dirname, '../../docs/video');
+      expect(existsSync(resolve(videoDir, 'trailer_16x9_1080p.mp4'))).toBe(true);
+      expect(existsSync(resolve(videoDir, 'trailer_9x16_1080p.mp4'))).toBe(true);
+      expect(existsSync(resolve(videoDir, 'trailer_loop.webm'))).toBe(true);
+      expect(statSync(resolve(videoDir, 'trailer_loop.webm')).size).toBeLessThan(3.5 * 1024 * 1024);
+    },
+  },
+
+  // ──────────────────────────────────────────────────────────────────────────
+  // SCENARIO 9: Procedural Soundtrack Engine (11 Themes, 14 Stingers, 75s Trailer)
+  // ──────────────────────────────────────────────────────────────────────────
+  {
+    id: 'T4-SCENARIO-09',
+    title: 'Playthrough Scenario 9: Procedural Soundtrack Sequencer, 11 Themes, 14 Stingers & 3-Bus Mixer',
+    featureId: 'E2E-PROCEDURAL-SCORE',
+    tier: 4,
+    fn: async () => {
+      const { THEME_SCORES } = require('../../artifacts/mobile/logic/music/themes.ts');
+      const { STINGER_DEFINITIONS } = require('../../artifacts/mobile/logic/music/stingers.ts');
+      const { MusicSequencer, TRAILER_75S_ARRANGEMENT } = require('../../artifacts/mobile/logic/music/sequencer.ts');
+
+      expect(Object.keys(THEME_SCORES).length).toBe(11);
+      expect(Object.keys(STINGER_DEFINITIONS).length).toBe(14);
+      const seq = new MusicSequencer();
+      seq.setMusicMode('off');
+      expect(seq.getMusicMode()).toBe('off');
+      seq.setMusicMode('adaptive');
+      expect(seq.getMusicMode()).toBe('adaptive');
+      const totalSec = TRAILER_75S_ARRANGEMENT.reduce((acc: number, s: any) => acc + s.durationSec, 0);
+      expect(totalSec).toBe(75);
+    },
+  },
+
+  // ──────────────────────────────────────────────────────────────────────────
+  // SCENARIO 10: 169-Scene Pixel Art Manifest, 39 Character Portraits & Contact Sheet
+  // ──────────────────────────────────────────────────────────────────────────
+  {
+    id: 'T4-SCENARIO-10',
+    title: 'Playthrough Scenario 10: 169 Dual-Orientation Pixel Scenes, 39 Expression Portraits & Art Contact Sheet',
+    featureId: 'E2E-PIXEL-ART-PIPELINE',
+    tier: 4,
+    fn: async () => {
+      const { SCENE_MANIFEST } = require('../../artifacts/mobile/constants/sceneManifest.ts');
+      const { CHARACTER_PORTRAIT_CATALOG } = require('../../artifacts/mobile/constants/portraits.ts');
+
+      expect(Object.keys(SCENE_MANIFEST).length).toBe(169);
+      expect(Object.keys(CHARACTER_PORTRAIT_CATALOG).length).toBe(13);
+      const sheetPath = resolve(import.meta.dirname, '../../docs/art-contact-sheet.png');
+      expect(existsSync(sheetPath)).toBe(true);
+      expect(statSync(sheetPath).size).toBeGreaterThan(100000);
     },
   },
 ];

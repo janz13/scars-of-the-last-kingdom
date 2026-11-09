@@ -17,6 +17,8 @@ import { useGame } from '../context/GameContext';
 import { ENDINGS, ENDING_CATEGORIES, CANONICAL_CATEGORIES, EndingDefinition } from '../data/story/endings';
 import { getBackgroundImage, getBackgroundGradient } from '../constants/images';
 import { BACKGROUNDS, CLASSES } from '../data/characterOptions';
+import { CinematicView } from './scene/CinematicView';
+import { getEndingLoopTimeline } from '../data/cinematics/endingLoops';
 
 // ─── Palette ──────────────────────────────────────────────────────────────────
 
@@ -480,6 +482,12 @@ function EndingsTab() {
 
   const filteredEndings = useMemo(() => {
     if (selectedCategory === 'all') return ENDINGS;
+    if (selectedCategory === 'branches') {
+      return ENDINGS.filter((e) => e.id.startsWith('ending_mb'));
+    }
+    if (selectedCategory === 'epilogue') {
+      return ENDINGS.filter((e) => e.id.startsWith('ending_epilogue_'));
+    }
     return ENDINGS.filter((e) => e.category === selectedCategory);
   }, [selectedCategory]);
 
@@ -518,6 +526,24 @@ function EndingsTab() {
         >
           <Text style={[styles.categoryPillText, selectedCategory === 'all' && styles.categoryPillTextActive]}>
             ALL ({totalEndings})
+          </Text>
+        </Pressable>
+        <Pressable
+          style={[styles.categoryPill, selectedCategory === 'branches' && styles.categoryPillActive]}
+          onPress={() => setSelectedCategory('branches')}
+        >
+          <Feather name="git-branch" size={11} color={selectedCategory === 'branches' ? GOLD : MUTED} style={{ marginRight: 4 }} />
+          <Text style={[styles.categoryPillText, selectedCategory === 'branches' && styles.categoryPillTextActive]}>
+            BRANCHES ({ENDINGS.filter((e) => e.id.startsWith('ending_mb') && discoveredSet.has(e.id)).length}/{ENDINGS.filter((e) => e.id.startsWith('ending_mb')).length})
+          </Text>
+        </Pressable>
+        <Pressable
+          style={[styles.categoryPill, selectedCategory === 'epilogue' && styles.categoryPillActive]}
+          onPress={() => setSelectedCategory('epilogue')}
+        >
+          <Feather name="radio" size={11} color={selectedCategory === 'epilogue' ? GOLD : MUTED} style={{ marginRight: 4 }} />
+          <Text style={[styles.categoryPillText, selectedCategory === 'epilogue' && styles.categoryPillTextActive]}>
+            EPILOGUE ({ENDINGS.filter((e) => e.id.startsWith('ending_epilogue_') && discoveredSet.has(e.id)).length}/{ENDINGS.filter((e) => e.id.startsWith('ending_epilogue_')).length})
           </Text>
         </Pressable>
         {CANONICAL_CATEGORIES.map((cat) => {
@@ -636,23 +662,21 @@ function EndingsTab() {
               </View>
 
               <View style={styles.modalArtContainer}>
-                {discoveredSet.has(inspectedEnding.id) && inspectedEnding.imageKey && getBackgroundImage(inspectedEnding.imageKey) ? (
-                  <Image source={getBackgroundImage(inspectedEnding.imageKey)} style={styles.modalImage} resizeMode="cover" />
+                {discoveredSet.has(inspectedEnding.id) ? (
+                  <CinematicView
+                    timeline={getEndingLoopTimeline(inspectedEnding.category as any, inspectedEnding.id ?? inspectedEnding.imageKey)}
+                    showSkipButton={false}
+                    style={styles.modalImage}
+                  />
                 ) : (
                   <LinearGradient
-                    colors={
-                      (discoveredSet.has(inspectedEnding.id)
-                        ? getBackgroundGradient(inspectedEnding.imageKey || inspectedEnding.category).colors
-                        : ['#161524', '#090910']) as any
-                    }
+                    colors={['#161524', '#090910'] as any}
                     style={styles.modalImage}
                   >
-                    {!discoveredSet.has(inspectedEnding.id) && (
-                      <View style={styles.modalLockedOverlay}>
-                        <Feather name="lock" size={36} color="#6a5e50" />
-                        <Text style={styles.modalLockedNotice}>UNDISCOVERED ENDING</Text>
-                      </View>
-                    )}
+                    <View style={styles.modalLockedOverlay}>
+                      <Feather name="lock" size={36} color="#6a5e50" />
+                      <Text style={styles.modalLockedNotice}>UNDISCOVERED ENDING</Text>
+                    </View>
                   </LinearGradient>
                 )}
               </View>

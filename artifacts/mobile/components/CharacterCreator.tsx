@@ -1,6 +1,5 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import {
-  Animated,
   Platform,
   Pressable,
   ScrollView,
@@ -9,6 +8,11 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Feather } from '@expo/vector-icons';
@@ -56,25 +60,27 @@ export default function CharacterCreator() {
   const [trait, setTrait] = useState<PersonalityTrait>('pragmatic');
   const [companion, setCompanion] = useState<CompanionChoice>('none');
 
-  const fadeAnim = useRef(new Animated.Value(1)).current;
-  const slideAnim = useRef(new Animated.Value(0)).current;
+  const fadeAnim = useSharedValue(1);
+  const slideAnim = useSharedValue(0);
 
   const topPad = Platform.OS === 'web' ? 67 : insets.top;
   const botPad = Platform.OS === 'web' ? 34 : insets.bottom;
 
   const animateStep = (nextStep: number, direction: number = 1) => {
-    Animated.parallel([
-      Animated.timing(fadeAnim, { toValue: 0, duration: 140, useNativeDriver: true }),
-      Animated.timing(slideAnim, { toValue: direction * -20, duration: 140, useNativeDriver: true }),
-    ]).start(() => {
+    fadeAnim.value = withTiming(0, { duration: 140 });
+    slideAnim.value = withTiming(direction * -20, { duration: 140 });
+    setTimeout(() => {
       setStep(nextStep);
-      slideAnim.setValue(direction * 20);
-      Animated.parallel([
-        Animated.timing(fadeAnim, { toValue: 1, duration: 220, useNativeDriver: true }),
-        Animated.timing(slideAnim, { toValue: 0, duration: 220, useNativeDriver: true }),
-      ]).start();
-    });
+      slideAnim.value = direction * 20;
+      fadeAnim.value = withTiming(1, { duration: 220 });
+      slideAnim.value = withTiming(0, { duration: 220 });
+    }, 145);
   };
+
+  const stepAnimStyle = useAnimatedStyle(() => ({
+    opacity: fadeAnim.value,
+    transform: [{ translateY: slideAnim.value }],
+  }));
 
   const canAdvance = () => {
     if (step === 0) return name.trim().length >= 2;
@@ -91,8 +97,6 @@ export default function CharacterCreator() {
     };
     startNewGame(character);
   };
-
-  const selectedClass = CLASSES.find((c) => c.id === characterClass);
 
   return (
     <LinearGradient colors={['#030108', '#07040f', '#030108']} style={styles.container}>
@@ -132,7 +136,7 @@ export default function CharacterCreator() {
         keyboardShouldPersistTaps="handled"
         overScrollMode="auto"
       >
-        <Animated.View style={[{ opacity: fadeAnim, transform: [{ translateY: slideAnim }] }, styles.stepContent]}>
+        <Animated.View style={[stepAnimStyle, styles.stepContent]}>
 
           {/* ── Step 0: NAME ───────────────────────────────────────────────── */}
           {step === 0 && (

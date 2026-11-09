@@ -1,5 +1,6 @@
 import type { EndingType } from '../types';
 import { ENDINGS as RAW_ENDINGS } from '../endings';
+import { ENABLE_EXPANSION } from '../../constants/featureFlags';
 
 export type CanonicalCategory =
   | 'death'
@@ -192,13 +193,34 @@ const mappedEndings: EndingDefinition[] = RAW_ENDINGS.map((raw) => {
   };
 });
 
-// Separate guaranteed orphans and other endings
-const guaranteedOrphans = mappedEndings.filter((e) => ORPHAN_ENDING_IDS.has(e.id));
-const nonOrphans = mappedEndings.filter((e) => !ORPHAN_ENDING_IDS.has(e.id));
+const EXPANSION_ENDING_IDS = new Set<string>([
+  'ending_mb1_chalk_and_ash',
+  'ending_mb1_price_of_a_name',
+  'ending_mb2_static_hymn',
+  'ending_mb2_left_the_light_on',
+  'ending_mb3_full_bellies_empty_streets',
+  'ending_mb3_bread_riot',
+  'ending_mb3_nobody_starves_tonight',
+  'ending_mb4_every_radio_in_the_city',
+  'ending_mb4_voice_of_the_crown',
+  'ending_mb4_off_the_air',
+  'ending_epilogue_yes_were_here',
+  'ending_epilogue_no_one_is_left',
+  'ending_epilogue_velna_answers',
+  'ending_epilogue_second_question',
+  'ending_epilogue_mark_goes_quiet',
+  'ending_epilogue_chorus',
+]);
 
-// Construct exactly 228 endings ensuring all 22 orphans are present
+// Separate guaranteed orphans, expansion endings, and base non-orphan endings
+const guaranteedOrphans = mappedEndings.filter((e) => ORPHAN_ENDING_IDS.has(e.id));
+const expansionEndings = mappedEndings.filter((e) => EXPANSION_ENDING_IDS.has(e.id));
+const nonOrphans = mappedEndings.filter((e) => !ORPHAN_ENDING_IDS.has(e.id) && !EXPANSION_ENDING_IDS.has(e.id));
+
+// Construct 228 base endings + 16 expansion endings (244 total when ENABLE_EXPANSION is true)
 const neededFromNonOrphans = 228 - guaranteedOrphans.length;
 export const ENDINGS: EndingDefinition[] = [
   ...guaranteedOrphans,
   ...nonOrphans.slice(0, neededFromNonOrphans),
+  ...(ENABLE_EXPANSION ? expansionEndings : []),
 ];

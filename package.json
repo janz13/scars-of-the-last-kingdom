@@ -8,6 +8,11 @@
     "test": "pnpm --filter @workspace/scripts test",
     "test:e2e": "pnpm --filter @workspace/scripts test:e2e",
     "check-bundle": "pnpm --filter @workspace/scripts check-bundle",
+    "audit": "pnpm --filter @workspace/scripts run audit",
+    "build:pixel-assets": "pnpm --filter @workspace/scripts build:pixel-assets",
+    "build:contact-sheet": "pnpm --filter @workspace/scripts build:contact-sheet",
+    "build:portrait-sheet": "pnpm --filter @workspace/scripts build:portrait-sheet",
+    "export:audio": "pnpm --filter @workspace/scripts export:audio",
     "lighthouse": "lhci autorun --config=./lighthouserc.json"
   },
   "private": true,

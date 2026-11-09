@@ -1,57 +1,77 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
-  Animated,
   Platform,
   Pressable,
-  ScrollView,
   StyleSheet,
   Text,
   View,
-  useWindowDimensions,
 } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Animated, {
+  cancelAnimation,
+  useAnimatedStyle,
+  useSharedValue,
+  withDelay,
+  withRepeat,
+  withSequence,
+  withTiming,
+} from 'react-native-reanimated';
 import { Feather } from '@expo/vector-icons';
 import { useGame } from '../context/GameContext';
 import SaveNotification from './SaveNotification';
 import { getSurvivalWarnings } from '../logic/gameEngine';
 import type { SurvivalWarning, SurvivalWarningSeverity, SurvivalWarningType } from '../logic/gameEngine';
-import BackgroundPanel from './BackgroundPanel';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import PixelStage from './scene/PixelStage';
 import ChoiceButton from './ChoiceButton';
 import DiceRollOverlay from './DiceRollOverlay';
+import ChapterTitleCard from './scene/ChapterTitleCard';
+import MarkAwakeningOverlay from './scene/MarkAwakeningOverlay';
 import DesktopSidebarHUD from './DesktopSidebarHUD';
+import StoryLayout from './scene/StoryLayout';
+import StoryText from './scene/StoryText';
 import { useWebKeyboardControls } from '../hooks/useWebKeyboardControls';
 import { useChoiceImagePreloader } from '../hooks/useChoiceImagePreloader';
 import { preloadNextChapter, subscribeChapterLoaded } from '../data/story/chapterLoader';
 import { useTypewriter } from '../hooks/useTypewriter';
 import { useReducedMotion } from '../hooks/useReducedMotion';
+import { getSceneManifestEntry } from '../constants/sceneManifest';
+import { sound } from '../logic/audioEngine';
 
 // ─── Mini stat bar ────────────────────────────────────────────────────────────
 
 function MiniStatBar({ value, max, color }: { value: number; max: number; color: string }) {
   const pct = Math.max(0, Math.min(1, value / max));
-  const lowPulse = useRef(new Animated.Value(1)).current;
+  const lowPulse = useSharedValue(1);
+  const isLow = pct < 0.25;
 
   useEffect(() => {
-    if (pct < 0.25) {
-      Animated.loop(
-        Animated.sequence([
-          Animated.timing(lowPulse, { toValue: 0.45, duration: 800, useNativeDriver: true }),
-          Animated.timing(lowPulse, { toValue: 1, duration: 800, useNativeDriver: true }),
-        ])
-      ).start();
+    if (isLow) {
+      lowPulse.value = withRepeat(
+        withSequence(
+          withTiming(0.45, { duration: 800 }),
+          withTiming(1, { duration: 800 })
+        ),
+        -1,
+        true
+      );
     } else {
-      lowPulse.stopAnimation();
-      lowPulse.setValue(1);
+      cancelAnimation(lowPulse);
+      lowPulse.value = 1;
     }
-  }, [pct < 0.25]);
+  }, [isLow, lowPulse]);
+
+  const fillAnimStyle = useAnimatedStyle(() => ({
+    opacity: isLow ? lowPulse.value : 1,
+  }));
 
   return (
     <View style={barStyles.miniTrack}>
       <Animated.View
         style={[
           barStyles.miniFill,
-          { width: `${pct * 100}%` as any, backgroundColor: color, opacity: pct < 0.25 ? lowPulse : 1 },
+          { width: `${pct * 100}%` as any, backgroundColor: color },
+          fillAnimStyle,
         ]}
       />
     </View>
@@ -61,15 +81,31 @@ function MiniStatBar({ value, max, color }: { value: number; max: number; color:
 // ─── HUD bar ──────────────────────────────────────────────────────────────────
 
 interface StatBarProps {
-  health: number; maxHealth: number; hunger: number; thirst: number;
-  morale: number; corruption: number;
-  onStats: () => void; onInventory: () => void; onCompanions: () => void;
-  onFactions: () => void; onHistory: () => void;
+  health: number;
+  maxHealth: number;
+  hunger: number;
+  thirst: number;
+  morale: number;
+  corruption: number;
+  onStats: () => void;
+  onInventory: () => void;
+  onCompanions: () => void;
+  onFactions: () => void;
+  onHistory: () => void;
 }
 
 function StatBar({
-  health, maxHealth, hunger, thirst, morale, corruption,
-  onStats, onInventory, onCompanions, onFactions, onHistory,
+  health,
+  maxHealth,
+  hunger,
+  thirst,
+  morale,
+  corruption,
+  onStats,
+  onInventory,
+  onCompanions,
+  onFactions,
+  onHistory,
 }: StatBarProps) {
   return (
     <View style={barStyles.container}>
@@ -128,49 +164,49 @@ function StatBar({
 
 // ─── Survival warning strip ───────────────────────────────────────────────────
 
-const WARNING_COLORS: Record<SurvivalWarningSeverity, string> = {
-  critical: '#e74c3c',
-  warning:  '#e67e22',
-  info:     '#6a5e70',
-};
-
 const WARNING_TYPE_ICONS: Record<SurvivalWarningType, string> = {
-  hunger:    'alert-triangle',
-  thirst:    'droplet',
-  health:    'heart',
-  morale:    'wind',
-  corruption:'zap',
+  hunger: 'alert-triangle',
+  thirst: 'droplet',
+  health: 'heart',
+  morale: 'wind',
+  corruption: 'zap',
   companion: 'eye',
-  supplies:  'package',
+  supplies: 'package',
 };
 
 const WARNING_TYPE_COLORS: Record<SurvivalWarningType, string> = {
-  hunger:    '#e67e22',
-  thirst:    '#3d9ad1',
-  health:    '#e74c3c',
-  morale:    '#9b59b6',
-  corruption:'#c39bd3',
+  hunger: '#e67e22',
+  thirst: '#3d9ad1',
+  health: '#e74c3c',
+  morale: '#9b59b6',
+  corruption: '#c39bd3',
   companion: '#a09060',
-  supplies:  '#7f8c8d',
+  supplies: '#7f8c8d',
 };
 
 function WarningRow({ warning }: { warning: SurvivalWarning }) {
-  const pulseAnim = useRef(new Animated.Value(1)).current;
+  const pulseAnim = useSharedValue(1);
   const isCritical = warning.severity === 'critical';
 
   useEffect(() => {
     if (isCritical) {
-      Animated.loop(
-        Animated.sequence([
-          Animated.timing(pulseAnim, { toValue: 0.5, duration: 900, useNativeDriver: true }),
-          Animated.timing(pulseAnim, { toValue: 1, duration: 900, useNativeDriver: true }),
-        ])
-      ).start();
+      pulseAnim.value = withRepeat(
+        withSequence(
+          withTiming(0.5, { duration: 900 }),
+          withTiming(1, { duration: 900 })
+        ),
+        -1,
+        true
+      );
     } else {
-      pulseAnim.stopAnimation();
-      pulseAnim.setValue(1);
+      cancelAnimation(pulseAnim);
+      pulseAnim.value = 1;
     }
-  }, [isCritical]);
+  }, [isCritical, pulseAnim]);
+
+  const rowAnimStyle = useAnimatedStyle(() => ({
+    opacity: isCritical ? pulseAnim.value : 1,
+  }));
 
   const color = WARNING_TYPE_COLORS[warning.type];
   const iconName = WARNING_TYPE_ICONS[warning.type] as any;
@@ -179,7 +215,8 @@ function WarningRow({ warning }: { warning: SurvivalWarning }) {
     <Animated.View
       style={[
         warnStyles.row,
-        { borderLeftColor: color, opacity: isCritical ? pulseAnim : 1 },
+        { borderLeftColor: color },
+        rowAnimStyle,
       ]}
     >
       <Feather name={iconName} size={10} color={color} />
@@ -191,7 +228,6 @@ function WarningRow({ warning }: { warning: SurvivalWarning }) {
 function SurvivalWarningStrip({ warnings }: { warnings: SurvivalWarning[] }) {
   if (warnings.length === 0) return null;
 
-  // Show at most 3 warnings, prioritising by severity
   const sorted = [...warnings].sort((a, b) => {
     const order: Record<SurvivalWarningSeverity, number> = { critical: 0, warning: 1, info: 2 };
     return order[a.severity] - order[b.severity];
@@ -210,24 +246,26 @@ function SurvivalWarningStrip({ warnings }: { warnings: SurvivalWarning[] }) {
 // ─── Chapter transition banner ────────────────────────────────────────────────
 
 function ChapterBanner({ chapter }: { chapter: string }) {
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-  const scaleAnim = useRef(new Animated.Value(1.04)).current;
+  const fadeAnim = useSharedValue(0);
+  const scaleAnim = useSharedValue(1.04);
 
   useEffect(() => {
-    Animated.sequence([
-      Animated.parallel([
-        Animated.timing(fadeAnim, { toValue: 1, duration: 420, useNativeDriver: true }),
-        Animated.timing(scaleAnim, { toValue: 1, duration: 400, useNativeDriver: true }),
-      ]),
-      Animated.delay(1100),
-      Animated.timing(fadeAnim, { toValue: 0, duration: 500, useNativeDriver: true }),
-    ]).start();
-  }, []);
+    fadeAnim.value = withSequence(
+      withTiming(1, { duration: 420 }),
+      withDelay(1100, withTiming(0, { duration: 500 }))
+    );
+    scaleAnim.value = withTiming(1, { duration: 400 });
+  }, [fadeAnim, scaleAnim]);
+
+  const bannerAnimStyle = useAnimatedStyle(() => ({
+    opacity: fadeAnim.value,
+    transform: [{ scale: scaleAnim.value }],
+  }));
 
   return (
     <Animated.View
       pointerEvents="none"
-      style={[bannerStyles.container, { opacity: fadeAnim, transform: [{ scale: scaleAnim }] }]}
+      style={[bannerStyles.container, bannerAnimStyle]}
     >
       <View style={bannerStyles.card}>
         <View style={bannerStyles.accentLine} />
@@ -238,20 +276,23 @@ function ChapterBanner({ chapter }: { chapter: string }) {
   );
 }
 
-// ─── Main story panel ─────────────────────────────────────────────────────────
+// ─── Main StoryPanel Coordinator ──────────────────────────────────────────────
 
 export default function StoryPanel({ onOpenHotkeys }: { onOpenHotkeys?: () => void } = {}) {
   const {
-    state, currentNode, availableChoices, makeChoice, setScreen,
-    pendingDiceRoll, initiateDiceRoll, commitDiceRoll, saveNotification,
+    state,
+    currentNode,
+    availableChoices,
+    makeChoice,
+    setScreen,
+    pendingDiceRoll,
+    initiateDiceRoll,
+    commitDiceRoll,
+    saveNotification,
   } = useGame();
-  const insets = useSafeAreaInsets();
-  const { width } = useWindowDimensions();
-  const isDesktop = width >= 900;
-  const isWidescreen = width >= 1440;
   const reducedMotion = useReducedMotion();
 
-  // Typewriter streaming for narration and dialogue (F-UX-02)
+  // Typewriter streaming for narration and dialogue
   const {
     displayedNarration,
     displayedDialogue,
@@ -277,7 +318,7 @@ export default function StoryPanel({ onOpenHotkeys }: { onOpenHotkeys?: () => vo
   // Mount web keyboard hotkeys
   useWebKeyboardControls();
 
-  // Preload next scene image assets for available choices (F-PERF-02)
+  // Preload next scene image assets for available choices
   useChoiceImagePreloader(availableChoices, state, currentNode?.imageKey);
 
   // Automatically preload next sequential chapter
@@ -295,60 +336,90 @@ export default function StoryPanel({ onOpenHotkeys }: { onOpenHotkeys?: () => vo
     });
   }, []);
 
-  const topPad = Platform.OS === 'web' ? (isDesktop ? 16 : 44) : insets.top;
-  const botPad = Platform.OS === 'web' ? (isDesktop ? 16 : 24) : insets.bottom;
-
-  // Font size scaling based on user setting
-  const fontScale = state.settings.fontSize;
-  const narrationFontSize = fontScale === 'small' ? 14 : fontScale === 'large' ? 19 : 16.5;
-  const narrationLineHeight = fontScale === 'small' ? 23 : fontScale === 'large' ? 31 : 28;
-  const dialogueFontSize = fontScale === 'small' ? 13 : fontScale === 'large' ? 17 : 15.5;
-  const dialogueLineHeight = fontScale === 'small' ? 21 : fontScale === 'large' ? 27 : 25;
-
-  const titleFade = useRef(new Animated.Value(1)).current;
-  const titleSlide = useRef(new Animated.Value(0)).current;
+  const titleFade = useSharedValue(1);
+  const titleSlide = useSharedValue(0);
   const prevNodeId = useRef<string | undefined>(undefined);
   const prevChapter = useRef<string | undefined>(undefined);
-  const [showBanner, setShowBanner] = useState(false);
-  const bannerTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [showTitleCard, setShowTitleCard] = useState(false);
+  const titleCardTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Mark Awakening overlay state & persistent seen tracking (Chapter 1 & 9)
+  const seenAwakeningsRef = useRef<Set<string>>(new Set());
+  const [activeMarkAwakening, setActiveMarkAwakening] = useState<'ch1' | 'ch9' | null>(null);
 
   useEffect(() => {
     if (!currentNode) return;
 
     if (prevChapter.current !== undefined && prevChapter.current !== currentNode.chapter) {
-      if (bannerTimeoutRef.current) clearTimeout(bannerTimeoutRef.current);
-      setShowBanner(true);
-      bannerTimeoutRef.current = setTimeout(() => setShowBanner(false), 2200);
+      if (titleCardTimeoutRef.current) clearTimeout(titleCardTimeoutRef.current);
+      setShowTitleCard(true);
+      titleCardTimeoutRef.current = setTimeout(() => setShowTitleCard(false), 4000);
     }
     prevChapter.current = currentNode.chapter;
+
+    // Check for Mark Awakening nodes (Ch 1: chapter1_start / examine_wrist_mark, Ch 9: chapter9_start / c9_mark_first_pulse)
+    const isCh1 = currentNode.id === 'chapter1_start' || currentNode.id === 'examine_wrist_mark';
+    const isCh9 = currentNode.id === 'chapter9_start' || currentNode.id === 'c9_mark_first_pulse';
+
+    if (isCh1 && !seenAwakeningsRef.current.has('ch1')) {
+      seenAwakeningsRef.current.add('ch1');
+      AsyncStorage.getItem('@scars_mark_awakening_seen_ch1').then((val) => {
+        if (!val) {
+          AsyncStorage.setItem('@scars_mark_awakening_seen_ch1', '1').catch(() => {});
+          setActiveMarkAwakening('ch1');
+        }
+      }).catch(() => {
+        setActiveMarkAwakening('ch1');
+      });
+    } else if (isCh9 && !seenAwakeningsRef.current.has('ch9')) {
+      seenAwakeningsRef.current.add('ch9');
+      AsyncStorage.getItem('@scars_mark_awakening_seen_ch9').then((val) => {
+        if (!val) {
+          AsyncStorage.setItem('@scars_mark_awakening_seen_ch9', '1').catch(() => {});
+          setActiveMarkAwakening('ch9');
+        }
+      }).catch(() => {
+        setActiveMarkAwakening('ch9');
+      });
+    }
 
     if (prevNodeId.current === currentNode.id) return;
     prevNodeId.current = currentNode.id;
 
+    // Trigger adaptive procedural scene music cue
+    const manifestEntry = getSceneManifestEntry(currentNode.imageKey);
+    if (manifestEntry?.music) {
+      sound.playTheme(manifestEntry.music.theme, manifestEntry.music.intensity);
+    }
+
     if (reducedMotion) {
-      titleFade.setValue(1);
-      titleSlide.setValue(0);
+      titleFade.value = 1;
+      titleSlide.value = 0;
     } else {
-      titleFade.setValue(0);
-      titleSlide.setValue(14);
-      Animated.parallel([
-        Animated.timing(titleFade, { toValue: 1, duration: 500, delay: 140, useNativeDriver: true }),
-        Animated.timing(titleSlide, { toValue: 0, duration: 400, delay: 140, useNativeDriver: true }),
-      ]).start();
+      titleFade.value = 0;
+      titleSlide.value = 14;
+      titleFade.value = withDelay(140, withTiming(1, { duration: 500 }));
+      titleSlide.value = withDelay(140, withTiming(0, { duration: 400 }));
     }
 
     return () => {
-      if (bannerTimeoutRef.current) clearTimeout(bannerTimeoutRef.current);
+      if (titleCardTimeoutRef.current) clearTimeout(titleCardTimeoutRef.current);
     };
-  }, [currentNode?.id, currentNode?.chapter, reducedMotion]);
+  }, [currentNode?.id, currentNode?.chapter, currentNode?.imageKey, reducedMotion, titleFade, titleSlide]);
+
+  // Keep procedural music engine updated with corruption & low-HP heartbeat state
+  useEffect(() => {
+    const isLowHp = state.stats.health / Math.max(1, state.stats.maxHealth) <= 0.3;
+    sound.setAdaptiveState(state.stats.corruption, isLowHp);
+  }, [state.stats.corruption, state.stats.health, state.stats.maxHealth]);
 
   if (!currentNode) {
     return (
-      <BackgroundPanel imageKey="default" sceneKey="loading">
+      <PixelStage imageKey="default" sceneKey="loading">
         <View style={styles.loading}>
           <ActivityIndicator color="#9b59b6" size="large" />
         </View>
-      </BackgroundPanel>
+      </PixelStage>
     );
   }
 
@@ -356,115 +427,58 @@ export default function StoryPanel({ onOpenHotkeys }: { onOpenHotkeys?: () => vo
   const isEndingNode = currentNode.isEnding;
   const isHallucination = state.flags['halluc_active'] ?? false;
   const isCompanionEvent = state.flags['companion_event_active'] ?? false;
-  // Speaker-driven accent: Mira = purple, Cain = amber, default = neutral
-  const companionAccent = isCompanionEvent
-    ? currentNode.speaker === 'Cain'
-      ? '#e67e22'
-      : '#9b59b6'
-    : '#9b59b6';
-
-  // Compute survival warnings from the current game state
   const survivalWarnings = getSurvivalWarnings(state);
 
-  const renderStoryColumn = (isDesktopView: boolean) => (
+  const storyContent = (
     <>
-      {/* ── Story section ─────────────────────────────────────── */}
-      <Pressable
-        onPress={isTyping ? skipTypewriter : undefined}
-        role="region"
-        aria-label="Story Narrative"
-        aria-live="polite"
-        accessibilityRole={"region" as any}
-        accessibilityLabel="Story Narrative"
-        style={[
-          styles.storySection,
-          isDesktopView && styles.desktopStorySection,
-          isHallucination && styles.hallucinationSection,
-          isCompanionEvent && { backgroundColor: currentNode.speaker === 'Cain' ? 'rgba(40,20,0,0.28)' : 'rgba(30,0,40,0.22)' },
-        ]}
-      >
-        <Text style={[
-          styles.breadcrumb,
-          isHallucination && styles.hallucinationBreadcrumb,
-          isCompanionEvent && { color: currentNode.speaker === 'Cain' ? 'rgba(230,126,34,0.55)' : 'rgba(155,89,182,0.55)', letterSpacing: 3 },
-        ]}>
-          {currentNode.chapter.toUpperCase()}
-          {'  ›  '}
-          {currentNode.location.toUpperCase()}
-        </Text>
+      <StoryText
+        chapter={currentNode.chapter}
+        location={currentNode.location}
+        title={currentNode.title}
+        speaker={currentNode.speaker}
+        displayedNarration={displayedNarration}
+        displayedDialogue={displayedDialogue}
+        hasDialogue={Boolean(currentNode.dialogue)}
+        isTyping={isTyping}
+        onSkipTypewriter={skipTypewriter}
+        companions={state.companions}
+        isHallucination={isHallucination}
+        isCompanionEvent={isCompanionEvent}
+        fontSize={state.settings.fontSize}
+        proseFont={state.settings.proseFont ?? 'inter'}
+        titleFade={titleFade}
+        titleSlide={titleSlide}
+      />
 
-        <Animated.View style={{ opacity: titleFade, transform: [{ translateY: titleSlide }] }}>
-          <Text style={[
-            styles.nodeTitle,
-            isDesktopView && styles.desktopNodeTitle,
-            isHallucination && styles.hallucinationTitle,
-            isCompanionEvent && { color: currentNode.speaker === 'Cain' ? '#f0a050' : '#c39bd3', letterSpacing: 0.5 },
-          ]}>
-            {currentNode.title}
-          </Text>
-        </Animated.View>
-
-        {currentNode.speaker && (
-          <View style={styles.speakerBadge}>
-            <View style={styles.speakerLine} />
-            <Text style={styles.speakerText}>{currentNode.speaker}</Text>
-            <View style={styles.speakerLine} />
-          </View>
-        )}
-
-        <Text style={[styles.narration, isHallucination && styles.hallucinationNarration, { fontSize: narrationFontSize, lineHeight: narrationLineHeight }]}>
-          {displayedNarration}
-          {isTyping && !currentNode.dialogue && (
-            <Text style={styles.typewriterCursor}> ▍</Text>
-          )}
-        </Text>
-
-        {currentNode.dialogue && (
-          <View style={[styles.dialogueBox, isHallucination && styles.hallucinationDialogueBox]}>
-            <Text style={styles.dialogueOpenQuote}>{'\u201C'}</Text>
-            <Text style={[styles.dialogue, isHallucination && styles.hallucinationDialogue, { fontSize: dialogueFontSize, lineHeight: dialogueLineHeight }]}>
-              {displayedDialogue}
-              {isTyping && <Text style={styles.typewriterCursor}> ▍</Text>}
-            </Text>
-          </View>
-        )}
-
-        {!isHallucination && !isCompanionEvent && (state.companions.mira.present && state.companions.mira.alive ||
-          state.companions.cain.present && state.companions.cain.alive) && (
-          <View style={styles.companionStrip}>
-            {state.companions.mira.present && state.companions.mira.alive && (
-              <View style={[styles.companionTag, { borderColor: 'rgba(155,89,182,0.25)' }]}>
-                <View style={[styles.companionDot, { backgroundColor: '#9b59b6' }]} />
-                <Text style={styles.companionName}>MIRA</Text>
-              </View>
-            )}
-            {state.companions.cain.present && state.companions.cain.alive && (
-              <View style={[styles.companionTag, { borderColor: 'rgba(230,126,34,0.25)' }]}>
-                <View style={[styles.companionDot, { backgroundColor: '#e67e22' }]} />
-                <Text style={styles.companionName}>CAIN</Text>
-              </View>
-            )}
-          </View>
-        )}
-      </Pressable>
-
-      {/* ── Survival warning strip ─────────────────────────────── */}
       {!isEndingNode && !isHallucination && !isCompanionEvent && (
         <SurvivalWarningStrip warnings={survivalWarnings} />
       )}
 
-      {/* ── Choices glass panel ────────────────────────────────── */}
-      <View style={[
-        styles.choicesPanel,
-        isDesktopView && styles.desktopChoicesPanel,
-        isHallucination && styles.hallucinationChoicesPanel,
-        isCompanionEvent && { backgroundColor: currentNode.speaker === 'Cain' ? 'rgba(40,20,0,0.92)' : 'rgba(25,10,35,0.92)' },
-      ]}>
-        <View style={[
-          styles.choicesTopAccent,
-          isHallucination && styles.hallucinationTopAccent,
-          isCompanionEvent && { backgroundColor: currentNode.speaker === 'Cain' ? 'rgba(230,126,34,0.45)' : 'rgba(155,89,182,0.35)' },
-        ]} />
+      {/* Choices panel */}
+      <View
+        style={[
+          styles.choicesPanel,
+          isHallucination && styles.hallucinationChoicesPanel,
+          isCompanionEvent && {
+            backgroundColor:
+              currentNode.speaker === 'Cain'
+                ? 'rgba(40,20,0,0.92)'
+                : 'rgba(25,10,35,0.92)',
+          },
+        ]}
+      >
+        <View
+          style={[
+            styles.choicesTopAccent,
+            isHallucination && styles.hallucinationTopAccent,
+            isCompanionEvent && {
+              backgroundColor:
+                currentNode.speaker === 'Cain'
+                  ? 'rgba(230,126,34,0.45)'
+                  : 'rgba(155,89,182,0.35)',
+            },
+          ]}
+        />
 
         {isTerminalNode && (
           <View style={styles.terminalNode}>
@@ -473,9 +487,7 @@ export default function StoryPanel({ onOpenHotkeys }: { onOpenHotkeys?: () => vo
               <Feather name="bookmark" size={12} color="#6a5e70" />
               <View style={styles.terminalLine} />
             </View>
-            <Text style={styles.terminalText}>
-              The story continues…
-            </Text>
+            <Text style={styles.terminalText}>The story continues…</Text>
             <Pressable style={styles.returnBtn} onPress={() => setScreen('mainMenu')}>
               <Text style={styles.returnBtnText}>RETURN TO MAIN MENU</Text>
               <Feather name="arrow-right" size={12} color="#9b59b6" />
@@ -494,7 +506,7 @@ export default function StoryPanel({ onOpenHotkeys }: { onOpenHotkeys?: () => vo
                 reasons={reasons}
                 flavorText={choice.flavorText}
                 diceCheck={choice.diceCheck}
-                hotkeyIndex={isDesktopView ? index + 1 : undefined}
+                hotkeyIndex={index + 1}
                 isTyping={isTyping}
                 onSkip={skipTypewriter}
                 onPress={() => {
@@ -525,83 +537,74 @@ export default function StoryPanel({ onOpenHotkeys }: { onOpenHotkeys?: () => vo
   );
 
   return (
-    <>
-      <BackgroundPanel
-        imageKey={currentNode.imageKey}
-        sceneKey={currentNode.id}
-        overlayOpacity={isHallucination ? 0.88 : isCompanionEvent ? 0.84 : 0.78}
-        fadeDuration={isHallucination ? 600 : isCompanionEvent ? 500 : 420}
-      >
-        <View style={[styles.container, isDesktop && styles.desktopContainer]}>
-          {isDesktop ? (
-            <View style={styles.desktopLayout}>
-              {/* Left persistent desktop sidebar HUD */}
-              <View style={styles.desktopSidebar}>
-                <DesktopSidebarHUD onOpenHotkeys={onOpenHotkeys} />
-              </View>
-
-              {/* Centered story / choices column */}
-              <View style={styles.desktopStoryColumn}>
-                <ScrollView
-                  style={styles.scroll}
-                  contentContainerStyle={[
-                    styles.scrollContent,
-                    styles.desktopScrollContent,
-                    { paddingBottom: botPad + 30 },
-                  ]}
-                  showsVerticalScrollIndicator={false}
-                  keyboardShouldPersistTaps="handled"
-                  overScrollMode="auto"
-                >
-                  {renderStoryColumn(true)}
-                </ScrollView>
-              </View>
-            </View>
-          ) : (
-            <>
-              <View style={{ paddingTop: topPad }}>
-                <StatBar
-                  health={state.stats.health}
-                  maxHealth={state.stats.maxHealth}
-                  hunger={state.stats.hunger}
-                  thirst={state.stats.thirst}
-                  morale={state.stats.morale}
-                  corruption={state.stats.corruption}
-                  onStats={() => setScreen('stats')}
-                  onInventory={() => setScreen('inventory')}
-                  onCompanions={() => setScreen('companions')}
-                  onFactions={() => setScreen('factions')}
-                  onHistory={() => setScreen('history')}
-                />
-              </View>
-
-              <ScrollView
-                style={styles.scroll}
-                contentContainerStyle={[styles.scrollContent, { paddingBottom: botPad + 20 }]}
-                showsVerticalScrollIndicator={false}
-                keyboardShouldPersistTaps="handled"
-                overScrollMode="auto"
-              >
-                {renderStoryColumn(false)}
-              </ScrollView>
-            </>
-          )}
-        </View>
-
-        {showBanner && <ChapterBanner key={currentNode.chapter} chapter={currentNode.chapter} />}
-      </BackgroundPanel>
-
-      {pendingDiceRoll && (
-        <DiceRollOverlay
-          diceCheck={pendingDiceRoll.diceCheck}
-          choiceText={pendingDiceRoll.choiceText}
-          state={state}
-          onCommit={(result) => commitDiceRoll(pendingDiceRoll.choiceId, result)}
+    <StoryLayout
+      layoutOverride={state.settings.textLayout ?? 'auto'}
+      artStage={
+        <PixelStage
+          imageKey={currentNode.imageKey}
+          sceneKey={currentNode.id}
+          overlayOpacity={isHallucination ? 0.88 : isCompanionEvent ? 0.84 : 0.78}
+          fadeDuration={isHallucination ? 600 : isCompanionEvent ? 500 : 420}
+          corruption={state.stats.corruption}
+          health={state.stats.health}
+          maxHealth={state.stats.maxHealth}
+          hunger={state.stats.hunger}
+          thirst={state.stats.thirst}
+          isHallucination={isHallucination}
+          tiltParallaxEnabled={state.settings.tiltParallax ?? false}
+          reducedMotion={reducedMotion}
         />
-      )}
-
-      <SaveNotification visible={saveNotification} />
-    </>
+      }
+      sidebarHUD={<DesktopSidebarHUD onOpenHotkeys={onOpenHotkeys} />}
+      topHUD={
+        <StatBar
+          health={state.stats.health}
+          maxHealth={state.stats.maxHealth}
+          hunger={state.stats.hunger}
+          thirst={state.stats.thirst}
+          morale={state.stats.morale}
+          corruption={state.stats.corruption}
+          onStats={() => setScreen('stats')}
+          onInventory={() => setScreen('inventory')}
+          onCompanions={() => setScreen('companions')}
+          onFactions={() => setScreen('factions')}
+          onHistory={() => setScreen('history')}
+        />
+      }
+      storyContent={storyContent}
+      overlays={
+        <>
+          {showTitleCard && (
+            <ChapterTitleCard
+              key={currentNode.chapter}
+              chapter={currentNode.chapter}
+              imageKey={currentNode.imageKey}
+              onDismiss={() => {
+                if (titleCardTimeoutRef.current) clearTimeout(titleCardTimeoutRef.current);
+                setShowTitleCard(false);
+              }}
+              reducedMotion={reducedMotion}
+            />
+          )}
+          {activeMarkAwakening && (
+            <MarkAwakeningOverlay
+              chapter={activeMarkAwakening}
+              onDismiss={() => setActiveMarkAwakening(null)}
+              reducedMotion={reducedMotion}
+            />
+          )}
+          {pendingDiceRoll && (
+            <DiceRollOverlay
+              diceCheck={pendingDiceRoll.diceCheck}
+              choiceText={pendingDiceRoll.choiceText}
+              state={state}
+              onCommit={(result) => commitDiceRoll(pendingDiceRoll.choiceId, result)}
+            />
+          )}
+          <SaveNotification visible={saveNotification} />
+        </>
+      }
+    />
   );
 }
 
@@ -653,332 +656,120 @@ const barStyles = StyleSheet.create({
     alignItems: 'center',
     gap: 3,
     backgroundColor: 'rgba(155,89,182,0.12)',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
     borderWidth: 1,
-    borderColor: 'rgba(155,89,182,0.2)',
-    paddingHorizontal: 7,
-    paddingVertical: 3,
-    borderRadius: 10,
+    borderColor: 'rgba(155,89,182,0.25)',
   },
   corruptionVal: {
-    fontSize: 10,
+    fontSize: 9,
     color: '#9b59b6',
     fontFamily: 'Inter_600SemiBold',
   },
   navRow: {
     flexDirection: 'row',
-    gap: 2,
+    gap: 12,
   },
   navIcon: {
-    padding: 5,
+    padding: 3,
   },
 });
 
 const warnStyles = StyleSheet.create({
   container: {
-    paddingHorizontal: 18,
-    paddingVertical: 6,
-    gap: 5,
+    paddingHorizontal: 24,
+    paddingBottom: 16,
+    gap: 6,
   },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 7,
-    paddingLeft: 9,
-    paddingVertical: 4,
-    borderLeftWidth: 2,
-    borderLeftColor: '#e74c3c',
-    backgroundColor: 'rgba(10,5,20,0.55)',
-    borderRadius: 2,
+    gap: 8,
+    backgroundColor: 'rgba(10, 6, 18, 0.7)',
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    borderRadius: 3,
+    borderLeftWidth: 3,
   },
   text: {
-    fontSize: 11,
+    fontSize: 12,
     fontFamily: 'Inter_500Medium',
-    letterSpacing: 0.3,
-    flexShrink: 1,
+    letterSpacing: 0.1,
   },
 });
 
 const bannerStyles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    justifyContent: 'center',
+    top: '38%',
+    left: 20,
+    right: 20,
     alignItems: 'center',
-    backgroundColor: 'rgba(4,2,12,0.65)',
-    zIndex: 50,
+    zIndex: 100,
   },
   card: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 16,
+    backgroundColor: 'rgba(8, 4, 16, 0.94)',
+    borderWidth: 1,
+    borderColor: 'rgba(155, 89, 182, 0.4)',
+    borderRadius: 6,
+    paddingVertical: 18,
     paddingHorizontal: 32,
+    alignItems: 'center',
+    shadowColor: '#9b59b6',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.4,
+    shadowRadius: 20,
   },
   accentLine: {
-    flex: 1,
+    width: 48,
     height: 1,
-    backgroundColor: 'rgba(155,89,182,0.4)',
+    backgroundColor: 'rgba(155, 89, 182, 0.4)',
+    marginVertical: 4,
   },
   chapterLabel: {
-    fontSize: 11,
-    letterSpacing: 6,
-    color: '#9b59b6',
-    fontFamily: 'Inter_600SemiBold',
+    fontSize: 16,
+    color: '#ede0c4',
+    fontFamily: 'Inter_700Bold',
+    letterSpacing: 3,
+    marginVertical: 6,
   },
 });
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  desktopContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    height: '100%',
-  },
-  desktopLayout: {
-    flexDirection: 'row',
-    width: '100%',
-    maxWidth: 1240,
-    height: '100%',
-    paddingHorizontal: 24,
-    paddingVertical: 18,
-    gap: 24,
-    alignSelf: 'center',
-  },
-  desktopSidebar: {
-    width: 320,
-    height: '100%',
-    borderRadius: 8,
-    overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: 'rgba(155, 89, 182, 0.25)',
-    backgroundColor: 'rgba(12, 10, 20, 0.9)',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.5,
-    shadowRadius: 16,
-  },
-  desktopStoryColumn: {
-    flex: 1,
-    height: '100%',
-    maxWidth: 860,
-  },
-  desktopScrollContent: {
-    gap: 16,
-    paddingTop: 8,
-  },
-  desktopStorySection: {
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: 'rgba(155, 89, 182, 0.22)',
-    backgroundColor: 'rgba(14, 12, 24, 0.92)',
-    paddingHorizontal: 36,
-    paddingTop: 32,
-    paddingBottom: 28,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.4,
-    shadowRadius: 12,
-  },
-  desktopNodeTitle: {
-    fontSize: 23,
-    lineHeight: 30,
-  },
-  desktopChoicesPanel: {
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: 'rgba(155, 89, 182, 0.22)',
-    backgroundColor: 'rgba(14, 12, 24, 0.94)',
-    paddingHorizontal: 28,
-    paddingVertical: 22,
-    marginTop: 0,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.4,
-    shadowRadius: 12,
-  },
-
   loading: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  errorState: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 12,
-  },
-  errorText: { color: '#8e1c1c', fontSize: 14, fontFamily: 'Inter_400Regular' },
-  errorLink: { color: '#9b59b6', fontSize: 14, fontFamily: 'Inter_500Medium' },
-
-  scroll: { flex: 1 },
-  scrollContent: { flexGrow: 1 },
-
-  // ── Story ────────────────────────────────────────────────────────────────
-
-  storySection: {
-    flex: 1,
-    paddingHorizontal: 24,
-    paddingTop: 28,
-    paddingBottom: 22,
-  },
-  hallucinationSection: {
-    backgroundColor: 'rgba(30,0,50,0.25)',
-  },
-  breadcrumb: {
-    fontSize: 9,
-    letterSpacing: 2.5,
-    color: '#8c829e',
-    fontFamily: 'Inter_600SemiBold',
-    marginBottom: 14,
-    textTransform: 'uppercase',
-  },
-  hallucinationBreadcrumb: {
-    color: 'rgba(195,155,211,0.5)',
-    letterSpacing: 3,
-  },
-  nodeTitle: {
-    fontSize: 26,
-    color: '#ede0c4',
-    fontFamily: 'Inter_700Bold',
-    lineHeight: 34,
-    letterSpacing: 0.3,
-    marginBottom: 20,
-  },
-  hallucinationTitle: {
-    color: '#c39bd3',
-    letterSpacing: 0.8,
-  },
-  speakerBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-    marginBottom: 16,
-  },
-  speakerLine: {
-    flex: 1,
-    height: 1,
-    backgroundColor: 'rgba(155,89,182,0.14)',
-  },
-  speakerText: {
-    fontSize: 10,
-    color: '#ba7fd4',
-    fontFamily: 'Inter_600SemiBold',
-    letterSpacing: 2.5,
-    textTransform: 'uppercase',
-  },
-  narration: {
-    fontSize: 16.5,
-    color: '#c4a880',
-    lineHeight: 28,
-    fontFamily: 'Inter_400Regular',
-    marginBottom: 16,
-    letterSpacing: 0.15,
-  },
-  typewriterCursor: {
-    color: '#c9a84c',
-    opacity: 0.85,
-  },
-  hallucinationNarration: {
-    color: '#d4b8e0',
-    fontStyle: 'italic',
-    lineHeight: 29,
-    letterSpacing: 0.2,
-  },
-  dialogueBox: {
-    backgroundColor: 'rgba(155,89,182,0.06)',
-    borderLeftWidth: 2.5,
-    borderLeftColor: 'rgba(155,89,182,0.35)',
-    paddingLeft: 18,
-    paddingRight: 14,
-    paddingTop: 16,
-    paddingBottom: 14,
-    marginBottom: 16,
-    borderRadius: 2,
-    position: 'relative',
-  },
-  hallucinationDialogueBox: {
-    backgroundColor: 'rgba(155,89,182,0.12)',
-    borderLeftColor: 'rgba(195,155,211,0.5)',
-  },
-  dialogueOpenQuote: {
-    fontSize: 40,
-    color: 'rgba(155,89,182,0.22)',
-    fontFamily: 'Inter_700Bold',
-    lineHeight: 32,
-    marginBottom: 4,
-  },
-  dialogue: {
-    fontSize: 15.5,
-    color: '#e8d5b0',
-    lineHeight: 25,
-    fontFamily: 'Inter_400Regular',
-    fontStyle: 'italic',
-    letterSpacing: 0.1,
-  },
-  hallucinationDialogue: {
-    color: '#e0c8f0',
-    letterSpacing: 0.3,
-  },
-  companionStrip: {
-    flexDirection: 'row',
-    gap: 8,
-    marginTop: 10,
-  },
-  companionTag: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    backgroundColor: 'rgba(10,6,20,0.8)',
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 12,
-    borderWidth: 1,
-  },
-  companionDot: { width: 5, height: 5, borderRadius: 3 },
-  companionName: {
-    fontSize: 10,
-    color: '#7a6e80',
-    fontFamily: 'Inter_600SemiBold',
-    letterSpacing: 1.5,
-  },
-
-  // ── Choices panel ────────────────────────────────────────────────────────
-
   choicesPanel: {
-    backgroundColor: 'rgba(5,3,14,0.96)',
-    borderTopWidth: 1,
-    borderTopColor: 'rgba(155,89,182,0.12)',
+    backgroundColor: 'rgba(8, 6, 16, 0.92)',
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    borderWidth: 1,
+    borderColor: 'rgba(155, 89, 182, 0.18)',
     paddingHorizontal: 16,
-    paddingBottom: 4,
+    paddingTop: 18,
+    paddingBottom: 24,
+    gap: 10,
   },
   hallucinationChoicesPanel: {
-    backgroundColor: 'rgba(15,5,30,0.97)',
-    borderTopColor: 'rgba(195,155,211,0.2)',
+    backgroundColor: 'rgba(20, 0, 35, 0.94)',
+    borderColor: 'rgba(155, 89, 182, 0.35)',
   },
   choicesTopAccent: {
-    height: 1.5,
-    backgroundColor: 'rgba(155,89,182,0.2)',
-    marginBottom: 12,
+    height: 2,
+    backgroundColor: 'rgba(155, 89, 182, 0.25)',
+    borderRadius: 1,
+    marginBottom: 4,
   },
   hallucinationTopAccent: {
-    backgroundColor: 'rgba(195,155,211,0.35)',
-  },
-  noChoices: {
-    color: '#8c829e',
-    fontSize: 13,
-    fontFamily: 'Inter_400Regular',
-    fontStyle: 'italic',
-    textAlign: 'center',
-    paddingVertical: 12,
+    backgroundColor: 'rgba(195, 155, 211, 0.5)',
   },
   terminalNode: {
     alignItems: 'center',
     paddingVertical: 16,
-    gap: 14,
+    gap: 12,
   },
   terminalDivider: {
     flexDirection: 'row',
@@ -989,47 +780,50 @@ const styles = StyleSheet.create({
   terminalLine: {
     flex: 1,
     height: 1,
-    backgroundColor: 'rgba(42,42,58,0.6)',
+    backgroundColor: 'rgba(155, 89, 182, 0.15)',
   },
   terminalText: {
-    fontSize: 12,
-    color: '#968b9f',
-    fontFamily: 'Inter_400Regular',
+    fontSize: 13,
+    color: '#8c829e',
+    fontFamily: 'Inter_500Medium',
     fontStyle: 'italic',
-    textAlign: 'center',
-    letterSpacing: 0.5,
   },
   returnBtn: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
+    backgroundColor: 'rgba(155, 89, 182, 0.15)',
     borderWidth: 1,
-    borderColor: 'rgba(155,89,182,0.35)',
-    borderRadius: 3,
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    backgroundColor: 'rgba(155,89,182,0.06)',
+    borderColor: 'rgba(155, 89, 182, 0.35)',
+    borderRadius: 6,
+    paddingVertical: 10,
+    paddingHorizontal: 16,
   },
   returnBtnText: {
     fontSize: 11,
-    letterSpacing: 2.5,
-    color: '#9b59b6',
+    color: '#ede0c4',
     fontFamily: 'Inter_600SemiBold',
+    letterSpacing: 1.5,
+  },
+  noChoices: {
+    fontSize: 13,
+    color: '#8c829e',
+    fontStyle: 'italic',
+    textAlign: 'center',
+    paddingVertical: 14,
   },
   menuBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    alignSelf: 'center',
-    gap: 5,
-    paddingHorizontal: 14,
+    justifyContent: 'center',
+    gap: 6,
     paddingVertical: 8,
     marginTop: 4,
-    marginBottom: 2,
   },
   menuBtnText: {
-    fontSize: 9,
-    letterSpacing: 2,
-    color: '#3a3048',
+    fontSize: 10,
+    color: '#6a5e70',
     fontFamily: 'Inter_600SemiBold',
+    letterSpacing: 2,
   },
 });

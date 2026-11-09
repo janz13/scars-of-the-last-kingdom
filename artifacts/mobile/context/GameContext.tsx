@@ -69,7 +69,22 @@ export const INITIAL_STATE: GameState = {
   factionRep: DEFAULT_FACTION_REP,
   routeHistory: [],
   endingsDiscovered: [],
-  settings: { textSpeed: 'normal', fontSize: 'normal', soundEnabled: false, autoSave: true, skipDiceAnimation: false },
+  settings: {
+    textSpeed: 'normal',
+    fontSize: 'normal',
+    soundEnabled: false,
+    autoSave: true,
+    skipDiceAnimation: false,
+    textLayout: 'auto',
+    proseFont: 'inter',
+    qualityTier: 'auto',
+    reducedMotion: false,
+    musicVolume: 0.7,
+    sfxVolume: 0.85,
+    ambienceVolume: 0.65,
+    musicMode: 'adaptive',
+    tiltParallax: false,
+  },
   activeEnding: null,
   pendingReturnNodeId: undefined,
 };
@@ -634,6 +649,18 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       } else {
         sound.stopAmbient();
       }
+    }
+    if (typeof settings.musicVolume === 'number') {
+      sound.setVolume('music', settings.musicVolume);
+    }
+    if (typeof settings.sfxVolume === 'number') {
+      sound.setVolume('sfx', settings.sfxVolume);
+    }
+    if (typeof settings.ambienceVolume === 'number') {
+      sound.setVolume('ambience', settings.ambienceVolume);
+    }
+    if (settings.musicMode) {
+      sound.setMusicMode(settings.musicMode);
     }
     setState((prev) => ({
       ...prev,

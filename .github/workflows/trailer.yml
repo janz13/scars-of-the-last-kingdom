@@ -1,0 +1,69 @@
+name: Attach Trailers to GitHub Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag (e.g. v1.0.0)'
+        required: true
+        type: string
+      release_notes:
+        description: 'Optional release notes'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: "release-${{ inputs.tag }}"
+  cancel-in-progress: false
+
+jobs:
+  trailer-release:
+    name: Verify and Upload Trailers
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.33.3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install ffmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+
+      - name: Verify trailer video artifacts
+        run: |
+          echo "Verifying trailer video artifacts in docs/video/..."
+          test -f docs/video/trailer_75s_1080p.mp4 || { echo "::error::Missing docs/video/trailer_75s_1080p.mp4"; exit 1; }
+          test -f docs/video/trailer_30s_1080p.mp4 || { echo "::error::Missing docs/video/trailer_30s_1080p.mp4"; exit 1; }
+          echo "All required trailer artifacts exist:"
+          ls -lh docs/video/*.mp4
+
+      - name: Upload trailer artifacts to GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="${{ inputs.tag }}"
+          NOTES="${{ inputs.release_notes }}"
+          echo "Uploading trailer artifacts to release: $TAG"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" docs/video/*.mp4 --clobber
+          else
+            if [ -n "$NOTES" ]; then
+              gh release create "$TAG" docs/video/*.mp4 --title "$TAG" --notes "$NOTES"
+            else
+              gh release create "$TAG" docs/video/*.mp4 --title "$TAG" --generate-notes
+            fi
+          fi

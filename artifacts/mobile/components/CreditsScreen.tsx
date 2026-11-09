@@ -1,5 +1,12 @@
-import React, { useEffect, useRef } from 'react';
-import { Animated, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withSequence,
+  withTiming,
+} from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Feather } from '@expo/vector-icons';
@@ -39,32 +46,40 @@ const LORE_QUOTE =
   'Mourning requires memory, and memory requires someone left to hold it."';
 
 export default function CreditsScreen() {
-  const { setScreen, hasSaveGame } = useGame();
+  const { setScreen } = useGame();
   const insets = useSafeAreaInsets();
   const topPad = Platform.OS === 'web' ? 67 : insets.top;
   const botPad = Platform.OS === 'web' ? 34 : insets.bottom;
 
-  const fade = useRef(new Animated.Value(0)).current;
-  const slide = useRef(new Animated.Value(20)).current;
-  const glowPulse = useRef(new Animated.Value(0.03)).current;
+  const fade = useSharedValue(0);
+  const slide = useSharedValue(20);
+  const glowPulse = useSharedValue(0.03);
 
   useEffect(() => {
-    Animated.parallel([
-      Animated.timing(fade, { toValue: 1, duration: 600, useNativeDriver: true }),
-      Animated.timing(slide, { toValue: 0, duration: 500, useNativeDriver: true }),
-    ]).start();
-
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(glowPulse, { toValue: 0.055, duration: 3500, useNativeDriver: true }),
-        Animated.timing(glowPulse, { toValue: 0.02, duration: 3500, useNativeDriver: true }),
-      ])
-    ).start();
+    fade.value = withTiming(1, { duration: 600 });
+    slide.value = withTiming(0, { duration: 500 });
+    glowPulse.value = withRepeat(
+      withSequence(
+        withTiming(0.055, { duration: 3500 }),
+        withTiming(0.02, { duration: 3500 })
+      ),
+      -1,
+      false
+    );
   }, []);
+
+  const glowAnimStyle = useAnimatedStyle(() => ({
+    opacity: glowPulse.value,
+  }));
+
+  const bodyAnimStyle = useAnimatedStyle(() => ({
+    opacity: fade.value,
+    transform: [{ translateY: slide.value }],
+  }));
 
   return (
     <LinearGradient colors={['#030108', '#060310', '#030108']} style={styles.container}>
-      <Animated.View style={[styles.topGlow, { opacity: glowPulse }]} />
+      <Animated.View style={[styles.topGlow, glowAnimStyle]} />
 
       {/* Header */}
       <View style={[styles.header, { paddingTop: topPad + 10 }]}>
@@ -79,7 +94,7 @@ export default function CreditsScreen() {
         contentContainerStyle={[styles.content, { paddingBottom: botPad + 32 }]}
         showsVerticalScrollIndicator={false}
       >
-        <Animated.View style={{ opacity: fade, transform: [{ translateY: slide }] }}>
+        <Animated.View style={bodyAnimStyle}>
           {/* Title block */}
           <View style={styles.titleBlock}>
             <View style={styles.runeRow}>
@@ -299,22 +314,22 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter_400Regular',
     fontStyle: 'italic',
     textAlign: 'center',
-    lineHeight: 21,
+    lineHeight: 22,
     marginBottom: 28,
-    paddingHorizontal: 8,
+    paddingHorizontal: 10,
   },
   prototypeCard: {
     width: '100%',
-    backgroundColor: 'rgba(10,6,20,0.9)',
+    backgroundColor: 'rgba(12,8,22,0.7)',
     borderWidth: 1,
-    borderColor: 'rgba(42,40,58,0.4)',
+    borderColor: 'rgba(74,56,96,0.3)',
     borderRadius: 4,
-    padding: 18,
+    padding: 16,
     alignItems: 'center',
   },
   prototypeText: {
     fontSize: 12,
-    color: '#3a3050',
+    color: '#4a3860',
     fontFamily: 'Inter_400Regular',
     textAlign: 'center',
     lineHeight: 19,

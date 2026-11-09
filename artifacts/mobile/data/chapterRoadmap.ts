@@ -1,3 +1,5 @@
+import { ENABLE_EXPANSION } from '../constants/featureFlags';
+
 export interface ChapterEntry {
   id: string;
   partNumber: string;
@@ -13,6 +15,7 @@ export interface ChapterEntry {
   routesUnlocked: string[];
   status: 'complete' | 'planned';
   nodeCount?: number;
+  branchBadge?: string;
 }
 
 export const CHAPTER_ROADMAP: ChapterEntry[] = [
@@ -195,7 +198,8 @@ export const CHAPTER_ROADMAP: ChapterEntry[] = [
       'Chapter 11 — The City Beneath the City (partial unlock)',
     ],
     status: 'complete',
-    nodeCount: 231,
+    nodeCount: 261,
+    branchBadge: 'MB1: The Census of Small Names',
   },
 
   {
@@ -923,10 +927,61 @@ export const CHAPTER_ROADMAP: ChapterEntry[] = [
       'game_complete', 'ending_path_final', 'world_state_set',
       'companions_final_state', 'mark_final_state', 'city_final_state',
     ],
-    routesUnlocked: ['New Game Plus — with carried flags'],
+    routesUnlocked: ['New Game Plus — with carried flags', 'Epilogue — The Response (if Velna coordinates or Archive standing)'],
     status: 'complete',
     nodeCount: 72,
   },
+
+  ...(ENABLE_EXPANSION
+    ? ([
+        {
+          id: 'epilogue',
+          partNumber: 'Epilogue',
+          title: 'The Response',
+          subtitle: 'The question waited five years. Someone has to answer.',
+          summary:
+            'Three hundred feet deeper than the factions\' war at the Vault threshold, behind the Sub-Level 14 waterworks, Velna has been listening to the deep structure for five years. The Blackout was never an attack—it was an automated seventeen-second impedance check asking whether the thing that touched the lock was awake. With Mira, Cain, and Velna beside the mercury channel in the Answer Chamber, you key humanity\'s final reply.',
+          locations: [
+            'Sub-Level 14 — Waterworks Secondary Shaft',
+            'Sub-Level 15 — Velna\'s Listening Station',
+            'Sub-Level 16 — Acoustic Resonance Cavern',
+            'The Vault Heart — Outer Ring',
+            'The Answer Chamber — Mercury Terminal',
+            'Surface — Viaduct Dawn',
+          ],
+          factions: ['Last Archive', 'All surviving factions above'],
+          companionFocus: [
+            'Velna — five years of listening at the bottom of the wire',
+            'Mira & Cain — anchoring the human signal at the mercury bridge',
+          ],
+          majorChoices: [
+            '"Yes, We\'re Here" — send a bounded human reply and warm the grid safely',
+            '"No One Is Left" — phase-invert a termination packet so the structure seals itself forever',
+            'Let Velna Answer — hold the resistor bus while Velna transmits her five-year record',
+            'Send the Archive Founders\' Counter-Query — ask what built the twenty stations',
+            'Throw the Shunt Bar — sever the secondary conductors without replying',
+            'Open the Gain All the Way — step into the mineral pool and become the permanent chord',
+          ],
+          possibleEndings: [
+            'Yes, We\'re Here — Savior ending',
+            'No One Is Left — Sacrifice ending',
+            'Velna Answers — Companion ending',
+            'The Second Question — Secret ending',
+            'The Mark Goes Quiet — Wanderer ending',
+            'Chorus — Corruption ending',
+          ],
+          flagsIntroduced: [
+            'epilogue_unlocked',
+            'velna_coordinates',
+            'velna_journal_read',
+          ],
+          routesUnlocked: ['Complete 244-Ending Route Codex'],
+          status: 'complete',
+          nodeCount: 60,
+          branchBadge: 'EPILOGUE EXPANSION',
+        },
+      ] as ChapterEntry[])
+    : []),
 ];
 
 export function getChapterById(id: string): ChapterEntry | undefined {

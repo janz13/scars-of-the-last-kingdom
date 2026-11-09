@@ -1,4 +1,5 @@
 import type { StoryNode } from '../types';
+import { ENABLE_EXPANSION } from '../../constants/featureFlags';
 
 // ══════════════════════════════════════════════════════════════════════════════
 //  FINAL CHAPTER 2 — MANY WAYS TO END THE WORLD
@@ -101,6 +102,16 @@ export const FINAL_CHAPTER_2_NODES: StoryNode[] = [
         text: 'The record is unclear. Something happened at the Gate.',
         nextNode: 'fc2_liminal_space',
       },
+      ...(ENABLE_EXPANSION
+        ? [
+            {
+              id: 'fc2_route_epilogue',
+              text: 'Follow Velna\'s Sub-Level 14 coordinates to the secondary waterworks shaft.',
+              nextNode: 'epi_01',
+              requirements: { flags: ['velna_coordinates'] },
+            },
+          ]
+        : []),
     ],
   },
 

@@ -157,12 +157,26 @@ export interface SaveSlotMetadata {
   isEmpty: boolean;
 }
 
+export type TextLayoutSetting = 'auto' | 'column' | 'letterbox';
+export type ProseFont = 'inter' | 'pixel';
+export type QualityTierSetting = 'auto' | 'high' | 'medium' | 'low';
+export type MusicModeSetting = 'adaptive' | 'calm' | 'off';
+
 export interface GameSettings {
   textSpeed: TextSpeed;
   fontSize: 'small' | 'normal' | 'large';
   soundEnabled: boolean;
   autoSave: boolean;
   skipDiceAnimation: boolean;
+  textLayout?: TextLayoutSetting;
+  proseFont?: ProseFont;
+  qualityTier?: QualityTierSetting;
+  reducedMotion?: boolean;
+  musicVolume?: number;
+  sfxVolume?: number;
+  ambienceVolume?: number;
+  musicMode?: MusicModeSetting;
+  tiltParallax?: boolean;
 }
 
 export type DiceType = 'd4' | 'd6' | 'd8' | 'd10' | 'd12' | 'd20';

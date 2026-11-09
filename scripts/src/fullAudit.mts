@@ -7,14 +7,24 @@
  */
 
 import { createRequire } from 'node:module';
-import { writeFileSync, readFileSync } from 'node:fs';
+import { writeFileSync, readFileSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const require = createRequire(import.meta.url);
 
+if (typeof require !== 'undefined' && (require as any).extensions) {
+  (require as any).extensions['.png'] = () => ({});
+  (require as any).extensions['.webp'] = () => ({});
+  (require as any).extensions['.jpg'] = () => ({});
+}
+
 // Use require() to load TS modules — tsx registers the loader automatically
 const { STORY_NODES, getNodeById, getStartNodeId } = require('../../artifacts/mobile/data/story/allNodesSync.ts');
 const { ENDINGS } = require('../../artifacts/mobile/data/endings.ts');
+const { SCENE_MANIFEST } = require('../../artifacts/mobile/constants/sceneManifest.ts');
+
+const PIXEL_ASSET_DIR = resolve(import.meta.dirname, '../../artifacts/mobile/assets/pixel');
+const LEGACY_IMAGE_DIR = resolve(import.meta.dirname, '../../artifacts/mobile/assets/images');
 
 const STORY: any[] = STORY_NODES;
 const DICE_OUTCOME_NODES = STORY.filter((n: any) => n.chapter === 'DiceOutcomes');
@@ -153,11 +163,12 @@ for (const ch of expectedChapters) {
 // ─── 7. IMAGE KEY VALIDATION ─────────────────────────────────────────────────
 console.log('🔍 [7/17] Image keys...');
 const usedImageKeys = new Set<string>();
+const sceneManifestKeySet = new Set(Object.keys(SCENE_MANIFEST));
 for (const node of STORY) {
   if (node.imageKey) {
     usedImageKeys.add(node.imageKey);
-    if (!IMAGE_KEYS.has(node.imageKey))
-      issues.push({ severity: 'warning', category: 'story-missing-image', location: node.id, message: `imageKey "${node.imageKey}" is not registered in BACKGROUND_IMAGES` });
+    if (!IMAGE_KEYS.has(node.imageKey) && !sceneManifestKeySet.has(node.imageKey))
+      issues.push({ severity: 'warning', category: 'story-missing-image', location: node.id, message: `imageKey "${node.imageKey}" is not registered in BACKGROUND_IMAGES or SCENE_MANIFEST` });
   }
 }
 
@@ -272,9 +283,90 @@ for (const node of DICE_OUTCOME_NODES) {
 }
 
 // ─── 17. SAVE/LOAD CONSISTENCY ────────────────────────────────────────────────
-console.log('🔍 [17/17] Save/load consistency...');
+console.log('🔍 [17/19] Save/load consistency...');
 if (!nodeIds.has(getStartNodeId()))
   issues.push({ severity: 'error', category: 'save-load', location: getStartNodeId(), message: `Start node ID "${getStartNodeId()}" does not exist in story data` });
+
+// ─── 18. ART MISSING AUDIT (Pixel Overhaul Wave 2: Warning / Wave 5: Error) ───
+console.log('🔍 [18/19] Scene art coverage (art-missing)...');
+const manifestKeys = new Set(Object.keys(SCENE_MANIFEST));
+const missingSceneKeys = new Set<string>();
+const missingSceneNodes: Record<string, string[]> = {};
+
+for (const node of STORY) {
+  const key = node.imageKey;
+  if (!key) {
+    issues.push({
+      severity: 'error',
+      category: 'art-missing',
+      location: node.id,
+      message: `Story node "${node.id}" has no imageKey defined`,
+    });
+    continue;
+  }
+  if (!manifestKeys.has(key)) {
+    missingSceneKeys.add(key);
+    if (!missingSceneNodes[key]) missingSceneNodes[key] = [];
+    missingSceneNodes[key].push(node.id);
+    issues.push({
+      severity: 'error',
+      category: 'art-missing',
+      location: node.id,
+      message: `Story node "${node.id}" references unmapped scene key "${key}" (falls back to default ruined_metro_station)`,
+    });
+  }
+}
+
+// ─── 19. ART ORIENTATION AUDIT (Pixel Overhaul Wave 2: Warning / Wave 5: Error) ───
+console.log('🔍 [19/19] Dual orientation assets (art-orientation)...');
+const checkedManifestEntries = Object.keys(SCENE_MANIFEST).length;
+
+const resolvePixelAsset = (assetKey: string): boolean => {
+  const candidates = [
+    resolve(PIXEL_ASSET_DIR, 'scenes', `${assetKey}.png`),
+    resolve(PIXEL_ASSET_DIR, 'placeholders', `${assetKey}.png`),
+    resolve(PIXEL_ASSET_DIR, 'scenes', `${assetKey}.webp`),
+    resolve(PIXEL_ASSET_DIR, 'placeholders', `${assetKey}.webp`),
+    resolve(LEGACY_IMAGE_DIR, `${assetKey}.png`),
+  ];
+  return candidates.some((p) => existsSync(p));
+};
+
+for (const [key, entry] of Object.entries(SCENE_MANIFEST) as [string, any][]) {
+  const missingFiles: string[] = [];
+
+  // Check Landscape master
+  if (!entry.landscape) {
+    missingFiles.push('landscape property missing in manifest entry');
+  } else if (!resolvePixelAsset(entry.landscape)) {
+    missingFiles.push(`landscape asset file not found on disk (${entry.landscape})`);
+  }
+
+  // Check Portrait master
+  if (!entry.portrait) {
+    missingFiles.push('portrait property missing in manifest entry');
+  } else if (!resolvePixelAsset(entry.portrait)) {
+    missingFiles.push(`portrait asset file not found on disk (${entry.portrait})`);
+  }
+
+  // Check Parallax Depth Layers (far, mid, fore)
+  if (entry.layers) {
+    for (const [layerName, layerKey] of Object.entries(entry.layers)) {
+      if (layerKey && !resolvePixelAsset(layerKey as string)) {
+        missingFiles.push(`${layerName} layer asset file not found on disk (${layerKey})`);
+      }
+    }
+  }
+
+  if (missingFiles.length > 0) {
+    issues.push({
+      severity: 'error',
+      category: 'art-orientation',
+      location: key,
+      message: `Scene "${key}" failed orientation asset validation: ${missingFiles.join('; ')}`,
+    });
+  }
+}
 
 // ─── RESULTS ─────────────────────────────────────────────────────────────────
 const errors = issues.filter(i => i.severity === 'error');
@@ -305,8 +397,25 @@ console.log('  Chapter counts:');
 for (const [ch, count] of Object.entries(chapterCounts).sort()) console.log(`    ${ch}: ${count} nodes`);
 
 writeFileSync('audit-result.json', JSON.stringify({
-  stats: { totalChapters: chapterSet.size, totalStoryNodes: STORY.length, totalEndings: endingNodeIds.size, totalFlags: allFlags.size, totalChoices, diceCheckNodes, chapterCounts, endingTypes, majorRoutes: ['Iron Saints', 'Glass Court', 'Hollow Children', 'Red Choir', 'Last Archive', 'Solo/Wanderer', 'Companion (Mira)', 'Companion (Cain)'], imageKeys: [...usedImageKeys].sort() },
-  errors: errors.map(e => ({ ...e })), warnings: warnings.map(w => ({ ...w })), infos: infos.map(i => ({ ...i })),
+  stats: {
+    totalChapters: chapterSet.size,
+    totalStoryNodes: STORY.length,
+    totalEndings: endingNodeIds.size,
+    totalFlags: allFlags.size,
+    totalChoices,
+    diceCheckNodes,
+    chapterCounts,
+    endingTypes,
+    majorRoutes: ['Iron Saints', 'Glass Court', 'Hollow Children', 'Red Choir', 'Last Archive', 'Solo/Wanderer', 'Companion (Mira)', 'Companion (Cain)'],
+    imageKeys: [...usedImageKeys].sort(),
+    artMetrics: {
+      totalManifestScenes: checkedManifestEntries,
+      missingManifestKeys: missingSceneKeys.size,
+    },
+  },
+  errors: errors.map(e => ({ ...e })),
+  warnings: warnings.map(w => ({ ...w })),
+  infos: infos.map(i => ({ ...i })),
   timestamp: new Date().toISOString(),
 }, null, 2), 'utf-8');
 console.log('\n✅ Audit complete. Results written to audit-result.json');

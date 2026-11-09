@@ -1,22 +1,50 @@
 import { Platform } from 'react-native';
+import { AudioMixer } from './music/mixer';
+import { MusicSequencer, type MusicMode } from './music/sequencer';
+import { playStingerOnContext, type StingerId } from './music/stingers';
 
 /**
- * Procedural Web Audio Engine for Scars of the Last Kingdom.
+ * Procedural Web Audio & Adaptive Soundtrack Engine for Scars of the Last Kingdom.
  *
- * Uses the Web Audio API to procedurally generate dark fantasy ambient drones
- * and tactical UI sound effects with ZERO external audio files (0 MB bandwidth).
+ * Unifies:
+ * - Phase S1–S8 procedural soundtrack (`logic/music/{sequencer,voices,themes,stingers,mixer}.ts`)
+ * - Ambient low-frequency drone beds (`ambience` bus)
+ * - Tactical UI & dice SFX (`sfx` bus)
  *
- * Safe across platforms (no-op on native platforms or in SSR environments).
+ * Uses zero external audio files (0 MB bundle overhead) and is safe across platforms.
  */
 
-class AudioEngine {
+export interface MusicEngineInterface {
+  ensureRunning(): void;
+  setSoundEnabled(enabled: boolean): void;
+  setVolume(bus: 'master' | 'music' | 'sfx' | 'ambience', value: number): void;
+  setMusicMode(mode: MusicMode): void;
+  playTheme(themeId: string, intensity?: number): void;
+  setAdaptiveState(corruption: number, lowHp: boolean): void;
+  playStinger(stingerId: StingerId): void;
+  startAmbient(zone?: 'metro' | 'surface' | 'archive'): void;
+  stopAmbient(): void;
+  playSFX(
+    type:
+      | 'click'
+      | 'diceRoll'
+      | 'diceSuccess'
+      | 'diceCrit'
+      | 'diceFail'
+      | 'heartbeat'
+      | 'markPulse'
+  ): void;
+}
+
+class AudioEngine implements MusicEngineInterface {
   private ctx: AudioContext | null = null;
+  private mixer: AudioMixer | null = null;
+  private sequencer: MusicSequencer = new MusicSequencer();
   private ambientGain: GainNode | null = null;
-  private masterGain: GainNode | null = null;
   private isMuted: boolean = false;
   private ambientOscs: OscillatorNode[] = [];
   private ambientPlaying: boolean = false;
-  private initialized: boolean = false;
+  private corruptionLevel: number = 0;
 
   private initCtx() {
     if (this.ctx || Platform.OS !== 'web' || typeof window === 'undefined') return;
@@ -24,10 +52,8 @@ class AudioEngine {
       const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
       if (!AudioCtx) return;
       this.ctx = new AudioCtx();
-      this.masterGain = this.ctx.createGain();
-      this.masterGain.gain.setValueAtTime(0.7, this.ctx.currentTime);
-      this.masterGain.connect(this.ctx.destination);
-      this.initialized = true;
+      this.mixer = new AudioMixer(this.ctx);
+      this.sequencer.attach(this.ctx, this.mixer.musicBus);
     } catch {
       // AudioContext creation blocked until user gesture
     }
@@ -42,48 +68,95 @@ class AudioEngine {
 
   public setSoundEnabled(enabled: boolean) {
     this.isMuted = !enabled;
-    if (this.masterGain && this.ctx) {
-      this.masterGain.gain.setTargetAtTime(enabled ? 0.7 : 0, this.ctx.currentTime, 0.05);
+    if (this.mixer) {
+      this.mixer.setMuted(!enabled);
     }
     if (!enabled) {
       this.stopAmbient();
+      this.sequencer.stop();
     }
+  }
+
+  public setVolume(bus: 'master' | 'music' | 'sfx' | 'ambience', value: number) {
+    this.initCtx();
+    if (this.mixer) {
+      this.mixer.setBusVolume(bus, value);
+    }
+  }
+
+  public setMusicMode(mode: MusicMode) {
+    this.sequencer.setMusicMode(mode);
+    if (mode !== 'off' && !this.isMuted && this.ctx) {
+      this.sequencer.start();
+    }
+  }
+
+  public playTheme(themeId: string, intensity: number = 1) {
+    if (this.isMuted || Platform.OS !== 'web' || typeof window === 'undefined') return;
+    this.ensureRunning();
+    if (!this.ctx || !this.mixer) return;
+    this.sequencer.setTheme(themeId, intensity);
+    this.sequencer.start();
+  }
+
+  public setAdaptiveState(corruption: number, lowHp: boolean) {
+    this.corruptionLevel = corruption;
+    this.sequencer.setAdaptiveState(corruption, lowHp);
+  }
+
+  public playStinger(stingerId: StingerId) {
+    if (this.isMuted || Platform.OS !== 'web' || typeof window === 'undefined') return;
+    this.ensureRunning();
+    if (!this.ctx || !this.mixer) return;
+    playStingerOnContext(
+      this.ctx,
+      this.mixer.musicBus,
+      stingerId,
+      this.ctx.currentTime,
+      this.corruptionLevel
+    );
   }
 
   public startAmbient(zone: 'metro' | 'surface' | 'archive' = 'metro') {
     if (this.isMuted || Platform.OS !== 'web' || typeof window === 'undefined') return;
     this.ensureRunning();
-    if (!this.ctx || !this.masterGain || this.ambientPlaying) return;
+    if (!this.ctx || !this.mixer) return;
+
+    // Also start the adaptive score matching the zone if not already running
+    const zoneTheme =
+      zone === 'surface' ? 'surface_bed' : zone === 'archive' ? 'last_archive' : 'main_theme';
+    this.sequencer.setTheme(zoneTheme, 1);
+    this.sequencer.start();
+
+    if (this.ambientPlaying) return;
 
     try {
       const now = this.ctx.currentTime;
       this.ambientGain = this.ctx.createGain();
       this.ambientGain.gain.setValueAtTime(0.001, now);
-      // Gentle fade in over 2.5s
       this.ambientGain.gain.exponentialRampToValueAtTime(0.18, now + 2.5);
 
       const filter = this.ctx.createBiquadFilter();
       filter.type = 'lowpass';
       filter.frequency.setValueAtTime(zone === 'surface' ? 320 : 160, now);
 
-      // Low frequency root drone (55Hz = A1, 82.4Hz = E2)
       const osc1 = this.ctx.createOscillator();
       osc1.type = 'sawtooth';
       osc1.frequency.setValueAtTime(55, now);
 
       const osc2 = this.ctx.createOscillator();
       osc2.type = 'triangle';
-      osc2.frequency.setValueAtTime(55.4, now); // subtle detune for beating
+      osc2.frequency.setValueAtTime(55.4, now);
 
       const subOsc = this.ctx.createOscillator();
       subOsc.type = 'sine';
-      subOsc.frequency.setValueAtTime(27.5, now); // deep sub A0
+      subOsc.frequency.setValueAtTime(27.5, now);
 
       osc1.connect(filter);
       osc2.connect(filter);
       subOsc.connect(filter);
       filter.connect(this.ambientGain);
-      this.ambientGain.connect(this.masterGain);
+      this.ambientGain.connect(this.mixer.ambienceBus);
 
       osc1.start(now);
       osc2.start(now);
@@ -105,8 +178,11 @@ class AudioEngine {
 
       const oscsToStop = [...this.ambientOscs];
       setTimeout(() => {
-        oscsToStop.forEach(o => {
-          try { o.stop(); o.disconnect(); } catch {}
+        oscsToStop.forEach((o) => {
+          try {
+            o.stop();
+            o.disconnect();
+          } catch {}
         });
       }, 1300);
 
@@ -115,17 +191,27 @@ class AudioEngine {
     } catch {}
   }
 
-  public playSFX(type: 'click' | 'diceRoll' | 'diceSuccess' | 'diceCrit' | 'diceFail' | 'heartbeat' | 'markPulse') {
+  public playSFX(
+    type:
+      | 'click'
+      | 'diceRoll'
+      | 'diceSuccess'
+      | 'diceCrit'
+      | 'diceFail'
+      | 'heartbeat'
+      | 'markPulse'
+  ) {
     if (this.isMuted || Platform.OS !== 'web' || typeof window === 'undefined') return;
     this.ensureRunning();
-    if (!this.ctx || !this.masterGain) return;
+    if (!this.ctx || !this.mixer) return;
+
+    const sfxOut = this.mixer.sfxBus;
 
     try {
       const now = this.ctx.currentTime;
 
       switch (type) {
         case 'click': {
-          // Tactile mechanical switch click
           const osc = this.ctx.createOscillator();
           const gain = this.ctx.createGain();
           osc.type = 'sine';
@@ -134,16 +220,15 @@ class AudioEngine {
           gain.gain.setValueAtTime(0.12, now);
           gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
           osc.connect(gain);
-          gain.connect(this.masterGain);
+          gain.connect(sfxOut);
           osc.start(now);
           osc.stop(now + 0.05);
           break;
         }
 
         case 'diceRoll': {
-          // Rhythmic dice tumbling clicks
           [0, 0.08, 0.17, 0.28].forEach((delay, i) => {
-            if (!this.ctx || !this.masterGain) return;
+            if (!this.ctx) return;
             const t = now + delay;
             const osc = this.ctx.createOscillator();
             const gain = this.ctx.createGain();
@@ -153,7 +238,7 @@ class AudioEngine {
             gain.gain.setValueAtTime(0.14, t);
             gain.gain.exponentialRampToValueAtTime(0.001, t + 0.05);
             osc.connect(gain);
-            gain.connect(this.masterGain);
+            gain.connect(sfxOut);
             osc.start(t);
             osc.stop(t + 0.06);
           });
@@ -161,9 +246,8 @@ class AudioEngine {
         }
 
         case 'diceSuccess': {
-          // Bright ascending chime
-          [523.25, 659.25, 783.99].forEach((freq, i) => { // C5, E5, G5
-            if (!this.ctx || !this.masterGain) return;
+          [523.25, 659.25, 783.99].forEach((freq, i) => {
+            if (!this.ctx) return;
             const t = now + i * 0.08;
             const osc = this.ctx.createOscillator();
             const gain = this.ctx.createGain();
@@ -172,7 +256,7 @@ class AudioEngine {
             gain.gain.setValueAtTime(0.18, t);
             gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.4);
             osc.connect(gain);
-            gain.connect(this.masterGain);
+            gain.connect(sfxOut);
             osc.start(t);
             osc.stop(t + 0.45);
           });
@@ -180,25 +264,11 @@ class AudioEngine {
         }
 
         case 'diceCrit': {
-          // Resonant harmonic chord
-          [440, 554.37, 659.25, 880].forEach((freq) => {
-            if (!this.ctx || !this.masterGain) return;
-            const osc = this.ctx.createOscillator();
-            const gain = this.ctx.createGain();
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(freq, now);
-            gain.gain.setValueAtTime(0.2, now);
-            gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.8);
-            osc.connect(gain);
-            gain.connect(this.masterGain);
-            osc.start(now);
-            osc.stop(now + 0.85);
-          });
+          this.playStinger('crit_success');
           break;
         }
 
         case 'diceFail': {
-          // Low hollow metallic thud
           const osc = this.ctx.createOscillator();
           const gain = this.ctx.createGain();
           osc.type = 'sawtooth';
@@ -207,16 +277,15 @@ class AudioEngine {
           gain.gain.setValueAtTime(0.25, now);
           gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.35);
           osc.connect(gain);
-          gain.connect(this.masterGain);
+          gain.connect(sfxOut);
           osc.start(now);
           osc.stop(now + 0.4);
           break;
         }
 
         case 'heartbeat': {
-          // Double low pulse thump
           [0, 0.14].forEach((delay) => {
-            if (!this.ctx || !this.masterGain) return;
+            if (!this.ctx) return;
             const t = now + delay;
             const osc = this.ctx.createOscillator();
             const gain = this.ctx.createGain();
@@ -226,7 +295,7 @@ class AudioEngine {
             gain.gain.setValueAtTime(0.3, t);
             gain.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
             osc.connect(gain);
-            gain.connect(this.masterGain);
+            gain.connect(sfxOut);
             osc.start(t);
             osc.stop(t + 0.13);
           });
@@ -234,7 +303,6 @@ class AudioEngine {
         }
 
         case 'markPulse': {
-          // Resonant high violet frequency
           const osc = this.ctx.createOscillator();
           const gain = this.ctx.createGain();
           osc.type = 'sine';
@@ -243,7 +311,7 @@ class AudioEngine {
           gain.gain.setValueAtTime(0.15, now);
           gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.5);
           osc.connect(gain);
-          gain.connect(this.masterGain);
+          gain.connect(sfxOut);
           osc.start(now);
           osc.stop(now + 0.55);
           break;

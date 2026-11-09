@@ -30,6 +30,11 @@ export default function RootLayout() {
     Inter_500Medium,
     Inter_600SemiBold,
     Inter_700Bold,
+    'PixelifySans-Regular': require('../assets/fonts/PixelifySans-Regular.ttf'),
+    'PixelifySans-Medium': require('../assets/fonts/PixelifySans-Medium.ttf'),
+    'PixelifySans-SemiBold': require('../assets/fonts/PixelifySans-SemiBold.ttf'),
+    'PixelifySans-Bold': require('../assets/fonts/PixelifySans-Bold.ttf'),
+    'PressStart2P-Regular': require('../assets/fonts/PressStart2P-Regular.ttf'),
   });
 
   useEffect(() => {

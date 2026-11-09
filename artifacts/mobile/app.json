@@ -66,7 +66,7 @@
       "backgroundColor": "#04020a",
       "lang": "en",
       "scope": "/",
-      "display": "standalone",
+      "display": "fullscreen",
       "orientation": "portrait",
       "bundler": "metro",
       "output": "static"
@@ -94,7 +94,7 @@
 
     "experiments": {
       "typedRoutes": true,
-      "reactCompiler": true
+      "reactCompiler": false
     },
 
     "extra": {

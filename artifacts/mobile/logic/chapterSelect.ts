@@ -1,4 +1,5 @@
 import type { GameState, Character, RouteEntry } from '../data/types';
+import { ENABLE_EXPANSION } from '../constants/featureFlags';
 
 export const ALL_CHAPTERS = [
   'Prologue',
@@ -17,6 +18,7 @@ export const ALL_CHAPTERS = [
   'Interlude',
   'Final Chapter 1',
   'Final Chapter 2',
+  ...(ENABLE_EXPANSION ? (['Epilogue'] as const) : ([] as const)),
 ] as const;
 
 export type ChapterName = (typeof ALL_CHAPTERS)[number];
@@ -38,6 +40,7 @@ export const CHAPTER_START_NODES: Record<string, string> = {
   'Interlude': 'mira_event_1',
   'Final Chapter 1': 'final_chapter1_start',
   'Final Chapter 2': 'final_chapter2_start',
+  'Epilogue': 'epi_01',
 };
 
 const CHAPTER_SEQUENCE: string[] = [
@@ -56,6 +59,7 @@ const CHAPTER_SEQUENCE: string[] = [
   'Chapter 12',
   'Final Chapter 1',
   'Final Chapter 2',
+  'Epilogue',
 ];
 
 /**
@@ -70,12 +74,14 @@ export function getUnlockedChapters(
   let routeHistory: RouteEntry[] = [];
   let endingsDiscovered: string[] = [];
   let flags: Record<string, any> = {};
+  let lastArchiveRep = 0;
 
   if (arg1 && typeof arg1 === 'object' && !Array.isArray(arg1) && 'currentNodeId' in arg1) {
     const state = arg1 as GameState;
     routeHistory = state.routeHistory || [];
     endingsDiscovered = state.endingsDiscovered || [];
     flags = state.flags || {};
+    lastArchiveRep = state.factionRep?.lastArchive ?? 0;
   } else {
     routeHistory = Array.isArray(arg1) ? arg1 : [];
     endingsDiscovered = Array.isArray(arg2) ? arg2 : [];
@@ -127,14 +133,43 @@ export function getUnlockedChapters(
   }
 
   // Endings discovered can also reveal their chapter origin
+  const FC2_DEATH_ENDINGS = new Set([
+    'ending_fc2_gate_madness',
+    'ending_fc2_consumed_by_gate',
+    'ending_fc2_tyrant_overthrown',
+  ]);
+  let hasNonDeathFc2Ending = Boolean(flags['fc2_non_death_completed']);
+
   if (endingsDiscovered.length > 0) {
     for (const ending of endingsDiscovered) {
-      if (ending.includes('fc2') || ending.includes('true_ending')) {
+      if (ending.includes('fc2') || ending.includes('true_ending') || ending === 'ending_last_kingdom_remembers') {
         unlocked.add('Final Chapter 2');
+        if (!FC2_DEATH_ENDINGS.has(ending)) {
+          hasNonDeathFc2Ending = true;
+        }
       }
       if (ending.includes('fc1')) {
         unlocked.add('Final Chapter 1');
       }
+      if (ending.includes('epilogue')) {
+        unlocked.add('Epilogue');
+      }
+    }
+  }
+
+  // Epilogue unlock rule: Any non-death FC2 ending completed AND (velna_coordinates OR lastArchive >= 70)
+  if (
+    ENABLE_EXPANSION &&
+    (flags['epilogue_unlocked'] ||
+      (hasNonDeathFc2Ending && (Boolean(flags['velna_coordinates']) || lastArchiveRep >= 70)))
+  ) {
+    unlocked.add('Epilogue');
+  }
+
+  for (const entry of routeHistory) {
+    const nodeId = entry.nodeId || '';
+    if (nodeId.startsWith('epi_') || nodeId.startsWith('epilogue_')) {
+      unlocked.add('Epilogue');
     }
   }
 
@@ -214,6 +249,15 @@ export function getChapterInitialState(chapterId: string, character?: Character)
     flags['fc1_complete'] = true;
     flags['final_chapter1_complete'] = true;
     flags['unlocked_finalChapter2'] = true;
+  }
+  if (chapterId === 'Epilogue') {
+    for (let c = 1; c <= 12; c++) flags[`chapter${c}_complete`] = true;
+    flags['fc1_complete'] = true;
+    flags['final_chapter1_complete'] = true;
+    flags['unlocked_finalChapter2'] = true;
+    flags['velna_coordinates'] = true;
+    flags['velna_journal_read'] = true;
+    flags['epilogue_unlocked'] = true;
   }
 
   return {

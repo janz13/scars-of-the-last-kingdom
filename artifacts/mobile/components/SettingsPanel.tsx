@@ -6,6 +6,13 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useGame } from '../context/GameContext';
 import { APP_VERSION, BUILD_DATE } from '../constants/version';
 import { exportSaveData } from '../logic/saveSystem';
+import { requestDeviceTiltPermission } from '../engine/pixel/camera';
+import {
+  isFullscreenSupported,
+  isFullscreenActive,
+  toggleFullscreen,
+  subscribeFullscreenChange,
+} from '../logic/fullscreen';
 import type { SaveSlotMetadata } from '../data/types';
 
 export default function SettingsPanel() {
@@ -29,6 +36,17 @@ export default function SettingsPanel() {
   const [isImporting, setIsImporting] = useState(false);
   const [slots, setSlots] = useState<SaveSlotMetadata[]>([]);
   const [isLoadingSlots, setIsLoadingSlots] = useState(true);
+
+  const [fullscreenActive, setFullscreenActive] = useState(isFullscreenActive());
+  const fullscreenSupported = isFullscreenSupported();
+
+  useEffect(() => {
+    if (!fullscreenSupported) return;
+    const unsub = subscribeFullscreenChange((active) => {
+      setFullscreenActive(active);
+    });
+    return unsub;
+  }, [fullscreenSupported]);
 
   const refreshSlots = useCallback(async () => {
     try {
@@ -297,6 +315,52 @@ export default function SettingsPanel() {
 
         <View style={styles.divider} />
 
+        <Text style={styles.sectionHeader}>PROSE FONT</Text>
+        <View style={styles.buttonGroup}>
+          {(['inter', 'pixel'] as const).map((font) => (
+            <Pressable
+              key={font}
+              style={[styles.optionBtn, (settings.proseFont ?? 'inter') === font && styles.optionBtnActive]}
+              onPress={() => updateSettings({ proseFont: font })}
+              accessibilityRole="button"
+              accessibilityLabel={`Prose font: ${font === 'inter' ? 'Inter Clean' : 'Pixelify Retro'}`}
+            >
+              <Text style={[styles.optionText, (settings.proseFont ?? 'inter') === font && styles.optionTextActive]}>
+                {font === 'inter' ? 'INTER (CLEAN)' : 'PIXEL (RETRO)'}
+              </Text>
+            </Pressable>
+          ))}
+        </View>
+
+        <View style={styles.divider} />
+
+        <Text style={styles.sectionHeader}>TEXT LAYOUT</Text>
+        <View style={styles.buttonGroup}>
+          {(['auto', 'column', 'letterbox'] as const).map((mode) => (
+            <Pressable
+              key={mode}
+              style={[
+                styles.optionBtn,
+                (settings.textLayout ?? 'auto') === mode && styles.optionBtnActive,
+              ]}
+              onPress={() => updateSettings({ textLayout: mode })}
+              accessibilityRole="button"
+              accessibilityLabel={`Text layout: ${mode}`}
+            >
+              <Text
+                style={[
+                  styles.optionText,
+                  (settings.textLayout ?? 'auto') === mode && styles.optionTextActive,
+                ]}
+              >
+                {mode.toUpperCase()}
+              </Text>
+            </Pressable>
+          ))}
+        </View>
+
+        <View style={styles.divider} />
+
         <Text style={styles.sectionHeader}>AUTO-SAVE</Text>
         <Pressable
           style={styles.toggleRow}
@@ -326,6 +390,194 @@ export default function SettingsPanel() {
             <View style={[styles.toggleThumb, settings.skipDiceAnimation && styles.toggleThumbOn]} />
           </View>
         </Pressable>
+
+        <View style={styles.divider} />
+
+        <Text style={styles.sectionHeader}>SOUND & ADAPTIVE SCORE</Text>
+        <Pressable
+          style={styles.toggleRow}
+          onPress={() => updateSettings({ soundEnabled: !settings.soundEnabled })}
+        >
+          <View>
+            <Text style={styles.toggleLabel}>Enable Audio & Score</Text>
+            <Text style={styles.toggleDesc}>Procedural 16-bit dark fantasy soundtrack and SFX.</Text>
+          </View>
+          <View style={[styles.toggle, settings.soundEnabled && styles.toggleOn]}>
+            <View style={[styles.toggleThumb, settings.soundEnabled && styles.toggleThumbOn]} />
+          </View>
+        </Pressable>
+
+        <View style={{ height: 12 }} />
+        <Text style={styles.sectionHeader}>MUSIC MODE</Text>
+        <View style={styles.buttonGroup}>
+          {(['adaptive', 'calm', 'off'] as const).map((mode) => (
+            <Pressable
+              key={mode}
+              style={[
+                styles.optionBtn,
+                (settings.musicMode ?? 'adaptive') === mode && styles.optionBtnActive,
+              ]}
+              onPress={() => updateSettings({ musicMode: mode })}
+            >
+              <Text
+                style={[
+                  styles.optionText,
+                  (settings.musicMode ?? 'adaptive') === mode && styles.optionTextActive,
+                ]}
+              >
+                {mode.toUpperCase()}
+              </Text>
+            </Pressable>
+          ))}
+        </View>
+
+        <View style={{ height: 12 }} />
+        <Text style={styles.sectionHeader}>MIXER VOLUMES (MUSIC / SFX / AMBIENCE)</Text>
+        {(
+          [
+            { key: 'musicVolume', label: 'MUSIC', val: settings.musicVolume ?? 0.7 },
+            { key: 'sfxVolume', label: 'SFX', val: settings.sfxVolume ?? 0.85 },
+            { key: 'ambienceVolume', label: 'AMBIENCE', val: settings.ambienceVolume ?? 0.65 },
+          ] as const
+        ).map((bus) => (
+          <View key={bus.key} style={{ marginBottom: 10 }}>
+            <Text style={[styles.toggleDesc, { marginBottom: 6 }]}>
+              {bus.label}: {Math.round(bus.val * 100)}%
+            </Text>
+            <View style={styles.buttonGroup}>
+              {[0, 0.35, 0.7, 1.0].map((lvl) => (
+                <Pressable
+                  key={lvl}
+                  style={[
+                    styles.optionBtn,
+                    Math.abs(bus.val - lvl) < 0.12 && styles.optionBtnActive,
+                  ]}
+                  onPress={() => updateSettings({ [bus.key]: lvl })}
+                >
+                  <Text
+                    style={[
+                      styles.optionText,
+                      Math.abs(bus.val - lvl) < 0.12 && styles.optionTextActive,
+                    ]}
+                  >
+                    {Math.round(lvl * 100)}%
+                  </Text>
+                </Pressable>
+              ))}
+            </View>
+          </View>
+        ))}
+
+        <View style={styles.divider} />
+
+        <Text style={styles.sectionHeader}>PIXEL RENDERER & MOTION</Text>
+        <View style={styles.buttonGroup}>
+          {(['auto', 'high', 'medium', 'low'] as const).map((tier) => (
+            <Pressable
+              key={tier}
+              style={[
+                styles.optionBtn,
+                (settings.qualityTier ?? 'auto') === tier && styles.optionBtnActive,
+              ]}
+              onPress={() => updateSettings({ qualityTier: tier })}
+            >
+              <Text
+                style={[
+                  styles.optionText,
+                  (settings.qualityTier ?? 'auto') === tier && styles.optionTextActive,
+                ]}
+              >
+                {tier.toUpperCase()}
+              </Text>
+            </Pressable>
+          ))}
+        </View>
+
+        <View style={{ height: 12 }} />
+        <Pressable
+          style={styles.toggleRow}
+          onPress={async () => {
+            const nextTilt = !settings.tiltParallax;
+            if (nextTilt) {
+              await requestDeviceTiltPermission();
+            }
+            updateSettings({ tiltParallax: nextTilt });
+          }}
+        >
+          <View>
+            <Text style={styles.toggleLabel}>Device Tilt Parallax (Mobile)</Text>
+            <Text style={styles.toggleDesc}>Shift scene depth layers gently when tilting your device.</Text>
+          </View>
+          <View style={[styles.toggle, settings.tiltParallax && styles.toggleOn]}>
+            <View style={[styles.toggleThumb, settings.tiltParallax && styles.toggleThumbOn]} />
+          </View>
+        </Pressable>
+
+        <View style={{ height: 8 }} />
+        <Pressable
+          style={styles.toggleRow}
+          onPress={() => updateSettings({ reducedMotion: !settings.reducedMotion })}
+        >
+          <View>
+            <Text style={styles.toggleLabel}>Reduced Motion</Text>
+            <Text style={styles.toggleDesc}>Disable camera drift, parallax, particles, and screen shake.</Text>
+          </View>
+          <View style={[styles.toggle, settings.reducedMotion && styles.toggleOn]}>
+            <View style={[styles.toggleThumb, settings.reducedMotion && styles.toggleThumbOn]} />
+          </View>
+        </Pressable>
+
+        <View style={styles.divider} />
+
+        <Text style={styles.sectionHeader}>DISPLAY & FULLSCREEN</Text>
+        <Pressable
+          style={[styles.toggleRow, !fullscreenSupported && { opacity: 0.55 }]}
+          onPress={async () => {
+            if (!fullscreenSupported) {
+              Alert.alert('Fullscreen Unsupported', 'Fullscreen is not supported in this browser or device environment.');
+              return;
+            }
+            await toggleFullscreen();
+          }}
+          accessibilityRole="button"
+          accessibilityLabel="Toggle immersive fullscreen display"
+        >
+          <View style={{ flex: 1, paddingRight: 10 }}>
+            <Text style={styles.toggleLabel}>Immersive Fullscreen</Text>
+            <Text style={styles.toggleDesc}>
+              {fullscreenSupported
+                ? (fullscreenActive
+                    ? 'Active: game occupies full display without browser chrome.'
+                    : 'Expand game to fill the entire monitor or device screen.')
+                : 'Fullscreen API is not supported in this browser.'}
+            </Text>
+          </View>
+          <View style={[styles.toggle, fullscreenActive && styles.toggleOn]}>
+            <View style={[styles.toggleThumb, fullscreenActive && styles.toggleThumbOn]} />
+          </View>
+        </Pressable>
+
+        {fullscreenSupported && (
+          <View style={{ marginTop: 8 }}>
+            <Pressable
+              style={styles.fullscreenBtn}
+              onPress={async () => {
+                await toggleFullscreen();
+              }}
+              accessibilityRole="button"
+              accessibilityLabel={fullscreenActive ? 'Exit Fullscreen' : 'Enter Fullscreen'}
+            >
+              <Feather
+                name={fullscreenActive ? 'minimize-2' : 'maximize-2'}
+                size={14}
+                color={fullscreenActive ? '#2ecc71' : '#c9a84c'}
+              />
+              <Text style={[styles.fullscreenBtnText, fullscreenActive && { color: '#2ecc71' }]}>
+                {fullscreenActive ? 'EXIT FULLSCREEN' : 'ENTER FULLSCREEN'}
+              </Text>
+            </Pressable>
+          </View>
+        )}
 
         <View style={styles.divider} />
 
@@ -822,5 +1074,23 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter_400Regular',
     letterSpacing: 0.5,
     marginTop: 2,
+  },
+  fullscreenBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    backgroundColor: '#12121c',
+    borderWidth: 1,
+    borderColor: 'rgba(201, 168, 76, 0.35)',
+    borderRadius: 4,
+  },
+  fullscreenBtnText: {
+    fontSize: 12,
+    fontFamily: 'Inter_700Bold',
+    color: '#c9a84c',
+    letterSpacing: 1,
   },
 });

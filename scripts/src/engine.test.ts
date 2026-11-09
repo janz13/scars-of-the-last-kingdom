@@ -8,6 +8,12 @@ import { resolve } from 'node:path';
 
 const require = createRequire(import.meta.url);
 
+if (typeof require !== 'undefined' && (require as any).extensions) {
+  (require as any).extensions['.png'] = (module: any, filename: string) => {
+    module.exports = filename;
+  };
+}
+
 const {
   checkRequirements,
   applyEffects,
@@ -62,6 +68,97 @@ const {
 const {
   getStartNodeId,
 } = require('../../artifacts/mobile/data/story/index.ts');
+
+const {
+  STORY_NODES: ALL_STORY_NODES,
+  getNodeById: getSyncNodeById,
+} = require('../../artifacts/mobile/data/story/allNodesSync.ts');
+
+const {
+  ENABLE_EXPANSION,
+} = require('../../artifacts/mobile/constants/featureFlags.ts');
+
+const {
+  computeViewportScale,
+  computeFocalShift,
+  getOrientation,
+  resolveLayoutMode,
+  PIXEL_GRID,
+} = require('../../artifacts/mobile/constants/pixelGrid.ts');
+
+const {
+  SCENE_MANIFEST,
+  getSceneManifestEntry,
+  resolveSceneAsset,
+} = require('../../artifacts/mobile/constants/sceneManifest.ts');
+
+const {
+  MOTION_DURATIONS,
+  MOTION_SPRINGS,
+  steppedEasing,
+  snapToPixel,
+} = require('../../artifacts/mobile/constants/motion.ts');
+
+const {
+  TIER_CONFIGS,
+  resolveActiveTier,
+} = require('../../artifacts/mobile/constants/pixelTiers.ts');
+
+const {
+  PixelCamera,
+  PARALLAX_AMPLITUDES,
+  DRIFT_CYCLE_MS,
+  MAX_DRIFT_PIXELS,
+} = require('../../artifacts/mobile/engine/pixel/camera.ts');
+
+const {
+  PixelParticleSystem,
+} = require('../../artifacts/mobile/engine/pixel/particles.ts');
+
+const {
+  BAYER_8X8,
+} = require('../../artifacts/mobile/engine/pixel/transitions.ts');
+
+const {
+  CHARACTER_PORTRAIT_CATALOG,
+  resolveSpeakerCharacterId,
+  buildPortraitPixelGrid,
+} = require('../../artifacts/mobile/constants/portraits.ts');
+
+const {
+  THEME_SCORES,
+  getThemeScore,
+} = require('../../artifacts/mobile/logic/music/themes.ts');
+
+const {
+  STINGER_DEFINITIONS,
+} = require('../../artifacts/mobile/logic/music/stingers.ts');
+
+const {
+  MusicSequencer,
+  TRAILER_75S_ARRANGEMENT,
+} = require('../../artifacts/mobile/logic/music/sequencer.ts');
+
+const {
+  midiToFreq,
+} = require('../../artifacts/mobile/logic/music/voices.ts');
+
+const {
+  CinematicPlayer,
+} = require('../../artifacts/mobile/engine/pixel/cinematicPlayer.ts');
+
+const {
+  INTRO_BLACKOUT_TIMELINE,
+} = require('../../artifacts/mobile/data/cinematics/introBlackout.ts');
+
+const {
+  ENDING_LOOP_TIMELINES,
+  getEndingLoopTimeline,
+} = require('../../artifacts/mobile/data/cinematics/endingLoops.ts');
+
+const {
+  TRAILER_75S_TIMELINE,
+} = require('../../artifacts/mobile/data/cinematics/trailerTimeline.ts');
 
 let passedTests = 0;
 let failedTests = 0;
@@ -673,7 +770,8 @@ console.log('\n--- 10. Testing declarative conditional endings (F-CONT-04 & F-CO
 // ─── 11. Testing story endings and canonical categories (F-CONT-05) ─────────
 console.log('\n--- 11. Testing story endings and canonical categories (F-CONT-05) ---');
 {
-  assert(Array.isArray(STORY_ENDINGS) && STORY_ENDINGS.length === 228, 'STORY_ENDINGS length is exactly 228');
+  const expectedEndingCount = ENABLE_EXPANSION ? 244 : 228;
+  assert(Array.isArray(STORY_ENDINGS) && STORY_ENDINGS.length === expectedEndingCount, `STORY_ENDINGS length is exactly ${expectedEndingCount}`);
   assert(Array.isArray(STORY_ENDING_CATEGORIES) && STORY_ENDING_CATEGORIES.length === 8, 'STORY_ENDING_CATEGORIES array has 8 canonical categories');
   assert(STORY_ENDING_CATEGORIES['death'] !== undefined && STORY_ENDING_CATEGORIES['secret'] !== undefined, 'STORY_ENDING_CATEGORIES supports dictionary lookup');
 
@@ -711,6 +809,313 @@ console.log('\n--- 11. Testing story endings and canonical categories (F-CONT-05
     assert(registeredSet.has(id), `Orphan ending ${id} is present in STORY_ENDINGS`);
   }
 }
+
+// --- 11. Testing Pixel Grid, Integer Scaling & Layout Dispatch ---
+console.log('\n--- 11. Testing Pixel Grid, Integer Scaling & Layout Dispatch ---');
+
+// 1. Orientation detection
+assert(getOrientation(1920, 1080) === 'landscape', '1920x1080 is landscape');
+assert(getOrientation(390, 844) === 'portrait', '390x844 is portrait');
+assert(getOrientation(640, 640) === 'landscape', 'Square 640x640 defaults to landscape');
+
+// 2. 7 Viewports from spec
+// Viewport 1: 390x844 (iPhone 12/13/14 portrait)
+const v1 = computeViewportScale(390, 844);
+assert(v1.orientation === 'portrait', '390x844 orientation is portrait');
+assert(v1.scale === 1, '390x844 scale is 1');
+assert(v1.displayWidth === 400 && v1.displayHeight === 760, '390x844 display size is 400x760');
+assert(v1.offsetX === -5, '390x844 offsetX is -5');
+assert(v1.offsetY === 42, '390x844 offsetY is 42');
+assert(v1.isUltrawide === false, '390x844 is not ultrawide');
+
+// Viewport 2: 430x932 (iPhone Pro Max portrait)
+const v2 = computeViewportScale(430, 932);
+assert(v2.orientation === 'portrait', '430x932 orientation is portrait');
+assert(v2.scale === 1, '430x932 scale is 1');
+assert(v2.displayWidth === 400 && v2.displayHeight === 760, '430x932 display size is 400x760');
+assert(v2.offsetX === 15, '430x932 offsetX is 15');
+assert(v2.offsetY === 86, '430x932 offsetY is 86');
+assert(v2.isUltrawide === false, '430x932 is not ultrawide');
+
+// Viewport 3: 768x1024 (iPad portrait)
+const v3 = computeViewportScale(768, 1024);
+assert(v3.orientation === 'portrait', '768x1024 orientation is portrait');
+assert(v3.scale === 1, '768x1024 scale is 1');
+assert(v3.displayWidth === 400 && v3.displayHeight === 760, '768x1024 display size is 400x760');
+assert(v3.offsetX === 184, '768x1024 offsetX is 184');
+assert(v3.offsetY === 132, '768x1024 offsetY is 132');
+assert(v3.isUltrawide === false, '768x1024 is not ultrawide');
+
+// Viewport 4: 1280x720 (720p HD landscape)
+const v4 = computeViewportScale(1280, 720);
+assert(v4.orientation === 'landscape', '1280x720 orientation is landscape');
+assert(v4.scale === 2, '1280x720 scale is 2');
+assert(v4.displayWidth === 1440 && v4.displayHeight === 800, '1280x720 display size is 1440x800');
+assert(v4.offsetX === -80, '1280x720 offsetX is -80');
+assert(v4.offsetY === -40, '1280x720 offsetY is -40');
+assert(v4.isUltrawide === false, '1280x720 is not ultrawide');
+
+// Viewport 5: 1920x1080 (1080p FHD landscape)
+const v5 = computeViewportScale(1920, 1080);
+assert(v5.orientation === 'landscape', '1920x1080 orientation is landscape');
+assert(v5.scale === 3, '1920x1080 scale is 3');
+assert(v5.displayWidth === 2160 && v5.displayHeight === 1200, '1920x1080 display size is 2160x1200');
+assert(v5.offsetX === -120, '1920x1080 offsetX is -120');
+assert(v5.offsetY === -60, '1920x1080 offsetY is -60');
+assert(v5.isUltrawide === false, '1920x1080 is not ultrawide');
+
+// Viewport 6: 2560x1440 (1440p QHD landscape)
+const v6 = computeViewportScale(2560, 1440);
+assert(v6.orientation === 'landscape', '2560x1440 orientation is landscape');
+assert(v6.scale === 4, '2560x1440 scale is 4');
+assert(v6.displayWidth === 2880 && v6.displayHeight === 1600, '2560x1440 display size is 2880x1600');
+assert(v6.offsetX === -160, '2560x1440 offsetX is -160');
+assert(v6.offsetY === -80, '2560x1440 offsetY is -80');
+assert(v6.isUltrawide === false, '2560x1440 is not ultrawide');
+
+// Viewport 7: 3440x1440 (21:9 Ultrawide landscape)
+const v7 = computeViewportScale(3440, 1440);
+assert(v7.orientation === 'landscape', '3440x1440 orientation is landscape');
+assert(v7.scale === 4, '3440x1440 scale is 4');
+assert(v7.displayWidth === 2880 && v7.displayHeight === 1600, '3440x1440 display size is 2880x1600');
+assert(v7.offsetX === 280, '3440x1440 offsetX is 280');
+assert(v7.offsetY === -80, '3440x1440 offsetY is -80');
+assert(v7.isUltrawide === true, '3440x1440 is ultrawide');
+assert(v7.pillarboxWidth === 280, '3440x1440 pillarboxWidth is 280');
+
+// 3. Focal shift math
+const shiftRight = computeFocalShift({ x: 420, y: 180 }, 'landscape', 'right');
+assert(shiftRight.shiftX < 0, 'Landscape right text-safe shifts scene left');
+const shiftLeft = computeFocalShift({ x: 260, y: 180 }, 'landscape', 'left');
+assert(shiftLeft.shiftX > 0, 'Landscape left text-safe shifts scene right');
+const shiftBottom = computeFocalShift({ x: 200, y: 500 }, 'portrait', 'bottom');
+assert(shiftBottom.shiftY < 0, 'Portrait bottom text-safe shifts scene up');
+
+// 4. Adaptive layout resolution
+assert(resolveLayoutMode(1920, 1080) === 'column', '1920x1080 resolves to column mode');
+assert(resolveLayoutMode(1024, 768) === 'letterbox', '1024x768 resolves to letterbox mode');
+assert(resolveLayoutMode(390, 844) === 'sheet', '390x844 resolves to sheet mode');
+assert(resolveLayoutMode(1920, 1080, 'letterbox') === 'letterbox', 'User letterbox override respected');
+assert(resolveLayoutMode(1024, 768, 'column') === 'column', 'User column override respected on wide display');
+
+// 5. Scene manifest contract & orientation-aware asset resolution
+assert(Object.keys(SCENE_MANIFEST).length >= 26, 'SCENE_MANIFEST registers all scenes (at least 26)');
+const metroEntry = getSceneManifestEntry('ruined_metro_station');
+assert(metroEntry.key === 'ruined_metro_station', 'Manifest resolves ruined_metro_station correctly');
+assert(metroEntry.palette.length <= 32, 'Scene palette has <= 32 colors');
+const fallbackEntry = getSceneManifestEntry('unknown_scene_key');
+assert(fallbackEntry.key === 'ruined_metro_station', 'Unknown key falls back to ruined_metro_station');
+
+// Assert distinct landscape and portrait image sources for all 26 registered scenes
+const registeredSceneKeys = Object.keys(SCENE_MANIFEST);
+for (const key of registeredSceneKeys) {
+  const entry = getSceneManifestEntry(key);
+  assert(Boolean(entry), `Manifest entry exists for scene "${key}"`);
+
+  const landAsset = resolveSceneAsset(entry, 'landscape');
+  const portAsset = resolveSceneAsset(entry, 'portrait');
+
+  assert(Boolean(landAsset), `Landscape asset resolves for "${key}"`);
+  assert(Boolean(portAsset), `Portrait asset resolves for "${key}"`);
+  assert(
+    landAsset !== portAsset,
+    `Distinct landscape and portrait assets returned for "${key}"`
+  );
+
+  if (typeof landAsset === 'string') {
+    assert(
+      landAsset.includes('landscape'),
+      `Landscape asset path for "${key}" contains "landscape"`
+    );
+  }
+  if (typeof portAsset === 'string') {
+    assert(
+      portAsset.includes('portrait'),
+      `Portrait asset path for "${key}" contains "portrait"`
+    );
+  }
+}
+
+// Fallback asset resolution test for unmanifested scene keys
+const unmanifestedEntry = getSceneManifestEntry('nonexistent_custom_scene');
+const unmanifestedLand = resolveSceneAsset(unmanifestedEntry, 'landscape');
+const unmanifestedPort = resolveSceneAsset(unmanifestedEntry, 'portrait');
+assert(Boolean(unmanifestedLand), 'Unmanifested key falls back to valid landscape asset');
+assert(Boolean(unmanifestedPort), 'Unmanifested key falls back to valid portrait asset');
+assert(unmanifestedLand !== unmanifestedPort, 'Unmanifested fallback preserves distinct orientations');
+
+// 6. Motion & Quality tier configurations
+assert(MOTION_DURATIONS.normal === 260, 'Normal motion duration is 260ms');
+assert(snapToPixel(14.7) === 15, 'snapToPixel correctly rounds 14.7 to 15');
+const highTier = resolveActiveTier('high');
+assert(highTier.tier === 'high' && highTier.maxParticles === 150, 'High tier has 150 max particles');
+const lowTier = resolveActiveTier('low');
+assert(lowTier.tier === 'low' && lowTier.maxParticles === 0, 'Low tier disables particles');
+
+// ============================================================================
+// SUITE 15: WAVE 3 — CAMERA, PARTICLES, TRANSITIONS, PORTRAITS & MUSIC
+// ============================================================================
+console.log('\n--- Suite 15: Wave 3 Camera, Particles, Transitions, Portraits & Music ---');
+
+// 1. PixelCamera parallax & Ken Burns drift
+const cam = new PixelCamera(0);
+cam.setPointerNormalized(1, -1);
+for (let i = 0; i < 30; i++) {
+  cam.computeOffsets(i * 100, {
+    masterW: 720,
+    masterH: 400,
+    focus: { x: 540, y: 120 },
+    allowParallax: true,
+    allowCameraDrift: true,
+    allowSubpixelCamera: false,
+    parallaxLayers: 3,
+  });
+}
+const offsets = cam.computeOffsets(7500, {
+  masterW: 720,
+  masterH: 400,
+  focus: { x: 540, y: 120 },
+  allowParallax: true,
+  allowCameraDrift: true,
+  allowSubpixelCamera: false,
+  parallaxLayers: 3,
+});
+assert(Number.isInteger(offsets.farX) && Number.isInteger(offsets.farY), 'PixelCamera snaps far layer to integer grid');
+assert(Number.isInteger(offsets.midX) && Number.isInteger(offsets.midY), 'PixelCamera snaps mid layer to integer grid');
+assert(Number.isInteger(offsets.foreX) && Number.isInteger(offsets.foreY), 'PixelCamera snaps fore layer to integer grid');
+assert(Math.abs(offsets.driftX) <= MAX_DRIFT_PIXELS, 'PixelCamera drift stays within MAX_DRIFT_PIXELS');
+assert(PARALLAX_AMPLITUDES.far === 2 && PARALLAX_AMPLITUDES.mid === 5 && PARALLAX_AMPLITUDES.fore === 9, 'Parallax amplitudes match spec (2, 5, 9)');
+assert(DRIFT_CYCLE_MS === 30000, 'Ken Burns drift cycle is 30s (30000ms)');
+
+// 2. PixelParticleSystem caps & determinism
+const pSys1 = new PixelParticleSystem(42);
+const pSys2 = new PixelParticleSystem(42);
+pSys1.configure('rain', 150, 720, 400);
+pSys2.configure('rain', 150, 720, 400);
+assert(pSys1.getActiveCount() === 150, 'Rain particle count respects High tier cap (150)');
+pSys1.configure('rain', 60, 720, 400);
+assert(pSys1.getActiveCount() === 60, 'Rain particle count respects Medium tier cap (60)');
+pSys1.configure('rain', 0, 720, 400);
+assert(pSys1.getActiveCount() === 0, 'Particle count is 0 on Low tier');
+
+// 3. Bayer 8x8 dither matrix
+assert(BAYER_8X8.length === 64, 'BAYER_8X8 has 64 entries');
+const bayerSet = new Set(BAYER_8X8);
+assert(bayerSet.size === 64, 'BAYER_8X8 contains all unique values 0..63');
+
+// 4. Character Portrait Registry (13 characters × 3 expressions = 39 portraits)
+const characterIds = Object.keys(CHARACTER_PORTRAIT_CATALOG);
+assert(characterIds.length === 13, `CHARACTER_PORTRAIT_CATALOG has 13 characters (found ${characterIds.length})`);
+const expressions = ['neutral', 'strained', 'resolved'] as const;
+let portraitGridCount = 0;
+for (const charId of characterIds) {
+  for (const expr of expressions) {
+    const grid = buildPortraitPixelGrid(charId as any, expr, false, false);
+    if (grid.length === 16 && grid[0]?.length === 16) {
+      portraitGridCount++;
+    }
+  }
+}
+assert(portraitGridCount === 39, `All 39 character expression portraits (13 × 3) generate valid 16x16 grids`);
+assert(resolveSpeakerCharacterId('Mira') === 'mira', 'Speaker resolver maps Mira -> mira');
+assert(resolveSpeakerCharacterId('Commander Varr') === 'varr', 'Speaker resolver maps Commander Varr -> varr');
+assert(resolveSpeakerCharacterId('The Pale Curator') === 'pale_curator', 'Speaker resolver maps The Pale Curator -> pale_curator');
+
+// 5. Procedural Music Engine (Themes, Stingers, Sequencer & Trailer 75s cue)
+const themeKeys = Object.keys(THEME_SCORES);
+assert(themeKeys.length === 11, `THEME_SCORES defines 11 themes (found ${themeKeys.length})`);
+assert(getThemeScore('main_theme').title === 'The Last Kingdom', 'Main theme is "The Last Kingdom"');
+assert(getThemeScore('epilogue_theme').title === 'Is Anyone Still There?', 'Epilogue theme is "Is Anyone Still There?"');
+assert(Math.abs(midiToFreq(69) - 440) < 0.01, 'midiToFreq(69) equals 440Hz (A4)');
+
+const stingerKeys = Object.keys(STINGER_DEFINITIONS);
+assert(stingerKeys.length === 14, `STINGER_DEFINITIONS defines 14 stingers (10 endings + 4 set-pieces)`);
+
+const seq = new MusicSequencer();
+seq.setMusicMode('calm');
+assert(seq.getMusicMode() === 'calm', 'MusicSequencer switches to calm mode');
+seq.setMusicMode('adaptive');
+assert(seq.getMusicMode() === 'adaptive', 'MusicSequencer switches back to adaptive mode');
+
+const totalTrailerSec = TRAILER_75S_ARRANGEMENT.reduce((acc: number, s: any) => acc + s.durationSec, 0);
+assert(totalTrailerSec === 75, `TRAILER_75S_ARRANGEMENT totals exactly 75 seconds (found ${totalTrailerSec}s)`);
+
+// ============================================================================
+// SUITE 16: WAVE 5 — STORY EXPANSION (MB1–MB4, EPILOGUE, 244 ENDINGS, 169 SCENES)
+// ============================================================================
+console.log('\n--- Suite 16: Wave 5 Story Expansion (MB1–MB4, Epilogue, 244 Endings, 169 Scenes) ---');
+
+assert(Object.keys(SCENE_MANIFEST).length === 169, `SCENE_MANIFEST has all 169 scenes (found ${Object.keys(SCENE_MANIFEST).length})`);
+assert(ALL_STORY_NODES.length === 1635, `ALL_STORY_NODES has 1,635 total nodes (found ${ALL_STORY_NODES.length})`);
+
+// Verify MB1..MB4 and Epilogue entry/exit nodes exist
+for (const nid of ['mb1_01', 'mb1_29', 'mb1_30', 'mb2_01', 'mb2_34', 'mb2_35', 'mb3_01', 'mb3_33', 'mb3_34', 'mb3_35', 'mb4_01', 'mb4_28', 'mb4_29', 'mb4_30', 'epi_01', 'epi_55', 'epi_56', 'epi_57', 'epi_58', 'epi_59', 'epi_60']) {
+  assert(Boolean(getSyncNodeById(nid)), `Expansion story node ${nid} exists in story graph`);
+}
+
+// Verify Epilogue unlock rule in getUnlockedChapters
+const lockedEpiState = {
+  currentNodeId: 'prologue_start',
+  routeHistory: [],
+  endingsDiscovered: ['ending_fc2_gate_madness'], // death ending shouldn't unlock
+  flags: { velna_coordinates: true },
+  factionRep: { ironSaints: 0, glassCourt: 0, hollowChildren: 0, redChoir: 0, lastArchive: 0 },
+};
+assert(!getUnlockedChapters(lockedEpiState).includes('Epilogue'), 'Epilogue stays locked if only FC2 death ending discovered');
+
+const unlockedViaVelna = {
+  ...lockedEpiState,
+  endingsDiscovered: ['ending_fc2_city_opened_wastes'],
+  flags: { velna_coordinates: true },
+};
+assert(getUnlockedChapters(unlockedViaVelna).includes('Epilogue'), 'Epilogue unlocks with non-death FC2 ending + velna_coordinates');
+
+const unlockedViaArchive = {
+  ...lockedEpiState,
+  endingsDiscovered: ['ending_last_kingdom_remembers'],
+  flags: {},
+  factionRep: { ironSaints: 0, glassCourt: 0, hollowChildren: 0, redChoir: 0, lastArchive: 75 },
+};
+assert(getUnlockedChapters(unlockedViaArchive).includes('Epilogue'), 'Epilogue unlocks with non-death FC2 ending + lastArchive >= 70');
+
+const epiJumpState = getChapterInitialState('Epilogue');
+assert(epiJumpState.currentNodeId === 'epi_01', 'Epilogue jump state starts at epi_01');
+assert(epiJumpState.flags.velna_coordinates === true, 'Epilogue jump state sets velna_coordinates flag');
+
+// ============================================================================
+// SUITE 17: WAVE 6 — CINEMATICS & OFFLINE TRAILER PIPELINE
+// ============================================================================
+console.log('\n--- Suite 17: Wave 6 Cinematics & Offline Trailer Pipeline ---');
+
+assert(INTRO_BLACKOUT_TIMELINE.totalDurationSec === 36, 'INTRO_BLACKOUT_TIMELINE is 36 seconds long');
+assert(INTRO_BLACKOUT_TIMELINE.shots.length === 6, 'INTRO_BLACKOUT_TIMELINE has 6 shots');
+
+const introPlayer = new CinematicPlayer(INTRO_BLACKOUT_TIMELINE);
+introPlayer.play();
+const f0 = introPlayer.evaluateAt(2);
+assert(f0.shotIndex === 0, 'At t=2s, Intro player is on shot 0 (skyline pre-collapse)');
+assert(Boolean(f0.activeTitleCard), 'At t=2s, Intro shot 0 displays title card');
+
+const f3 = introPlayer.evaluateAt(19);
+assert(f3.shotIndex === 3, 'At t=19s, Intro player is on shot 3 (first Hollow rising)');
+assert(Number.isInteger(f3.panOffset.x) && Number.isInteger(f3.panOffset.y), 'CinematicPlayer camera pan offsets are integer-snapped');
+
+const fEnd = introPlayer.step(36);
+assert(fEnd.isComplete === true, 'Non-looping Intro timeline completes at t=36s');
+
+// Verify all 10 ending loop timelines
+const endingCategories = ['death', 'betrayal', 'corruption', 'savior', 'sacrifice', 'tyrant', 'companion', 'faction', 'secret', 'wanderer'];
+for (const cat of endingCategories) {
+  const tl = getEndingLoopTimeline(cat, 'ending_savior');
+  assert(tl.loop === true && tl.totalDurationSec === 8, `Ending loop timeline for "${cat}" loops every 8s`);
+  const loopPlayer = new CinematicPlayer(tl);
+  loopPlayer.play();
+  const loopFrame = loopPlayer.step(9.5);
+  assert(loopFrame.isComplete === false && loopFrame.elapsedSec < 8, `Looping ending timeline for "${cat}" wraps around cleanly`);
+}
+
+assert(TRAILER_75S_TIMELINE.totalDurationSec === 75, 'TRAILER_75S_TIMELINE is 75 seconds long');
+assert(TRAILER_75S_TIMELINE.shots.length === 10, 'TRAILER_75S_TIMELINE has 10 shots');
 
 console.log(`\n========================================`);
 console.log(`TOTAL TESTS: ${passedTests + failedTests}`);

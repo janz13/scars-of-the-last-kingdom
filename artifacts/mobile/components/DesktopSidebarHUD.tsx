@@ -1,14 +1,29 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  Animated,
   Pressable,
   ScrollView,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
+import Animated, {
+  cancelAnimation,
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withSequence,
+  withTiming,
+  type SharedValue,
+} from 'react-native-reanimated';
 import { Feather } from '@expo/vector-icons';
 import { useGame } from '../context/GameContext';
+import PixelFrame from './scene/PixelFrame';
+import {
+  isFullscreenSupported,
+  isFullscreenActive,
+  toggleFullscreen,
+  subscribeFullscreenChange,
+} from '../logic/fullscreen';
 import {
   BACKGROUNDS,
   CLASSES,
@@ -36,7 +51,7 @@ interface StatMeterProps {
   color: string;
   icon: string;
   isPulsing?: boolean;
-  pulseAnim?: Animated.Value;
+  pulseAnim?: SharedValue<number>;
 }
 
 function StatMeter({
@@ -49,6 +64,10 @@ function StatMeter({
   pulseAnim,
 }: StatMeterProps) {
   const pct = Math.max(0, Math.min(1, value / max));
+  const fillAnimStyle = useAnimatedStyle(() => ({
+    opacity: isPulsing && pulseAnim ? pulseAnim.value : 1,
+  }));
+
   return (
     <View style={styles.meterContainer}>
       <View style={styles.meterHeader}>
@@ -68,8 +87,8 @@ function StatMeter({
             {
               width: `${pct * 100}%` as any,
               backgroundColor: color,
-              opacity: isPulsing && pulseAnim ? pulseAnim : 1,
             },
+            fillAnimStyle,
           ]}
         />
         {isPulsing && pulseAnim && (
@@ -78,8 +97,8 @@ function StatMeter({
               styles.meterPulseGlow,
               {
                 width: `${pct * 100}%` as any,
-                opacity: pulseAnim,
               },
+              fillAnimStyle,
             ]}
           />
         )}
@@ -98,22 +117,28 @@ export default function DesktopSidebarHUD({ onOpenHotkeys }: DesktopSidebarHUDPr
   const { character, stats, companions, inventory, factionRep } = state;
 
   // Pulse animation for high corruption (>50)
-  const corruptionPulse = useRef(new Animated.Value(1)).current;
+  const corruptionPulse = useSharedValue(1);
   const isHighCorruption = stats.corruption > 50;
 
   useEffect(() => {
     if (isHighCorruption) {
-      Animated.loop(
-        Animated.sequence([
-          Animated.timing(corruptionPulse, { toValue: 0.35, duration: 800, useNativeDriver: false }),
-          Animated.timing(corruptionPulse, { toValue: 1, duration: 800, useNativeDriver: false }),
-        ])
-      ).start();
+      corruptionPulse.value = withRepeat(
+        withSequence(
+          withTiming(0.35, { duration: 800 }),
+          withTiming(1, { duration: 800 })
+        ),
+        -1,
+        true
+      );
     } else {
-      corruptionPulse.stopAnimation();
-      corruptionPulse.setValue(1);
+      cancelAnimation(corruptionPulse);
+      corruptionPulse.value = 1;
     }
-  }, [isHighCorruption]);
+  }, [isHighCorruption, corruptionPulse]);
+
+  const warningPulseStyle = useAnimatedStyle(() => ({
+    opacity: corruptionPulse.value,
+  }));
 
   // Character profile details
   const classDef = CLASSES.find((c) => c.id === character?.characterClass);
@@ -132,15 +157,61 @@ export default function DesktopSidebarHUD({ onOpenHotkeys }: DesktopSidebarHUDPr
   const cainStage = getCainStage(state);
   const cainInfo = CAIN_STAGES[cainStage];
 
+  const [fullscreenActive, setFullscreenActive] = useState(isFullscreenActive());
+  const fullscreenSupported = isFullscreenSupported();
+
+  useEffect(() => {
+    if (!fullscreenSupported) return;
+    const unsub = subscribeFullscreenChange((active) => {
+      setFullscreenActive(active);
+    });
+    return unsub;
+  }, [fullscreenSupported]);
+
   return (
     <View style={styles.sidebarWrapper}>
+      {/* ── HUD Header with Quick Fullscreen Toggle ────────────────── */}
+      <View style={styles.hudTopHeader}>
+        <View style={styles.hudHeaderTitleRow}>
+          <Feather name="shield" size={12} color="#9b59b6" />
+          <Text style={styles.hudHeaderTitle}>TACTICAL HUD</Text>
+        </View>
+        {fullscreenSupported && (
+          <Pressable
+            onPress={() => toggleFullscreen()}
+            style={({ pressed }) => [
+              styles.fullscreenQuickBtn,
+              fullscreenActive && styles.fullscreenQuickBtnActive,
+              pressed && styles.fullscreenQuickBtnPressed,
+            ]}
+            accessibilityRole="button"
+            accessibilityLabel={fullscreenActive ? 'Exit Fullscreen' : 'Enter Immersive Fullscreen'}
+            role="button"
+          >
+            <Feather
+              name={fullscreenActive ? 'minimize-2' : 'maximize-2'}
+              size={11}
+              color={fullscreenActive ? '#2ecc71' : '#c9a84c'}
+            />
+            <Text
+              style={[
+                styles.fullscreenQuickText,
+                fullscreenActive && styles.fullscreenQuickTextActive,
+              ]}
+            >
+              {fullscreenActive ? 'EXIT' : 'FULL'}
+            </Text>
+          </Pressable>
+        )}
+      </View>
+
       <ScrollView
         style={styles.scrollArea}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
         {/* ── Character Profile ────────────────────────────────────────── */}
-        <View style={styles.card}>
+        <PixelFrame variant="neutral" style={styles.card}>
           <View style={styles.cardHeader}>
             <View style={styles.nameRow}>
               <Text style={styles.characterName} numberOfLines={1}>
@@ -174,10 +245,10 @@ export default function DesktopSidebarHUD({ onOpenHotkeys }: DesktopSidebarHUDPr
               {currentNode?.location ? currentNode.location.toUpperCase() : 'THE UNDERDARK'}
             </Text>
           </View>
-        </View>
+        </PixelFrame>
 
         {/* ── Survival Stats Meters ────────────────────────────────────── */}
-        <View style={styles.card}>
+        <PixelFrame variant="neutral" style={styles.card}>
           <View style={styles.sectionTitleRow}>
             <Feather name="activity" size={12} color="#c9a84c" />
             <Text style={styles.sectionTitle}>SURVIVAL GAUGES</Text>
@@ -227,15 +298,15 @@ export default function DesktopSidebarHUD({ onOpenHotkeys }: DesktopSidebarHUDPr
           </View>
 
           {isHighCorruption && (
-            <Animated.View style={[styles.corruptionWarning, { opacity: corruptionPulse }]}>
+            <Animated.View style={[styles.corruptionWarning, warningPulseStyle]}>
               <Feather name="alert-octagon" size={11} color="#c39bd3" />
               <Text style={styles.corruptionWarningText}>Mark awakens — boundary critical</Text>
             </Animated.View>
           )}
-        </View>
+        </PixelFrame>
 
         {/* ── Companions Card ──────────────────────────────────────────── */}
-        <View style={styles.card}>
+        <PixelFrame variant="neutral" style={styles.card}>
           <View style={styles.sectionTitleRow}>
             <Feather name="users" size={12} color="#c9a84c" />
             <Text style={styles.sectionTitle}>COMPANIONS</Text>
@@ -325,10 +396,10 @@ export default function DesktopSidebarHUD({ onOpenHotkeys }: DesktopSidebarHUDPr
               <Text style={styles.trustValue}>{companions.cain.trust}/10</Text>
             </View>
           </View>
-        </View>
+        </PixelFrame>
 
         {/* ── Faction Standings ────────────────────────────────────────── */}
-        <View style={styles.card}>
+        <PixelFrame variant="neutral" style={styles.card}>
           <View style={styles.sectionTitleRow}>
             <Feather name="shield" size={12} color="#c9a84c" />
             <Text style={styles.sectionTitle}>FACTIONS</Text>
@@ -359,10 +430,10 @@ export default function DesktopSidebarHUD({ onOpenHotkeys }: DesktopSidebarHUDPr
               );
             })}
           </View>
-        </View>
+        </PixelFrame>
 
         {/* ── Quick Inventory Grid ─────────────────────────────────────── */}
-        <View style={styles.card}>
+        <PixelFrame variant="neutral" style={styles.card}>
           <View style={styles.sectionTitleRow}>
             <Feather name="package" size={12} color="#c9a84c" />
             <Text style={styles.sectionTitle}>QUICK INVENTORY</Text>
@@ -462,10 +533,10 @@ export default function DesktopSidebarHUD({ onOpenHotkeys }: DesktopSidebarHUDPr
               </View>
             </Pressable>
           </View>
-        </View>
+        </PixelFrame>
 
         {/* ── Keyboard Hotkeys Cheat-Sheet ─────────────────────────────── */}
-        <View style={[styles.card, styles.hotkeysCard]}>
+        <PixelFrame variant="lastArchive" style={[styles.card, styles.hotkeysCard]}>
           <Pressable
             style={({ pressed }) => [styles.hotkeyHeader, pressed && styles.hotkeyHeaderPressed]}
             onPress={handleOpenHotkeys}
@@ -510,7 +581,7 @@ export default function DesktopSidebarHUD({ onOpenHotkeys }: DesktopSidebarHUDPr
               <Text style={styles.hotkeyLabel}>Menu</Text>
             </View>
           </View>
-        </View>
+        </PixelFrame>
       </ScrollView>
     </View>
   );
@@ -524,6 +595,54 @@ const styles = StyleSheet.create({
     borderRightWidth: 1,
     borderRightColor: 'rgba(155, 89, 182, 0.22)',
   },
+  hudTopHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    backgroundColor: 'rgba(16, 14, 26, 0.98)',
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(155, 89, 182, 0.22)',
+  },
+  hudHeaderTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 7,
+  },
+  hudHeaderTitle: {
+    fontSize: 10,
+    fontFamily: 'Cinzel_700Bold',
+    color: '#ede0c4',
+    letterSpacing: 1.5,
+  },
+  fullscreenQuickBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    backgroundColor: 'rgba(28, 22, 42, 0.85)',
+    borderWidth: 1,
+    borderColor: 'rgba(201, 168, 76, 0.4)',
+    borderRadius: 3,
+  },
+  fullscreenQuickBtnActive: {
+    backgroundColor: 'rgba(26, 46, 32, 0.85)',
+    borderColor: 'rgba(46, 204, 113, 0.55)',
+  },
+  fullscreenQuickBtnPressed: {
+    opacity: 0.75,
+  },
+  fullscreenQuickText: {
+    fontSize: 9,
+    fontFamily: 'Inter_700Bold',
+    color: '#c9a84c',
+    letterSpacing: 0.8,
+  },
+  fullscreenQuickTextActive: {
+    color: '#2ecc71',
+  },
   scrollArea: {
     flex: 1,
   },
@@ -533,9 +652,6 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: 'rgba(19, 18, 30, 0.88)',
-    borderWidth: 1,
-    borderColor: 'rgba(155, 89, 182, 0.2)',
-    borderRadius: 6,
     padding: 12,
   },
   cardHeader: {

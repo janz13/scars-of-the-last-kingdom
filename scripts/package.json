@@ -10,6 +10,10 @@
     "test:e2e": "tsx ./e2e/runAllTests.ts",
     "test:smoke": "playwright test -c ./e2e/playwright.config.ts",
     "audit": "tsx ./src/fullAudit.mts",
+    "build:pixel-assets": "tsx ./src/buildPixelAssets.ts",
+    "build:contact-sheet": "tsx ./src/buildContactSheet.ts",
+    "build:portrait-sheet": "tsx ./src/buildPortraitContactSheet.ts",
+    "export:audio": "tsx ./src/exportAudioWavs.ts",
     "check-bundle": "tsx ./src/checkBundleSize.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },

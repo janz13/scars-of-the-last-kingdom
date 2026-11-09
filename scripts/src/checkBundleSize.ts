@@ -107,7 +107,8 @@ export function auditBundleSizes(targetDir: string, maxEntryBytes = MAX_ENTRY_BY
     } else if (
       /^chunk-.*\.js$/.test(filename) ||
       /^chapter.*\.js$/.test(filename) ||
-      /^finalChapter.*\.js$/.test(filename)
+      /^finalChapter.*\.js$/.test(filename) ||
+      /^epilogue.*\.js$/.test(filename)
     ) {
       type = 'Dynamic Chunk';
     }
@@ -169,6 +170,29 @@ export function auditBundleSizes(targetDir: string, maxEntryBytes = MAX_ENTRY_BY
 
   if (entryFiles.length === 0) {
     failureReasons.push(`No main entry bundle matching "entry-*.js" was found in ${targetDir}.`);
+  }
+
+  // Enforce 0 MB of pre-rendered .mp4 / .webm video inside client dist/
+  const distRoot = resolve(targetDir, '../../../..');
+  if (existsSync(distRoot)) {
+    const scanForVideo = (dir: string): string[] => {
+      const found: string[] = [];
+      for (const item of readdirSync(dir, { withFileTypes: true })) {
+        const full = join(dir, item.name);
+        if (item.isDirectory()) {
+          found.push(...scanForVideo(full));
+        } else if (/\.(mp4|webm|mov)$/i.test(item.name)) {
+          found.push(full);
+        }
+      }
+      return found;
+    };
+    const videoFiles = scanForVideo(distRoot);
+    if (videoFiles.length > 0) {
+      failureReasons.push(
+        `Client dist/ contains ${videoFiles.length} pre-rendered video file(s) (${videoFiles.join(', ')}); 0 MB allowed.`
+      );
+    }
   }
 
   const totalRawBytes = files.reduce((sum, f) => sum + f.rawBytes, 0);

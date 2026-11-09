@@ -1,10 +1,25 @@
-import React, { useEffect, useRef } from 'react';
-import { Animated, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import Animated, {
+  interpolate,
+  useAnimatedStyle,
+  useSharedValue,
+  withDelay,
+  withRepeat,
+  withSequence,
+  withSpring,
+  withTiming,
+} from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Feather } from '@expo/vector-icons';
 import { useGame } from '../context/GameContext';
 import { getEndingById, ENDINGS } from '../data/endings';
+import { MOTION_SPRINGS } from '../constants/motion';
+import { sound } from '../logic/audioEngine';
+import { CinematicView } from './scene/CinematicView';
+import { getEndingLoopTimeline } from '../data/cinematics/endingLoops';
+import { exportEndingClip, isClipExportSupported } from '../logic/clipExporter';
 
 const CHAPTER_END_DATA = {
   id: 'chapter1_end',
@@ -30,6 +45,7 @@ const ENDING_ICONS: Record<string, string> = {
 
 export default function EndingScreen() {
   const { state, setScreen, deleteAndReset } = useGame();
+  const [exportStatus, setExportStatus] = useState<'idle' | 'recording' | 'done' | 'error'>('idle');
   const insets = useSafeAreaInsets();
   const { activeEnding, endingsDiscovered, routeHistory } = state;
 
@@ -54,45 +70,61 @@ export default function EndingScreen() {
   const discoveredPct = totalEndings > 0 ? Math.round((discoveredCount / totalEndings) * 100) : 0;
 
   // ── Animations ─────────────────────────────────────────────────────────────
-  const mountFade = useRef(new Animated.Value(0)).current;
-  const mountSlide = useRef(new Animated.Value(40)).current;
-  const iconScale = useRef(new Animated.Value(0.4)).current;
-  const iconRotate = useRef(new Animated.Value(0)).current;
-  const glowPulse = useRef(new Animated.Value(0.6)).current;
-  const newBadgeAnim = useRef(new Animated.Value(0)).current;
+  const mountFade = useSharedValue(0);
+  const mountSlide = useSharedValue(40);
+  const iconScale = useSharedValue(0.4);
+  const iconRotate = useSharedValue(0);
+  const glowPulse = useSharedValue(0.6);
+  const newBadgeAnim = useSharedValue(0);
   const discoveredBefore = endingsDiscovered.slice(0, -1).includes(activeEnding ?? '');
   const isNewDiscovery = activeEnding !== null && !discoveredBefore && activeEnding !== 'chapter1_end';
 
   useEffect(() => {
-    Animated.parallel([
-      Animated.timing(mountFade, { toValue: 1, duration: 600, useNativeDriver: true }),
-      Animated.spring(mountSlide, { toValue: 0, useNativeDriver: true, tension: 60, friction: 12 }),
-    ]).start();
+    mountFade.value = withTiming(1, { duration: 600 });
+    mountSlide.value = withSpring(0, MOTION_SPRINGS.gentle);
 
-    Animated.sequence([
-      Animated.delay(400),
-      Animated.parallel([
-        Animated.spring(iconScale, { toValue: 1, useNativeDriver: true, tension: 80, friction: 7 }),
-        Animated.timing(iconRotate, { toValue: 1, duration: 500, useNativeDriver: true }),
-      ]),
-    ]).start();
+    iconScale.value = withDelay(400, withSpring(1, MOTION_SPRINGS.snappy));
+    iconRotate.value = withDelay(400, withTiming(1, { duration: 500 }));
 
     if (isNewDiscovery) {
-      Animated.sequence([
-        Animated.delay(900),
-        Animated.spring(newBadgeAnim, { toValue: 1, useNativeDriver: true, tension: 120, friction: 6 }),
-      ]).start();
+      newBadgeAnim.value = withDelay(900, withSpring(1, MOTION_SPRINGS.snappy));
     }
 
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(glowPulse, { toValue: 1, duration: 2200, useNativeDriver: true }),
-        Animated.timing(glowPulse, { toValue: 0.5, duration: 2200, useNativeDriver: true }),
-      ])
-    ).start();
+    glowPulse.value = withRepeat(
+      withSequence(
+        withTiming(1, { duration: 2200 }),
+        withTiming(0.5, { duration: 2200 })
+      ),
+      -1,
+      false
+    );
+
+    if (ending?.type) {
+      sound.playStinger(ending.type);
+    }
   }, []);
 
-  const iconRotateDeg = iconRotate.interpolate({ inputRange: [0, 1], outputRange: ['-15deg', '0deg'] });
+  const glowAnimStyle = useAnimatedStyle(() => ({
+    opacity: interpolate(glowPulse.value, [0, 1], [0, 0.06]),
+  }));
+
+  const mountAnimStyle = useAnimatedStyle(() => ({
+    opacity: mountFade.value,
+    transform: [{ translateY: mountSlide.value }],
+  }));
+
+  const iconAnimStyle = useAnimatedStyle(() => ({
+    transform: [
+      { scale: iconScale.value },
+      { rotate: `${interpolate(iconRotate.value, [0, 1], [-15, 0])}deg` },
+    ],
+  }));
+
+  const badgeAnimStyle = useAnimatedStyle(() => ({
+    opacity: newBadgeAnim.value,
+    transform: [{ scale: interpolate(newBadgeAnim.value, [0, 1], [0.7, 1]) }],
+  }));
+
   const iconName = ending ? (ENDING_ICONS[ending.type] ?? 'alert-circle') : 'book-open';
 
   const bgColors: [string, string, string] = isDeath
@@ -178,7 +210,8 @@ export default function EndingScreen() {
       <Animated.View
         style={[
           styles.atmosphericGlow,
-          { backgroundColor: accentColor, opacity: glowPulse.interpolate({ inputRange: [0, 1], outputRange: [0, 0.06] }) },
+          { backgroundColor: accentColor },
+          glowAnimStyle,
         ]}
         pointerEvents="none"
       />
@@ -187,17 +220,11 @@ export default function EndingScreen() {
         contentContainerStyle={[styles.content, { paddingTop: topPad + 24, paddingBottom: botPad + 32 }]}
         showsVerticalScrollIndicator={false}
       >
-        <Animated.View
-          style={{ opacity: mountFade, transform: [{ translateY: mountSlide }] }}
-        >
+        <Animated.View style={mountAnimStyle}>
           {/* Icon + decoration */}
           <View style={styles.iconRow}>
             <View style={[styles.decorLine, { backgroundColor: accentColor }]} />
-            <Animated.View
-              style={{
-                transform: [{ scale: iconScale }, { rotate: iconRotateDeg }],
-              }}
-            >
+            <Animated.View style={iconAnimStyle}>
               <View style={[styles.iconRing, { borderColor: `${accentColor}30` }]}>
                 <View style={[styles.iconInner, { backgroundColor: `${accentColor}12` }]}>
                   <Feather name={iconName as any} size={28} color={accentColor} />
@@ -212,11 +239,8 @@ export default function EndingScreen() {
             <Animated.View
               style={[
                 styles.newBadge,
-                {
-                  opacity: newBadgeAnim,
-                  transform: [{ scale: newBadgeAnim.interpolate({ inputRange: [0, 1], outputRange: [0.7, 1] }) }],
-                  borderColor: `${accentColor}60`,
-                },
+                { borderColor: `${accentColor}60` },
+                badgeAnimStyle,
               ]}
             >
               <Feather name="star" size={10} color={accentColor} />
@@ -238,6 +262,29 @@ export default function EndingScreen() {
             <View style={[styles.separatorDiamond, { backgroundColor: `${accentColor}60` }]} />
             <View style={[styles.separatorLine, { backgroundColor: `${accentColor}30` }]} />
           </View>
+
+          {/* Ending Cinematic Loop (Wave 6) */}
+          {ending?.type && (
+            <View
+              style={{
+                width: '100%',
+                height: 200,
+                borderRadius: 8,
+                overflow: 'hidden',
+                borderWidth: 1,
+                borderColor: `${accentColor}44`,
+                marginBottom: 22,
+              }}
+              testID="ending-cinematic-loop"
+            >
+              <CinematicView
+                timeline={getEndingLoopTimeline(ending.type, ending.id ?? (ending as any).imageKey)}
+                compact={true}
+                height={200}
+                corruption={state.stats.corruption}
+              />
+            </View>
+          )}
 
           {/* Description */}
           <Text style={styles.endingText}>{ending?.description ?? ''}</Text>
@@ -298,22 +345,6 @@ export default function EndingScreen() {
                   onPress={() => setScreen('routeCodex')}
                 />
               </>
-            ) : isDeath ? (
-              <>
-                <EndingButton
-                  label="START NEW TIMELINE"
-                  icon="refresh-cw"
-                  color={accentColor}
-                  onPress={() => deleteAndReset()}
-                  primary
-                />
-                <EndingButton
-                  label="VIEW ROUTE CODEX"
-                  icon="compass"
-                  color="#1abc9c"
-                  onPress={() => setScreen('routeCodex')}
-                />
-              </>
             ) : (
               <>
                 <EndingButton
@@ -329,6 +360,33 @@ export default function EndingScreen() {
                   color="#1abc9c"
                   onPress={() => setScreen('routeCodex')}
                 />
+                {isClipExportSupported() && ending && (
+                  <EndingButton
+                    label={
+                      exportStatus === 'recording'
+                        ? 'RENDERING 1080P CLIP...'
+                        : exportStatus === 'done'
+                          ? 'CLIP SAVED / SHARED!'
+                          : 'SHARE ENDING CLIP'
+                    }
+                    icon="video"
+                    color="#c9a84c"
+                    onPress={async () => {
+                      if (exportStatus === 'recording') return;
+                      setExportStatus('recording');
+                      const res = await exportEndingClip({
+                        endingId: ending.id,
+                        endingTitle: ending.title,
+                        endingSubtitle: ending.subtitle ?? 'ENDING',
+                        endingType: ending.type,
+                        accentColor,
+                        choicesCount: routeHistory.length,
+                        durationMs: 4000,
+                      });
+                      setExportStatus(res.success ? 'done' : 'error');
+                    }}
+                  />
+                )}
               </>
             )}
 
