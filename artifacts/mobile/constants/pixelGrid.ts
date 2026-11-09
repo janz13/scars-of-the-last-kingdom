@@ -88,22 +88,25 @@ export function computeViewportScale(vw: number, vh: number, dpr = 1): ViewportS
   const orientation = getOrientation(safeVw, safeVh);
   const grid = PIXEL_GRID[orientation];
 
-  const rawScale = Math.min(safeVw / grid.safeW, safeVh / grid.safeH);
-  const scale = Math.max(1, Math.floor(rawScale));
-
   const aspect = safeVw / safeVh;
   const isUltrawide = orientation === 'landscape' && aspect > grid.ultrawideThreshold;
 
-  // Ensure the nearest-neighbor pixel canvas always covers 100% of the stage height
-  // and 100% of the stage width so windowed/maximized desktop browsers (e.g. 1920x919)
-  // never show top/bottom/side black cut-off margins.
-  const targetStageW = isUltrawide ? Math.round(safeVh * 2.15) : safeVw;
-  const coverScale = Math.max(targetStageW / grid.masterW, safeVh / grid.masterH);
+  const rawScale = Math.min(safeVw / grid.safeW, safeVh / grid.safeH);
+  let scale = Math.max(1, Math.floor(rawScale));
 
-  const displayWidth = isUltrawide
-    ? Math.min(safeVw, Math.ceil(grid.masterW * coverScale))
-    : Math.max(safeVw, Math.ceil(grid.masterW * coverScale));
-  const displayHeight = Math.max(safeVh, Math.ceil(grid.masterH * coverScale));
+  // In landscape mode, ensure the integer-scaled master canvas (720x400) covers
+  // the active stage so windowed/maximized desktop browsers (e.g. 1920x919)
+  // get the full 3x scale (2160x1200) instead of shrinking to 2x (1440x800)
+  // and leaving black gaps around the canvas.
+  if (orientation === 'landscape') {
+    const minCoverScale = isUltrawide
+      ? Math.ceil(safeVh / grid.masterH)
+      : Math.max(Math.ceil(safeVw / grid.masterW), Math.ceil(safeVh / grid.masterH));
+    scale = Math.max(scale, minCoverScale);
+  }
+
+  const displayWidth = grid.masterW * scale;
+  const displayHeight = grid.masterH * scale;
 
   const offsetX = Math.floor((safeVw - displayWidth) / 2);
   const offsetY = Math.floor((safeVh - displayHeight) / 2);
