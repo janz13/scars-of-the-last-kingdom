@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-11-09T11:12:29.565Z",
+  "timestamp": "2026-11-10T08:18:26.989Z",
   "targetUrl": "https://janz13.github.io/scars-of-the-last-kingdom/",
   "totalBugs": 12,
   "passedCount": 12,
@@ -12,7 +12,7 @@
       "passed": true,
       "liveNodeId": "prologue_start",
       "detail": "Verified all 7 backgrounds mapped across 3 prologue choices and unrecruited companion trust warnings suppressed.",
-      "timestamp": "2026-11-09T11:08:39.175Z"
+      "timestamp": "2026-11-10T08:15:53.768Z"
     },
     {
       "bugId": "BUG-02",
@@ -20,7 +20,7 @@
       "passed": true,
       "liveNodeId": "c2_surface_camp / c3_cain_tactical_moment",
       "detail": "Verified companion presence guards block unrecruited camp dialogue and adapt Chapter 3 prose for solo players.",
-      "timestamp": "2026-11-09T11:08:49.402Z"
+      "timestamp": "2026-11-10T08:16:03.629Z"
     },
     {
       "bugId": "BUG-03",
@@ -28,7 +28,7 @@
       "passed": true,
       "liveNodeId": "c3_sera_encounter",
       "detail": "Verified Sera food trade requires food: 1, decrements food from 2 to 1, and sets fed_sera flag.",
-      "timestamp": "2026-11-09T11:09:25.499Z"
+      "timestamp": "2026-11-10T08:16:16.425Z"
     },
     {
       "bugId": "BUG-04",
@@ -36,7 +36,7 @@
       "passed": true,
       "liveNodeId": "tunnel_flood_chamber",
       "detail": "Verified D20 skill check calculates modifier using effective stat 10 (modifier +1) rather than raw base 7 (-1).",
-      "timestamp": "2026-11-09T11:09:42.592Z"
+      "timestamp": "2026-11-10T08:16:29.866Z"
     },
     {
       "bugId": "BUG-05",
@@ -44,7 +44,7 @@
       "passed": true,
       "liveNodeId": "c2_market_trade / c3_market_observe",
       "detail": "Verified Ch 2 mark trade and Ch 3 supply trade apply exact resource, scrap, and reputation deltas.",
-      "timestamp": "2026-11-09T11:09:51.626Z"
+      "timestamp": "2026-11-10T08:16:38.946Z"
     },
     {
       "bugId": "BUG-06",
@@ -52,7 +52,7 @@
       "passed": true,
       "liveNodeId": "MainMenu / CreditsScreen / ChapterRoadmapScreen",
       "detail": "Verified canonical synchronization of 1,635 nodes and 244 endings across Main Menu and Credits screens.",
-      "timestamp": "2026-11-09T11:10:28.326Z"
+      "timestamp": "2026-11-10T08:16:55.423Z"
     },
     {
       "bugId": "BUG-07",
@@ -60,7 +60,7 @@
       "passed": true,
       "liveNodeId": "chapterRoadmap / scars_meta_progress",
       "detail": "Verified unlocked Chapter 2 persists in scars_meta_progress across page refreshes.",
-      "timestamp": "2026-11-09T11:10:39.496Z"
+      "timestamp": "2026-11-10T08:17:01.841Z"
     },
     {
       "bugId": "BUG-08",
@@ -68,7 +68,7 @@
       "passed": true,
       "liveNodeId": "c2_surface_junction",
       "detail": "Verified visited_mira_clinic_route blocks infinite hub re-entry with \"Already completed\" status.",
-      "timestamp": "2026-11-09T11:10:49.429Z"
+      "timestamp": "2026-11-10T08:17:13.650Z"
     },
     {
       "bugId": "BUG-09",
@@ -76,7 +76,7 @@
       "passed": true,
       "liveNodeId": "InventoryPanel",
       "detail": "Verified consumable USE buttons restore vitals (+15 Hunger, +15 Thirst, +20 HP) and consume 1 unit.",
-      "timestamp": "2026-11-09T11:10:58.631Z"
+      "timestamp": "2026-11-10T08:17:21.411Z"
     },
     {
       "bugId": "BUG-10",
@@ -84,7 +84,7 @@
       "passed": true,
       "liveNodeId": "SettingsPanel / c3_gate_scouting",
       "detail": "Verified Settings modal LOAD action and human-readable flag requirement labels (\"Requires Companion: Cain\").",
-      "timestamp": "2026-11-09T11:11:07.292Z"
+      "timestamp": "2026-11-10T08:17:29.423Z"
     },
     {
       "bugId": "BUG-11",
@@ -92,7 +92,7 @@
       "passed": true,
       "liveNodeId": "tunnel_collapse_moment",
       "detail": "Verified unlocked class perk choices sort to position [1] above generic D20 roll checks.",
-      "timestamp": "2026-11-09T11:12:05.683Z"
+      "timestamp": "2026-11-10T08:18:04.992Z"
     },
     {
       "bugId": "BUG-12",
@@ -100,7 +100,7 @@
       "passed": true,
       "liveNodeId": "tunnel_brace_success / c2_surface_camp",
       "detail": "Verified \"through\" typo fix in Chapter 1 and real-time companion prose sanitization in Chapter 2.",
-      "timestamp": "2026-11-09T11:12:13.656Z"
+      "timestamp": "2026-11-10T08:18:12.372Z"
     }
   ]
 }

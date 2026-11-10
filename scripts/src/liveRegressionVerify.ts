@@ -496,8 +496,8 @@ export async function verifyBug04(browser: Browser): Promise<BugRegressionResult
   const timestamp = new Date().toISOString();
 
   try {
-    // Base STR = 7 (meets requirement: strength: 7).
-    // Exiled Soldier background bonus = +2. Calculating trait bonus = +1.
+    // Base STR = 7 (meets requirement: strength: 7). With Exiled Soldier background (+2),
+    // state.stats.strength stores effective 9. Calculating trait bonus = +1.
     // Total effective STR = 10. Modifier for 10 = +1 (formula: <=7 -> -1, <=9 -> 0, <=12 -> +1).
     // Pre-fix bug: used raw base 7 -> modifier -1.
     const seed = buildRegressionState({
@@ -505,7 +505,7 @@ export async function verifyBug04(browser: Browser): Promise<BugRegressionResult
       characterClass: 'tactician',
       background: 'exiled_soldier',
       personalityTrait: 'calculating',
-      stats: { strength: 7 },
+      stats: { strength: 9 },
     });
 
     const { context, page } = await createRegressionPage(browser, seed);
