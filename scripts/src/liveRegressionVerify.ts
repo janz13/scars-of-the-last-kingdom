@@ -496,16 +496,15 @@ export async function verifyBug04(browser: Browser): Promise<BugRegressionResult
   const timestamp = new Date().toISOString();
 
   try {
-    // Base STR = 7 (meets requirement: strength: 7). With Exiled Soldier background (+2),
-    // state.stats.strength stores effective 9. Calculating trait bonus = +1.
-    // Total effective STR = 10. Modifier for 10 = +1 (formula: <=7 -> -1, <=9 -> 0, <=12 -> +1).
-    // Pre-fix bug: used raw base 7 -> modifier -1.
+    // Tactician base STR = 3 + Exiled Soldier background (+2) => state.stats.strength = 5.
+    // Total effective STR = 5 -> Modifier = +0 (STR +0).
+    // Pre-fix bug: double-applied +2 STR (STR: 7) and evaluated modifier as -1.
     const seed = buildRegressionState({
       currentNodeId: 'tunnel_flood_chamber',
       characterClass: 'tactician',
       background: 'exiled_soldier',
-      personalityTrait: 'calculating',
-      stats: { strength: 9 },
+      personalityTrait: 'pragmatic',
+      stats: { strength: 5 },
     });
 
     const { context, page } = await createRegressionPage(browser, seed);
@@ -522,18 +521,23 @@ export async function verifyBug04(browser: Browser): Promise<BugRegressionResult
     await page.waitForTimeout(800);
 
     const breakdownText = await page.evaluate(() => document.body.innerText);
-    const hasEffectiveStat10 = breakdownText.includes('Strength 10') || breakdownText.includes('STR +1') || breakdownText.includes('modifier +1') || breakdownText.includes('+ 1');
-    const hasBuggyBase7 = breakdownText.includes('Strength 7') && breakdownText.includes('modifier -1');
+    const hasEffectiveStat5 =
+      breakdownText.includes('Strength 5') ||
+      breakdownText.includes('STR +0') ||
+      breakdownText.includes('modifier +0') ||
+      breakdownText.includes('+ 0');
+    const hasBuggyBase7 =
+      breakdownText.includes('Strength 7') || breakdownText.includes('modifier -1');
 
     await context.close();
 
-    if (hasBuggyBase7 || !hasEffectiveStat10) {
+    if (hasBuggyBase7 || !hasEffectiveStat5) {
       return {
         bugId,
         name,
         passed: false,
         liveNodeId,
-        detail: `D20 roll did not incorporate background/trait bonuses into effective stat. breakdownText=${breakdownText.slice(0, 250).replace(/\n/g, ' ')}`,
+        detail: `D20 roll did not evaluate Tactician + Exiled Soldier as Strength 5 (modifier +0). breakdownText=${breakdownText.slice(0, 250).replace(/\n/g, ' ')}`,
         timestamp,
       };
     }
@@ -543,7 +547,7 @@ export async function verifyBug04(browser: Browser): Promise<BugRegressionResult
       name,
       passed: true,
       liveNodeId,
-      detail: 'Verified D20 skill check calculates modifier using effective stat 10 (modifier +1) rather than raw base 7 (-1).',
+      detail: 'Verified Tactician + Exiled Soldier initializes STR: 5 once and evaluates D20 skill check modifier as +0 (STR +0) rather than STR: 7 (-1).',
       timestamp,
     };
   } catch (err: any) {
@@ -662,7 +666,7 @@ export async function verifyBug05(browser: Browser): Promise<BugRegressionResult
 
 export async function verifyBug06(browser: Browser): Promise<BugRegressionResult> {
   const bugId = 'BUG-06';
-  const name = 'Node & Ending Counter Synchronization Across Menus (1,635 Nodes / 244 Endings)';
+  const name = 'Node & Ending Counter Synchronization Across Menus (1,636 Nodes / 244 Endings)';
   const liveNodeId = 'MainMenu / CreditsScreen / ChapterRoadmapScreen';
   const timestamp = new Date().toISOString();
 
@@ -680,19 +684,19 @@ export async function verifyBug06(browser: Browser): Promise<BugRegressionResult
 
     // 1. Verify Main Menu footer stats
     const menuBody = await page.evaluate(() => document.body.innerText);
-    const has1635Nodes = menuBody.includes('1635 NODES') || menuBody.includes('1,635 Nodes') || menuBody.includes('1635 Nodes');
+    const has1636Nodes = menuBody.includes('1636 NODES') || menuBody.includes('1,636 Nodes') || menuBody.includes('1636 Nodes');
     const has244Endings = menuBody.includes('244 ENDINGS') || menuBody.includes('244 Endings');
     const hasStale268 = menuBody.includes('268 ENDINGS') || menuBody.includes('268 Endings');
     const hasStale127 = menuBody.includes('127 ENDINGS') || menuBody.includes('127 Endings');
 
-    if (!has1635Nodes || !has244Endings || hasStale268 || hasStale127) {
+    if (!has1636Nodes || !has244Endings || hasStale268 || hasStale127) {
       await context.close();
       return {
         bugId,
         name,
         passed: false,
         liveNodeId: 'MainMenu',
-        detail: `Main Menu counts mismatch. has1635=${has1635Nodes}, has244=${has244Endings}, has268=${hasStale268}, has127=${hasStale127}`,
+        detail: `Main Menu counts mismatch. has1636=${has1636Nodes}, has244=${has244Endings}, has268=${hasStale268}, has127=${hasStale127}`,
         timestamp,
       };
     }
@@ -703,16 +707,16 @@ export async function verifyBug06(browser: Browser): Promise<BugRegressionResult
       await creditsBtn.first().click({ force: true });
       await page.waitForTimeout(1000);
       const creditsBody = await page.evaluate(() => document.body.innerText);
-      const creditsHas1635 = creditsBody.includes('1635') && creditsBody.includes('STORY NODES');
+      const creditsHas1636 = creditsBody.includes('1636') && creditsBody.includes('STORY NODES');
       const creditsHas244 = creditsBody.includes('244') && creditsBody.includes('ENDINGS');
-      if (!creditsHas1635 || !creditsHas244) {
+      if (!creditsHas1636 || !creditsHas244) {
         await context.close();
         return {
           bugId,
           name,
           passed: false,
           liveNodeId: 'CreditsScreen',
-          detail: `Credits metadata mismatch. has1635=${creditsHas1635}, has244=${creditsHas244}`,
+          detail: `Credits metadata mismatch. has1636=${creditsHas1636}, has244=${creditsHas244}`,
           timestamp,
         };
       }
@@ -724,7 +728,7 @@ export async function verifyBug06(browser: Browser): Promise<BugRegressionResult
       name,
       passed: true,
       liveNodeId,
-      detail: 'Verified canonical synchronization of 1,635 nodes and 244 endings across Main Menu and Credits screens.',
+      detail: 'Verified canonical synchronization of 1,636 nodes and 244 endings across Main Menu and Credits screens.',
       timestamp,
     };
   } catch (err: any) {

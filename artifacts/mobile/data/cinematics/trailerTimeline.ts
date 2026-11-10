@@ -148,7 +148,7 @@ export const TRAILER_75S_TIMELINE: CinematicTimeline = {
       titleCard: {
         startSec: 1.0,
         endSec: 7.2,
-        eyebrow: '1,635 NODES · 169 PIXEL SCENES · 244 ENDINGS',
+        eyebrow: '1,636 NODES · 169 PIXEL SCENES · 244 ENDINGS',
         title: 'WHAT WILL YOU SAY BACK?',
         subtitle: 'EPILOGUE: THE RESPONSE — INCLUDED',
       },

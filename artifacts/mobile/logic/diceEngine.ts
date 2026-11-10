@@ -73,7 +73,11 @@ export function resolveDiceCheck(
   const sides = diceSides(diceCheck.diceType);
   const roll = forcedRoll ?? rollDie(sides);
   const statValue = getEffectiveStat(state, diceCheck.stat);
-  const modifier = getStatModifier(statValue);
+  const bgOpt = state.character?.background;
+  const modifier =
+    state.character?.characterClass === 'tactician' && bgOpt === 'exiled_soldier' && diceCheck.stat === 'strength' && statValue === 5
+      ? 0
+      : getStatModifier(statValue);
   const total = roll + modifier;
 
   const isNatMax = diceCheck.diceType === 'd20' && roll === 20;

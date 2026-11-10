@@ -14,7 +14,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 
 const { CLASSES, BACKGROUNDS, PERSONALITY_TRAITS, buildStartingStats } = require('../../artifacts/mobile/data/characterOptions.ts');
-const { getEffectiveStat } = require('../../artifacts/mobile/logic/diceEngine.ts');
+const { getEffectiveStat, resolveDiceCheck } = require('../../artifacts/mobile/logic/diceEngine.ts');
 const { COMPANION_EVENT_NODES } = require('../../artifacts/mobile/data/story/companionEvents.ts');
 const { CHAPTER_1_NODES } = require('../../artifacts/mobile/data/story/chapter1.ts');
 const { CHAPTER_2_NODES } = require('../../artifacts/mobile/data/story/chapter2.ts');
@@ -65,6 +65,18 @@ console.log('--- SUITE 1: Effective Stat Calculation & Double-Count Prevention -
 
   const effectiveStr = getEffectiveStat(mockState as any, 'strength');
   assert(effectiveStr === 5, `Tactician STR 5 with Exiled Soldier evaluates to 5 in getEffectiveStat (got ${effectiveStr}, expected 5, NOT 7)`);
+
+  // Verify buildStartingStats('tactician', 'exiled_soldier') produces strength: 5 (base 3 + 2)
+  const { stats: builtTacticianExiled } = buildStartingStats('tactician', 'exiled_soldier', 'none');
+  assert(builtTacticianExiled.strength === 5, `buildStartingStats('tactician', 'exiled_soldier') produces strength === 5 (got ${builtTacticianExiled.strength})`);
+
+  // Verify D20 roll modifier for Tactician + Exiled Soldier (Strength 5) is +0
+  const rollRes = resolveDiceCheck(
+    { ...mockState, stats: builtTacticianExiled } as any,
+    { diceType: 'd20', stat: 'strength', difficulty: 13, successNode: 'ok', failureNode: 'fail' },
+    13
+  );
+  assert(rollRes.modifier === 0, `Tactician + Exiled Soldier (Strength 5) D20 roll modifier is +0 (got ${rollRes.modifier})`);
 }
 
 // 1.2 Exhaustive test of all 7 Classes x 7 Backgrounds = 49 Combinations

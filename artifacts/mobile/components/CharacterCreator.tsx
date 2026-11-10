@@ -196,7 +196,17 @@ export default function CharacterCreator() {
               <View style={styles.optionList}>
                 {CLASSES.map((cls) => {
                   const sel = characterClass === cls.id;
-                  const stats = cls.statBase;
+                  const bgOpt = BACKGROUNDS.find((b) => b.id === background);
+                  const bgMods = bgOpt?.statModifiers ?? {};
+                  const stats = {
+                    maxHealth: (cls.statBase.maxHealth ?? 80) + (bgMods.maxHealth ?? 0),
+                    strength: (cls.statBase.strength ?? 5) + (bgMods.strength ?? 0),
+                    intelligence: (cls.statBase.intelligence ?? 5) + (bgMods.intelligence ?? 0),
+                    agility: (cls.statBase.agility ?? 5) + (bgMods.agility ?? 0),
+                    charisma: (cls.statBase.charisma ?? 5) + (bgMods.charisma ?? 0),
+                    luck: (cls.statBase.luck ?? 5) + (bgMods.luck ?? 0),
+                    corruption: Math.max(0, (cls.statBase.corruption ?? 0) + (bgMods.corruption ?? 0)),
+                  };
                   return (
                     <Pressable key={cls.id} style={[styles.optionCard, sel && styles.optionCardSelected]} onPress={() => setCharacterClass(cls.id)}>
                       {sel && <View style={styles.optionAccent} />}

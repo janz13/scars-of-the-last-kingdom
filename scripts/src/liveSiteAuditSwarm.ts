@@ -502,8 +502,8 @@ async function runLiveSwarm() {
       if (spec.agentId === 'AGENT-01') {
         // MainMenu layout & footer stats audit
         const menuText = await page.evaluate(() => document.body.innerText);
-        if (!menuText.includes('1635 NODES')) {
-          discrepanciesFound.push('DISCREPANCY-01: Live MainMenu footer does not show 1635 NODES');
+        if (!menuText.includes('1636 NODES')) {
+          discrepanciesFound.push('DISCREPANCY-01: Live MainMenu footer does not show 1636 NODES');
         }
         if (!menuText.includes('v2.0 — Pixel Overhaul')) {
           discrepanciesFound.push('DISCREPANCY-03: Live MainMenu footer does not show v2.0 — Pixel Overhaul');

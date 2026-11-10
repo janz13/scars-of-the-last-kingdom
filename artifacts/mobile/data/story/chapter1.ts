@@ -1547,9 +1547,9 @@ export const CHAPTER_1_NODES: StoryNode[] = [
         id: 'force_through_strength',
         text: 'Overpower it — brute strength, keep moving.',
         nextNode: 'tunnel_flood_survive',
-        requirements: { strength: 7 },
+        requirements: { strength: 5 },
         effects: { health: -10 },
-        flavorText: 'Requires: Strength 7 or higher',
+        flavorText: 'Requires: Strength 5 or higher',
         diceCheck: {
           stat: 'strength',
           difficulty: 13,

@@ -106,7 +106,7 @@ export const CLASSES: ClassOption[] = [
     name: 'Tactician',
     description: 'You read situations before they happen. Preparation is your only armor.',
     playstyle: 'Balanced with high Charisma. Best at negotiation and planning.',
-    statBase: { maxHealth: 80, health: 80, strength: 5, agility: 5, intelligence: 7, charisma: 8, luck: 4, corruption: 0 },
+    statBase: { maxHealth: 80, health: 80, strength: 3, agility: 5, intelligence: 7, charisma: 8, luck: 4, corruption: 0 },
     startingInventory: { food: 2, water: 2, medicine: 1, scrap: 1, ammo: 1, relics: 0, reputation: 0 },
   },
   {

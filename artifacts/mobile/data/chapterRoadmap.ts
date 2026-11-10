@@ -198,7 +198,7 @@ export const CHAPTER_ROADMAP: ChapterEntry[] = [
       'Chapter 11 — The City Beneath the City (partial unlock)',
     ],
     status: 'complete',
-    nodeCount: 109,
+    nodeCount: 110,
     branchBadge: 'MB1: The Census of Small Names',
   },
 

@@ -205,6 +205,14 @@ def patch_bug_5_d20_total_stat_modifier(
             res.changes_applied.append(
                 f"Verified CHAR modal references effective stats directly without double-counting in {fpath.name}"
             )
+        elif fpath.name == "characterOptions.ts" and "id: 'tactician'" in text and "strength: 3" in text:
+            res.changes_applied.append(
+                f"Verified Tactician base Strength initialized at 3 (+2 Exiled Soldier = 5) in {fpath.name}"
+            )
+        elif fpath.name == "storyValidator.ts" and "totalNodes: 1636" in text:
+            res.changes_applied.append(
+                f"Verified canonical totalNodes: 1636 in {fpath.name}"
+            )
     res.status = (
         "APPLIED"
         if (res.files_modified and apply_changes)

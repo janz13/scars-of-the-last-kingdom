@@ -355,7 +355,7 @@ export interface StorySummary {
 
 export function getStorySummary(): StorySummary {
   return {
-    totalNodes: 1635,
+    totalNodes: 1636,
     endingNodes: 244,
     totalChoices: 2890,
     diceCheckNodes: 102,
@@ -381,7 +381,7 @@ export function getStorySummary(): StorySummary {
       'Prologue': 12,
       'Chapter 1': 108,
       'Chapter 2': 79,
-      'Chapter 3': 109,
+      'Chapter 3': 110,
       'Chapter 4': 84,
       'Chapter 5': 95,
       'Chapter 6': 130,
