@@ -122,7 +122,7 @@ export const COMPANION_EVENT_NODES: StoryNode[] = [
           removeFlags: ['companion_event_active'],
         },
         flavorText: 'She goes quiet. She doesn\'t agree, but she doesn\'t push.',
-        requirements: { corruption: 50 },
+        requirements: { corruption: 35 },
       },
     ],
   },

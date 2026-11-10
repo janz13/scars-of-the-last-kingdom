@@ -944,7 +944,7 @@ export const CHAPTER_2_NODES: StoryNode[] = [
     imageKey: 'ruined_street',
     speaker: 'Cain',
     text: 'You\'re clear of the checkpoint. The sun is moving west. Cain walks beside you and doesn\'t say anything for three blocks. When he speaks, it\'s without preamble.',
-    dialogue: 'I told them you were my responsibility. Which you are. I told them the mark was a medical condition under observation, which is apparently true enough that it passed. They let us go because I outranked them and because Terren owes me something personal. None of that is going to hold the next time. I need you to know that the next time this happens I\'m going to make the same choice and I need you to know that choosing you is the harder thing.',
+    dialogue: 'I told them you were my responsibility. Which you are. I told them the mark was a medical condition under observation, which is apparently true enough that it passed. They let us go because I outranked them and because Terren owes me something personal. None of that is going to hold the next time. I need you to know that the next time this happens I\'m going to make the same choice, and I need you to know that choosing you is the harder thing to live with. Keep up.',
     effectsOnEnter: { cainTrust: 5, morale: 2, setFlags: ['c2_cain_chose_player'] },
     choices: [
       {

@@ -39,7 +39,7 @@ export const CHAPTER_3_NODES: StoryNode[] = [
     title: 'What the Dark Remembers',
     location: 'Deep Tunnels — Sub-Level 3',
     imageKey: 'collapsed_tunnel',
-    text: `The surface is already behind you. You found the access shaft three blocks from where the Iron Saints patrol turned east, and you went down before they could decide what they wanted from you. Sub-Level 3 is different from the metro tunnels you know — older, narrower, less engineered. The walls here were dug by hand in some places. The darkness is thicker. Your mark pulses once and then holds quiet, as if it is paying attention. Somewhere ahead: the smell of tallow candles and the sound of children who do not know you are listening.`,
+    text: `The surface lies already behind you. You found the access shaft three blocks from where the Iron Saints patrol turned east, and you went down before they could decide what they wanted from you. Sub-Level 3 is different from the metro tunnels you know — older, narrower, less engineered. The walls here were dug by hand in some places. The darkness is thicker. Your mark pulses once and then holds quiet, as if it is paying attention. Somewhere ahead, the scent of tallow candles drifts on the air, carrying the sound of children who do not know you are listening.`,
     effectsOnEnter: { hunger: -1, thirst: -1, setFlags: ['chapter3_begun'] },
     choices: [
       {
@@ -1227,6 +1227,14 @@ export const CHAPTER_3_NODES: StoryNode[] = [
         id: 'c3_accept_trap_hit',
         text: 'Get up, let Mira treat the cut, and continue.',
         nextNode: 'c3_nursery_children_test',
+        requirements: { flags: ['mira_joins_party'], miraPresent: true },
+        effects: { morale: -2 },
+      },
+      {
+        id: 'c3_accept_trap_hit_solo',
+        text: 'Bind the cut yourself, get up, and continue.',
+        nextNode: 'c3_nursery_children_test',
+        requirements: { blockedFlags: ['mira_joins_party'] },
         effects: { morale: -2 },
       },
       {
@@ -1405,7 +1413,14 @@ export const CHAPTER_3_NODES: StoryNode[] = [
         id: 'c3_ignore_cain_intel',
         text: '"I\'ll handle the Rat King my own way."',
         nextNode: 'c3_rat_king_arrive',
+        requirements: { flags: ['cain_joins_party'], cainPresent: true },
         effects: { cainTrust: -2 },
+      },
+      {
+        id: 'c3_solo_rat_king_approach',
+        text: 'Approach the Rat King\'s toll gate directly.',
+        nextNode: 'c3_rat_king_arrive',
+        requirements: { blockedFlags: ['cain_joins_party'] },
       },
     ],
   },
@@ -1637,19 +1652,35 @@ export const CHAPTER_3_NODES: StoryNode[] = [
         id: 'c3_clinic_acknowledge_mira',
         text: '"I don\'t know. We\'ve been moving."',
         nextNode: 'c3_clinic_mira_crisis',
+        requirements: { flags: ['mira_joins_party'], miraPresent: true },
         effects: { miraTrust: -1 },
       },
       {
         id: 'c3_clinic_defend_record',
         text: '"She\'s fine. She\'s managed."',
         nextNode: 'c3_clinic_mira_crisis',
+        requirements: { flags: ['mira_joins_party'], miraPresent: true },
         effects: { miraTrust: -2 },
       },
       {
         id: 'c3_clinic_honest',
         text: '"Not well enough. I didn\'t realise how bad it was getting."',
         nextNode: 'c3_clinic_mira_crisis',
+        requirements: { flags: ['mira_joins_party'], miraPresent: true },
         effects: { miraTrust: 3 },
+      },
+      {
+        id: 'c3_clinic_solo_treatment',
+        text: 'Rest in the treatment bay and replenish your strength.',
+        nextNode: 'c3_relic_engine_room_arrive',
+        requirements: { blockedFlags: ['mira_joins_party'] },
+        effects: { health: 15, morale: 3 },
+      },
+      {
+        id: 'c3_bypass_clinic_solo',
+        text: 'Bypass the clinic and push straight to the Relic Engine Room.',
+        nextNode: 'c3_relic_engine_room_arrive',
+        requirements: { blockedFlags: ['mira_joins_party'] },
       },
     ],
   },
@@ -1799,7 +1830,7 @@ export const CHAPTER_3_NODES: StoryNode[] = [
       {
         id: 'c3_resist_signal',
         text: 'Close the connection. Resist the pull.',
-        nextNode: 'c3_resist_signal_node',
+        nextNode: 'c3_sever_connection_node',
         effects: { corruption: -5, morale: 2 },
       },
       {
@@ -1852,6 +1883,39 @@ export const CHAPTER_3_NODES: StoryNode[] = [
       },
       {
         id: 'c3_exit_engine_room',
+        text: 'Leave the engine room and find the Door Without a Handle.',
+        nextNode: 'c3_door_without_handle',
+      },
+    ],
+  },
+
+  {
+    id: 'c3_sever_connection_node',
+    chapter: 'Chapter 3',
+    title: 'Severing the Pull',
+    location: 'The Relic Engine Room — Disconnected',
+    imageKey: 'relic_engine_room',
+    text: `You pull back with everything you have. The mark burns white-hot for an agonising second as the link is violently severed, then goes cold and quiet. The engine's hum drops into a low, thwarted rumble, its light fading back into the machinery. You took nothing from it — no coordinates, no transmissions, no foreign architecture in your mind. The silence returns to the chamber, thick and earned. Mira lets out a breath she seems to have held for minutes, and Cain gives a single, approving nod. The path forward through the sub-levels remains, but whatever coordinates the engine offered stay buried in the dark.`,
+    effectsOnEnter: { morale: 2, setFlags: ['relic_engine_severed'] },
+    choices: [
+      {
+        id: 'c3_use_orphan_secret_severed',
+        text: '[Wasteland Orphan] There\'s a maintenance shaft in the east wall. You\'ve seen this design before.',
+        nextNode: 'c3_orphan_secret_path',
+        requirements: { backgrounds: ['wasteland_orphan'] },
+        effects: { luck: 2, setFlags: ['orphan_secret_route_found'] },
+        isHidden: true,
+      },
+      {
+        id: 'c3_use_broker_secret_severed',
+        text: '[Shadow Broker] The engine room has a second exit — behind the control panel. Cain already found it.',
+        nextNode: 'c3_broker_secret_path',
+        requirements: { classes: ['shadow_broker'] },
+        effects: { cainTrust: 2, setFlags: ['broker_secret_deal_made'] },
+        isHidden: true,
+      },
+      {
+        id: 'c3_exit_engine_room_severed',
         text: 'Leave the engine room and find the Door Without a Handle.',
         nextNode: 'c3_door_without_handle',
       },

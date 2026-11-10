@@ -3,7 +3,7 @@
  * Executed independently by m1_r2_challenger_1
  *
  * Empirical verification of:
- * 1. Exact node inventory across all 20 story files (1,635 nodes)
+ * 1. Exact node inventory across all 20 story files (1,636 nodes)
  * 2. Exact terminal ending count (244 endings) and Route Codex alignment (268 entries)
  * 3. Zero dangling node references in nextNode, endingTrigger, and diceCheck branches
  * 4. Zero dead-end non-ending nodes (unintended traps)
@@ -58,7 +58,7 @@ function assert(condition: boolean, name: string, findingIfFail?: TestFinding) {
 async function runAdversarialChallenge() {
   console.log('================================================================================');
   console.log('⚔️  ADVERSARIAL STORY GRAPH & CONNECTIVITY CHALLENGE HARNESS');
-  console.log('   Target: Scars of the Last Kingdom (1,635 Story Nodes / 244 Endings)');
+  console.log('   Target: Scars of the Last Kingdom (1,636 Story Nodes / 244 Endings)');
   console.log('   Agent:  m1_r2_challenger_1 (Milestone 1 Iteration 2)');
   console.log('================================================================================\n');
 
@@ -77,11 +77,11 @@ async function runAdversarialChallenge() {
   const nodeMap = new Map<string, any>(allNodes.map((n) => [n.id, n]));
 
   console.log('--- 1. Node Inventory & Ending Dimension Verification ---');
-  assert(allNodes.length === 1635, `Total story nodes exactly 1,635 (actual: ${allNodes.length})`, {
+  assert(allNodes.length === 1636, `Total story nodes exactly 1,636 (actual: ${allNodes.length})`, {
     severity: 'CRITICAL',
     category: 'inventory',
     location: 'chapterLoader',
-    message: `Expected 1635 story nodes, found ${allNodes.length}`,
+    message: `Expected 1636 story nodes, found ${allNodes.length}`,
   });
 
   // Check unique IDs (no duplicates)
@@ -331,7 +331,7 @@ async function runAdversarialChallenge() {
     }
   }
 
-  console.log(`  • Reachable directly from prologue_start via choice edges: ${visitedFromPrologue.size} / 1635`);
+  console.log(`  • Reachable directly from prologue_start via choice edges: ${visitedFromPrologue.size} / 1636`);
 
   // Unreachable nodes from prologue_start
   const unreachedFromPrologue = allNodes.filter((n) => !visitedFromPrologue.has(n.id));
@@ -380,12 +380,12 @@ async function runAdversarialChallenge() {
     }
   }
 
-  console.log(`  • Reachable including dynamic pools & survival triggers: ${allReachable.size} / 1635`);
+  console.log(`  • Reachable including dynamic pools & survival triggers: ${allReachable.size} / 1636`);
   const trulyOrphanedNodes = allNodes.filter((n) => !allReachable.has(n.id));
 
   assert(
     trulyOrphanedNodes.length === 0,
-    `Zero truly orphaned nodes across the full 1,635-node graph (orphans: ${trulyOrphanedNodes.length})`,
+    `Zero truly orphaned nodes across the full 1,636-node graph (orphans: ${trulyOrphanedNodes.length})`,
     {
       severity: 'CRITICAL',
       category: 'orphan_nodes',
@@ -495,7 +495,7 @@ async function runAdversarialChallenge() {
     }
   }
 
-  console.log(`  • Nodes with direct directed path to a terminal ending: ${canReachEnding.size} / 1635`);
+  console.log(`  • Nodes with direct directed path to a terminal ending: ${canReachEnding.size} / 1636`);
 
   // Check non-ending nodes that cannot reach an ending via choices
   // Note: Some nodes like dynamic events (hallucinations/interludes) return via __return__ to the current scene in the game engine.

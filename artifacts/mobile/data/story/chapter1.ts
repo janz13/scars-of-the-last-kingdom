@@ -773,6 +773,7 @@ export const CHAPTER_1_NODES: StoryNode[] = [
         id: 'follow_hum',
         text: 'Follow the hum — toward the machine room.',
         nextNode: 'relic_machine_room',
+        requirements: { blockedFlags: ['visited_sealed_relay_door'] },
       },
       {
         id: 'follow_markers',
@@ -795,8 +796,14 @@ export const CHAPTER_1_NODES: StoryNode[] = [
         id: 'follow_archive_sense',
         text: 'Let the mark guide you. It knows where to go.',
         nextNode: 'archive_door',
-        requirements: { flags: ['knows_archive_exists'] },
+        requirements: { flags: ['knows_archive_exists'], blockedFlags: ['visited_sealed_relay_door'] },
         effects: { corruption: 1 },
+      },
+      {
+        id: 'return_archive_door',
+        text: 'Return to the sealed Archive door.',
+        nextNode: 'archive_door',
+        requirements: { flags: ['knows_archive_exists', 'visited_sealed_relay_door'] },
       },
       {
         id: 'notice_watchers_tunnel',
@@ -1200,7 +1207,7 @@ export const CHAPTER_1_NODES: StoryNode[] = [
     location: 'Maintenance Sublevel — Control Chamber',
     imageKey: 'examine_mark',
     text: 'A side chamber off the main tunnel. Old control machinery — pre-blackout, analog displays, mechanical switches still drawing power from somewhere. The air smells of ozone. The mark on your wrist blazes brighter than it has since you woke.',
-    effectsOnEnter: { corruption: 1, setFlags: ['found_relic_machine'] },
+    effectsOnEnter: { corruption: 1, setFlags: ['found_relic_machine', 'visited_sealed_relay_door'] },
     choices: [
       {
         id: 'touch_panel',
@@ -1413,7 +1420,7 @@ export const CHAPTER_1_NODES: StoryNode[] = [
     location: 'Tunnel Network — Archive Anteroom',
     imageKey: 'last_archive_door',
     text: 'The door is older than the metro, older than the city above it. Stone and corroded metal covered in symbols. The mark on your wrist burns so brightly it lights the chamber. The symbols pulse in response — the same pattern, mirrored, amplified.',
-    effectsOnEnter: { corruption: 1, morale: 2, setFlags: ['found_archive_door'] },
+    effectsOnEnter: { morale: 2, setFlags: ['found_archive_door', 'visited_sealed_relay_door'] },
     choices: [
       {
         id: 'use_mark_to_open',

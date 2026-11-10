@@ -546,7 +546,16 @@ function EndingsTab() {
             EPILOGUE ({ENDINGS.filter((e) => e.id.startsWith('ending_epilogue_') && discoveredSet.has(e.id)).length}/{ENDINGS.filter((e) => e.id.startsWith('ending_epilogue_')).length})
           </Text>
         </Pressable>
-        {CANONICAL_CATEGORIES.map((cat) => {
+        <Pressable
+          style={[styles.categoryPill, selectedCategory === 'faction' && styles.categoryPillActive]}
+          onPress={() => setSelectedCategory('faction')}
+        >
+          <Feather name="flag" size={11} color={selectedCategory === 'faction' ? '#2980b9' : MUTED} style={{ marginRight: 4 }} />
+          <Text style={[styles.categoryPillText, selectedCategory === 'faction' && styles.categoryPillTextActive]}>
+            FACTION ({ENDINGS.filter((e) => e.category === 'faction' && discoveredSet.has(e.id)).length}/{ENDINGS.filter((e) => e.category === 'faction').length})
+          </Text>
+        </Pressable>
+        {CANONICAL_CATEGORIES.filter((cat) => cat.id !== 'faction').map((cat) => {
           const count = ENDINGS.filter((e) => e.category === cat.id).length;
           const foundCount = ENDINGS.filter((e) => e.category === cat.id && discoveredSet.has(e.id)).length;
           const isActive = selectedCategory === cat.id;

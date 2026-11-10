@@ -445,7 +445,7 @@ export const tier4Tests: TestCase[] = [
   // ──────────────────────────────────────────────────────────────────────────
   {
     id: 'T4-SCENARIO-07',
-    title: 'Playthrough Scenario 7: Mid-Game Branches (MB1-MB4) & Epilogue ("The Response", 1,635 nodes, 244 endings)',
+    title: 'Playthrough Scenario 7: Mid-Game Branches (MB1-MB4) & Epilogue ("The Response", 1,636 nodes, 244 endings)',
     featureId: 'E2E-STORY-EXPANSION',
     tier: 4,
     fn: async () => {
@@ -453,7 +453,7 @@ export const tier4Tests: TestCase[] = [
       const { ENDINGS } = require('../../artifacts/mobile/data/story/endings.ts');
       const { getUnlockedChapters } = require('../../artifacts/mobile/logic/chapterSelect.ts');
 
-      expect(STORY_NODES.length).toBe(1635);
+      expect(STORY_NODES.length).toBe(1636);
       expect(ENDINGS.length).toBe(244);
 
       // Walk MB2 -> velna_coordinates -> FC2 -> Epilogue -> ending_epilogue_silence_kept

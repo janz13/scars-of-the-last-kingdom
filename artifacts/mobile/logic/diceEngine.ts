@@ -1,5 +1,4 @@
 import type { DiceCheck, DiceType, DiceStat, GameState, ChoiceEffects } from '../data/types';
-import { BACKGROUNDS } from '../data/characterOptions';
 
 export type DiceOutcome = 'criticalSuccess' | 'success' | 'failure' | 'criticalFailure';
 
@@ -18,15 +17,13 @@ export interface DiceResult {
 }
 
 export function getEffectiveStat(state: GameState, stat: DiceStat): number {
-  const rawStat = state.stats?.[stat] ?? 5;
-  const bgOpt = BACKGROUNDS.find((b) => b.id === state.character?.background);
-  const bgBonus = rawStat < 10 ? ((bgOpt?.statModifiers?.[stat] as number | undefined) ?? 0) : 0;
+  const effectiveStat = state.stats?.[stat] ?? 5;
   const trait = state.character?.personalityTrait;
   let traitBonus = 0;
   if (trait === 'calculating') traitBonus += 1;
   if (trait === 'reckless' && stat === 'agility') traitBonus += 1;
   if (trait === 'cynical' && stat === 'luck') traitBonus += 1;
-  return rawStat + bgBonus + traitBonus;
+  return effectiveStat + traitBonus;
 }
 
 // Map a stat value to a D&D-style modifier (−3 to +4)

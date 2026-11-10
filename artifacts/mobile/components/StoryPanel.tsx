@@ -302,8 +302,16 @@ export default function StoryPanel({ onOpenHotkeys }: { onOpenHotkeys?: () => vo
     text: (() => {
       let txt = currentNode?.text ?? '';
       if (!txt) return txt;
-      const miraInParty = Boolean(state.companions.mira.present && state.companions.mira.alive);
-      const cainInParty = Boolean(state.companions.cain.present && state.companions.cain.alive);
+      const miraInParty = Boolean(
+        state.companions.mira.present &&
+        state.companions.mira.alive &&
+        (state.flags.mira_joins_party || state.flags.mira_recruited || state.character?.startingCompanion === 'mira')
+      );
+      const cainInParty = Boolean(
+        state.companions.cain.present &&
+        state.companions.cain.alive &&
+        (state.flags.cain_joins_party || state.flags.cain_recruited || state.character?.startingCompanion === 'cain')
+      );
       if (!miraInParty && !cainInParty) {
         txt = txt.replace('Mira and Cain are not registered and therefore do not exist as far as the Saints are concerned, which is the safest kind of existence in this city. ', '');
       } else if (!miraInParty && cainInParty) {
@@ -315,7 +323,14 @@ export default function StoryPanel({ onOpenHotkeys }: { onOpenHotkeys?: () => vo
         txt = txt
           .replace('Mira points north, toward a clinic she knows. ', '')
           .replace('Mira tends to whatever needs tending. ', '')
-          .replace('Mira walks beside you with her hands empty and her face composed into the expression she uses when there is no good option and she is choosing not to make it worse by naming it. ', '');
+          .replace('Mira walks beside you with her hands empty and her face composed into the expression she uses when there is no good option and she is choosing not to make it worse by naming it. ', '')
+          .replace('Mira, beside you, counts her remaining medicine with her lips moving silently. ', '')
+          .replace(', what Mira said by firelight', '')
+          .replace('Mira is at your side in two seconds with the antiseptic. ', '')
+          .replace('Mira calls your name three times. The engine answers.', 'The engine answers.');
+        if (currentNode?.id === 'c3_hidden_clinic_arrive') {
+          txt = "The clinic is a converted maintenance bay run by a woman named Vel who was a field nurse in a city that no longer exists. The space is clean in the way that people who know about infection make things clean. Organised. Vel treats three patients before she sees you — a child with an infected foot, a tunnel worker with a cut that needs closing, a person who just needs water and to sit. She looks at you, noting your exhaustion and the pulse on your wrist. \"Rest if you need to,\" she says. \"The engine room lies deeper in the eastern passage.\"";
+        }
       }
       if (!cainInParty) {
         txt = txt

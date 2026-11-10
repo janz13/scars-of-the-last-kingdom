@@ -1046,7 +1046,7 @@ assert(totalTrailerSec === 75, `TRAILER_75S_ARRANGEMENT totals exactly 75 second
 console.log('\n--- Suite 16: Wave 5 Story Expansion (MB1–MB4, Epilogue, 244 Endings, 169 Scenes) ---');
 
 assert(Object.keys(SCENE_MANIFEST).length === 169, `SCENE_MANIFEST has all 169 scenes (found ${Object.keys(SCENE_MANIFEST).length})`);
-assert(ALL_STORY_NODES.length === 1635, `ALL_STORY_NODES has 1,635 total nodes (found ${ALL_STORY_NODES.length})`);
+assert(ALL_STORY_NODES.length === 1636, `ALL_STORY_NODES has 1,636 total nodes (found ${ALL_STORY_NODES.length})`);
 
 // Verify MB1..MB4 and Epilogue entry/exit nodes exist
 for (const nid of ['mb1_01', 'mb1_29', 'mb1_30', 'mb2_01', 'mb2_34', 'mb2_35', 'mb3_01', 'mb3_33', 'mb3_34', 'mb3_35', 'mb4_01', 'mb4_28', 'mb4_29', 'mb4_30', 'epi_01', 'epi_55', 'epi_56', 'epi_57', 'epi_58', 'epi_59', 'epi_60']) {

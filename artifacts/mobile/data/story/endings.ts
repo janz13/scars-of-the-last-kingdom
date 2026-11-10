@@ -182,12 +182,25 @@ const ORPHAN_ENDING_IDS = new Set<string>([
   'ending_fc1_true_ending_path',
 ]);
 
+const FACTION_CLIMAX_ENDING_IDS = new Set<string>([
+  'ending_fc1_faction_betrayal',
+  'ending_fc1_faction_betrayal_killed',
+  'ending_fc2_faction_collapse',
+]);
+
 // Map raw endings, assign canonical category and imageKey
 const mappedEndings: EndingDefinition[] = RAW_ENDINGS.map((raw) => {
-  const category = mapTypeToCanonicalCategory(raw.type);
+  let description = raw.description;
+  if (raw.id === 'ending_ch3_corruption_engine') {
+    description = description.replace('Mira calls your name three times. The engine answers.', 'The engine answers.');
+  }
+  const category = FACTION_CLIMAX_ENDING_IDS.has(raw.id)
+    ? 'faction'
+    : mapTypeToCanonicalCategory(raw.type);
   const imageKey = (raw as any).imageKey || getDefaultImageKey(category, raw.type);
   return {
     ...raw,
+    description,
     category,
     imageKey,
   };
@@ -212,15 +225,21 @@ const EXPANSION_ENDING_IDS = new Set<string>([
   'ending_epilogue_chorus',
 ]);
 
-// Separate guaranteed orphans, expansion endings, and base non-orphan endings
+// Separate guaranteed orphans, faction endings, expansion endings, and base non-orphan endings
 const guaranteedOrphans = mappedEndings.filter((e) => ORPHAN_ENDING_IDS.has(e.id));
 const expansionEndings = mappedEndings.filter((e) => EXPANSION_ENDING_IDS.has(e.id));
-const nonOrphans = mappedEndings.filter((e) => !ORPHAN_ENDING_IDS.has(e.id) && !EXPANSION_ENDING_IDS.has(e.id));
+const factionEndings = mappedEndings.filter(
+  (e) => e.category === 'faction' && !ORPHAN_ENDING_IDS.has(e.id) && !EXPANSION_ENDING_IDS.has(e.id)
+);
+const nonOrphans = mappedEndings.filter(
+  (e) => !ORPHAN_ENDING_IDS.has(e.id) && !EXPANSION_ENDING_IDS.has(e.id) && e.category !== 'faction'
+);
 
 // Construct 228 base endings + 16 expansion endings (244 total when ENABLE_EXPANSION is true)
-const neededFromNonOrphans = 228 - guaranteedOrphans.length;
+const neededFromNonOrphans = 228 - guaranteedOrphans.length - factionEndings.length;
 export const ENDINGS: EndingDefinition[] = [
   ...guaranteedOrphans,
+  ...factionEndings,
   ...nonOrphans.slice(0, neededFromNonOrphans),
   ...(ENABLE_EXPANSION ? expansionEndings : []),
 ];
