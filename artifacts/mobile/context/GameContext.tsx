@@ -229,8 +229,12 @@ function applyTickAndHallucination(next: GameState, realNodeId: string): GameSta
     };
   }
 
-  // Companion event redirect — fires when relationship conditions are met
-  const companionEventNode = getCompanionEventTrigger(next);
+  // Companion event redirect — skip during Prologue or on terminal ending nodes
+  const targetNode = getNodeById(realNodeId);
+  const skipCompanionEvent = Boolean(
+    targetNode?.isEnding || targetNode?.chapter === 'Prologue' || realNodeId.startsWith('prologue')
+  );
+  const companionEventNode = skipCompanionEvent ? null : getCompanionEventTrigger(next);
   if (companionEventNode) {
     const withFlag = applyEffects(next, { setFlags: ['companion_event_active'] });
     return {
