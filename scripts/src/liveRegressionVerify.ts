@@ -1292,43 +1292,36 @@ export async function verifyEnhancement14(browser: Browser): Promise<BugRegressi
 export async function verifyEnhancement15(browser: Browser): Promise<BugRegressionResult> {
   const bugId = 'ENH-15';
   const name = 'Automatic Branch Checkpoint & 1-Click Rewind on Ending Screen';
-  const liveNodeId = 'tunnel_collapse_moment -> ending_buried_tunnel -> Rewind';
+  const liveNodeId = 'far_platform_9c -> tunnel_collapse_moment -> ending_buried_tunnel -> Rewind';
   const timestamp = new Date().toISOString();
   try {
     const seed = buildRegressionState({
-      currentNodeId: 'tunnel_collapse_moment',
+      currentNodeId: 'far_platform_9c',
     });
-    const cpPayload = {
-      state: seed,
-      label: 'Tunnel Collapse',
-      nodeId: 'tunnel_collapse_moment',
-      chapter: 'Chapter 1',
-      timestamp: Date.now(),
-    };
     const { context, page } = await createRegressionPage(browser, seed);
-    await page.addInitScript((cpStr) => {
-      localStorage.setItem('@scars_branch_checkpoint_v1', cpStr);
-    }, JSON.stringify(cpPayload));
     await advanceToGame(page, 'enh15_rewind');
 
-    const failChoice = page.getByText(/Hesitate/i).first();
-    if ((await failChoice.count()) > 0) {
-      await failChoice.click({ force: true });
-    } else {
-      await page.getByText(/Too slow|buried/i).first().click({ force: true });
-    }
+    // Step 1: Advance from far_platform_9c -> tunnel_collapse_moment (automatically captures checkpoint at 6-choice hub)
+    await page.getByText(/Continue to where the tunnel opens/i).first().click({ force: true });
     await page.waitForTimeout(1000);
+
+    // Step 2: Take fatal choice to reach ending_buried_tunnel
+    await page.getByText(/You don't move fast enough/i).first().click({ force: true });
+    await page.waitForTimeout(1200);
 
     const endingBody = await page.evaluate(() => document.body.innerText);
     const hasRewind = endingBody.includes('REWIND TO CHECKPOINT');
     if (hasRewind) {
       await page.getByText(/REWIND TO CHECKPOINT/i).first().click({ force: true });
-      await page.waitForTimeout(1000);
+      await page.waitForTimeout(1200);
     }
     const postRewindBody = await page.evaluate(() => document.body.innerText);
     await context.close();
 
-    const restoredGame = hasRewind && !postRewindBody.includes('START NEW TIMELINE');
+    const restoredGame =
+      hasRewind &&
+      postRewindBody.includes('The Collapse') &&
+      !postRewindBody.includes('START NEW TIMELINE');
     if (!restoredGame) {
       return {
         bugId,
@@ -1344,7 +1337,7 @@ export async function verifyEnhancement15(browser: Browser): Promise<BugRegressi
       name,
       passed: true,
       liveNodeId,
-      detail: 'Verified REWIND TO CHECKPOINT renders on EndingScreen and restores pre-ending hub cleanly.',
+      detail: 'Verified automatic hub checkpoint creation at tunnel_collapse_moment, REWIND TO CHECKPOINT on EndingScreen, and instant restoration.',
       timestamp,
     };
   } catch (err: any) {
@@ -1366,7 +1359,7 @@ export async function verifyEnhancement16(browser: Browser): Promise<BugRegressi
     const toggle = page.getByText(/High-Legibility Reading Mode/i).first();
     await toggle.waitFor({ state: 'visible', timeout: 10000 });
     await toggle.click({ force: true });
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(400);
 
     const swText = await page.evaluate(async (baseUrl) => {
       const res = await fetch(`${baseUrl}sw.js?t=${Date.now()}`);
@@ -1396,7 +1389,7 @@ export async function verifyEnhancement16(browser: Browser): Promise<BugRegressi
       name,
       passed: true,
       liveNodeId,
-      detail: `Verified High-Legibility Reading Mode persisted and live sw.js stamped with CACHE_VERSION='sotlk-${swMatch![1]}'.`,
+      detail: `Verified High-Legibility Reading Mode persists immediately and live sw.js stamped with CACHE_VERSION='sotlk-${swMatch![1]}'.`,
       timestamp,
     };
   } catch (err: any) {

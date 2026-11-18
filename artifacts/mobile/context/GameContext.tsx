@@ -774,10 +774,17 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     if (settings.musicMode) {
       sound.setMusicMode(settings.musicMode);
     }
-    setState((prev) => ({
-      ...prev,
-      settings: { ...prev.settings, ...settings },
-    }));
+    setState((prev) => {
+      const updated: GameState = {
+        ...prev,
+        settings: { ...prev.settings, ...settings },
+      };
+      stateRef.current = updated;
+      if (updated.character && updated.settings.autoSave) {
+        void saveGame(updated);
+      }
+      return updated;
+    });
   }, []);
 
   const importSave = useCallback(async (jsonStr: string): Promise<boolean> => {
