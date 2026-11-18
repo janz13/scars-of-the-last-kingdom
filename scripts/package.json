@@ -9,6 +9,7 @@
     "generate:metadata": "tsx ./src/generateStoryMetadata.ts",
     "test": "tsx ./src/engine.test.ts",
     "test:e2e": "tsx ./e2e/runAllTests.ts",
+    "test:divergent": "tsx ./src/liveDivergentPlaythroughs.ts",
     "test:smoke": "playwright test -c ./e2e/playwright.config.ts",
     "audit": "tsx ./src/fullAudit.mts",
     "build:pixel-assets": "tsx ./src/buildPixelAssets.ts",

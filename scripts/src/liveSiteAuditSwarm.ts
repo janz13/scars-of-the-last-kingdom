@@ -25,7 +25,7 @@ if ((require as any).extensions) {
 const LIVE_URL = 'https://janz13.github.io/scars-of-the-last-kingdom/';
 declare const document: { body: { innerText: string } };
 
-const { ENDINGS, ENDING_CATEGORIES } = require('../../artifacts/mobile/data/endings.ts');
+const { ENDINGS, CANONICAL_CATEGORIES: ENDING_CATEGORIES } = require('../../artifacts/mobile/data/story/endings.ts');
 const { CONDITIONAL_ENDINGS, evaluateConditionalEnding } = require('../../artifacts/mobile/data/conditionalEndings.ts');
 const { CLASSES, BACKGROUNDS, PERSONALITY_TRAITS, buildStartingStats } = require('../../artifacts/mobile/data/characterOptions.ts');
 const { loadChapter, getLoadedNodes, getChapterForNode } = require('../../artifacts/mobile/data/story/chapterLoader.ts');
@@ -87,7 +87,7 @@ function buildLiveSaveState(overrides: Record<string, any> = {}) {
   }
 
   return {
-    screen: 'story',
+    screen: 'game',
     character: {
       name: 'Auditor',
       characterClass: 'blade_survivor',
@@ -136,7 +136,7 @@ function buildLiveSaveState(overrides: Record<string, any> = {}) {
     settings: {
       textSpeed: 'instant',
       fontSize: 'normal',
-      soundEnabled: true,
+      soundEnabled: false,
       autoSave: true,
       skipDiceAnimation: true,
       textLayout: 'auto',
@@ -154,7 +154,7 @@ async function runLiveSwarm() {
   console.log(`🌐 Target URL: ${LIVE_URL}`);
   console.log('================================================================================\n');
 
-  // 1. Load all 14 dynamic chapters in memory to build the complete 1,635-node graph
+  // 1. Load all 14 dynamic chapters in memory to build the complete 1,636-node graph
   const chapterList = [
     'Chapter 2', 'Chapter 3', 'Chapter 4', 'Chapter 5', 'Chapter 6',
     'Chapter 7', 'Chapter 8', 'Chapter 9', 'Chapter 10', 'Chapter 11',
@@ -208,12 +208,14 @@ async function runLiveSwarm() {
     }
   }
 
-  // Also include hallucination & companion event pools
+  // Also include hallucination, companion event pools, and engine-triggered survival/betrayal endings
+  const ENGINE_CONDITIONAL_ENDINGS = ['ending_starvation', 'ending_metro_death', 'ending_cain_betrayal'];
   const dynamicEventRoots = allNodes.filter(
     (n: any) =>
       n.id.startsWith('halluc_') ||
       n.id.startsWith('mira_event_') ||
-      n.id.startsWith('cain_event_')
+      n.id.startsWith('cain_event_') ||
+      ENGINE_CONDITIONAL_ENDINGS.includes(n.id)
   );
   const visitedWithDynamicPools = new Map(visitedFromSpine);
   const dynQueue = dynamicEventRoots.map((n: any) => n.id);
@@ -411,7 +413,7 @@ async function runLiveSwarm() {
       agentId: 'AGENT-21',
       role: 'Route Codex, Multi-Slot Save/Load & Subsystem Auditor',
       chapter: 'Route Codex & Subsystems',
-      branch: 'All 268 Codex Endings & Subsystems',
+      branch: 'All 244 Codex Endings & Subsystems',
       startNodeId: 'epi_55',
       chapterFilter: ['Corruption', 'Interlude'],
     },
@@ -452,6 +454,8 @@ async function runLiveSwarm() {
     await context.addInitScript((payload) => {
       localStorage.setItem('@scars_content_warning_v1', 'true');
       localStorage.setItem('@scars_intro_seen_v1', 'true');
+      localStorage.setItem('@scars_mark_awakening_seen_ch1', '1');
+      localStorage.setItem('@scars_mark_awakening_seen_ch9', '1');
       localStorage.setItem('@scars_save_v1', payload.seedStateJson);
       localStorage.setItem('@scars_save_slot_auto', payload.seedStateJson);
       localStorage.setItem('@scars_save_meta', JSON.stringify(payload.metaPayload));
@@ -472,7 +476,9 @@ async function runLiveSwarm() {
       consoleErrors.push(`UNHANDLED_REJECTION: ${err?.message || err}`);
     });
     page.on('requestfailed', (req) => {
-      network404s.push(`FAILED_REQUEST: ${req.failure()?.errorText || 'failed'} ${req.url()}`);
+      const errText = req.failure()?.errorText || 'failed';
+      if (errText.includes('ERR_ABORTED')) return;
+      network404s.push(`FAILED_REQUEST: ${errText} ${req.url()}`);
     });
     page.on('response', (res) => {
       if (res.status() >= 400) {
@@ -662,12 +668,21 @@ async function runLiveSwarm() {
             await page.waitForTimeout(300);
           }
 
-          const choiceButtons = page.locator('text=/\\[[1-9]\\]/');
+          let choiceButtons = page.locator('[data-choice-button="true"]:not([tabindex="-1"])');
           let count = await choiceButtons.count();
+          if (count === 0) {
+            choiceButtons = page.locator('text=/\\[[1-9]\\]/');
+            count = await choiceButtons.count();
+          }
           if (count === 0) {
             await page.keyboard.press('Space').catch(() => {});
             await page.waitForTimeout(400);
+            choiceButtons = page.locator('[data-choice-button="true"]:not([tabindex="-1"])');
             count = await choiceButtons.count();
+            if (count === 0) {
+              choiceButtons = page.locator('text=/\\[[1-9]\\]/');
+              count = await choiceButtons.count();
+            }
           }
           if (count === 0) {
             const returnBtn = page.getByText('RETURN TO MAIN MENU');
@@ -684,8 +699,8 @@ async function runLiveSwarm() {
           const nodeDef = nodeMap.get(currNodeId);
           const choiceId = nodeDef?.choices?.[choiceIdx]?.id || `choice_${choiceIdx + 1}`;
 
-          await choiceButtons.nth(choiceIdx).click().catch(() => {});
-          await page.waitForTimeout(600);
+          await choiceButtons.nth(choiceIdx).click({ force: true }).catch(() => {});
+          await page.waitForTimeout(800);
 
           const rollPrompt = page.getByText(/ROLL D20|TAP TO ROLL|D20 CHECK/i);
           if ((await rollPrompt.count()) > 0) {
@@ -852,7 +867,7 @@ async function runLiveSwarm() {
   console.log(`   • Total Agents Dispatched:    ${allAgentResults.length}`);
   console.log(`   • Live Unique Nodes Visited:  ${liveUniqueNodes.size}`);
   console.log(`   • Live Endings Reached:       ${liveUniqueEndings.size}`);
-  console.log(`   • Static Story Nodes Valid:   ${allNodes.length} / 1,635`);
+  console.log(`   • Static Story Nodes Valid:   ${allNodes.length} / 1,636`);
   console.log(`   • Static Reachable Nodes:     ${visitedWithDynamicPools.size} / ${allNodes.length}`);
   console.log(`   • Static Ending Nodes:        ${isEndingNodes.length}`);
   console.log(`   • ENDINGS Registry Entries:   ${ENDINGS.length}`);

@@ -1,0 +1,638 @@
+{
+  "timestamp": "2026-11-18T03:37:52.393Z",
+  "targetUrl": "https://janz13.github.io/scars-of-the-last-kingdom/",
+  "totalAgents": 7,
+  "passedAgents": 7,
+  "allPassed": true,
+  "distinctEndingsCount": 22,
+  "distinctEndings": [
+    "c2_ending_exile_wanderer",
+    "ending_buried_tunnel",
+    "ending_ch10_mira_leaves",
+    "ending_ch11_buried_city",
+    "ending_ch12_saint_crusade_death",
+    "ending_ch4_cain_defect",
+    "ending_ch4_infiltrated",
+    "ending_ch6_cain_merciless_road",
+    "ending_ch6_crimson_baptism",
+    "ending_ch7_tribunal_execution",
+    "ending_ch8_glass_court_feast",
+    "ending_ch9_first_voice_merge",
+    "ending_epilogue_mark_goes_quiet",
+    "ending_epilogue_yes_were_here",
+    "ending_fc1_companion_abandonment",
+    "ending_fc2_bearer_transcended",
+    "ending_fc2_city_opened_wastes",
+    "ending_mb1_chalk_and_ash",
+    "ending_mb2_static_hymn",
+    "ending_mb3_bread_riot",
+    "ending_mb4_off_the_air",
+    "ending_mira_sacrifice"
+  ],
+  "distinctNodesCount": 73,
+  "distinctNodes": [
+    "archive_door",
+    "c10_mira_leaves_end",
+    "c10_mira_leaves_setup",
+    "c11_buried_city_end",
+    "c11_gate_sealed_door",
+    "c12_saint_crusade_death_end",
+    "c12_saint_veyra_choice",
+    "c2_ending_exile_wanderer",
+    "c2_patrol_spotted",
+    "c2_poisoned_sky",
+    "c2_surface_camp",
+    "c2_surface_dawn",
+    "c2_surface_junction",
+    "c2_water_tainted_choice",
+    "c3_broker_secret_path",
+    "c3_cain_tactical_moment",
+    "c3_hidden_clinic_arrive",
+    "c3_market_observe",
+    "c3_narrow_conduit",
+    "c3_resist_signal_node",
+    "c3_sera_encounter",
+    "c4_barracks_cain_joins_saints",
+    "c4_barracks_intel_gathered",
+    "c4_cain_defect_end",
+    "c4_infiltrate_success",
+    "c6_cain_allow_execute",
+    "c6_cain_merciless_road_end",
+    "c6_crimson_baptism_end",
+    "c6_pulse_tower_decision",
+    "c7_tribunal_execution_end",
+    "c7_tribunal_verdict_guilty",
+    "c8_glass_court_feast_end",
+    "c8_vault_seraphine_offer",
+    "c9_tower_first_voice_strong",
+    "c9_tower_merge_end",
+    "chapter1_start",
+    "dice_tunnel_flood_fail",
+    "ending_buried_tunnel",
+    "ending_mira_sacrifice",
+    "epi_01",
+    "epi_50",
+    "epi_51",
+    "epi_55",
+    "epi_59",
+    "far_platform_9c",
+    "fc1_companion_abandonment_end",
+    "fc1_threshold_mira_scene",
+    "fc2_bearer_transcended_end",
+    "fc2_city_opened_wastes_end",
+    "fc2_entry_routing",
+    "fc2_memory_final_review",
+    "fc2_true_cycle_choice",
+    "final_chapter2_start",
+    "halluc_mark_speaks",
+    "mb1_27",
+    "mb1_29",
+    "mb2_31",
+    "mb2_34",
+    "mb3_31",
+    "mb3_34",
+    "mb4_22",
+    "mb4_30",
+    "mira_event_corruption_warning",
+    "prologue_metro_stampede",
+    "prologue_research_basement",
+    "prologue_saints_resolve",
+    "prologue_saints_soldier",
+    "prologue_scholar_basement",
+    "prologue_stampede_resolve",
+    "prologue_start",
+    "tunnel_brace_success",
+    "tunnel_collapse_moment",
+    "tunnel_flood_chamber"
+  ],
+  "totalConsoleErrors": 0,
+  "totalHttpErrors": 0,
+  "totalDiscrepancies": 0,
+  "agents": [
+    {
+      "agentId": "alpha",
+      "codename": "ALPHA — Solo Tactical Rewind",
+      "build": {
+        "background": "Exiled Soldier",
+        "className": "Tactician",
+        "trait": "Pragmatic",
+        "companion": "Alone"
+      },
+      "characterCreatorPassed": true,
+      "step2BadgeSnippet": "HP 80 STR 5 (+0) INT 7 (+1) AGI 5 (+0) CHA 8 (+1) LCK 4 (-1) Relic Hunter You've always been",
+      "statsBreakdownSnippet": "ATTRIBUTE BREAKDOWN (ROLL EFFECTIVE) Strength 3 Base +2 Exiled Soldier = 5 (+0) Intelligence 7 Base = 7 (+1) Agility 5 Base = 5 (+0) Charisma 8 Base = 8 (+1) Luck 4 Base = 4 (-1)  CORRUPTION Corruption 0",
+      "prologueNodesVisited": [
+        "prologue_start",
+        "prologue_saints_soldier",
+        "prologue_saints_resolve",
+        "chapter1_start"
+      ],
+      "chaptersTraversed": [
+        "Prologue",
+        "Chapter 1",
+        "Chapter 2",
+        "Chapter 3",
+        "Chapter 4"
+      ],
+      "routeNodesVisited": [
+        "prologue_start",
+        "prologue_saints_soldier",
+        "prologue_saints_resolve",
+        "chapter1_start",
+        "tunnel_flood_chamber",
+        "c2_surface_dawn",
+        "c2_surface_junction",
+        "c2_water_tainted_choice",
+        "c2_patrol_spotted",
+        "c3_cain_tactical_moment",
+        "c3_narrow_conduit",
+        "far_platform_9c",
+        "tunnel_collapse_moment",
+        "ending_buried_tunnel",
+        "tunnel_brace_success",
+        "c4_barracks_cain_joins_saints",
+        "c4_cain_defect_end",
+        "c4_barracks_intel_gathered",
+        "c4_infiltrate_success"
+      ],
+      "endingsReached": [
+        "ending_buried_tunnel",
+        "ending_ch4_cain_defect",
+        "ending_ch4_infiltrated"
+      ],
+      "rewindsPerformed": 1,
+      "consoleErrors": [],
+      "httpErrors": [],
+      "featureResults": [
+        {
+          "feature": "Tactician + Exiled Soldier STR 5 (+0) & ChoiceButton D20 odds preview",
+          "passed": true,
+          "evidence": "Rendered \"STR DC 13 · Your STR 5 (+0) · 40% Success\" live."
+        },
+        {
+          "feature": "c2_surface_dawn solo prose strips Mira/Cain sentences",
+          "passed": true,
+          "evidence": "Verified solo rendering on c2_surface_dawn"
+        },
+        {
+          "feature": "c2_surface_junction adapts neither-of-them text for solo",
+          "passed": true,
+          "evidence": "Verified solo rendering on c2_surface_junction"
+        },
+        {
+          "feature": "c2_water_tainted_choice falls back to Narrator & suppresses Mira dialogue box",
+          "passed": true,
+          "evidence": "Verified solo rendering on c2_water_tainted_choice"
+        },
+        {
+          "feature": "c2_patrol_spotted falls back to Narrator & suppresses Cain dialogue box",
+          "passed": true,
+          "evidence": "Verified solo rendering on c2_patrol_spotted"
+        },
+        {
+          "feature": "c3_cain_tactical_moment renders solo narrativeBlock",
+          "passed": true,
+          "evidence": "Verified solo rendering on c3_cain_tactical_moment"
+        },
+        {
+          "feature": "c3_narrow_conduit strips phantom companion asides",
+          "passed": true,
+          "evidence": "Verified solo rendering on c3_narrow_conduit"
+        },
+        {
+          "feature": "1-click REWIND TO CHECKPOINT on EndingScreen",
+          "passed": true,
+          "evidence": "Rewound from ending_buried_tunnel -> tunnel_collapse_moment -> branched to tunnel_brace_success."
+        }
+      ],
+      "discrepanciesFound": [],
+      "overallPassed": true,
+      "durationMs": 90847
+    },
+    {
+      "agentId": "bravo",
+      "codename": "BRAVO — Mira Clinic & Fog-of-War",
+      "build": {
+        "background": "Underground Medic",
+        "className": "Medic",
+        "trait": "Empathetic",
+        "companion": "Mira"
+      },
+      "characterCreatorPassed": true,
+      "step2BadgeSnippet": "HP 90 STR 4 (-1) INT 10 (+2) AGI 5 (+0) CHA 6 (+0) LCK 4 (-1) Tactician You read situations be",
+      "statsBreakdownSnippet": "ATTRIBUTE BREAKDOWN (ROLL EFFECTIVE) Strength 4 Base = 4 (-1) Intelligence 8 Base +2 Underground Medic = 10 (+2) Agility 5 Base = 5 (+0) Charisma 6 Base = 6 (+0) Luck 4 Base = 4 (-1)  CORRUPTION Corruption 0",
+      "prologueNodesVisited": [
+        "prologue_start",
+        "prologue_metro_stampede",
+        "prologue_stampede_resolve",
+        "chapter1_start"
+      ],
+      "chaptersTraversed": [
+        "Prologue",
+        "Chapter 1",
+        "Chapter 2",
+        "Chapter 3",
+        "Chapter 10"
+      ],
+      "routeNodesVisited": [
+        "prologue_start",
+        "prologue_metro_stampede",
+        "prologue_stampede_resolve",
+        "chapter1_start",
+        "c2_poisoned_sky",
+        "c2_surface_junction",
+        "c3_hidden_clinic_arrive",
+        "c3_sera_encounter",
+        "archive_door",
+        "ending_mira_sacrifice",
+        "c10_mira_leaves_setup",
+        "c10_mira_leaves_end"
+      ],
+      "endingsReached": [
+        "ending_mira_sacrifice",
+        "ending_ch10_mira_leaves"
+      ],
+      "rewindsPerformed": 0,
+      "consoleErrors": [],
+      "httpErrors": [],
+      "featureResults": [
+        {
+          "feature": "Medic OR-perk identity check on c2_poisoned_sky",
+          "passed": true,
+          "evidence": "Both medic+forgotten_scholar and tactician+underground_medic unlocked c2_medic_sky_read live."
+        },
+        {
+          "feature": "Hub latch [Already completed] on c2_follow_mira",
+          "passed": true,
+          "evidence": "c2_follow_mira disabled with Already completed when visited_mira_clinic_route set."
+        },
+        {
+          "feature": "[M] Chapter Branch Map explored count, frontier cards & ending silhouettes",
+          "passed": true,
+          "evidence": "BranchMapPanel rendered EXPLORED SCENES, frontier ??? cards, and ending silhouettes."
+        },
+        {
+          "feature": "c3_hidden_clinic_arrive Mira-present narrativeBlocks",
+          "passed": true,
+          "evidence": "Rendered Mira-present clinic arrival text cleanly."
+        },
+        {
+          "feature": "ChoiceButton supply cost badge (Cost: -1 Food)",
+          "passed": true,
+          "evidence": "Rendered \"Cost: -1 Food\" badge on Sera choice."
+        }
+      ],
+      "discrepanciesFound": [],
+      "overallPassed": true,
+      "durationMs": 66399
+    },
+    {
+      "agentId": "charlie",
+      "codename": "CHARLIE — Cain Intrigue & Hotkeys",
+      "build": {
+        "background": "Fallen Noble",
+        "className": "Shadow Broker",
+        "trait": "Calculating",
+        "companion": "Cain"
+      },
+      "characterCreatorPassed": true,
+      "step2BadgeSnippet": "HP 85 STR 5 (+0) INT 6 (+0) AGI 8 (+1) CHA 9 (+2) LCK 5 (+0) Esper / Psychic Mutant The mark",
+      "statsBreakdownSnippet": "ATTRIBUTE BREAKDOWN (ROLL EFFECTIVE) Strength 5 Base +1 Calculating = 6 (+0) Intelligence 6 Base +1 Calculating = 7 (+1) Agility 8 Base +1 Calculating = 9 (+2) Charisma 7 Base +2 Fallen Noble +1 Calculating = 10 (+2) Luck 5 Base +1 Calculat",
+      "prologueNodesVisited": [
+        "prologue_start",
+        "prologue_saints_soldier",
+        "prologue_saints_resolve",
+        "chapter1_start"
+      ],
+      "chaptersTraversed": [
+        "Prologue",
+        "Chapter 1",
+        "Chapter 2",
+        "Chapter 3",
+        "Chapter 6"
+      ],
+      "routeNodesVisited": [
+        "prologue_start",
+        "prologue_saints_soldier",
+        "prologue_saints_resolve",
+        "chapter1_start",
+        "c2_surface_camp",
+        "c3_resist_signal_node",
+        "c3_broker_secret_path",
+        "c6_cain_allow_execute",
+        "c6_cain_merciless_road_end",
+        "c6_pulse_tower_decision",
+        "c6_crimson_baptism_end"
+      ],
+      "endingsReached": [
+        "ending_ch6_cain_merciless_road",
+        "ending_ch6_crimson_baptism"
+      ],
+      "rewindsPerformed": 0,
+      "consoleErrors": [],
+      "httpErrors": [],
+      "featureResults": [
+        {
+          "feature": "Calculating trait (+1) in StatsPanel breakdown",
+          "passed": true,
+          "evidence": "Observed \"+1 Calculating\" in breakdown: ATTRIBUTE BREAKDOWN (ROLL EFFECTIVE) Strength 5 Base +1 Calculating = 6 (+0) Intelligence 6 Base +1 Calculating = 7 (+1) Agility 8 Base +1 Calculating = 9 (+2) Charisma 7 Base +2 Fallen Noble +1 Calculating = 10 (+2) Luck 5 Base +1 Calculat"
+        },
+        {
+          "feature": "c2_surface_camp Cain-present / Mira-absent narrativeBlocks",
+          "passed": true,
+          "evidence": "Rendered Cain-only watch rotation without phantom Mira."
+        },
+        {
+          "feature": "Desktop hotkeys [S]/[I]/[C]/[F]/[H]/[M] navigation",
+          "passed": true,
+          "evidence": "All 6 HUD hotkeys toggled their target panels and returned cleanly."
+        },
+        {
+          "feature": "c3_use_broker_secret Cain companion guard (commit 3d698a3)",
+          "passed": true,
+          "evidence": "Blocked when cain_joins_party=false (true), routed to c3_broker_secret_path when recruited (true)."
+        }
+      ],
+      "discrepanciesFound": [],
+      "overallPassed": true,
+      "durationMs": 60384
+    },
+    {
+      "agentId": "delta",
+      "codename": "DELTA — Corruption & High-Legibility",
+      "build": {
+        "background": "Runaway Experiment",
+        "className": "Esper / Psychic Mutant",
+        "trait": "Cold",
+        "companion": "Alone"
+      },
+      "characterCreatorPassed": true,
+      "step2BadgeSnippet": "HP 70 STR 4 (-1) INT 11 (+3) AGI 5 (+0) CHA 4 (-1) LCK 6 (+0) CRPT 7 CONTINUE ",
+      "statsBreakdownSnippet": "ATTRIBUTE BREAKDOWN (ROLL EFFECTIVE) Strength 4 Base = 4 (-1) Intelligence 9 Base +2 Runaway Experiment = 11 (+3) Agility 5 Base = 5 (+0) Charisma 5 Base -1 Runaway Experiment = 4 (-1) Luck 6 Base = 6 (+0)  CORRUPTION Corruption 7  The ma",
+      "prologueNodesVisited": [
+        "prologue_start",
+        "prologue_scholar_basement",
+        "prologue_research_basement",
+        "chapter1_start"
+      ],
+      "chaptersTraversed": [
+        "Prologue",
+        "Chapter 1",
+        "Interlude",
+        "Vision",
+        "Chapter 7",
+        "Chapter 9"
+      ],
+      "routeNodesVisited": [
+        "prologue_start",
+        "prologue_scholar_basement",
+        "prologue_research_basement",
+        "chapter1_start",
+        "mira_event_corruption_warning",
+        "halluc_mark_speaks",
+        "c7_tribunal_verdict_guilty",
+        "c7_tribunal_execution_end",
+        "c9_tower_first_voice_strong",
+        "c9_tower_merge_end"
+      ],
+      "endingsReached": [
+        "ending_ch7_tribunal_execution",
+        "ending_ch9_first_voice_merge"
+      ],
+      "rewindsPerformed": 0,
+      "consoleErrors": [],
+      "httpErrors": [],
+      "featureResults": [
+        {
+          "feature": "Interlude Corruption 35+ unlock & High-Legibility persistent toggle + SW SHA",
+          "passed": true,
+          "evidence": "interlude35=true, highContrast=true, swStamped=true"
+        },
+        {
+          "feature": "Hallucination __return__ safe resolution",
+          "passed": true,
+          "evidence": "Clicked halluc_mark_speaks choice cleanly without trapping."
+        }
+      ],
+      "discrepanciesFound": [],
+      "overallPassed": true,
+      "durationMs": 48681
+    },
+    {
+      "agentId": "echo",
+      "codename": "ECHO — Luck Reroll & Scavenger",
+      "build": {
+        "background": "Wasteland Orphan",
+        "className": "Gun Scavenger",
+        "trait": "Cynical",
+        "companion": "Mira"
+      },
+      "characterCreatorPassed": true,
+      "step2BadgeSnippet": "HP 85 STR 5 (+0) INT 5 (+0) AGI 9 (+2) CHA 4 (-1) LCK 8 (+1) Medic You keep people alive. Inc",
+      "statsBreakdownSnippet": "ATTRIBUTE BREAKDOWN (ROLL EFFECTIVE) Strength 5 Base = 5 (+0) Intelligence 5 Base = 5 (+0) Agility 8 Base +1 Wasteland Orphan = 9 (+2) Charisma 4 Base = 4 (-1) Luck 7 Base +1 Wasteland Orphan +1 Cynical = 9 (+2)  CORRUPTION Corruption 0",
+      "prologueNodesVisited": [
+        "prologue_start",
+        "prologue_metro_stampede",
+        "prologue_stampede_resolve",
+        "chapter1_start"
+      ],
+      "chaptersTraversed": [
+        "Prologue",
+        "Chapter 1",
+        "Chapter 2",
+        "Chapter 3",
+        "Chapter 8"
+      ],
+      "routeNodesVisited": [
+        "prologue_start",
+        "prologue_metro_stampede",
+        "prologue_stampede_resolve",
+        "chapter1_start",
+        "dice_tunnel_flood_fail",
+        "c3_market_observe",
+        "c2_surface_junction",
+        "c2_ending_exile_wanderer",
+        "c8_vault_seraphine_offer",
+        "c8_glass_court_feast_end"
+      ],
+      "endingsReached": [
+        "c2_ending_exile_wanderer",
+        "ending_ch8_glass_court_feast"
+      ],
+      "rewindsPerformed": 0,
+      "consoleErrors": [],
+      "httpErrors": [],
+      "featureResults": [
+        {
+          "feature": "LCK 9 >= 7 Luck Reroll Ready badge & interactive DiceRollOverlay reroll",
+          "passed": true,
+          "evidence": "hasBadge=true, interactiveReroll=true, rerollConfirmed=true, landed=dice_tunnel_flood_fail"
+        },
+        {
+          "feature": "c3_steal_attempt one-shot cycle latch & MainMenu 1636/244/7 footer",
+          "passed": true,
+          "evidence": "stealLatched=true, footerOk=true"
+        }
+      ],
+      "discrepanciesFound": [],
+      "overallPassed": true,
+      "durationMs": 51815
+    },
+    {
+      "agentId": "foxtrot",
+      "codename": "FOXTROT — MB1-MB4, FC2 & Epilogue",
+      "build": {
+        "background": "Forgotten Scholar",
+        "className": "Relic Hunter",
+        "trait": "Faithful",
+        "companion": "Cain"
+      },
+      "characterCreatorPassed": true,
+      "step2BadgeSnippet": "HP 75 STR 4 (-1) INT 10 (+2) AGI 6 (+0) CHA 5 (+0) LCK 6 (+0) CRPT 2 Shadow Broker Information is currency",
+      "statsBreakdownSnippet": "ATTRIBUTE BREAKDOWN (ROLL EFFECTIVE) Strength 4 Base = 4 (-1) Intelligence 8 Base +2 Forgotten Scholar = 10 (+2) Agility 6 Base = 6 (+0) Charisma 5 Base = 5 (+0) Luck 6 Base = 6 (+0)  CORRUPTION Corruption 2",
+      "prologueNodesVisited": [
+        "prologue_start",
+        "prologue_scholar_basement",
+        "prologue_research_basement",
+        "chapter1_start"
+      ],
+      "chaptersTraversed": [
+        "Prologue",
+        "Chapter 1",
+        "MB1 (Ch 3)",
+        "MB2 (Ch 6)",
+        "MB3 (Ch 8)",
+        "MB4 (Ch 10)",
+        "Chapter 11",
+        "Chapter 12",
+        "Final Chapter 1",
+        "Final Chapter 2",
+        "Epilogue"
+      ],
+      "routeNodesVisited": [
+        "prologue_start",
+        "prologue_scholar_basement",
+        "prologue_research_basement",
+        "chapter1_start",
+        "mb1_27",
+        "mb1_29",
+        "mb2_31",
+        "mb2_34",
+        "mb3_31",
+        "mb3_34",
+        "mb4_22",
+        "mb4_30",
+        "c11_gate_sealed_door",
+        "c11_buried_city_end",
+        "c12_saint_veyra_choice",
+        "c12_saint_crusade_death_end",
+        "fc1_threshold_mira_scene",
+        "fc1_companion_abandonment_end",
+        "final_chapter2_start",
+        "fc2_entry_routing",
+        "epi_01",
+        "epi_50",
+        "epi_51",
+        "epi_55",
+        "epi_59"
+      ],
+      "endingsReached": [
+        "ending_mb1_chalk_and_ash",
+        "ending_mb2_static_hymn",
+        "ending_mb3_bread_riot",
+        "ending_mb4_off_the_air",
+        "ending_ch11_buried_city",
+        "ending_ch12_saint_crusade_death",
+        "ending_fc1_companion_abandonment",
+        "ending_epilogue_yes_were_here",
+        "ending_epilogue_mark_goes_quiet"
+      ],
+      "rewindsPerformed": 0,
+      "consoleErrors": [],
+      "httpErrors": [],
+      "featureResults": [
+        {
+          "feature": "ChapterRoadmap 1,636-node sum, MB1-MB4 + Epilogue transition, reload persistence",
+          "passed": true,
+          "evidence": "roadmapSum=1636, reloadPersisted=true, endingsUnlocked=9"
+        }
+      ],
+      "discrepanciesFound": [],
+      "overallPassed": true,
+      "durationMs": 107137
+    },
+    {
+      "agentId": "golf",
+      "codename": "GOLF — Combat, [R] Rewind & 244 Codex",
+      "build": {
+        "background": "Black Market Courier",
+        "className": "Blade Survivor",
+        "trait": "Reckless",
+        "companion": "Alone"
+      },
+      "characterCreatorPassed": true,
+      "step2BadgeSnippet": "HP 100 STR 8 (+1) INT 5 (+0) AGI 6 (+0) CHA 5 (+0) LCK 5 (+0) Gun Scavenger Distance is life.",
+      "statsBreakdownSnippet": "ATTRIBUTE BREAKDOWN (ROLL EFFECTIVE) Strength 8 Base = 8 (+1) Intelligence 5 Base = 5 (+0) Agility 5 Base +1 Black Market Courier +1 Reckless = 7 (+1) Charisma 4 Base +1 Black Market Courier = 5 (+0) Luck 5 Base = 5 (+0)  CORRUPTION Corrup",
+      "prologueNodesVisited": [
+        "prologue_start",
+        "prologue_metro_stampede",
+        "prologue_stampede_resolve",
+        "chapter1_start"
+      ],
+      "chaptersTraversed": [
+        "Prologue",
+        "Chapter 1",
+        "Final Chapter 2",
+        "Route Codex"
+      ],
+      "routeNodesVisited": [
+        "prologue_start",
+        "prologue_metro_stampede",
+        "prologue_stampede_resolve",
+        "chapter1_start",
+        "tunnel_collapse_moment",
+        "fc2_memory_final_review",
+        "fc2_true_cycle_choice",
+        "fc2_city_opened_wastes_end",
+        "fc2_bearer_transcended_end"
+      ],
+      "endingsReached": [
+        "ending_fc2_city_opened_wastes",
+        "ending_fc2_bearer_transcended"
+      ],
+      "rewindsPerformed": 1,
+      "consoleErrors": [],
+      "httpErrors": [],
+      "featureResults": [
+        {
+          "feature": "Reckless trait (+1 Agility) in StatsPanel breakdown",
+          "passed": true,
+          "evidence": "Verified \"+1 Reckless\" in StatsPanel: ATTRIBUTE BREAKDOWN (ROLL EFFECTIVE) Strength 8 Base = 8 (+1) Intelligence 5 Base = 5 (+0) Agility 5 Base +1 Black Market Courier +1 Reckless = 7 (+1) Charisma 4 Base +1 Black Market Courier = 5 (+0) Luck 5 Base = 5 (+0)  CORRUPTION Corrup"
+        },
+        {
+          "feature": "Blade Survivor perk sorts to position [1] in tunnel_collapse_moment",
+          "passed": true,
+          "evidence": "First choice text: \"[1] [Blade Survivor] Read the collapse pattern. There's always a safe channel th\""
+        },
+        {
+          "feature": "InventoryPanel consumable USE (+15 Hunger, +15 Thirst, +20 HP)",
+          "passed": true,
+          "evidence": "Post-USE vitals: hunger=65, thirst=65, health=80"
+        },
+        {
+          "feature": "[R] keyboard hotkey rewind on EndingScreen -> alternate ending B",
+          "passed": true,
+          "evidence": "Rewound via [R] to fc2_true_cycle_choice, then unlocked ending_fc2_bearer_transcended."
+        },
+        {
+          "feature": "Route Codex all 8 canonical category tabs & 244 total",
+          "passed": true,
+          "evidence": "All 8 canonical categories + ALL (244) verified live."
+        }
+      ],
+      "discrepanciesFound": [],
+      "overallPassed": true,
+      "durationMs": 49245
+    }
+  ]
+}

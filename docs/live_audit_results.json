@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-11-09T08:08:00.487Z",
+  "timestamp": "2026-11-18T03:41:57.904Z",
   "targetUrl": "https://janz13.github.io/scars-of-the-last-kingdom/",
   "totalAgents": 21,
   "agents": [
@@ -13,7 +13,8 @@
       "httpStatus": 200,
       "nodesVisited": [
         "prologue_start",
-        "prologue_metro_stampede"
+        "prologue_metro_stampede",
+        "prologue_stampede_resolve"
       ],
       "endingsReached": [],
       "choicesTaken": [
@@ -21,9 +22,14 @@
           "fromNode": "prologue_start",
           "choiceId": "prologue_choice_stampede",
           "toNode": "prologue_metro_stampede"
+        },
+        {
+          "fromNode": "prologue_metro_stampede",
+          "choiceId": "v1_choice_a",
+          "toNode": "prologue_stampede_resolve"
         }
       ],
-      "nodesVisitedCount": 2,
+      "nodesVisitedCount": 3,
       "endingsUnlockedCount": 0,
       "sampleEndingsUnlocked": [],
       "consoleErrors": [],
@@ -44,7 +50,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 43965
+      "durationMs": 16780
     },
     {
       "agentId": "AGENT-02",
@@ -55,11 +61,59 @@
       "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
       "httpStatus": 200,
       "nodesVisited": [
-        "chapter1_start"
+        "chapter1_start",
+        "mira_event_sacrifice_offer",
+        "station_vending_search",
+        "vending_empty",
+        "station_junction",
+        "surface_escape_path",
+        "surface_premature_attempt",
+        "surface_ash_storm_begins"
       ],
       "endingsReached": [],
-      "choicesTaken": [],
-      "nodesVisitedCount": 1,
+      "choicesTaken": [
+        {
+          "fromNode": "chapter1_start",
+          "choiceId": "go_vending",
+          "toNode": "mira_event_sacrifice_offer"
+        },
+        {
+          "fromNode": "mira_event_sacrifice_offer",
+          "choiceId": "mira_sacrifice_c2",
+          "toNode": "station_vending_search"
+        },
+        {
+          "fromNode": "station_vending_search",
+          "choiceId": "machines_empty",
+          "toNode": "vending_empty"
+        },
+        {
+          "fromNode": "vending_empty",
+          "choiceId": "leave_machines",
+          "toNode": "station_junction"
+        },
+        {
+          "fromNode": "station_junction",
+          "choiceId": "go_north_security",
+          "toNode": "surface_escape_path"
+        },
+        {
+          "fromNode": "surface_escape_path",
+          "choiceId": "too_injured",
+          "toNode": "station_junction"
+        },
+        {
+          "fromNode": "station_junction",
+          "choiceId": "check_cain_silence",
+          "toNode": "surface_premature_attempt"
+        },
+        {
+          "fromNode": "surface_premature_attempt",
+          "choiceId": "rest_at_exit",
+          "toNode": "surface_ash_storm_begins"
+        }
+      ],
+      "nodesVisitedCount": 8,
       "endingsUnlockedCount": 0,
       "sampleEndingsUnlocked": [],
       "consoleErrors": [],
@@ -76,7 +130,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 9693
+      "durationMs": 46003
     },
     {
       "agentId": "AGENT-03",
@@ -92,11 +146,12 @@
         "c2_surface_dawn",
         "c2_poisoned_sky",
         "c2_surface_junction",
-        "c2_choir_signal_heard",
-        "c2_water_crisis",
-        "c2_water_tainted_choice"
+        "c2_patrol_spotted",
+        "c2_ending_saints_executed"
       ],
-      "endingsReached": [],
+      "endingsReached": [
+        "c2_ending_saints_executed"
+      ],
       "choicesTaken": [
         {
           "fromNode": "chapter2_start",
@@ -121,27 +176,19 @@
         {
           "fromNode": "c2_surface_junction",
           "choiceId": "c2_follow_the_pulse",
-          "toNode": "c2_choir_signal_heard"
+          "toNode": "c2_patrol_spotted"
         },
         {
-          "fromNode": "c2_choir_signal_heard",
-          "choiceId": "c2_choir_resist_signal",
-          "toNode": "c2_surface_junction"
-        },
-        {
-          "fromNode": "c2_surface_junction",
-          "choiceId": "c2_water_first",
-          "toNode": "c2_water_crisis"
-        },
-        {
-          "fromNode": "c2_water_crisis",
-          "choiceId": "c2_drink_rain_collection",
-          "toNode": "c2_water_tainted_choice"
+          "fromNode": "c2_patrol_spotted",
+          "choiceId": "c2_cain_distraction",
+          "toNode": "c2_ending_saints_executed"
         }
       ],
-      "nodesVisitedCount": 8,
-      "endingsUnlockedCount": 0,
-      "sampleEndingsUnlocked": [],
+      "nodesVisitedCount": 7,
+      "endingsUnlockedCount": 1,
+      "sampleEndingsUnlocked": [
+        "c2_ending_saints_executed"
+      ],
       "consoleErrors": [],
       "network404s": [],
       "errors": [],
@@ -152,7 +199,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 44688
+      "durationMs": 44255
     },
     {
       "agentId": "AGENT-04",
@@ -163,11 +210,60 @@
       "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
       "httpStatus": 200,
       "nodesVisited": [
-        "chapter3_start"
+        "chapter3_start",
+        "mira_event_sacrifice_offer",
+        "c3_tunnel_descent",
+        "c3_first_signs",
+        "c3_lio_encounter",
+        "c3_lio_challenge",
+        "c3_lio_test_fail",
+        "c3_bone_turnstile_arrive",
+        "c3_turnstile_caught"
       ],
       "endingsReached": [],
-      "choicesTaken": [],
-      "nodesVisitedCount": 1,
+      "choicesTaken": [
+        {
+          "fromNode": "chapter3_start",
+          "choiceId": "c3_enter_cautiously",
+          "toNode": "mira_event_sacrifice_offer"
+        },
+        {
+          "fromNode": "mira_event_sacrifice_offer",
+          "choiceId": "mira_sacrifice_c2",
+          "toNode": "c3_tunnel_descent"
+        },
+        {
+          "fromNode": "c3_tunnel_descent",
+          "choiceId": "c3_ignore_markings",
+          "toNode": "c3_first_signs"
+        },
+        {
+          "fromNode": "c3_first_signs",
+          "choiceId": "c3_call_out",
+          "toNode": "c3_lio_encounter"
+        },
+        {
+          "fromNode": "c3_lio_encounter",
+          "choiceId": "c3_lio_trade",
+          "toNode": "c3_lio_challenge"
+        },
+        {
+          "fromNode": "c3_lio_challenge",
+          "choiceId": "c3_refuse_test",
+          "toNode": "c3_lio_test_fail"
+        },
+        {
+          "fromNode": "c3_lio_test_fail",
+          "choiceId": "c3_accept_terms",
+          "toNode": "c3_bone_turnstile_arrive"
+        },
+        {
+          "fromNode": "c3_bone_turnstile_arrive",
+          "choiceId": "c3_conceal_weapons",
+          "toNode": "c3_turnstile_caught"
+        }
+      ],
+      "nodesVisitedCount": 9,
       "endingsUnlockedCount": 0,
       "sampleEndingsUnlocked": [],
       "consoleErrors": [],
@@ -180,7 +276,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 8731
+      "durationMs": 45941
     },
     {
       "agentId": "AGENT-05",
@@ -191,11 +287,60 @@
       "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
       "httpStatus": 200,
       "nodesVisited": [
-        "mb1_01"
+        "mb1_01",
+        "mira_event_sacrifice_offer",
+        "mb1_02",
+        "mb1_04",
+        "mb1_05",
+        "mb1_07",
+        "mb1_10",
+        "mb1_11",
+        "mb1_17"
       ],
       "endingsReached": [],
-      "choicesTaken": [],
-      "nodesVisitedCount": 1,
+      "choicesTaken": [
+        {
+          "fromNode": "mb1_01",
+          "choiceId": "mb1_01_read",
+          "toNode": "mira_event_sacrifice_offer"
+        },
+        {
+          "fromNode": "mira_event_sacrifice_offer",
+          "choiceId": "mira_sacrifice_c2",
+          "toNode": "mb1_02"
+        },
+        {
+          "fromNode": "mb1_02",
+          "choiceId": "mb1_02_next",
+          "toNode": "mb1_04"
+        },
+        {
+          "fromNode": "mb1_04",
+          "choiceId": "mb1_04_stand",
+          "toNode": "mb1_05"
+        },
+        {
+          "fromNode": "mb1_05",
+          "choiceId": "mb1_05_listen",
+          "toNode": "mb1_07"
+        },
+        {
+          "fromNode": "mb1_07",
+          "choiceId": "mb1_07_mira",
+          "toNode": "mb1_10"
+        },
+        {
+          "fromNode": "mb1_10",
+          "choiceId": "mb1_10_next",
+          "toNode": "mb1_11"
+        },
+        {
+          "fromNode": "mb1_11",
+          "choiceId": "mb1_11_forge",
+          "toNode": "mb1_17"
+        }
+      ],
+      "nodesVisitedCount": 9,
       "endingsUnlockedCount": 0,
       "sampleEndingsUnlocked": [],
       "consoleErrors": [],
@@ -208,7 +353,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 9099
+      "durationMs": 43711
     },
     {
       "agentId": "AGENT-06",
@@ -219,11 +364,24 @@
       "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
       "httpStatus": 200,
       "nodesVisited": [
-        "chapter4_start"
+        "chapter4_start",
+        "mira_event_sacrifice_offer",
+        "c4_approach_checkpoint"
       ],
       "endingsReached": [],
-      "choicesTaken": [],
-      "nodesVisitedCount": 1,
+      "choicesTaken": [
+        {
+          "fromNode": "chapter4_start",
+          "choiceId": "c4_start_approach",
+          "toNode": "mira_event_sacrifice_offer"
+        },
+        {
+          "fromNode": "mira_event_sacrifice_offer",
+          "choiceId": "mira_sacrifice_c2",
+          "toNode": "c4_approach_checkpoint"
+        }
+      ],
+      "nodesVisitedCount": 3,
       "endingsUnlockedCount": 0,
       "sampleEndingsUnlocked": [],
       "consoleErrors": [],
@@ -236,7 +394,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 29498
+      "durationMs": 41158
     },
     {
       "agentId": "AGENT-07",
@@ -247,11 +405,60 @@
       "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
       "httpStatus": 200,
       "nodesVisited": [
-        "chapter5_start"
+        "chapter5_start",
+        "mira_event_sacrifice_offer",
+        "c5_glass_gate_approach",
+        "c5_gate_guard_encounter",
+        "c5_gate_prisoner_route",
+        "c5_ascension_elevator",
+        "c5_elevator_juno_first",
+        "c5_white_atrium_arrive",
+        "c5_atrium_seraphine_entrance"
       ],
       "endingsReached": [],
-      "choicesTaken": [],
-      "nodesVisitedCount": 1,
+      "choicesTaken": [
+        {
+          "fromNode": "chapter5_start",
+          "choiceId": "c5_start_approach_gate",
+          "toNode": "mira_event_sacrifice_offer"
+        },
+        {
+          "fromNode": "mira_event_sacrifice_offer",
+          "choiceId": "mira_sacrifice_c2",
+          "toNode": "c5_glass_gate_approach"
+        },
+        {
+          "fromNode": "c5_glass_gate_approach",
+          "choiceId": "c5_approach_join_queue",
+          "toNode": "c5_gate_guard_encounter"
+        },
+        {
+          "fromNode": "c5_gate_guard_encounter",
+          "choiceId": "c5_gate_noble_card",
+          "toNode": "c5_gate_prisoner_route"
+        },
+        {
+          "fromNode": "c5_gate_prisoner_route",
+          "choiceId": "c5_prisoner_comply",
+          "toNode": "c5_ascension_elevator"
+        },
+        {
+          "fromNode": "c5_ascension_elevator",
+          "choiceId": "c5_elev_approach_figure",
+          "toNode": "c5_elevator_juno_first"
+        },
+        {
+          "fromNode": "c5_elevator_juno_first",
+          "choiceId": "c5_juno_trust_immediately",
+          "toNode": "c5_white_atrium_arrive"
+        },
+        {
+          "fromNode": "c5_white_atrium_arrive",
+          "choiceId": "c5_atrium_explore_briefly",
+          "toNode": "c5_atrium_seraphine_entrance"
+        }
+      ],
+      "nodesVisitedCount": 9,
       "endingsUnlockedCount": 0,
       "sampleEndingsUnlocked": [],
       "consoleErrors": [],
@@ -264,7 +471,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 7644
+      "durationMs": 44708
     },
     {
       "agentId": "AGENT-08",
@@ -341,7 +548,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 42709
+      "durationMs": 46857
     },
     {
       "agentId": "AGENT-09",
@@ -352,11 +559,42 @@
       "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
       "httpStatus": 200,
       "nodesVisited": [
-        "mb2_01"
+        "mb2_01",
+        "mira_event_sacrifice_offer",
+        "mb2_02",
+        "mb2_04",
+        "mb2_06",
+        "mb2_07"
       ],
       "endingsReached": [],
-      "choicesTaken": [],
-      "nodesVisitedCount": 1,
+      "choicesTaken": [
+        {
+          "fromNode": "mb2_01",
+          "choiceId": "mb2_01_open",
+          "toNode": "mira_event_sacrifice_offer"
+        },
+        {
+          "fromNode": "mira_event_sacrifice_offer",
+          "choiceId": "mira_sacrifice_c2",
+          "toNode": "mb2_02"
+        },
+        {
+          "fromNode": "mb2_02",
+          "choiceId": "mb2_02_next",
+          "toNode": "mb2_04"
+        },
+        {
+          "fromNode": "mb2_04",
+          "choiceId": "mb2_04_cain",
+          "toNode": "mb2_06"
+        },
+        {
+          "fromNode": "mb2_06",
+          "choiceId": "mb2_06_next",
+          "toNode": "mb2_07"
+        }
+      ],
+      "nodesVisitedCount": 6,
       "endingsUnlockedCount": 0,
       "sampleEndingsUnlocked": [],
       "consoleErrors": [],
@@ -369,7 +607,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 8710
+      "durationMs": 45438
     },
     {
       "agentId": "AGENT-10",
@@ -380,11 +618,60 @@
       "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
       "httpStatus": 200,
       "nodesVisited": [
-        "chapter7_start"
+        "chapter7_start",
+        "mira_event_sacrifice_offer",
+        "c7_approach_archive",
+        "c7_door_arrive",
+        "c7_vera_hostile",
+        "c7_vera_questions",
+        "c7_door_mael_summon",
+        "c7_dust_library_arrive",
+        "c7_mael_intro"
       ],
       "endingsReached": [],
-      "choicesTaken": [],
-      "nodesVisitedCount": 1,
+      "choicesTaken": [
+        {
+          "fromNode": "chapter7_start",
+          "choiceId": "c7_approach_standard",
+          "toNode": "mira_event_sacrifice_offer"
+        },
+        {
+          "fromNode": "mira_event_sacrifice_offer",
+          "choiceId": "mira_sacrifice_c2",
+          "toNode": "c7_approach_archive"
+        },
+        {
+          "fromNode": "c7_approach_archive",
+          "choiceId": "c7_approach_examine_symbols",
+          "toNode": "c7_door_arrive"
+        },
+        {
+          "fromNode": "c7_door_arrive",
+          "choiceId": "c7_door_enter_silent",
+          "toNode": "c7_vera_hostile"
+        },
+        {
+          "fromNode": "c7_vera_hostile",
+          "choiceId": "c7_vera_respond_direct",
+          "toNode": "c7_vera_questions"
+        },
+        {
+          "fromNode": "c7_vera_questions",
+          "choiceId": "c7_vera_follow_silent",
+          "toNode": "c7_door_mael_summon"
+        },
+        {
+          "fromNode": "c7_door_mael_summon",
+          "choiceId": "c7_enter_mael_office",
+          "toNode": "c7_dust_library_arrive"
+        },
+        {
+          "fromNode": "c7_dust_library_arrive",
+          "choiceId": "c7_mael_know_choir",
+          "toNode": "c7_mael_intro"
+        }
+      ],
+      "nodesVisitedCount": 9,
       "endingsUnlockedCount": 0,
       "sampleEndingsUnlocked": [],
       "consoleErrors": [],
@@ -397,7 +684,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 9068
+      "durationMs": 46800
     },
     {
       "agentId": "AGENT-11",
@@ -408,11 +695,59 @@
       "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
       "httpStatus": 200,
       "nodesVisited": [
-        "chapter8_start"
+        "chapter8_start",
+        "mira_event_sacrifice_offer",
+        "c8_arrive_ration_square",
+        "c8_roan_meet",
+        "c8_square_crowd_state",
+        "c8_roan_assessment",
+        "c8_square_choice",
+        "c8_siege_tunnels_arrive"
       ],
       "endingsReached": [],
-      "choicesTaken": [],
-      "nodesVisitedCount": 1,
+      "choicesTaken": [
+        {
+          "fromNode": "chapter8_start",
+          "choiceId": "c8_start_standard",
+          "toNode": "mira_event_sacrifice_offer"
+        },
+        {
+          "fromNode": "mira_event_sacrifice_offer",
+          "choiceId": "mira_sacrifice_c2",
+          "toNode": "c8_arrive_ration_square"
+        },
+        {
+          "fromNode": "c8_arrive_ration_square",
+          "choiceId": "c8_approach_roan",
+          "toNode": "c8_roan_meet"
+        },
+        {
+          "fromNode": "c8_roan_meet",
+          "choiceId": "c8_roan_esper_read",
+          "toNode": "c8_square_crowd_state"
+        },
+        {
+          "fromNode": "c8_square_crowd_state",
+          "choiceId": "c8_crowd_roan",
+          "toNode": "c8_roan_meet"
+        },
+        {
+          "fromNode": "c8_roan_meet",
+          "choiceId": "c8_roan_yes_plan",
+          "toNode": "c8_roan_assessment"
+        },
+        {
+          "fromNode": "c8_roan_assessment",
+          "choiceId": "c8_roan_confirm_archive",
+          "toNode": "c8_square_choice"
+        },
+        {
+          "fromNode": "c8_square_choice",
+          "choiceId": "c8_go_siege_tunnels",
+          "toNode": "c8_siege_tunnels_arrive"
+        }
+      ],
+      "nodesVisitedCount": 8,
       "endingsUnlockedCount": 0,
       "sampleEndingsUnlocked": [],
       "consoleErrors": [],
@@ -425,7 +760,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 8756
+      "durationMs": 46830
     },
     {
       "agentId": "AGENT-12",
@@ -484,7 +819,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 41484
+      "durationMs": 45529
     },
     {
       "agentId": "AGENT-13",
@@ -495,11 +830,60 @@
       "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
       "httpStatus": 200,
       "nodesVisited": [
-        "chapter9_start"
+        "chapter9_start",
+        "mira_event_sacrifice_offer",
+        "c9_mark_first_pulse",
+        "c9_masked_heir_arrives",
+        "c9_heir_selected_truth",
+        "c9_heir_three_locations",
+        "c9_relic_scar_arrive",
+        "c9_scar_door_examine",
+        "c9_varr_first_encounter"
       ],
       "endingsReached": [],
-      "choicesTaken": [],
-      "nodesVisitedCount": 1,
+      "choicesTaken": [
+        {
+          "fromNode": "chapter9_start",
+          "choiceId": "c9_touch_scar",
+          "toNode": "mira_event_sacrifice_offer"
+        },
+        {
+          "fromNode": "mira_event_sacrifice_offer",
+          "choiceId": "mira_sacrifice_c2",
+          "toNode": "c9_mark_first_pulse"
+        },
+        {
+          "fromNode": "c9_mark_first_pulse",
+          "choiceId": "c9_face_figure",
+          "toNode": "c9_masked_heir_arrives"
+        },
+        {
+          "fromNode": "c9_masked_heir_arrives",
+          "choiceId": "c9_heir_ask_selected",
+          "toNode": "c9_heir_selected_truth"
+        },
+        {
+          "fromNode": "c9_heir_selected_truth",
+          "choiceId": "c9_heir_ask_locations",
+          "toNode": "c9_heir_three_locations"
+        },
+        {
+          "fromNode": "c9_heir_three_locations",
+          "choiceId": "c9_heir_to_relic_scar",
+          "toNode": "c9_relic_scar_arrive"
+        },
+        {
+          "fromNode": "c9_relic_scar_arrive",
+          "choiceId": "c9_scar_examine_door",
+          "toNode": "c9_scar_door_examine"
+        },
+        {
+          "fromNode": "c9_scar_door_examine",
+          "choiceId": "c9_scar_varr_heard",
+          "toNode": "c9_varr_first_encounter"
+        }
+      ],
+      "nodesVisitedCount": 9,
       "endingsUnlockedCount": 0,
       "sampleEndingsUnlocked": [],
       "consoleErrors": [],
@@ -512,7 +896,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 10929
+      "durationMs": 46989
     },
     {
       "agentId": "AGENT-14",
@@ -523,11 +907,60 @@
       "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
       "httpStatus": 200,
       "nodesVisited": [
-        "chapter10_start"
+        "chapter10_start",
+        "mira_event_sacrifice_offer",
+        "c10_safehouse_survey",
+        "c10_safehouse_mira_arrives",
+        "c10_mira_pre_truth_choice",
+        "c10_mira_truth_begins",
+        "c10_mira_full_reveal",
+        "c10_mira_response_trust",
+        "c10_safehouse_cain_arrives"
       ],
       "endingsReached": [],
-      "choicesTaken": [],
-      "nodesVisitedCount": 1,
+      "choicesTaken": [
+        {
+          "fromNode": "chapter10_start",
+          "choiceId": "c10_start_survey",
+          "toNode": "mira_event_sacrifice_offer"
+        },
+        {
+          "fromNode": "mira_event_sacrifice_offer",
+          "choiceId": "mira_sacrifice_c2",
+          "toNode": "c10_safehouse_survey"
+        },
+        {
+          "fromNode": "c10_safehouse_survey",
+          "choiceId": "c10_survey_find_mira",
+          "toNode": "c10_safehouse_mira_arrives"
+        },
+        {
+          "fromNode": "c10_safehouse_mira_arrives",
+          "choiceId": "c10_mira_interrupt",
+          "toNode": "c10_mira_pre_truth_choice"
+        },
+        {
+          "fromNode": "c10_mira_pre_truth_choice",
+          "choiceId": "c10_pre_truth_continue",
+          "toNode": "c10_mira_truth_begins"
+        },
+        {
+          "fromNode": "c10_mira_truth_begins",
+          "choiceId": "c10_truth_mission_only",
+          "toNode": "c10_mira_full_reveal"
+        },
+        {
+          "fromNode": "c10_mira_full_reveal",
+          "choiceId": "c10_full_reveal_trust",
+          "toNode": "c10_mira_response_trust"
+        },
+        {
+          "fromNode": "c10_mira_response_trust",
+          "choiceId": "c10_trust_response_cain",
+          "toNode": "c10_safehouse_cain_arrives"
+        }
+      ],
+      "nodesVisitedCount": 9,
       "endingsUnlockedCount": 0,
       "sampleEndingsUnlocked": [],
       "consoleErrors": [],
@@ -540,7 +973,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 8979
+      "durationMs": 46984
     },
     {
       "agentId": "AGENT-15",
@@ -551,11 +984,60 @@
       "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
       "httpStatus": 200,
       "nodesVisited": [
-        "mb4_01"
+        "mb4_01",
+        "mira_event_sacrifice_offer",
+        "mb4_02",
+        "mb4_04",
+        "mb4_06",
+        "mb4_07",
+        "mb4_20",
+        "mb4_21",
+        "mb4_22"
       ],
       "endingsReached": [],
-      "choicesTaken": [],
-      "nodesVisitedCount": 1,
+      "choicesTaken": [
+        {
+          "fromNode": "mb4_01",
+          "choiceId": "mb4_01_door",
+          "toNode": "mira_event_sacrifice_offer"
+        },
+        {
+          "fromNode": "mira_event_sacrifice_offer",
+          "choiceId": "mira_sacrifice_c2",
+          "toNode": "mb4_02"
+        },
+        {
+          "fromNode": "mb4_02",
+          "choiceId": "mb4_02_next",
+          "toNode": "mb4_04"
+        },
+        {
+          "fromNode": "mb4_04",
+          "choiceId": "mb4_04_cain",
+          "toNode": "mb4_06"
+        },
+        {
+          "fromNode": "mb4_06",
+          "choiceId": "mb4_06_next",
+          "toNode": "mb4_07"
+        },
+        {
+          "fromNode": "mb4_07",
+          "choiceId": "mb4_07_rewrite",
+          "toNode": "mb4_20"
+        },
+        {
+          "fromNode": "mb4_20",
+          "choiceId": "mb4_20_explain",
+          "toNode": "mb4_21"
+        },
+        {
+          "fromNode": "mb4_21",
+          "choiceId": "mb4_21_companion",
+          "toNode": "mb4_22"
+        }
+      ],
+      "nodesVisitedCount": 9,
       "endingsUnlockedCount": 0,
       "sampleEndingsUnlocked": [],
       "consoleErrors": [],
@@ -568,7 +1050,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 8469
+      "durationMs": 44175
     },
     {
       "agentId": "AGENT-16",
@@ -579,11 +1061,60 @@
       "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
       "httpStatus": 200,
       "nodesVisited": [
-        "chapter11_start"
+        "chapter11_start",
+        "mira_event_sacrifice_offer",
+        "c11_gate_approach",
+        "c11_gate_companion_survey",
+        "c11_gate_alone_scene",
+        "c11_sub_city_gate_arrive",
+        "c11_gate_sealed_door",
+        "c11_gate_mark_open",
+        "c11_gate_opened"
       ],
       "endingsReached": [],
-      "choicesTaken": [],
-      "nodesVisitedCount": 1,
+      "choicesTaken": [
+        {
+          "fromNode": "chapter11_start",
+          "choiceId": "c11_start_descend",
+          "toNode": "mira_event_sacrifice_offer"
+        },
+        {
+          "fromNode": "mira_event_sacrifice_offer",
+          "choiceId": "mira_sacrifice_c2",
+          "toNode": "c11_gate_approach"
+        },
+        {
+          "fromNode": "c11_gate_approach",
+          "choiceId": "c11_approach_survey",
+          "toNode": "c11_gate_companion_survey"
+        },
+        {
+          "fromNode": "c11_gate_companion_survey",
+          "choiceId": "c11_survey_both",
+          "toNode": "c11_gate_alone_scene"
+        },
+        {
+          "fromNode": "c11_gate_alone_scene",
+          "choiceId": "c11_alone_to_gate",
+          "toNode": "c11_sub_city_gate_arrive"
+        },
+        {
+          "fromNode": "c11_sub_city_gate_arrive",
+          "choiceId": "c11_gate_examine",
+          "toNode": "c11_gate_sealed_door"
+        },
+        {
+          "fromNode": "c11_gate_sealed_door",
+          "choiceId": "c11_use_mark_gate",
+          "toNode": "c11_gate_mark_open"
+        },
+        {
+          "fromNode": "c11_gate_mark_open",
+          "choiceId": "c11_mark_open_descend",
+          "toNode": "c11_gate_opened"
+        }
+      ],
+      "nodesVisitedCount": 9,
       "endingsUnlockedCount": 0,
       "sampleEndingsUnlocked": [],
       "consoleErrors": [],
@@ -596,7 +1127,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 8266
+      "durationMs": 45994
     },
     {
       "agentId": "AGENT-17",
@@ -637,7 +1168,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 40510
+      "durationMs": 40154
     },
     {
       "agentId": "AGENT-18",
@@ -650,7 +1181,13 @@
       "nodesVisited": [
         "final_chapter1_start",
         "mira_event_sacrifice_offer",
-        "fc1_descent_companion_check"
+        "fc1_descent_companion_check",
+        "fc1_descent_alone",
+        "fc1_metro_arrive",
+        "fc1_metro_blackout_memory",
+        "fc1_metro_fragment_check",
+        "fc1_metro_forward",
+        "fc1_bone_platform"
       ],
       "endingsReached": [],
       "choicesTaken": [
@@ -663,9 +1200,39 @@
           "fromNode": "mira_event_sacrifice_offer",
           "choiceId": "mira_sacrifice_c2",
           "toNode": "fc1_descent_companion_check"
+        },
+        {
+          "fromNode": "fc1_descent_companion_check",
+          "choiceId": "fc1_check_both",
+          "toNode": "fc1_descent_alone"
+        },
+        {
+          "fromNode": "fc1_descent_alone",
+          "choiceId": "fc1_alone_descend",
+          "toNode": "fc1_metro_arrive"
+        },
+        {
+          "fromNode": "fc1_metro_arrive",
+          "choiceId": "fc1_metro_examine",
+          "toNode": "fc1_metro_blackout_memory"
+        },
+        {
+          "fromNode": "fc1_metro_blackout_memory",
+          "choiceId": "fc1_memory_proceed",
+          "toNode": "fc1_metro_fragment_check"
+        },
+        {
+          "fromNode": "fc1_metro_fragment_check",
+          "choiceId": "fc1_metro_esper_read",
+          "toNode": "fc1_metro_forward"
+        },
+        {
+          "fromNode": "fc1_metro_forward",
+          "choiceId": "fc1_metro_exit",
+          "toNode": "fc1_bone_platform"
         }
       ],
-      "nodesVisitedCount": 3,
+      "nodesVisitedCount": 9,
       "endingsUnlockedCount": 0,
       "sampleEndingsUnlocked": [],
       "consoleErrors": [],
@@ -678,7 +1245,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 40745
+      "durationMs": 44780
     },
     {
       "agentId": "AGENT-19",
@@ -691,7 +1258,13 @@
       "nodesVisited": [
         "final_chapter2_start",
         "mira_event_sacrifice_offer",
-        "fc2_entry_routing"
+        "fc2_entry_routing",
+        "epi_01",
+        "epi_03",
+        "epi_04",
+        "epi_06",
+        "epi_07",
+        "epi_08"
       ],
       "endingsReached": [],
       "choicesTaken": [
@@ -704,9 +1277,39 @@
           "fromNode": "mira_event_sacrifice_offer",
           "choiceId": "mira_sacrifice_c2",
           "toNode": "fc2_entry_routing"
+        },
+        {
+          "fromNode": "fc2_entry_routing",
+          "choiceId": "fc2_route_savior",
+          "toNode": "epi_01"
+        },
+        {
+          "fromNode": "epi_01",
+          "choiceId": "epi_01_check_companions",
+          "toNode": "epi_03"
+        },
+        {
+          "fromNode": "epi_03",
+          "choiceId": "epi_03_next",
+          "toNode": "epi_04"
+        },
+        {
+          "fromNode": "epi_04",
+          "choiceId": "epi_04_follow_wire",
+          "toNode": "epi_06"
+        },
+        {
+          "fromNode": "epi_06",
+          "choiceId": "epi_06_next",
+          "toNode": "epi_07"
+        },
+        {
+          "fromNode": "epi_07",
+          "choiceId": "epi_07_ring",
+          "toNode": "epi_08"
         }
       ],
-      "nodesVisitedCount": 3,
+      "nodesVisitedCount": 9,
       "endingsUnlockedCount": 0,
       "sampleEndingsUnlocked": [],
       "consoleErrors": [],
@@ -719,7 +1322,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 40773
+      "durationMs": 74185
     },
     {
       "agentId": "AGENT-20",
@@ -730,11 +1333,60 @@
       "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
       "httpStatus": 200,
       "nodesVisited": [
-        "epi_01"
+        "epi_01",
+        "mira_event_sacrifice_offer",
+        "epi_02",
+        "epi_04",
+        "epi_06",
+        "epi_07",
+        "epi_08",
+        "epi_10",
+        "epi_11"
       ],
       "endingsReached": [],
-      "choicesTaken": [],
-      "nodesVisitedCount": 1,
+      "choicesTaken": [
+        {
+          "fromNode": "epi_01",
+          "choiceId": "epi_01_turn_wheel",
+          "toNode": "mira_event_sacrifice_offer"
+        },
+        {
+          "fromNode": "mira_event_sacrifice_offer",
+          "choiceId": "mira_sacrifice_c2",
+          "toNode": "epi_02"
+        },
+        {
+          "fromNode": "epi_02",
+          "choiceId": "epi_02_next",
+          "toNode": "epi_04"
+        },
+        {
+          "fromNode": "epi_04",
+          "choiceId": "epi_04_follow_wire",
+          "toNode": "epi_06"
+        },
+        {
+          "fromNode": "epi_06",
+          "choiceId": "epi_06_next",
+          "toNode": "epi_07"
+        },
+        {
+          "fromNode": "epi_07",
+          "choiceId": "epi_07_ring",
+          "toNode": "epi_08"
+        },
+        {
+          "fromNode": "epi_08",
+          "choiceId": "epi_08_next",
+          "toNode": "epi_10"
+        },
+        {
+          "fromNode": "epi_10",
+          "choiceId": "epi_10_next",
+          "toNode": "epi_11"
+        }
+      ],
+      "nodesVisitedCount": 9,
       "endingsUnlockedCount": 0,
       "sampleEndingsUnlocked": [],
       "consoleErrors": [],
@@ -747,12 +1399,12 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 7766
+      "durationMs": 44807
     },
     {
       "agentId": "AGENT-21",
       "role": "Route Codex, Multi-Slot Save/Load & Subsystem Auditor",
-      "assignedChapterOrBranch": "All 268 Codex Endings & Subsystems",
+      "assignedChapterOrBranch": "All 244 Codex Endings & Subsystems",
       "chapter": "Route Codex & Subsystems",
       "startNodeId": "epi_55",
       "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
@@ -779,12 +1431,12 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 11526
+      "durationMs": 10781
     }
   ],
   "globalStats": {
-    "totalUniqueNodes": 43,
-    "totalUniqueEndings": 1,
+    "totalUniqueNodes": 130,
+    "totalUniqueEndings": 2,
     "totalErrors": 0,
     "totalConsoleExceptions": 0
   },
@@ -799,7 +1451,8 @@
       "httpStatus": 200,
       "nodesVisited": [
         "prologue_start",
-        "prologue_metro_stampede"
+        "prologue_metro_stampede",
+        "prologue_stampede_resolve"
       ],
       "endingsReached": [],
       "choicesTaken": [
@@ -807,9 +1460,14 @@
           "fromNode": "prologue_start",
           "choiceId": "prologue_choice_stampede",
           "toNode": "prologue_metro_stampede"
+        },
+        {
+          "fromNode": "prologue_metro_stampede",
+          "choiceId": "v1_choice_a",
+          "toNode": "prologue_stampede_resolve"
         }
       ],
-      "nodesVisitedCount": 2,
+      "nodesVisitedCount": 3,
       "endingsUnlockedCount": 0,
       "sampleEndingsUnlocked": [],
       "consoleErrors": [],
@@ -830,7 +1488,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 43965
+      "durationMs": 16780
     },
     {
       "agentId": "AGENT-02",
@@ -841,11 +1499,59 @@
       "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
       "httpStatus": 200,
       "nodesVisited": [
-        "chapter1_start"
+        "chapter1_start",
+        "mira_event_sacrifice_offer",
+        "station_vending_search",
+        "vending_empty",
+        "station_junction",
+        "surface_escape_path",
+        "surface_premature_attempt",
+        "surface_ash_storm_begins"
       ],
       "endingsReached": [],
-      "choicesTaken": [],
-      "nodesVisitedCount": 1,
+      "choicesTaken": [
+        {
+          "fromNode": "chapter1_start",
+          "choiceId": "go_vending",
+          "toNode": "mira_event_sacrifice_offer"
+        },
+        {
+          "fromNode": "mira_event_sacrifice_offer",
+          "choiceId": "mira_sacrifice_c2",
+          "toNode": "station_vending_search"
+        },
+        {
+          "fromNode": "station_vending_search",
+          "choiceId": "machines_empty",
+          "toNode": "vending_empty"
+        },
+        {
+          "fromNode": "vending_empty",
+          "choiceId": "leave_machines",
+          "toNode": "station_junction"
+        },
+        {
+          "fromNode": "station_junction",
+          "choiceId": "go_north_security",
+          "toNode": "surface_escape_path"
+        },
+        {
+          "fromNode": "surface_escape_path",
+          "choiceId": "too_injured",
+          "toNode": "station_junction"
+        },
+        {
+          "fromNode": "station_junction",
+          "choiceId": "check_cain_silence",
+          "toNode": "surface_premature_attempt"
+        },
+        {
+          "fromNode": "surface_premature_attempt",
+          "choiceId": "rest_at_exit",
+          "toNode": "surface_ash_storm_begins"
+        }
+      ],
+      "nodesVisitedCount": 8,
       "endingsUnlockedCount": 0,
       "sampleEndingsUnlocked": [],
       "consoleErrors": [],
@@ -862,7 +1568,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 9693
+      "durationMs": 46003
     },
     {
       "agentId": "AGENT-03",
@@ -878,11 +1584,12 @@
         "c2_surface_dawn",
         "c2_poisoned_sky",
         "c2_surface_junction",
-        "c2_choir_signal_heard",
-        "c2_water_crisis",
-        "c2_water_tainted_choice"
+        "c2_patrol_spotted",
+        "c2_ending_saints_executed"
       ],
-      "endingsReached": [],
+      "endingsReached": [
+        "c2_ending_saints_executed"
+      ],
       "choicesTaken": [
         {
           "fromNode": "chapter2_start",
@@ -907,27 +1614,19 @@
         {
           "fromNode": "c2_surface_junction",
           "choiceId": "c2_follow_the_pulse",
-          "toNode": "c2_choir_signal_heard"
+          "toNode": "c2_patrol_spotted"
         },
         {
-          "fromNode": "c2_choir_signal_heard",
-          "choiceId": "c2_choir_resist_signal",
-          "toNode": "c2_surface_junction"
-        },
-        {
-          "fromNode": "c2_surface_junction",
-          "choiceId": "c2_water_first",
-          "toNode": "c2_water_crisis"
-        },
-        {
-          "fromNode": "c2_water_crisis",
-          "choiceId": "c2_drink_rain_collection",
-          "toNode": "c2_water_tainted_choice"
+          "fromNode": "c2_patrol_spotted",
+          "choiceId": "c2_cain_distraction",
+          "toNode": "c2_ending_saints_executed"
         }
       ],
-      "nodesVisitedCount": 8,
-      "endingsUnlockedCount": 0,
-      "sampleEndingsUnlocked": [],
+      "nodesVisitedCount": 7,
+      "endingsUnlockedCount": 1,
+      "sampleEndingsUnlocked": [
+        "c2_ending_saints_executed"
+      ],
       "consoleErrors": [],
       "network404s": [],
       "errors": [],
@@ -938,7 +1637,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 44688
+      "durationMs": 44255
     },
     {
       "agentId": "AGENT-04",
@@ -949,11 +1648,60 @@
       "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
       "httpStatus": 200,
       "nodesVisited": [
-        "chapter3_start"
+        "chapter3_start",
+        "mira_event_sacrifice_offer",
+        "c3_tunnel_descent",
+        "c3_first_signs",
+        "c3_lio_encounter",
+        "c3_lio_challenge",
+        "c3_lio_test_fail",
+        "c3_bone_turnstile_arrive",
+        "c3_turnstile_caught"
       ],
       "endingsReached": [],
-      "choicesTaken": [],
-      "nodesVisitedCount": 1,
+      "choicesTaken": [
+        {
+          "fromNode": "chapter3_start",
+          "choiceId": "c3_enter_cautiously",
+          "toNode": "mira_event_sacrifice_offer"
+        },
+        {
+          "fromNode": "mira_event_sacrifice_offer",
+          "choiceId": "mira_sacrifice_c2",
+          "toNode": "c3_tunnel_descent"
+        },
+        {
+          "fromNode": "c3_tunnel_descent",
+          "choiceId": "c3_ignore_markings",
+          "toNode": "c3_first_signs"
+        },
+        {
+          "fromNode": "c3_first_signs",
+          "choiceId": "c3_call_out",
+          "toNode": "c3_lio_encounter"
+        },
+        {
+          "fromNode": "c3_lio_encounter",
+          "choiceId": "c3_lio_trade",
+          "toNode": "c3_lio_challenge"
+        },
+        {
+          "fromNode": "c3_lio_challenge",
+          "choiceId": "c3_refuse_test",
+          "toNode": "c3_lio_test_fail"
+        },
+        {
+          "fromNode": "c3_lio_test_fail",
+          "choiceId": "c3_accept_terms",
+          "toNode": "c3_bone_turnstile_arrive"
+        },
+        {
+          "fromNode": "c3_bone_turnstile_arrive",
+          "choiceId": "c3_conceal_weapons",
+          "toNode": "c3_turnstile_caught"
+        }
+      ],
+      "nodesVisitedCount": 9,
       "endingsUnlockedCount": 0,
       "sampleEndingsUnlocked": [],
       "consoleErrors": [],
@@ -966,7 +1714,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 8731
+      "durationMs": 45941
     },
     {
       "agentId": "AGENT-05",
@@ -977,11 +1725,60 @@
       "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
       "httpStatus": 200,
       "nodesVisited": [
-        "mb1_01"
+        "mb1_01",
+        "mira_event_sacrifice_offer",
+        "mb1_02",
+        "mb1_04",
+        "mb1_05",
+        "mb1_07",
+        "mb1_10",
+        "mb1_11",
+        "mb1_17"
       ],
       "endingsReached": [],
-      "choicesTaken": [],
-      "nodesVisitedCount": 1,
+      "choicesTaken": [
+        {
+          "fromNode": "mb1_01",
+          "choiceId": "mb1_01_read",
+          "toNode": "mira_event_sacrifice_offer"
+        },
+        {
+          "fromNode": "mira_event_sacrifice_offer",
+          "choiceId": "mira_sacrifice_c2",
+          "toNode": "mb1_02"
+        },
+        {
+          "fromNode": "mb1_02",
+          "choiceId": "mb1_02_next",
+          "toNode": "mb1_04"
+        },
+        {
+          "fromNode": "mb1_04",
+          "choiceId": "mb1_04_stand",
+          "toNode": "mb1_05"
+        },
+        {
+          "fromNode": "mb1_05",
+          "choiceId": "mb1_05_listen",
+          "toNode": "mb1_07"
+        },
+        {
+          "fromNode": "mb1_07",
+          "choiceId": "mb1_07_mira",
+          "toNode": "mb1_10"
+        },
+        {
+          "fromNode": "mb1_10",
+          "choiceId": "mb1_10_next",
+          "toNode": "mb1_11"
+        },
+        {
+          "fromNode": "mb1_11",
+          "choiceId": "mb1_11_forge",
+          "toNode": "mb1_17"
+        }
+      ],
+      "nodesVisitedCount": 9,
       "endingsUnlockedCount": 0,
       "sampleEndingsUnlocked": [],
       "consoleErrors": [],
@@ -994,7 +1791,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 9099
+      "durationMs": 43711
     },
     {
       "agentId": "AGENT-06",
@@ -1005,11 +1802,24 @@
       "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
       "httpStatus": 200,
       "nodesVisited": [
-        "chapter4_start"
+        "chapter4_start",
+        "mira_event_sacrifice_offer",
+        "c4_approach_checkpoint"
       ],
       "endingsReached": [],
-      "choicesTaken": [],
-      "nodesVisitedCount": 1,
+      "choicesTaken": [
+        {
+          "fromNode": "chapter4_start",
+          "choiceId": "c4_start_approach",
+          "toNode": "mira_event_sacrifice_offer"
+        },
+        {
+          "fromNode": "mira_event_sacrifice_offer",
+          "choiceId": "mira_sacrifice_c2",
+          "toNode": "c4_approach_checkpoint"
+        }
+      ],
+      "nodesVisitedCount": 3,
       "endingsUnlockedCount": 0,
       "sampleEndingsUnlocked": [],
       "consoleErrors": [],
@@ -1022,7 +1832,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 29498
+      "durationMs": 41158
     },
     {
       "agentId": "AGENT-07",
@@ -1033,11 +1843,60 @@
       "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
       "httpStatus": 200,
       "nodesVisited": [
-        "chapter5_start"
+        "chapter5_start",
+        "mira_event_sacrifice_offer",
+        "c5_glass_gate_approach",
+        "c5_gate_guard_encounter",
+        "c5_gate_prisoner_route",
+        "c5_ascension_elevator",
+        "c5_elevator_juno_first",
+        "c5_white_atrium_arrive",
+        "c5_atrium_seraphine_entrance"
       ],
       "endingsReached": [],
-      "choicesTaken": [],
-      "nodesVisitedCount": 1,
+      "choicesTaken": [
+        {
+          "fromNode": "chapter5_start",
+          "choiceId": "c5_start_approach_gate",
+          "toNode": "mira_event_sacrifice_offer"
+        },
+        {
+          "fromNode": "mira_event_sacrifice_offer",
+          "choiceId": "mira_sacrifice_c2",
+          "toNode": "c5_glass_gate_approach"
+        },
+        {
+          "fromNode": "c5_glass_gate_approach",
+          "choiceId": "c5_approach_join_queue",
+          "toNode": "c5_gate_guard_encounter"
+        },
+        {
+          "fromNode": "c5_gate_guard_encounter",
+          "choiceId": "c5_gate_noble_card",
+          "toNode": "c5_gate_prisoner_route"
+        },
+        {
+          "fromNode": "c5_gate_prisoner_route",
+          "choiceId": "c5_prisoner_comply",
+          "toNode": "c5_ascension_elevator"
+        },
+        {
+          "fromNode": "c5_ascension_elevator",
+          "choiceId": "c5_elev_approach_figure",
+          "toNode": "c5_elevator_juno_first"
+        },
+        {
+          "fromNode": "c5_elevator_juno_first",
+          "choiceId": "c5_juno_trust_immediately",
+          "toNode": "c5_white_atrium_arrive"
+        },
+        {
+          "fromNode": "c5_white_atrium_arrive",
+          "choiceId": "c5_atrium_explore_briefly",
+          "toNode": "c5_atrium_seraphine_entrance"
+        }
+      ],
+      "nodesVisitedCount": 9,
       "endingsUnlockedCount": 0,
       "sampleEndingsUnlocked": [],
       "consoleErrors": [],
@@ -1050,7 +1909,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 7644
+      "durationMs": 44708
     },
     {
       "agentId": "AGENT-08",
@@ -1127,7 +1986,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 42709
+      "durationMs": 46857
     },
     {
       "agentId": "AGENT-09",
@@ -1138,11 +1997,42 @@
       "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
       "httpStatus": 200,
       "nodesVisited": [
-        "mb2_01"
+        "mb2_01",
+        "mira_event_sacrifice_offer",
+        "mb2_02",
+        "mb2_04",
+        "mb2_06",
+        "mb2_07"
       ],
       "endingsReached": [],
-      "choicesTaken": [],
-      "nodesVisitedCount": 1,
+      "choicesTaken": [
+        {
+          "fromNode": "mb2_01",
+          "choiceId": "mb2_01_open",
+          "toNode": "mira_event_sacrifice_offer"
+        },
+        {
+          "fromNode": "mira_event_sacrifice_offer",
+          "choiceId": "mira_sacrifice_c2",
+          "toNode": "mb2_02"
+        },
+        {
+          "fromNode": "mb2_02",
+          "choiceId": "mb2_02_next",
+          "toNode": "mb2_04"
+        },
+        {
+          "fromNode": "mb2_04",
+          "choiceId": "mb2_04_cain",
+          "toNode": "mb2_06"
+        },
+        {
+          "fromNode": "mb2_06",
+          "choiceId": "mb2_06_next",
+          "toNode": "mb2_07"
+        }
+      ],
+      "nodesVisitedCount": 6,
       "endingsUnlockedCount": 0,
       "sampleEndingsUnlocked": [],
       "consoleErrors": [],
@@ -1155,7 +2045,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 8710
+      "durationMs": 45438
     },
     {
       "agentId": "AGENT-10",
@@ -1166,11 +2056,60 @@
       "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
       "httpStatus": 200,
       "nodesVisited": [
-        "chapter7_start"
+        "chapter7_start",
+        "mira_event_sacrifice_offer",
+        "c7_approach_archive",
+        "c7_door_arrive",
+        "c7_vera_hostile",
+        "c7_vera_questions",
+        "c7_door_mael_summon",
+        "c7_dust_library_arrive",
+        "c7_mael_intro"
       ],
       "endingsReached": [],
-      "choicesTaken": [],
-      "nodesVisitedCount": 1,
+      "choicesTaken": [
+        {
+          "fromNode": "chapter7_start",
+          "choiceId": "c7_approach_standard",
+          "toNode": "mira_event_sacrifice_offer"
+        },
+        {
+          "fromNode": "mira_event_sacrifice_offer",
+          "choiceId": "mira_sacrifice_c2",
+          "toNode": "c7_approach_archive"
+        },
+        {
+          "fromNode": "c7_approach_archive",
+          "choiceId": "c7_approach_examine_symbols",
+          "toNode": "c7_door_arrive"
+        },
+        {
+          "fromNode": "c7_door_arrive",
+          "choiceId": "c7_door_enter_silent",
+          "toNode": "c7_vera_hostile"
+        },
+        {
+          "fromNode": "c7_vera_hostile",
+          "choiceId": "c7_vera_respond_direct",
+          "toNode": "c7_vera_questions"
+        },
+        {
+          "fromNode": "c7_vera_questions",
+          "choiceId": "c7_vera_follow_silent",
+          "toNode": "c7_door_mael_summon"
+        },
+        {
+          "fromNode": "c7_door_mael_summon",
+          "choiceId": "c7_enter_mael_office",
+          "toNode": "c7_dust_library_arrive"
+        },
+        {
+          "fromNode": "c7_dust_library_arrive",
+          "choiceId": "c7_mael_know_choir",
+          "toNode": "c7_mael_intro"
+        }
+      ],
+      "nodesVisitedCount": 9,
       "endingsUnlockedCount": 0,
       "sampleEndingsUnlocked": [],
       "consoleErrors": [],
@@ -1183,7 +2122,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 9068
+      "durationMs": 46800
     },
     {
       "agentId": "AGENT-11",
@@ -1194,11 +2133,59 @@
       "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
       "httpStatus": 200,
       "nodesVisited": [
-        "chapter8_start"
+        "chapter8_start",
+        "mira_event_sacrifice_offer",
+        "c8_arrive_ration_square",
+        "c8_roan_meet",
+        "c8_square_crowd_state",
+        "c8_roan_assessment",
+        "c8_square_choice",
+        "c8_siege_tunnels_arrive"
       ],
       "endingsReached": [],
-      "choicesTaken": [],
-      "nodesVisitedCount": 1,
+      "choicesTaken": [
+        {
+          "fromNode": "chapter8_start",
+          "choiceId": "c8_start_standard",
+          "toNode": "mira_event_sacrifice_offer"
+        },
+        {
+          "fromNode": "mira_event_sacrifice_offer",
+          "choiceId": "mira_sacrifice_c2",
+          "toNode": "c8_arrive_ration_square"
+        },
+        {
+          "fromNode": "c8_arrive_ration_square",
+          "choiceId": "c8_approach_roan",
+          "toNode": "c8_roan_meet"
+        },
+        {
+          "fromNode": "c8_roan_meet",
+          "choiceId": "c8_roan_esper_read",
+          "toNode": "c8_square_crowd_state"
+        },
+        {
+          "fromNode": "c8_square_crowd_state",
+          "choiceId": "c8_crowd_roan",
+          "toNode": "c8_roan_meet"
+        },
+        {
+          "fromNode": "c8_roan_meet",
+          "choiceId": "c8_roan_yes_plan",
+          "toNode": "c8_roan_assessment"
+        },
+        {
+          "fromNode": "c8_roan_assessment",
+          "choiceId": "c8_roan_confirm_archive",
+          "toNode": "c8_square_choice"
+        },
+        {
+          "fromNode": "c8_square_choice",
+          "choiceId": "c8_go_siege_tunnels",
+          "toNode": "c8_siege_tunnels_arrive"
+        }
+      ],
+      "nodesVisitedCount": 8,
       "endingsUnlockedCount": 0,
       "sampleEndingsUnlocked": [],
       "consoleErrors": [],
@@ -1211,7 +2198,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 8756
+      "durationMs": 46830
     },
     {
       "agentId": "AGENT-12",
@@ -1270,7 +2257,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 41484
+      "durationMs": 45529
     },
     {
       "agentId": "AGENT-13",
@@ -1281,11 +2268,60 @@
       "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
       "httpStatus": 200,
       "nodesVisited": [
-        "chapter9_start"
+        "chapter9_start",
+        "mira_event_sacrifice_offer",
+        "c9_mark_first_pulse",
+        "c9_masked_heir_arrives",
+        "c9_heir_selected_truth",
+        "c9_heir_three_locations",
+        "c9_relic_scar_arrive",
+        "c9_scar_door_examine",
+        "c9_varr_first_encounter"
       ],
       "endingsReached": [],
-      "choicesTaken": [],
-      "nodesVisitedCount": 1,
+      "choicesTaken": [
+        {
+          "fromNode": "chapter9_start",
+          "choiceId": "c9_touch_scar",
+          "toNode": "mira_event_sacrifice_offer"
+        },
+        {
+          "fromNode": "mira_event_sacrifice_offer",
+          "choiceId": "mira_sacrifice_c2",
+          "toNode": "c9_mark_first_pulse"
+        },
+        {
+          "fromNode": "c9_mark_first_pulse",
+          "choiceId": "c9_face_figure",
+          "toNode": "c9_masked_heir_arrives"
+        },
+        {
+          "fromNode": "c9_masked_heir_arrives",
+          "choiceId": "c9_heir_ask_selected",
+          "toNode": "c9_heir_selected_truth"
+        },
+        {
+          "fromNode": "c9_heir_selected_truth",
+          "choiceId": "c9_heir_ask_locations",
+          "toNode": "c9_heir_three_locations"
+        },
+        {
+          "fromNode": "c9_heir_three_locations",
+          "choiceId": "c9_heir_to_relic_scar",
+          "toNode": "c9_relic_scar_arrive"
+        },
+        {
+          "fromNode": "c9_relic_scar_arrive",
+          "choiceId": "c9_scar_examine_door",
+          "toNode": "c9_scar_door_examine"
+        },
+        {
+          "fromNode": "c9_scar_door_examine",
+          "choiceId": "c9_scar_varr_heard",
+          "toNode": "c9_varr_first_encounter"
+        }
+      ],
+      "nodesVisitedCount": 9,
       "endingsUnlockedCount": 0,
       "sampleEndingsUnlocked": [],
       "consoleErrors": [],
@@ -1298,7 +2334,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 10929
+      "durationMs": 46989
     },
     {
       "agentId": "AGENT-14",
@@ -1309,11 +2345,60 @@
       "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
       "httpStatus": 200,
       "nodesVisited": [
-        "chapter10_start"
+        "chapter10_start",
+        "mira_event_sacrifice_offer",
+        "c10_safehouse_survey",
+        "c10_safehouse_mira_arrives",
+        "c10_mira_pre_truth_choice",
+        "c10_mira_truth_begins",
+        "c10_mira_full_reveal",
+        "c10_mira_response_trust",
+        "c10_safehouse_cain_arrives"
       ],
       "endingsReached": [],
-      "choicesTaken": [],
-      "nodesVisitedCount": 1,
+      "choicesTaken": [
+        {
+          "fromNode": "chapter10_start",
+          "choiceId": "c10_start_survey",
+          "toNode": "mira_event_sacrifice_offer"
+        },
+        {
+          "fromNode": "mira_event_sacrifice_offer",
+          "choiceId": "mira_sacrifice_c2",
+          "toNode": "c10_safehouse_survey"
+        },
+        {
+          "fromNode": "c10_safehouse_survey",
+          "choiceId": "c10_survey_find_mira",
+          "toNode": "c10_safehouse_mira_arrives"
+        },
+        {
+          "fromNode": "c10_safehouse_mira_arrives",
+          "choiceId": "c10_mira_interrupt",
+          "toNode": "c10_mira_pre_truth_choice"
+        },
+        {
+          "fromNode": "c10_mira_pre_truth_choice",
+          "choiceId": "c10_pre_truth_continue",
+          "toNode": "c10_mira_truth_begins"
+        },
+        {
+          "fromNode": "c10_mira_truth_begins",
+          "choiceId": "c10_truth_mission_only",
+          "toNode": "c10_mira_full_reveal"
+        },
+        {
+          "fromNode": "c10_mira_full_reveal",
+          "choiceId": "c10_full_reveal_trust",
+          "toNode": "c10_mira_response_trust"
+        },
+        {
+          "fromNode": "c10_mira_response_trust",
+          "choiceId": "c10_trust_response_cain",
+          "toNode": "c10_safehouse_cain_arrives"
+        }
+      ],
+      "nodesVisitedCount": 9,
       "endingsUnlockedCount": 0,
       "sampleEndingsUnlocked": [],
       "consoleErrors": [],
@@ -1326,7 +2411,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 8979
+      "durationMs": 46984
     },
     {
       "agentId": "AGENT-15",
@@ -1337,11 +2422,60 @@
       "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
       "httpStatus": 200,
       "nodesVisited": [
-        "mb4_01"
+        "mb4_01",
+        "mira_event_sacrifice_offer",
+        "mb4_02",
+        "mb4_04",
+        "mb4_06",
+        "mb4_07",
+        "mb4_20",
+        "mb4_21",
+        "mb4_22"
       ],
       "endingsReached": [],
-      "choicesTaken": [],
-      "nodesVisitedCount": 1,
+      "choicesTaken": [
+        {
+          "fromNode": "mb4_01",
+          "choiceId": "mb4_01_door",
+          "toNode": "mira_event_sacrifice_offer"
+        },
+        {
+          "fromNode": "mira_event_sacrifice_offer",
+          "choiceId": "mira_sacrifice_c2",
+          "toNode": "mb4_02"
+        },
+        {
+          "fromNode": "mb4_02",
+          "choiceId": "mb4_02_next",
+          "toNode": "mb4_04"
+        },
+        {
+          "fromNode": "mb4_04",
+          "choiceId": "mb4_04_cain",
+          "toNode": "mb4_06"
+        },
+        {
+          "fromNode": "mb4_06",
+          "choiceId": "mb4_06_next",
+          "toNode": "mb4_07"
+        },
+        {
+          "fromNode": "mb4_07",
+          "choiceId": "mb4_07_rewrite",
+          "toNode": "mb4_20"
+        },
+        {
+          "fromNode": "mb4_20",
+          "choiceId": "mb4_20_explain",
+          "toNode": "mb4_21"
+        },
+        {
+          "fromNode": "mb4_21",
+          "choiceId": "mb4_21_companion",
+          "toNode": "mb4_22"
+        }
+      ],
+      "nodesVisitedCount": 9,
       "endingsUnlockedCount": 0,
       "sampleEndingsUnlocked": [],
       "consoleErrors": [],
@@ -1354,7 +2488,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 8469
+      "durationMs": 44175
     },
     {
       "agentId": "AGENT-16",
@@ -1365,11 +2499,60 @@
       "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
       "httpStatus": 200,
       "nodesVisited": [
-        "chapter11_start"
+        "chapter11_start",
+        "mira_event_sacrifice_offer",
+        "c11_gate_approach",
+        "c11_gate_companion_survey",
+        "c11_gate_alone_scene",
+        "c11_sub_city_gate_arrive",
+        "c11_gate_sealed_door",
+        "c11_gate_mark_open",
+        "c11_gate_opened"
       ],
       "endingsReached": [],
-      "choicesTaken": [],
-      "nodesVisitedCount": 1,
+      "choicesTaken": [
+        {
+          "fromNode": "chapter11_start",
+          "choiceId": "c11_start_descend",
+          "toNode": "mira_event_sacrifice_offer"
+        },
+        {
+          "fromNode": "mira_event_sacrifice_offer",
+          "choiceId": "mira_sacrifice_c2",
+          "toNode": "c11_gate_approach"
+        },
+        {
+          "fromNode": "c11_gate_approach",
+          "choiceId": "c11_approach_survey",
+          "toNode": "c11_gate_companion_survey"
+        },
+        {
+          "fromNode": "c11_gate_companion_survey",
+          "choiceId": "c11_survey_both",
+          "toNode": "c11_gate_alone_scene"
+        },
+        {
+          "fromNode": "c11_gate_alone_scene",
+          "choiceId": "c11_alone_to_gate",
+          "toNode": "c11_sub_city_gate_arrive"
+        },
+        {
+          "fromNode": "c11_sub_city_gate_arrive",
+          "choiceId": "c11_gate_examine",
+          "toNode": "c11_gate_sealed_door"
+        },
+        {
+          "fromNode": "c11_gate_sealed_door",
+          "choiceId": "c11_use_mark_gate",
+          "toNode": "c11_gate_mark_open"
+        },
+        {
+          "fromNode": "c11_gate_mark_open",
+          "choiceId": "c11_mark_open_descend",
+          "toNode": "c11_gate_opened"
+        }
+      ],
+      "nodesVisitedCount": 9,
       "endingsUnlockedCount": 0,
       "sampleEndingsUnlocked": [],
       "consoleErrors": [],
@@ -1382,7 +2565,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 8266
+      "durationMs": 45994
     },
     {
       "agentId": "AGENT-17",
@@ -1423,7 +2606,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 40510
+      "durationMs": 40154
     },
     {
       "agentId": "AGENT-18",
@@ -1436,7 +2619,13 @@
       "nodesVisited": [
         "final_chapter1_start",
         "mira_event_sacrifice_offer",
-        "fc1_descent_companion_check"
+        "fc1_descent_companion_check",
+        "fc1_descent_alone",
+        "fc1_metro_arrive",
+        "fc1_metro_blackout_memory",
+        "fc1_metro_fragment_check",
+        "fc1_metro_forward",
+        "fc1_bone_platform"
       ],
       "endingsReached": [],
       "choicesTaken": [
@@ -1449,9 +2638,39 @@
           "fromNode": "mira_event_sacrifice_offer",
           "choiceId": "mira_sacrifice_c2",
           "toNode": "fc1_descent_companion_check"
+        },
+        {
+          "fromNode": "fc1_descent_companion_check",
+          "choiceId": "fc1_check_both",
+          "toNode": "fc1_descent_alone"
+        },
+        {
+          "fromNode": "fc1_descent_alone",
+          "choiceId": "fc1_alone_descend",
+          "toNode": "fc1_metro_arrive"
+        },
+        {
+          "fromNode": "fc1_metro_arrive",
+          "choiceId": "fc1_metro_examine",
+          "toNode": "fc1_metro_blackout_memory"
+        },
+        {
+          "fromNode": "fc1_metro_blackout_memory",
+          "choiceId": "fc1_memory_proceed",
+          "toNode": "fc1_metro_fragment_check"
+        },
+        {
+          "fromNode": "fc1_metro_fragment_check",
+          "choiceId": "fc1_metro_esper_read",
+          "toNode": "fc1_metro_forward"
+        },
+        {
+          "fromNode": "fc1_metro_forward",
+          "choiceId": "fc1_metro_exit",
+          "toNode": "fc1_bone_platform"
         }
       ],
-      "nodesVisitedCount": 3,
+      "nodesVisitedCount": 9,
       "endingsUnlockedCount": 0,
       "sampleEndingsUnlocked": [],
       "consoleErrors": [],
@@ -1464,7 +2683,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 40745
+      "durationMs": 44780
     },
     {
       "agentId": "AGENT-19",
@@ -1477,7 +2696,13 @@
       "nodesVisited": [
         "final_chapter2_start",
         "mira_event_sacrifice_offer",
-        "fc2_entry_routing"
+        "fc2_entry_routing",
+        "epi_01",
+        "epi_03",
+        "epi_04",
+        "epi_06",
+        "epi_07",
+        "epi_08"
       ],
       "endingsReached": [],
       "choicesTaken": [
@@ -1490,9 +2715,39 @@
           "fromNode": "mira_event_sacrifice_offer",
           "choiceId": "mira_sacrifice_c2",
           "toNode": "fc2_entry_routing"
+        },
+        {
+          "fromNode": "fc2_entry_routing",
+          "choiceId": "fc2_route_savior",
+          "toNode": "epi_01"
+        },
+        {
+          "fromNode": "epi_01",
+          "choiceId": "epi_01_check_companions",
+          "toNode": "epi_03"
+        },
+        {
+          "fromNode": "epi_03",
+          "choiceId": "epi_03_next",
+          "toNode": "epi_04"
+        },
+        {
+          "fromNode": "epi_04",
+          "choiceId": "epi_04_follow_wire",
+          "toNode": "epi_06"
+        },
+        {
+          "fromNode": "epi_06",
+          "choiceId": "epi_06_next",
+          "toNode": "epi_07"
+        },
+        {
+          "fromNode": "epi_07",
+          "choiceId": "epi_07_ring",
+          "toNode": "epi_08"
         }
       ],
-      "nodesVisitedCount": 3,
+      "nodesVisitedCount": 9,
       "endingsUnlockedCount": 0,
       "sampleEndingsUnlocked": [],
       "consoleErrors": [],
@@ -1505,7 +2760,7 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 40773
+      "durationMs": 74185
     },
     {
       "agentId": "AGENT-20",
@@ -1516,11 +2771,60 @@
       "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
       "httpStatus": 200,
       "nodesVisited": [
-        "epi_01"
+        "epi_01",
+        "mira_event_sacrifice_offer",
+        "epi_02",
+        "epi_04",
+        "epi_06",
+        "epi_07",
+        "epi_08",
+        "epi_10",
+        "epi_11"
       ],
       "endingsReached": [],
-      "choicesTaken": [],
-      "nodesVisitedCount": 1,
+      "choicesTaken": [
+        {
+          "fromNode": "epi_01",
+          "choiceId": "epi_01_turn_wheel",
+          "toNode": "mira_event_sacrifice_offer"
+        },
+        {
+          "fromNode": "mira_event_sacrifice_offer",
+          "choiceId": "mira_sacrifice_c2",
+          "toNode": "epi_02"
+        },
+        {
+          "fromNode": "epi_02",
+          "choiceId": "epi_02_next",
+          "toNode": "epi_04"
+        },
+        {
+          "fromNode": "epi_04",
+          "choiceId": "epi_04_follow_wire",
+          "toNode": "epi_06"
+        },
+        {
+          "fromNode": "epi_06",
+          "choiceId": "epi_06_next",
+          "toNode": "epi_07"
+        },
+        {
+          "fromNode": "epi_07",
+          "choiceId": "epi_07_ring",
+          "toNode": "epi_08"
+        },
+        {
+          "fromNode": "epi_08",
+          "choiceId": "epi_08_next",
+          "toNode": "epi_10"
+        },
+        {
+          "fromNode": "epi_10",
+          "choiceId": "epi_10_next",
+          "toNode": "epi_11"
+        }
+      ],
+      "nodesVisitedCount": 9,
       "endingsUnlockedCount": 0,
       "sampleEndingsUnlocked": [],
       "consoleErrors": [],
@@ -1533,12 +2837,12 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 7766
+      "durationMs": 44807
     },
     {
       "agentId": "AGENT-21",
       "role": "Route Codex, Multi-Slot Save/Load & Subsystem Auditor",
-      "assignedChapterOrBranch": "All 268 Codex Endings & Subsystems",
+      "assignedChapterOrBranch": "All 244 Codex Endings & Subsystems",
       "chapter": "Route Codex & Subsystems",
       "startNodeId": "epi_55",
       "liveUrlVisited": "https://janz13.github.io/scars-of-the-last-kingdom/",
@@ -1565,37 +2869,29 @@
         }
       },
       "discrepanciesFound": [],
-      "durationMs": 11526
+      "durationMs": 10781
     }
   ],
   "liveUrl": "https://janz13.github.io/scars-of-the-last-kingdom/",
-  "totalStoryNodes": 1635,
-  "reachableFromSpine": 1621,
-  "reachableWithDynamicPools": 1632,
-  "unreachableNodesCount": 3,
-  "unreachableNodeIds": [
-    "ending_starvation",
-    "ending_metro_death",
-    "ending_cain_betrayal"
-  ],
+  "totalStoryNodes": 1636,
+  "reachableFromSpine": 1622,
+  "reachableWithDynamicPools": 1636,
+  "unreachableNodesCount": 0,
+  "unreachableNodeIds": [],
   "isEndingNodesCount": 244,
-  "endingsRegistryLength": 268,
+  "endingsRegistryLength": 244,
   "characterCreatorCombinationsTested": 1029,
   "characterCreatorFailures": 0,
   "mainMenuSceneInManifest": true,
   "endingNodesWithPrefixLookupGapCount": 0,
   "staticGraphAudit": {
-    "totalStoryNodes": 1635,
+    "totalStoryNodes": 1636,
     "totalEndingNodes": 244,
-    "reachableFromSpine": 1621,
-    "reachableWithDynamicPools": 1632,
-    "unreachableNodesCount": 3,
-    "unreachableNodeIds": [
-      "ending_starvation",
-      "ending_metro_death",
-      "ending_cain_betrayal"
-    ],
-    "endingsRegistryLength": 268,
+    "reachableFromSpine": 1622,
+    "reachableWithDynamicPools": 1636,
+    "unreachableNodesCount": 0,
+    "unreachableNodeIds": [],
+    "endingsRegistryLength": 244,
     "characterCreatorCombinationsTested": 1029,
     "characterCreatorFailures": 0
   }

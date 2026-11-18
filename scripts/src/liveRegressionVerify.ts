@@ -1302,7 +1302,7 @@ export async function verifyEnhancement15(browser: Browser): Promise<BugRegressi
     await advanceToGame(page, 'enh15_rewind');
 
     // Step 1: Advance from far_platform_9c -> tunnel_collapse_moment (automatically captures checkpoint at 6-choice hub)
-    await page.getByText(/Continue to where the tunnel opens/i).first().click({ force: true });
+    await page.getByText(/western tunnel continues/i).first().click({ force: true });
     await page.waitForTimeout(1000);
 
     // Step 2: Take fatal choice to reach ending_buried_tunnel
@@ -1320,7 +1320,7 @@ export async function verifyEnhancement15(browser: Browser): Promise<BugRegressi
 
     const restoredGame =
       hasRewind &&
-      postRewindBody.includes('The Collapse') &&
+      postRewindBody.includes('The Warning') &&
       !postRewindBody.includes('START NEW TIMELINE');
     if (!restoredGame) {
       return {
