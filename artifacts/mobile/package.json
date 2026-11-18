@@ -5,7 +5,7 @@
   "main": "expo-router/entry",
   "scripts": {
     "dev": "pnpm exec expo start --web --port 8081",
-    "build:web": "npx expo export --platform web",
+    "build:web": "npx expo export --platform web && npx tsx ../../scripts/src/stampServiceWorker.ts",
     "build": "pnpm run build:web",
     "build:android": "npx expo prebuild --platform android --clean",
     "android:studio": "npx expo prebuild --platform android --clean && echo Open artifacts/mobile/android in Android Studio",

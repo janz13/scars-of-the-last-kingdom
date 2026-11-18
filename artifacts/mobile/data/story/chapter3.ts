@@ -381,7 +381,8 @@ export const CHAPTER_3_NODES: StoryNode[] = [
         id: 'c3_steal_attempt',
         text: 'There\'s something you need on that stall. Take it when they\'re distracted.',
         nextNode: 'c3_market_steal_attempt',
-        effects: { morale: -1, miraTrust: -2 },
+        effects: { setFlags: ['c3_candle_steal_attempted'], morale: -1, miraTrust: -2 },
+        requirements: { blockedFlags: ['c3_candle_steal_attempted'] },
       },
       {
         id: 'c3_find_children',
@@ -1393,6 +1394,16 @@ export const CHAPTER_3_NODES: StoryNode[] = [
     location: 'Sub-Level Passage — Alcove Junction',
     imageKey: 'collapsed_tunnel',
     text: `Cain is already in the alcove when you arrive, or if you find him, he is exactly where the tactical geometry suggested he would be. He doesn't say anything immediately. He is running a count in his head — his eyes move to the three exits, the ceiling, the estimated patrol interval. Then he says: "The Rat King's gate has a shift change at what passes for 0300 in tunnel time. Two guards become one for eleven minutes. The gate's physical lock requires two keys, but the sliding mechanism can be worked from the eastern channel if you know the mechanical sequence." He pauses. "I know the mechanical sequence."`,
+    narrativeBlocks: [
+      {
+        when: { cainPresent: true },
+        text: 'Cain is already in the alcove when you arrive, exactly where the tactical geometry suggested he would be. He doesn\'t say anything immediately. He is running a count in his head — his eyes move to the three exits, the ceiling, the estimated patrol interval. Then he says: "The Rat King\'s gate has a shift change at what passes for 0300 in tunnel time. Two guards become one for eleven minutes. The gate\'s physical lock requires two keys, but the sliding mechanism can be worked from the eastern channel if you know the mechanical sequence." He pauses. "I know the mechanical sequence."',
+      },
+      {
+        when: { cainPresent: false },
+        text: "You pause in the alcove where the tunnel geometry narrows. Studying the three exits, the low ceiling, and the patrol interval ahead, you note that the Rat King's gate guards rotate on a rigid tunnel schedule — though without Cain's inside knowledge of the eastern channel lock sequence, you will have to face the toll gate directly.",
+      },
+    ],
     effectsOnEnter: {},
     choices: [
       {
@@ -1646,6 +1657,16 @@ export const CHAPTER_3_NODES: StoryNode[] = [
     location: 'The Hidden Clinic — Anteroom',
     imageKey: 'hidden_clinic',
     text: `The clinic is a converted maintenance bay run by a woman named Vel who was a field nurse in a city that no longer exists. The space is clean in the way that people who know about infection make things clean. Organised. Mira looks around the space with the expression she uses when she encounters competence. Vel treats three patients before she sees you — a child with an infected foot, a tunnel worker with a cut that needs closing, a person who just needs water and to sit. Then she looks at Mira and her expression changes. "When did she last sleep?" she asks, addressing you. "When did she last eat enough?"`,
+    narrativeBlocks: [
+      {
+        when: { miraPresent: true },
+        text: 'The clinic is a converted maintenance bay run by a woman named Vel who was a field nurse in a city that no longer exists. The space is clean in the way that people who know about infection make things clean. Organised. Mira looks around the space with the expression she uses when she encounters competence. Vel treats three patients before she sees you — a child with an infected foot, a tunnel worker with a cut that needs closing, a person who just needs water and to sit. Then she looks at Mira and her expression changes. "When did she last sleep?" she asks, addressing you. "When did she last eat enough?"',
+      },
+      {
+        when: { miraPresent: false },
+        text: 'The clinic is a converted maintenance bay run by a woman named Vel who was a field nurse in a city that no longer exists. The space is clean in the way that people who know about infection make things clean. Organised. Vel treats three patients before she sees you — a child with an infected foot, a tunnel worker with a cut that needs closing, a person who just needs water and to sit. She looks at you, noting your exhaustion and the pulse on your wrist. "Rest if you need to," she says. "The engine room lies deeper in the eastern passage."',
+      },
+    ],
     effectsOnEnter: {},
     choices: [
       {

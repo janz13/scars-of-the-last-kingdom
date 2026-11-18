@@ -74,6 +74,7 @@ export type GameScreen =
   | 'companions'
   | 'factions'
   | 'history'
+  | 'map'
   | 'ending'
   | 'settings'
   | 'developer'
@@ -177,6 +178,7 @@ export interface GameSettings {
   ambienceVolume?: number;
   musicMode?: MusicModeSetting;
   tiltParallax?: boolean;
+  highContrast?: boolean;
 }
 
 export type DiceType = 'd4' | 'd6' | 'd8' | 'd10' | 'd12' | 'd20';
@@ -277,6 +279,22 @@ export interface Choice {
   diceCheck?: DiceCheck;
 }
 
+export interface NarrativeVariantCondition {
+  miraPresent?: boolean;
+  cainPresent?: boolean;
+  flags?: string[];
+  blockedFlags?: string[];
+  minCorruption?: number;
+  maxCorruption?: number;
+  classes?: ClassId[];
+  backgrounds?: BackgroundId[];
+}
+
+export interface NarrativeBlock {
+  when?: NarrativeVariantCondition;
+  text: string;
+}
+
 export interface StoryNode {
   id: string;
   chapter: string;
@@ -286,6 +304,8 @@ export interface StoryNode {
   speaker?: string;
   text: string;
   dialogue?: string;
+  narrativeBlocks?: NarrativeBlock[];
+  dialogueBlocks?: NarrativeBlock[];
   effectsOnEnter?: ChoiceEffects;
   choices: Choice[];
   isEnding?: boolean;
@@ -303,6 +323,7 @@ export interface GameState {
   companions: CompanionPair;
   factionRep: FactionRep;
   routeHistory: RouteEntry[];
+  visitedNodes?: string[];
   endingsDiscovered: string[];
   settings: GameSettings;
   activeEnding: string | null;

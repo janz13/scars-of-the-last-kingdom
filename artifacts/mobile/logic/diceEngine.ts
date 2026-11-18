@@ -1,4 +1,5 @@
 import type { DiceCheck, DiceType, DiceStat, GameState, ChoiceEffects } from '../data/types';
+import { BACKGROUNDS, CLASSES, PERSONALITY_TRAITS } from '../data/characterOptions';
 
 export type DiceOutcome = 'criticalSuccess' | 'success' | 'failure' | 'criticalFailure';
 
@@ -16,6 +17,35 @@ export interface DiceResult {
   luckRerollUsed?: boolean;
 }
 
+export interface DiceOddsPreview {
+  stat: DiceStat;
+  statLabel: string;
+  statFull: string;
+  diceType: DiceType;
+  difficulty: number;
+  effectiveStat: number;
+  modifier: number;
+  modifierFormatted: string;
+  successPct: number;
+  hasLuckReroll: boolean;
+}
+
+export interface StatBreakdown {
+  stat: DiceStat;
+  statLabel: string;
+  statFull: string;
+  classBase: number;
+  bgBonus: number;
+  bgName: string | null;
+  runtimeDelta: number;
+  traitBonus: number;
+  traitName: string | null;
+  storedValue: number;
+  effectiveStat: number;
+  modifier: number;
+  modifierFormatted: string;
+}
+
 export function getEffectiveStat(state: GameState, stat: DiceStat): number {
   const effectiveStat = state.stats?.[stat] ?? 5;
   const trait = state.character?.personalityTrait;
@@ -26,16 +56,23 @@ export function getEffectiveStat(state: GameState, stat: DiceStat): number {
   return effectiveStat + traitBonus;
 }
 
-// Map a stat value to a D&D-style modifier (−3 to +4)
+/**
+ * Maps a character attribute (calibrated to the 3–15+ scale) to a D20 modifier (-3 to +4).
+ * Ensures starting average/hybrid values (5-6) sit at neutral +0, while specialized builds gain +1 to +3.
+ */
 export function getStatModifier(statValue: number): number {
-  if (statValue <= 3) return -3;
-  if (statValue <= 5) return -2;
-  if (statValue <= 7) return -1;
-  if (statValue <= 9) return 0;
-  if (statValue <= 12) return 1;
-  if (statValue <= 16) return 2;
-  if (statValue <= 22) return 3;
+  if (statValue <= 2) return -3;
+  if (statValue <= 3) return -2;
+  if (statValue <= 4) return -1;
+  if (statValue <= 6) return 0;
+  if (statValue <= 8) return 1;
+  if (statValue <= 10) return 2;
+  if (statValue <= 14) return 3;
   return 4;
+}
+
+export function formatStatModifier(modifier: number): string {
+  return modifier >= 0 ? `+${modifier}` : `${modifier}`;
 }
 
 export function rollDie(sides: number): number {
@@ -64,6 +101,74 @@ export const DICE_STAT_FULL: Record<DiceStat, string> = {
 
 export type { DiceCheck };
 
+export function getStatBreakdown(state: GameState, stat: DiceStat): StatBreakdown {
+  const storedValue = state.stats?.[stat] ?? 5;
+  const char = state.character;
+  const classOpt = char ? CLASSES.find((c) => c.id === char.characterClass) : undefined;
+  const bgOpt = char ? BACKGROUNDS.find((b) => b.id === char.background) : undefined;
+  const traitOpt = char ? PERSONALITY_TRAITS.find((t) => t.id === char.personalityTrait) : undefined;
+
+  const classBase = classOpt?.statBase?.[stat] ?? 5;
+  const bgBonus = bgOpt?.statModifiers?.[stat] ?? 0;
+  const startingExpected = classBase + bgBonus;
+  const runtimeDelta = char ? storedValue - startingExpected : 0;
+
+  let traitBonus = 0;
+  const trait = char?.personalityTrait;
+  if (trait === 'calculating') traitBonus += 1;
+  if (trait === 'reckless' && stat === 'agility') traitBonus += 1;
+  if (trait === 'cynical' && stat === 'luck') traitBonus += 1;
+
+  const effectiveStat = getEffectiveStat(state, stat);
+  const modifier = getStatModifier(effectiveStat);
+
+  return {
+    stat,
+    statLabel: DICE_STAT_LABELS[stat],
+    statFull: DICE_STAT_FULL[stat],
+    classBase,
+    bgBonus,
+    bgName: bgOpt?.name ?? null,
+    runtimeDelta,
+    traitBonus,
+    traitName: traitOpt?.name ?? null,
+    storedValue,
+    effectiveStat,
+    modifier,
+    modifierFormatted: formatStatModifier(modifier),
+  };
+}
+
+export function getDiceOddsPreview(state: GameState, diceCheck: DiceCheck): DiceOddsPreview {
+  const sides = diceSides(diceCheck.diceType);
+  const effectiveStat = getEffectiveStat(state, diceCheck.stat);
+  const modifier = getStatModifier(effectiveStat);
+
+  let winningFaces = 0;
+  for (let face = 1; face <= sides; face++) {
+    if (diceCheck.diceType === 'd20' && face === 20) {
+      winningFaces++;
+    } else if (diceCheck.diceType === 'd20' && face === 1) {
+      // natural 1 always critically fails
+    } else if (face + modifier >= diceCheck.difficulty) {
+      winningFaces++;
+    }
+  }
+
+  return {
+    stat: diceCheck.stat,
+    statLabel: DICE_STAT_LABELS[diceCheck.stat],
+    statFull: DICE_STAT_FULL[diceCheck.stat],
+    diceType: diceCheck.diceType,
+    difficulty: diceCheck.difficulty,
+    effectiveStat,
+    modifier,
+    modifierFormatted: formatStatModifier(modifier),
+    successPct: Math.round((winningFaces / Math.max(1, sides)) * 100),
+    hasLuckReroll: canUseLuckReroll(state),
+  };
+}
+
 export function resolveDiceCheck(
   state: GameState,
   diceCheck: DiceCheck,
@@ -73,11 +178,7 @@ export function resolveDiceCheck(
   const sides = diceSides(diceCheck.diceType);
   const roll = forcedRoll ?? rollDie(sides);
   const statValue = getEffectiveStat(state, diceCheck.stat);
-  const bgOpt = state.character?.background;
-  const modifier =
-    state.character?.characterClass === 'tactician' && bgOpt === 'exiled_soldier' && diceCheck.stat === 'strength' && statValue === 5
-      ? 0
-      : getStatModifier(statValue);
+  const modifier = getStatModifier(statValue);
   const total = roll + modifier;
 
   const isNatMax = diceCheck.diceType === 'd20' && roll === 20;
@@ -127,7 +228,7 @@ export function resolveDiceCheck(
 }
 
 export function canUseLuckReroll(state: GameState): boolean {
-  return state.stats.luck >= 60 && !state.flags['dice_reroll_used'];
+  return getEffectiveStat(state, 'luck') >= 7 && !state.flags?.['dice_reroll_used'];
 }
 
 export function outcomeLabel(outcome: DiceOutcome): string {

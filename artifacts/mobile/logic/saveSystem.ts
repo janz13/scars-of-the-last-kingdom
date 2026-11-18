@@ -33,6 +33,19 @@ export const LEGACY_SAVE_KEY = '@scars_save_v1';
 export const CONTENT_WARNING_KEY = '@scars_content_warning_v1';
 export const INTRO_SEEN_KEY = '@scars_intro_seen_v1';
 export const ENDINGS_KEY = '@scars_endings_v1';
+export const VISITED_NODES_KEY = '@scars_visited_nodes_v1';
+export const CHECKPOINT_STORAGE_KEY = '@scars_branch_checkpoint_v1';
+
+export interface BranchCheckpointMeta {
+  label: string;
+  nodeId: string;
+  chapter: string;
+  timestamp: number;
+}
+
+export interface BranchCheckpoint extends BranchCheckpointMeta {
+  state: GameState;
+}
 
 // ─── Helper Functions ───────────────────────────────────────────────────────
 
@@ -341,6 +354,8 @@ export async function resetAllData(storage: any = AsyncStorage): Promise<void> {
       CONTENT_WARNING_KEY,
       INTRO_SEEN_KEY,
       ENDINGS_KEY,
+      VISITED_NODES_KEY,
+      CHECKPOINT_STORAGE_KEY,
     ];
     if (typeof storage.multiRemove === 'function') {
       await storage.multiRemove(keys);
@@ -373,6 +388,86 @@ export async function loadEndingsDiscovered(storage: any = AsyncStorage): Promis
   } catch (error) {
     console.warn('loadEndingsDiscovered failed:', error);
     return [];
+  }
+}
+
+// ─── Visited Nodes Map Persistence (survives save deletion) ──────────────────
+
+export async function saveVisitedNodes(nodeIds: string[], storage: any = AsyncStorage): Promise<void> {
+  try {
+    await storage.setItem(VISITED_NODES_KEY, JSON.stringify(nodeIds));
+  } catch (error) {
+    console.warn('saveVisitedNodes failed:', error);
+  }
+}
+
+export async function loadVisitedNodes(storage: any = AsyncStorage): Promise<string[]> {
+  try {
+    const data = await storage.getItem(VISITED_NODES_KEY);
+    if (!data) return [];
+    const parsed = JSON.parse(data);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (error) {
+    console.warn('loadVisitedNodes failed:', error);
+    return [];
+  }
+}
+
+// ─── Automatic Branch Checkpoint & Rewind Persistence ────────────────────────
+
+export async function saveBranchCheckpoint(
+  state: GameState,
+  label: string,
+  chapter: string,
+  storage: any = AsyncStorage
+): Promise<BranchCheckpointMeta | null> {
+  try {
+    if (!state.character) return null;
+    const trimmedState: GameState =
+      state.routeHistory && state.routeHistory.length > MAX_ROUTE_HISTORY
+        ? { ...state, routeHistory: state.routeHistory.slice(-MAX_ROUTE_HISTORY) }
+        : state;
+    const payload: BranchCheckpoint = {
+      state: trimmedState,
+      label,
+      nodeId: state.currentNodeId,
+      chapter,
+      timestamp: Date.now(),
+    };
+    await storage.setItem(CHECKPOINT_STORAGE_KEY, JSON.stringify(payload));
+    return {
+      label: payload.label,
+      nodeId: payload.nodeId,
+      chapter: payload.chapter,
+      timestamp: payload.timestamp,
+    };
+  } catch (error) {
+    console.warn('saveBranchCheckpoint failed:', error);
+    return null;
+  }
+}
+
+export async function loadBranchCheckpoint(storage: any = AsyncStorage): Promise<BranchCheckpoint | null> {
+  try {
+    const data = await storage.getItem(CHECKPOINT_STORAGE_KEY);
+    if (!data) return null;
+    const parsed = JSON.parse(data) as BranchCheckpoint;
+    if (!parsed || !parsed.state || !parsed.nodeId) return null;
+    return {
+      ...parsed,
+      state: migrateSave(parsed.state),
+    };
+  } catch (error) {
+    console.warn('loadBranchCheckpoint failed:', error);
+    return null;
+  }
+}
+
+export async function clearBranchCheckpoint(storage: any = AsyncStorage): Promise<void> {
+  try {
+    await storage.removeItem(CHECKPOINT_STORAGE_KEY);
+  } catch (error) {
+    console.warn('clearBranchCheckpoint failed:', error);
   }
 }
 

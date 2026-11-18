@@ -54,6 +54,7 @@ export interface StatePayloadOptions {
   cain?: { present: boolean; trust: number; alive: boolean };
   factionRep?: Record<string, number>;
   routeHistory?: Array<{ nodeId: string }>;
+  visitedNodes?: string[];
   endingsDiscovered?: string[];
   activeEnding?: string | null;
   settings?: Record<string, any>;
@@ -75,6 +76,7 @@ export function buildRegressionState(options: StatePayloadOptions) {
     cain = { present: false, trust: 0, alive: true },
     factionRep = {},
     routeHistory = [],
+    visitedNodes = [],
     endingsDiscovered = [],
     activeEnding = null,
     settings = {},
@@ -129,6 +131,7 @@ export function buildRegressionState(options: StatePayloadOptions) {
       ...factionRep,
     },
     routeHistory,
+    visitedNodes,
     endingsDiscovered,
     activeEnding,
     settings: {
@@ -1201,11 +1204,211 @@ export async function verifyBug12(browser: Browser): Promise<BugRegressionResult
   }
 }
 
+export async function verifyEnhancement13(browser: Browser): Promise<BugRegressionResult> {
+  const bugId = 'ENH-13';
+  const name = 'ChoiceButton D20 Odds Preview & Supply Cost Tooltips';
+  const liveNodeId = 'tunnel_flood_chamber';
+  const timestamp = new Date().toISOString();
+  try {
+    const seed = buildRegressionState({
+      currentNodeId: 'tunnel_flood_chamber',
+      characterClass: 'tactician',
+      background: 'exiled_soldier',
+      personalityTrait: 'pragmatic',
+      stats: { strength: 5, luck: 7 },
+    });
+    const { context, page } = await createRegressionPage(browser, seed);
+    await advanceToGame(page, 'enh13_odds');
+    const body = await page.evaluate(() => document.body.innerText);
+    await context.close();
+    const hasOdds = body.includes('STR DC 13') && body.includes('Your STR 5 (+0)') && body.includes('40% Success');
+    const hasReroll = body.includes('Luck Reroll Ready');
+    if (!hasOdds || !hasReroll) {
+      return {
+        bugId,
+        name,
+        passed: false,
+        liveNodeId,
+        detail: `Missing D20 odds preview (${hasOdds}) or Luck Reroll indicator (${hasReroll}). Body snippet: ${body.slice(0, 220).replace(/\n/g, ' ')}`,
+        timestamp,
+      };
+    }
+    return {
+      bugId,
+      name,
+      passed: true,
+      liveNodeId,
+      detail: 'Verified ChoiceButton renders exact "STR DC 13 · Your STR 5 (+0) · 40% Success · ★ Luck Reroll Ready" preview.',
+      timestamp,
+    };
+  } catch (err: any) {
+    return { bugId, name, passed: false, liveNodeId, detail: `Exception: ${err.message}`, timestamp };
+  }
+}
+
+export async function verifyEnhancement14(browser: Browser): Promise<BugRegressionResult> {
+  const bugId = 'ENH-14';
+  const name = 'Interactive Fog-of-War Chapter Branch Map ([M] Hotkey)';
+  const liveNodeId = 'BranchMapPanel';
+  const timestamp = new Date().toISOString();
+  try {
+    const seed = buildRegressionState({
+      currentNodeId: 'station_junction',
+      visitedNodes: ['prologue_start', 'chapter1_start', 'station_junction'],
+    });
+    const { context, page } = await createRegressionPage(browser, seed);
+    await advanceToGame(page, 'enh14_map');
+    await page.keyboard.press('m');
+    await page.waitForTimeout(1000);
+    const mapBody = await page.evaluate(() => document.body.innerText);
+    await context.close();
+    const ok =
+      mapBody.includes('CHAPTER BRANCH MAP') &&
+      mapBody.includes('EXPLORED SCENES') &&
+      (mapBody.includes('HERE') || mapBody.includes('Explored:'));
+    if (!ok) {
+      return {
+        bugId,
+        name,
+        passed: false,
+        liveNodeId,
+        detail: `Branch map [M] did not render expected sections. Snippet: ${mapBody.slice(0, 220).replace(/\n/g, ' ')}`,
+        timestamp,
+      };
+    }
+    return {
+      bugId,
+      name,
+      passed: true,
+      liveNodeId,
+      detail: 'Verified [M] hotkey opens CHAPTER BRANCH MAP showing visited nodes, frontier splits, and chapter endings.',
+      timestamp,
+    };
+  } catch (err: any) {
+    return { bugId, name, passed: false, liveNodeId, detail: `Exception: ${err.message}`, timestamp };
+  }
+}
+
+export async function verifyEnhancement15(browser: Browser): Promise<BugRegressionResult> {
+  const bugId = 'ENH-15';
+  const name = 'Automatic Branch Checkpoint & 1-Click Rewind on Ending Screen';
+  const liveNodeId = 'tunnel_collapse_moment -> ending_buried_tunnel -> Rewind';
+  const timestamp = new Date().toISOString();
+  try {
+    const seed = buildRegressionState({
+      currentNodeId: 'tunnel_collapse_moment',
+    });
+    const cpPayload = {
+      state: seed,
+      label: 'Tunnel Collapse',
+      nodeId: 'tunnel_collapse_moment',
+      chapter: 'Chapter 1',
+      timestamp: Date.now(),
+    };
+    const { context, page } = await createRegressionPage(browser, seed);
+    await page.addInitScript((cpStr) => {
+      localStorage.setItem('@scars_branch_checkpoint_v1', cpStr);
+    }, JSON.stringify(cpPayload));
+    await advanceToGame(page, 'enh15_rewind');
+
+    const failChoice = page.getByText(/Hesitate/i).first();
+    if ((await failChoice.count()) > 0) {
+      await failChoice.click({ force: true });
+    } else {
+      await page.getByText(/Too slow|buried/i).first().click({ force: true });
+    }
+    await page.waitForTimeout(1000);
+
+    const endingBody = await page.evaluate(() => document.body.innerText);
+    const hasRewind = endingBody.includes('REWIND TO CHECKPOINT');
+    if (hasRewind) {
+      await page.getByText(/REWIND TO CHECKPOINT/i).first().click({ force: true });
+      await page.waitForTimeout(1000);
+    }
+    const postRewindBody = await page.evaluate(() => document.body.innerText);
+    await context.close();
+
+    const restoredGame = hasRewind && !postRewindBody.includes('START NEW TIMELINE');
+    if (!restoredGame) {
+      return {
+        bugId,
+        name,
+        passed: false,
+        liveNodeId,
+        detail: `Checkpoint rewind check failed. hasRewind=${hasRewind}, snippet=${postRewindBody.slice(0, 180).replace(/\n/g, ' ')}`,
+        timestamp,
+      };
+    }
+    return {
+      bugId,
+      name,
+      passed: true,
+      liveNodeId,
+      detail: 'Verified REWIND TO CHECKPOINT renders on EndingScreen and restores pre-ending hub cleanly.',
+      timestamp,
+    };
+  } catch (err: any) {
+    return { bugId, name, passed: false, liveNodeId, detail: `Exception: ${err.message}`, timestamp };
+  }
+}
+
+export async function verifyEnhancement16(browser: Browser): Promise<BugRegressionResult> {
+  const bugId = 'ENH-16';
+  const name = 'High-Legibility Reading Mode & Auto-Stamped SW Cache Version';
+  const liveNodeId = 'SettingsPanel / sw.js';
+  const timestamp = new Date().toISOString();
+  try {
+    const seed = buildRegressionState({ currentNodeId: 'prologue_start' });
+    const { context, page } = await createRegressionPage(browser, seed);
+    await advanceToGame(page, 'enh16_legibility');
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(700);
+    const toggle = page.getByText(/High-Legibility Reading Mode/i).first();
+    await toggle.waitFor({ state: 'visible', timeout: 10000 });
+    await toggle.click({ force: true });
+    await page.waitForTimeout(500);
+
+    const swText = await page.evaluate(async (baseUrl) => {
+      const res = await fetch(`${baseUrl}sw.js?t=${Date.now()}`);
+      return res.text();
+    }, LIVE_URL);
+    const saved = await page.evaluate(() => {
+      const raw = localStorage.getItem('@scars_save_slot_auto');
+      return raw ? JSON.parse(raw) : null;
+    });
+    await context.close();
+
+    const hasContrastToggle = Boolean(saved?.settings?.highContrast);
+    const swMatch = /const CACHE_VERSION = 'sotlk-([a-z0-9-]+)'/.exec(swText);
+    const hasStampedSw = Boolean(swMatch && swMatch[1] !== 'v9');
+    if (!hasContrastToggle || !hasStampedSw) {
+      return {
+        bugId,
+        name,
+        passed: false,
+        liveNodeId,
+        detail: `HighContrast persisted=${hasContrastToggle}, sw CACHE_VERSION=${swMatch?.[1] ?? 'none'} (expected git SHA stamp).`,
+        timestamp,
+      };
+    }
+    return {
+      bugId,
+      name,
+      passed: true,
+      liveNodeId,
+      detail: `Verified High-Legibility Reading Mode persisted and live sw.js stamped with CACHE_VERSION='sotlk-${swMatch![1]}'.`,
+      timestamp,
+    };
+  } catch (err: any) {
+    return { bugId, name, passed: false, liveNodeId, detail: `Exception: ${err.message}`, timestamp };
+  }
+}
+
 // ─── Main Test Runner ────────────────────────────────────────────────────────
 
 export async function runLiveRegressionAudit() {
   console.log('================================================================================');
-  console.log('🔬 SCARS OF THE LAST KINGDOM — LIVE REGRESSION AUDIT (BUG-01 TO BUG-12)');
+  console.log('🔬 SCARS OF THE LAST KINGDOM — LIVE REGRESSION AUDIT (BUG-01 TO ENH-16)');
   console.log(`🌐 Target Deployment: ${LIVE_URL}`);
   console.log(`⏱️  Timestamp:         ${new Date().toISOString()}`);
   console.log('================================================================================\n');
@@ -1233,6 +1436,10 @@ export async function runLiveRegressionAudit() {
     verifyBug10,
     verifyBug11,
     verifyBug12,
+    verifyEnhancement13,
+    verifyEnhancement14,
+    verifyEnhancement15,
+    verifyEnhancement16,
   ];
 
   const results: BugRegressionResult[] = [];
@@ -1240,7 +1447,7 @@ export async function runLiveRegressionAudit() {
   for (let i = 0; i < verifiers.length; i++) {
     const fn = verifiers[i];
     const bugNum = String(i + 1).padStart(2, '0');
-    process.stdout.write(`  [${bugNum}/12] Executing BUG-${bugNum} verification probe... `);
+    process.stdout.write(`  [${bugNum}/${verifiers.length}] Executing probe #${bugNum}... `);
     const res = await fn(browser);
     results.push(res);
     const badge = res.passed ? '✅ PASS' : '❌ FAIL';
@@ -1272,7 +1479,7 @@ export async function runLiveRegressionAudit() {
   console.log(`TOTAL REGRESSION CHECKS: ${results.length}`);
   console.log(`PASSED:                  ${passedCount}`);
   console.log(`FAILED:                  ${failedCount}`);
-  console.log(`AUDIT OUTCOME:           ${allPassed ? '🎉 ALL 12 AUDIT FIXES VERIFIED' : '⚠️ REGRESSIONS DETECTED'}`);
+  console.log(`AUDIT OUTCOME:           ${allPassed ? `🎉 ALL ${results.length} AUDIT & ENHANCEMENT CHECKS VERIFIED` : '⚠️ REGRESSIONS DETECTED'}`);
   console.log('================================================================================\n');
 
   if (!allPassed) {

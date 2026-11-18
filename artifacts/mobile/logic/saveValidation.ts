@@ -51,6 +51,7 @@ export const SAVE_DEFAULTS = {
     lastArchive: 0,
   },
   routeHistory: [] as GameState['routeHistory'],
+  visitedNodes: [] as string[],
   endingsDiscovered: [] as string[],
   settings: {
     textSpeed: 'normal' as const,
@@ -58,6 +59,7 @@ export const SAVE_DEFAULTS = {
     soundEnabled: false,
     autoSave: true,
     skipDiceAnimation: false,
+    highContrast: false,
   },
   activeEnding: null,
 };
@@ -103,6 +105,7 @@ export function migrateSave(raw: Partial<GameState>): GameState {
         : {},
     // Guard: arrays must be arrays
     routeHistory: Array.isArray(raw.routeHistory) ? raw.routeHistory : [],
+    visitedNodes: Array.isArray(raw.visitedNodes) ? raw.visitedNodes : [],
     endingsDiscovered: Array.isArray(raw.endingsDiscovered) ? raw.endingsDiscovered : [],
   } as GameState;
 

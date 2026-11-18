@@ -6,6 +6,7 @@
   "scripts": {
     "hello": "tsx ./src/hello.ts",
     "generate-icons": "tsx ./src/generate-icons.ts",
+    "generate:metadata": "tsx ./src/generateStoryMetadata.ts",
     "test": "tsx ./src/engine.test.ts",
     "test:e2e": "tsx ./e2e/runAllTests.ts",
     "test:smoke": "playwright test -c ./e2e/playwright.config.ts",

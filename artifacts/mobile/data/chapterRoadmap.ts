@@ -1,4 +1,5 @@
 import { ENABLE_EXPANSION } from '../constants/featureFlags';
+import { GENERATED_ROADMAP_NODE_COUNTS } from './storyMetadata.generated';
 
 export interface ChapterEntry {
   id: string;
@@ -18,7 +19,7 @@ export interface ChapterEntry {
   branchBadge?: string;
 }
 
-export const CHAPTER_ROADMAP: ChapterEntry[] = [
+const RAW_CHAPTER_ROADMAP: ChapterEntry[] = [
   {
     id: 'prologue',
     partNumber: 'Prologue',
@@ -983,6 +984,11 @@ export const CHAPTER_ROADMAP: ChapterEntry[] = [
       ] as ChapterEntry[])
     : []),
 ];
+
+export const CHAPTER_ROADMAP: ChapterEntry[] = RAW_CHAPTER_ROADMAP.map((entry) => ({
+  ...entry,
+  nodeCount: GENERATED_ROADMAP_NODE_COUNTS[entry.id] ?? entry.nodeCount,
+}));
 
 export function getChapterById(id: string): ChapterEntry | undefined {
   return CHAPTER_ROADMAP.find((c) => c.id === id);

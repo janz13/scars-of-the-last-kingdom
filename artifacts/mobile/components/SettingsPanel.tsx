@@ -527,6 +527,22 @@ export default function SettingsPanel() {
           </View>
         </Pressable>
 
+        <View style={{ height: 8 }} />
+        <Pressable
+          style={styles.toggleRow}
+          onPress={() => updateSettings({ highContrast: !settings.highContrast })}
+          accessibilityRole="button"
+          accessibilityLabel="Toggle High-Legibility Reading Mode"
+        >
+          <View style={{ flex: 1, paddingRight: 10 }}>
+            <Text style={styles.toggleLabel}>High-Legibility Reading Mode</Text>
+            <Text style={styles.toggleDesc}>Boost prose contrast, panel opacity, and line spacing for long reading sessions.</Text>
+          </View>
+          <View style={[styles.toggle, settings.highContrast && styles.toggleOn]}>
+            <View style={[styles.toggleThumb, settings.highContrast && styles.toggleThumbOn]} />
+          </View>
+        </Pressable>
+
         <View style={styles.divider} />
 
         <Text style={styles.sectionHeader}>DISPLAY & FULLSCREEN</Text>

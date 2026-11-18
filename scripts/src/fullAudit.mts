@@ -22,6 +22,7 @@ if (typeof require !== 'undefined' && (require as any).extensions) {
 const { STORY_NODES, getNodeById, getStartNodeId } = require('../../artifacts/mobile/data/story/allNodesSync.ts');
 const { ENDINGS } = require('../../artifacts/mobile/data/endings.ts');
 const { SCENE_MANIFEST } = require('../../artifacts/mobile/constants/sceneManifest.ts');
+const { findUnguardedMutatingCycles } = require('./cycleLinter.ts');
 
 const PIXEL_ASSET_DIR = resolve(import.meta.dirname, '../../artifacts/mobile/assets/pixel');
 const LEGACY_IMAGE_DIR = resolve(import.meta.dirname, '../../artifacts/mobile/assets/images');
@@ -366,6 +367,47 @@ for (const [key, entry] of Object.entries(SCENE_MANIFEST) as [string, any][]) {
       message: `Scene "${key}" failed orientation asset validation: ${missingFiles.join('; ')}`,
     });
   }
+}
+
+// ─── 20. NARRATIVE BLOCKS SCHEMA VALIDATION ──────────────────────────────────
+console.log('🔍 [20/21] Typed narrativeBlocks / dialogueBlocks...');
+const VALID_NARRATIVE_COND_KEYS = new Set([
+  'miraPresent', 'cainPresent', 'flags', 'blockedFlags', 'minCorruption', 'maxCorruption', 'classes', 'backgrounds',
+]);
+for (const node of STORY) {
+  for (const fieldName of ['narrativeBlocks', 'dialogueBlocks'] as const) {
+    const blocks = node[fieldName];
+    if (!blocks) continue;
+    if (!Array.isArray(blocks) || blocks.length === 0) {
+      issues.push({ severity: 'error', category: 'narrative-blocks', location: `${node.id}/${fieldName}`, message: `${fieldName} must be a non-empty array` });
+      continue;
+    }
+    for (let i = 0; i < blocks.length; i++) {
+      const b = blocks[i];
+      if (!b || typeof b.text !== 'string' || b.text.trim().length === 0) {
+        issues.push({ severity: 'error', category: 'narrative-blocks', location: `${node.id}/${fieldName}[${i}]`, message: `Narrative block has empty or missing text` });
+      }
+      if (b?.when) {
+        for (const k of Object.keys(b.when)) {
+          if (!VALID_NARRATIVE_COND_KEYS.has(k)) {
+            issues.push({ severity: 'error', category: 'narrative-blocks', location: `${node.id}/${fieldName}[${i}]`, message: `Unknown narrative condition key "${k}"` });
+          }
+        }
+      }
+    }
+  }
+}
+
+// ─── 21. UNBOUNDED MUTATING CYCLE LINTER ─────────────────────────────────────
+console.log('🔍 [21/21] Unbounded stat-mutating SCC cycles...');
+const unguardedCycles = findUnguardedMutatingCycles(STORY);
+for (const cyc of unguardedCycles) {
+  issues.push({
+    severity: 'warning',
+    category: 'story-mutating-cycle',
+    location: `${cyc.fromNode}/${cyc.choiceId}`,
+    message: `Cycle "${cyc.fromNode}" -> "${cyc.toNode}" mutates [${cyc.mutatingKeys.join(', ')}] without a one-shot blockedFlags/setFlags guard or depleting cost`,
+  });
 }
 
 // ─── RESULTS ─────────────────────────────────────────────────────────────────

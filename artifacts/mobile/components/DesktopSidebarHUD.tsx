@@ -238,13 +238,19 @@ export default function DesktopSidebarHUD({ onOpenHotkeys }: DesktopSidebarHUDPr
           </View>
 
           {/* Location / Chapter */}
-          <View style={styles.locationStrip}>
+          <Pressable
+            style={styles.locationStrip}
+            onPress={() => setScreen('map')}
+            accessibilityRole="button"
+            accessibilityLabel="Open Chapter Branch Map"
+          >
             <Feather name="compass" size={12} color="#9b59b6" style={{ marginRight: 6 }} />
             <Text style={styles.locationText} numberOfLines={1}>
               {currentNode?.chapter ? `${currentNode.chapter.toUpperCase()} · ` : ''}
               {currentNode?.location ? currentNode.location.toUpperCase() : 'THE UNDERDARK'}
             </Text>
-          </View>
+            <Feather name="git-branch" size={11} color="#1abc9c" style={{ marginLeft: 'auto' as any }} />
+          </Pressable>
         </PixelFrame>
 
         {/* ── Survival Stats Meters ────────────────────────────────────── */}
@@ -565,6 +571,13 @@ export default function DesktopSidebarHUD({ onOpenHotkeys }: DesktopSidebarHUDPr
                 <Text style={styles.keyCapText}>Space</Text>
               </View>
               <Text style={styles.hotkeyLabel}>Roll / Skip</Text>
+            </View>
+
+            <View style={styles.hotkeyRow}>
+              <View style={styles.keyCap}>
+                <Text style={styles.keyCapText}>M</Text>
+              </View>
+              <Text style={styles.hotkeyLabel}>Map</Text>
             </View>
 
             <View style={styles.hotkeyRow}>

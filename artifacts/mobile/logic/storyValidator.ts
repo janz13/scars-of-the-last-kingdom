@@ -34,6 +34,7 @@
 import { STORY_NODES } from '../data/storyNodes';
 import { ENDINGS } from '../data/endings';
 import { BACKGROUND_IMAGES } from '../constants/images';
+import { GENERATED_STORY_SUMMARY } from '../data/storyMetadata.generated';
 
 export type WarningSeverity = 'error' | 'warning' | 'info';
 
@@ -355,48 +356,12 @@ export interface StorySummary {
 
 export function getStorySummary(): StorySummary {
   return {
-    totalNodes: 1636,
-    endingNodes: 244,
-    totalChoices: 2890,
-    diceCheckNodes: 102,
-    chapters: [
-      'Prologue',
-      'Chapter 1',
-      'Chapter 2',
-      'Chapter 3',
-      'Chapter 4',
-      'Chapter 5',
-      'Chapter 6',
-      'Chapter 7',
-      'Chapter 8',
-      'Chapter 9',
-      'Chapter 10',
-      'Chapter 11',
-      'Chapter 12',
-      'Final Chapter 1',
-      'Final Chapter 2',
-      'Epilogue',
-    ],
-    chapterCounts: {
-      'Prologue': 12,
-      'Chapter 1': 108,
-      'Chapter 2': 79,
-      'Chapter 3': 110,
-      'Chapter 4': 84,
-      'Chapter 5': 95,
-      'Chapter 6': 130,
-      'Chapter 7': 98,
-      'Chapter 8': 135,
-      'Chapter 9': 120,
-      'Chapter 10': 157,
-      'Chapter 11': 146,
-      'Chapter 12': 137,
-      'Final Chapter 1': 84,
-      'Final Chapter 2': 70,
-      'Epilogue': 60,
-      'Interlude': 8,
-      'Vision': 3,
-    },
+    totalNodes: GENERATED_STORY_SUMMARY.totalNodes,
+    endingNodes: GENERATED_STORY_SUMMARY.endingNodes,
+    totalChoices: GENERATED_STORY_SUMMARY.totalChoices,
+    diceCheckNodes: GENERATED_STORY_SUMMARY.diceCheckNodes,
+    chapters: [...GENERATED_STORY_SUMMARY.chapters],
+    chapterCounts: { ...GENERATED_STORY_SUMMARY.chapterCounts },
     locations: [],
     imageKeys: [],
   };

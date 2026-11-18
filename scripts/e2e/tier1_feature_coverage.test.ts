@@ -1012,9 +1012,10 @@ export const tier1Tests: TestCase[] = [
       expect(dice).toBeDefined();
       expect(typeof dice.getStatModifier).toBe('function');
       expect(typeof dice.resolveDiceCheck).toBe('function');
-      expect(dice.getStatModifier(9)).toBe(0);
-      expect(dice.getStatModifier(10)).toBe(1);
-      expect(dice.getStatModifier(15)).toBe(2);
+      expect(dice.getStatModifier(5)).toBe(0);
+      expect(dice.getStatModifier(8)).toBe(1);
+      expect(dice.getStatModifier(10)).toBe(2);
+      expect(dice.getStatModifier(15)).toBe(4);
     },
   },
   {

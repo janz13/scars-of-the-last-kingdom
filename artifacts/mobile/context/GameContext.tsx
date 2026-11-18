@@ -42,6 +42,12 @@ import {
   saveEndingsDiscovered,
   saveGame,
   saveGameToSlot,
+  loadVisitedNodes,
+  saveVisitedNodes,
+  loadBranchCheckpoint,
+  saveBranchCheckpoint,
+  clearBranchCheckpoint,
+  type BranchCheckpointMeta,
 } from '../logic/saveSystem';
 import { getCompanionEventTrigger } from '../logic/companionSystem';
 import { sound } from '../logic/audioEngine';
@@ -69,6 +75,7 @@ export const INITIAL_STATE: GameState = {
   companions: DEFAULT_COMPANIONS,
   factionRep: DEFAULT_FACTION_REP,
   routeHistory: [],
+  visitedNodes: [],
   endingsDiscovered: [],
   settings: {
     textSpeed: 'normal',
@@ -85,6 +92,7 @@ export const INITIAL_STATE: GameState = {
     ambienceVolume: 0.65,
     musicMode: 'adaptive',
     tiltParallax: false,
+    highContrast: false,
   },
   activeEnding: null,
   pendingReturnNodeId: undefined,
@@ -126,6 +134,9 @@ interface GameContextValue {
   deleteSlotData: (slotId: SaveSlotId) => Promise<boolean>;
   getSlots: () => Promise<SaveSlotMetadata[]>;
   quickSave: () => Promise<void>;
+  // Branch checkpoint & 1-click rewind
+  checkpointMeta: BranchCheckpointMeta | null;
+  rewindToCheckpoint: () => Promise<boolean>;
   // Hotkey modal
   showHotkeyModal: boolean;
   setShowHotkeyModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -232,6 +243,20 @@ function applyTickAndHallucination(next: GameState, realNodeId: string): GameSta
   return next;
 }
 
+function mergeVisitedNode(existing: string[] | undefined, nodeId: string | undefined): string[] {
+  const list = Array.isArray(existing) ? existing : [];
+  if (!nodeId || list.includes(nodeId)) return list;
+  return [...list, nodeId];
+}
+
+function shouldSnapshotBranchCheckpoint(next: GameState, node: ReturnType<typeof getNodeById>, isHallucReturn = false): boolean {
+  if (!node || node.isEnding || isHallucReturn) return false;
+  if (next.flags?.['halluc_active'] || next.flags?.['companion_event_active']) return false;
+  if (next.stats.health <= 15) return false;
+  const nonTerminalChoices = (node.choices || []).length;
+  return nonTerminalChoices >= 3;
+}
+
 export function GameProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<GameState>(INITIAL_STATE);
   const [isLoading, setIsLoading] = useState(true);
@@ -239,6 +264,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   const [hasActiveGame, setHasActiveGame] = useState(false);
   const [pendingDiceRoll, setPendingDiceRoll] = useState<PendingDiceRoll | null>(null);
   const [saveNotification, setSaveNotification] = useState(false);
+  const [checkpointMeta, setCheckpointMeta] = useState<BranchCheckpointMeta | null>(null);
   const [showHotkeyModal, setShowHotkeyModal] = useState(false);
   const toggleHotkeyModal = useCallback(() => {
     setShowHotkeyModal((prev) => !prev);
@@ -248,18 +274,24 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   // On mount, check for existing save + content warning + persisted endings
   useEffect(() => {
     (async () => {
-      const [saveExists, warningSeen, persistedEndings] = await Promise.all([
+      const [saveExists, _warningSeen, persistedEndings, persistedVisited, existingCp] = await Promise.all([
         hasSave(),
         hasSeenContentWarning(),
         loadEndingsDiscovered(),
+        loadVisitedNodes(),
+        loadBranchCheckpoint(),
       ]);
+      if (existingCp) {
+        setCheckpointMeta({ label: existingCp.label, nodeId: existingCp.nodeId, chapter: existingCp.chapter, timestamp: existingCp.timestamp });
+      }
       setHasSaveGame(saveExists);
       setHasActiveGame(saveExists);
-      if (persistedEndings.length > 0) {
-        setState((prev) => ({ ...prev, endingsDiscovered: persistedEndings, screen: 'splash' }));
-      } else {
-        setState((prev) => ({ ...prev, screen: 'splash' }));
-      }
+      setState((prev) => ({
+        ...prev,
+        endingsDiscovered: persistedEndings.length > 0 ? persistedEndings : prev.endingsDiscovered,
+        visitedNodes: persistedVisited.length > 0 ? persistedVisited : prev.visitedNodes,
+        screen: 'splash',
+      }));
       setIsLoading(false);
     })();
   }, []);
@@ -276,6 +308,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       // Also persist endings separately so they survive save deletion
       if (state.endingsDiscovered.length > 0) {
         saveEndingsDiscovered(state.endingsDiscovered);
+      }
+      if (state.visitedNodes && state.visitedNodes.length > 0) {
+        saveVisitedNodes(state.visitedNodes);
       }
       setHasSaveGame(true);
       setHasActiveGame(true);
@@ -297,6 +332,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         if (stateRef.current.endingsDiscovered.length > 0) {
           void saveEndingsDiscovered(stateRef.current.endingsDiscovered);
         }
+        if (stateRef.current.visitedNodes && stateRef.current.visitedNodes.length > 0) {
+          void saveVisitedNodes(stateRef.current.visitedNodes);
+        }
       }
     };
     window.addEventListener('pagehide', flushSave);
@@ -308,6 +346,12 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   // ─── Core gameplay ──────────────────────────────────────────────────────────
+
+  const captureCheckpoint = useCallback((snapshotState: GameState, label: string, chapter: string) => {
+    void saveBranchCheckpoint(snapshotState, label, chapter).then((meta) => {
+      if (meta) setCheckpointMeta(meta);
+    });
+  }, []);
 
   const startNewGame = useCallback((character: Character) => {
     const { stats, inventory } = buildStartingStats(
@@ -354,6 +398,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       companions,
       factionRep,
       routeHistory: [],
+      visitedNodes: mergeVisitedNode(stateRef.current.visitedNodes, startNodeId),
       endingsDiscovered: stateRef.current.endingsDiscovered,
       activeEnding: null,
       pendingReturnNodeId: undefined,
@@ -366,6 +411,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     setState(newState);
     setHasSaveGame(true);
     setHasActiveGame(true);
+    if (startNode) captureCheckpoint(newState, startNode.title, startNode.chapter);
   }, []);
 
   const makeChoice = useCallback((choiceId: string) => {
@@ -409,7 +455,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       }
 
       // Navigate to the node (also reset screen to 'game' if continuing from an ending node into Epilogue)
-      next = { ...next, screen: 'game', activeEnding: null, currentNodeId: nextNodeId };
+      next = { ...next, screen: 'game', activeEnding: null, currentNodeId: nextNodeId, visitedNodes: mergeVisitedNode(next.visitedNodes, nextNodeId) };
 
       // Apply the new node's entry effects
       const nextNode = getNodeById(nextNodeId);
@@ -432,6 +478,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       const finalNext = endingState || next;
       getUnlockedChapters(finalNext);
 
+      if (shouldSnapshotBranchCheckpoint(finalNext, nextNode, isHallucinationReturn)) {
+        captureCheckpoint(finalNext, nextNode!.title, nextNode!.chapter);
+      }
       stateRef.current = finalNext;
       void saveGame(finalNext).then(() => {
         setHasSaveGame(true);
@@ -451,7 +500,11 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     setState((prev) => {
       const next = buildChapterJumpState(chapterName, prev);
       const startNode = getNodeById(targetStartNode);
-      const resolved = startNode?.effectsOnEnter ? applyEffects(next, startNode.effectsOnEnter) : next;
+      const withEffects = startNode?.effectsOnEnter ? applyEffects(next, startNode.effectsOnEnter) : next;
+      const resolved: GameState = { ...withEffects, visitedNodes: mergeVisitedNode(withEffects.visitedNodes, targetStartNode) };
+      if (startNode && !startNode.isEnding) {
+        captureCheckpoint(resolved, startNode.title, startNode.chapter);
+      }
       stateRef.current = resolved;
       void saveGameToSlot(resolved, 'auto');
       setHasSaveGame(true);
@@ -486,6 +539,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     if (!node) return;
     const choice = node.choices.find((c) => c.id === choiceId);
     if (!choice?.diceCheck) return;
+    captureCheckpoint(currentState, `${node.title} (Pre-Roll)`, node.chapter);
     sound.playSFX('diceRoll');
     setPendingDiceRoll({ choiceId, choiceText: choice.text, diceCheck: choice.diceCheck });
   }, []);
@@ -529,7 +583,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       const autoRedirect = getAutoRedirect(next, nextNodeId);
       if (autoRedirect) nextNodeId = autoRedirect;
 
-      next = { ...next, currentNodeId: nextNodeId };
+      next = { ...next, currentNodeId: nextNodeId, visitedNodes: mergeVisitedNode(next.visitedNodes, nextNodeId) };
 
       const nextNode = getNodeById(nextNodeId);
       if (nextNode?.effectsOnEnter) {
@@ -548,6 +602,9 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       const finalNext = endingState || next;
       getUnlockedChapters(finalNext);
 
+      if (shouldSnapshotBranchCheckpoint(finalNext, nextNode, false)) {
+        captureCheckpoint(finalNext, nextNode!.title, nextNode!.chapter);
+      }
       stateRef.current = finalNext;
       void saveGame(finalNext).then(() => {
         setHasSaveGame(true);
@@ -566,16 +623,17 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       sound.setSoundEnabled(true);
       sound.startAmbient();
     }
-    const persistedEndings = await loadEndingsDiscovered();
+    const [persistedEndings, persistedVisited] = await Promise.all([loadEndingsDiscovered(), loadVisitedNodes()]);
     const mergedEndings = [...new Set([...saved.endingsDiscovered, ...persistedEndings])];
+    const mergedVisited = [...new Set([...(saved.visitedNodes ?? []), ...persistedVisited, ...(saved.character ? [saved.currentNodeId] : [])])];
     if (!saved.character) {
-      setState({ ...saved, endingsDiscovered: mergedEndings, screen: 'characterCreator' });
+      setState({ ...saved, endingsDiscovered: mergedEndings, visitedNodes: mergedVisited, screen: 'characterCreator' });
       setHasSaveGame(false);
       setHasActiveGame(false);
       return true;
     }
     await ensureNodeLoaded(saved.currentNodeId);
-    setState({ ...saved, endingsDiscovered: mergedEndings, screen: 'game', activeEnding: null });
+    setState({ ...saved, endingsDiscovered: mergedEndings, visitedNodes: mergedVisited, screen: 'game', activeEnding: null });
     setHasSaveGame(true);
     setHasActiveGame(true);
     return true;
@@ -614,6 +672,33 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     setTimeout(() => setSaveNotification(false), 2200);
   }, [state]);
 
+  const rewindToCheckpoint = useCallback(async (): Promise<boolean> => {
+    const cp = await loadBranchCheckpoint();
+    if (!cp || !cp.state) return false;
+    await ensureNodeLoaded(cp.state.currentNodeId);
+    const persistedEndings = await loadEndingsDiscovered();
+    const persistedVisited = await loadVisitedNodes();
+    const cur = stateRef.current;
+    const mergedEndings = Array.from(new Set([...(cur.endingsDiscovered || []), ...persistedEndings, ...(cp.state.endingsDiscovered || [])]));
+    const mergedVisited = Array.from(new Set([...(cur.visitedNodes || []), ...persistedVisited, ...(cp.state.visitedNodes || []), cp.state.currentNodeId]));
+    const restored: GameState = {
+      ...cp.state,
+      screen: 'game',
+      activeEnding: null,
+      pendingReturnNodeId: undefined,
+      endingsDiscovered: mergedEndings,
+      visitedNodes: mergedVisited,
+    };
+    setPendingDiceRoll(null);
+    setState(restored);
+    stateRef.current = restored;
+    await saveGame(restored);
+    setHasSaveGame(true);
+    setHasActiveGame(true);
+    sound.playSFX('click');
+    return true;
+  }, []);
+
   const continueGame = useCallback(async () => {
     const slots = await listSaveSlots();
     const nonEmpties = slots.filter((s) => !s.isEmpty);
@@ -629,17 +714,18 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         sound.startAmbient();
       }
       // Merge any endings from the separate persistence that aren't in the save
-      const persistedEndings = await loadEndingsDiscovered();
+      const [persistedEndings, persistedVisited] = await Promise.all([loadEndingsDiscovered(), loadVisitedNodes()]);
       const mergedEndings = [...new Set([...saved.endingsDiscovered, ...persistedEndings])];
+      const mergedVisited = [...new Set([...(saved.visitedNodes ?? []), ...persistedVisited, ...(saved.character ? [saved.currentNodeId] : [])])];
       // If save has no character, it's not a valid game — go to character creator
       if (!saved.character) {
-        setState({ ...saved, endingsDiscovered: mergedEndings, screen: 'characterCreator' });
+        setState({ ...saved, endingsDiscovered: mergedEndings, visitedNodes: mergedVisited, screen: 'characterCreator' });
         setHasSaveGame(false);
         setHasActiveGame(false);
         return;
       }
       await ensureNodeLoaded(saved.currentNodeId);
-    setState({ ...saved, endingsDiscovered: mergedEndings, screen: 'game', activeEnding: null });
+    setState({ ...saved, endingsDiscovered: mergedEndings, visitedNodes: mergedVisited, screen: 'game', activeEnding: null });
       setHasSaveGame(true);
       setHasActiveGame(true);
     }
@@ -649,15 +735,19 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     sound.stopAmbient();
     // Preserve discovered endings across playthroughs — only resetAllData wipes them
     const preservedEndings = stateRef.current.endingsDiscovered;
+    const preservedVisited = stateRef.current.visitedNodes ?? [];
     await deleteSaveStorage();
+    await clearBranchCheckpoint();
+    setCheckpointMeta(null);
     setHasSaveGame(false);
     setHasActiveGame(false);
-    setState({ ...INITIAL_STATE, endingsDiscovered: preservedEndings });
+    setState({ ...INITIAL_STATE, endingsDiscovered: preservedEndings, visitedNodes: preservedVisited });
   }, []);
 
   const resetAllData = useCallback(async () => {
     sound.stopAmbient();
     await resetAllDataStorage();
+    setCheckpointMeta(null);
     setHasSaveGame(false);
     setHasActiveGame(false);
     setState(INITIAL_STATE);
@@ -724,7 +814,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         startingCompanion: 'none',
       };
 
-      let next: GameState = { ...prev, character, currentNodeId: nodeId, screen: 'game' };
+      let next: GameState = { ...prev, character, currentNodeId: nodeId, screen: 'game', visitedNodes: mergeVisitedNode(prev.visitedNodes, nodeId) };
 
       if (node.effectsOnEnter) {
         next = applyEffects(next, node.effectsOnEnter);
@@ -836,7 +926,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       const screen = stateRef.current.screen;
 
       // Sub-panels: go back to game
-      if (['stats', 'inventory', 'companions', 'factions', 'history', 'settings'].includes(screen)) {
+      if (['stats', 'inventory', 'companions', 'factions', 'history', 'map', 'settings'].includes(screen)) {
         setState((prev) => ({ ...prev, screen: 'game' }));
         return true; // handled
       }
@@ -917,6 +1007,8 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         deleteSlotData,
         getSlots,
         quickSave,
+        checkpointMeta,
+        rewindToCheckpoint,
         showHotkeyModal,
         setShowHotkeyModal,
         toggleHotkeyModal,

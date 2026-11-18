@@ -22,6 +22,7 @@ import {
   CLASSES,
   PERSONALITY_TRAITS,
 } from '../data/characterOptions';
+import { formatStatModifier, getStatModifier } from '../logic/diceEngine';
 import type { BackgroundId, Character, ClassId, CompanionChoice, PersonalityTrait } from '../data/types';
 
 const STEPS = ['Name', 'Background', 'Class', 'Personality', 'Companion', 'Begin'];
@@ -219,11 +220,11 @@ export default function CharacterCreator() {
                       {sel && (
                         <View style={styles.statPreview}>
                           <StatBadge label="HP" value={stats.maxHealth ?? 80} color="#e74c3c" />
-                          <StatBadge label="STR" value={stats.strength ?? 5} color="#c0392b" />
-                          <StatBadge label="INT" value={stats.intelligence ?? 5} color="#3498db" />
-                          <StatBadge label="AGI" value={stats.agility ?? 5} color="#2ecc71" />
-                          <StatBadge label="CHA" value={stats.charisma ?? 5} color="#c9a84c" />
-                          <StatBadge label="LCK" value={stats.luck ?? 5} color="#e67e22" />
+                          <StatBadge label="STR" value={stats.strength ?? 5} mod={formatStatModifier(getStatModifier(stats.strength ?? 5))} color="#c0392b" />
+                          <StatBadge label="INT" value={stats.intelligence ?? 5} mod={formatStatModifier(getStatModifier(stats.intelligence ?? 5))} color="#3498db" />
+                          <StatBadge label="AGI" value={stats.agility ?? 5} mod={formatStatModifier(getStatModifier(stats.agility ?? 5))} color="#2ecc71" />
+                          <StatBadge label="CHA" value={stats.charisma ?? 5} mod={formatStatModifier(getStatModifier(stats.charisma ?? 5))} color="#c9a84c" />
+                          <StatBadge label="LCK" value={stats.luck ?? 5} mod={formatStatModifier(getStatModifier(stats.luck ?? 5))} color="#e67e22" />
                           {(stats.corruption ?? 0) > 0 && (
                             <StatBadge label="CRPT" value={stats.corruption ?? 0} color="#9b59b6" />
                           )}
@@ -339,11 +340,12 @@ export default function CharacterCreator() {
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
-function StatBadge({ label, value, color }: { label: string; value: number; color: string }) {
+function StatBadge({ label, value, mod, color }: { label: string; value: number; mod?: string; color: string }) {
   return (
     <View style={[statStyles.badge, { borderColor: `${color}30` }]}>
       <Text style={[statStyles.label, { color: `${color}88` }]}>{label}</Text>
       <Text style={[statStyles.value, { color }]}>{value}</Text>
+      {mod !== undefined && <Text style={statStyles.mod}>({mod})</Text>}
     </View>
   );
 }
@@ -360,6 +362,7 @@ const statStyles = StyleSheet.create({
   },
   label: { fontSize: 9, fontFamily: 'Inter_600SemiBold', letterSpacing: 1 },
   value: { fontSize: 16, fontFamily: 'Inter_700Bold', marginTop: 2 },
+  mod: { fontSize: 9, fontFamily: 'Inter_600SemiBold', color: '#8c829e', marginTop: 1 },
 });
 
 function SummaryRow({ label, value, color, last }: { label: string; value: string; color: string; last?: boolean }) {

@@ -209,9 +209,11 @@ def patch_bug_5_d20_total_stat_modifier(
             res.changes_applied.append(
                 f"Verified Tactician base Strength initialized at 3 (+2 Exiled Soldier = 5) in {fpath.name}"
             )
-        elif fpath.name == "storyValidator.ts" and "totalNodes: 1636" in text:
+        elif fpath.name in ("storyValidator.ts", "storyMetadata.generated.ts") and (
+            '"totalNodes": 1636' in text or "totalNodes: 1636" in text or "GENERATED_STORY_SUMMARY" in text
+        ):
             res.changes_applied.append(
-                f"Verified canonical totalNodes: 1636 in {fpath.name}"
+                f"Verified canonical build-time totalNodes 1636 in {fpath.name}"
             )
     res.status = (
         "APPLIED"

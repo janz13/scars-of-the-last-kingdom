@@ -9,8 +9,8 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { Feather } from '@expo/vector-icons';
-import type { DiceCheck } from '../data/types';
-import { DICE_STAT_LABELS } from '../logic/diceEngine';
+import type { ChoiceEffects, DiceCheck, GameState } from '../data/types';
+import { DICE_STAT_LABELS, getDiceOddsPreview } from '../logic/diceEngine';
 import { MOTION_EASINGS, MOTION_SPRINGS } from '../constants/motion';
 import PixelFrame, { type FactionTint } from './scene/PixelFrame';
 
@@ -21,6 +21,9 @@ interface Props {
   reasons: string[];
   flavorText?: string;
   diceCheck?: DiceCheck;
+  state?: GameState;
+  effects?: ChoiceEffects;
+  highContrast?: boolean;
   onPress: () => void;
   hotkeyIndex?: number;
   isTyping?: boolean;
@@ -40,6 +43,9 @@ export default function ChoiceButton({
   reasons,
   flavorText,
   diceCheck,
+  state,
+  effects,
+  highContrast = false,
   onPress,
   hotkeyIndex,
   isTyping,
@@ -51,6 +57,16 @@ export default function ChoiceButton({
 
   const reasonText = reasons.length > 0 ? reasons.join(' · ') : (flavorText ?? '');
   const hasDice = Boolean(diceCheck);
+  const dicePreview = hasDice && diceCheck && state ? getDiceOddsPreview(state, diceCheck) : null;
+  const supplyCosts: string[] = [];
+  if (met && effects) {
+    if ((effects.food ?? 0) < 0) supplyCosts.push(`${effects.food} Food`);
+    if ((effects.water ?? 0) < 0) supplyCosts.push(`${effects.water} Water`);
+    if ((effects.medicine ?? 0) < 0) supplyCosts.push(`${effects.medicine} Med`);
+    if ((effects.scrap ?? 0) < 0) supplyCosts.push(`${effects.scrap} Scrap`);
+    if ((effects.ammo ?? 0) < 0) supplyCosts.push(`${effects.ammo} Ammo`);
+    if ((effects.relics ?? 0) < 0) supplyCosts.push(`${effects.relics} Relic`);
+  }
   const [isHovered, setIsHovered] = useState(false);
 
   const choiceVariant: FactionTint = !met
@@ -203,7 +219,10 @@ export default function ChoiceButton({
               </View>
             )}
             <Text
-              style={[styles.text, met ? styles.textActive : styles.textLocked]}
+              style={[
+                styles.text,
+                met ? (highContrast ? styles.textActiveHighContrast : styles.textActive) : styles.textLocked,
+              ]}
               numberOfLines={5}
             >
               {text}
@@ -221,8 +240,16 @@ export default function ChoiceButton({
             <View style={styles.diceInfo}>
               <Feather name="zap" size={10} color="#b87de0" />
               <Text style={styles.diceInfoText}>
-                {DICE_STAT_LABELS[diceCheck!.stat]} check · DC {diceCheck!.difficulty}
+                {dicePreview
+                  ? `${dicePreview.statLabel} DC ${dicePreview.difficulty} · Your ${dicePreview.statLabel} ${dicePreview.effectiveStat} (${dicePreview.modifierFormatted}) · ${dicePreview.successPct}% Success${dicePreview.hasLuckReroll ? ' · ★ Luck Reroll Ready' : ''}`
+                  : `${DICE_STAT_LABELS[diceCheck!.stat]} check · DC ${diceCheck!.difficulty}`}
               </Text>
+            </View>
+          )}
+          {met && supplyCosts.length > 0 && (
+            <View style={styles.costInfo}>
+              <Feather name="minus-circle" size={9} color="#e67e22" />
+              <Text style={styles.costInfoText}>Cost: {supplyCosts.join(' · ')}</Text>
             </View>
           )}
 
@@ -361,6 +388,22 @@ const styles = StyleSheet.create({
   textActive: {
     color: '#d4c5a9',
     fontFamily: 'Inter_400Regular',
+  },
+  textActiveHighContrast: {
+    color: '#ffffff',
+    fontFamily: 'Inter_500Medium',
+  },
+  costInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+    marginTop: 5,
+    marginLeft: 1,
+  },
+  costInfoText: {
+    fontSize: 10,
+    color: '#e67e22',
+    fontFamily: 'Inter_500Medium',
   },
   textLocked: {
     color: '#5a4870',

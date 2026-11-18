@@ -21,6 +21,7 @@ import { useGame } from '../context/GameContext';
 import SaveNotification from './SaveNotification';
 import { getSurvivalWarnings } from '../logic/gameEngine';
 import type { SurvivalWarning, SurvivalWarningSeverity, SurvivalWarningType } from '../logic/gameEngine';
+import { resolveNodeNarrative } from '../logic/narrativeResolver';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import PixelStage from './scene/PixelStage';
 import ChoiceButton from './ChoiceButton';
@@ -92,6 +93,7 @@ interface StatBarProps {
   onCompanions: () => void;
   onFactions: () => void;
   onHistory: () => void;
+  onMap: () => void;
 }
 
 function StatBar({
@@ -106,6 +108,7 @@ function StatBar({
   onCompanions,
   onFactions,
   onHistory,
+  onMap,
 }: StatBarProps) {
   return (
     <View style={barStyles.container}>
@@ -154,6 +157,9 @@ function StatBar({
           </Pressable>
           <Pressable onPress={onHistory} style={barStyles.navIcon} hitSlop={{ top: 8, bottom: 8, left: 6, right: 6 }}>
             <Feather name="book-open" size={14} color="#6a5e70" />
+          </Pressable>
+          <Pressable onPress={onMap} style={barStyles.navIcon} hitSlop={{ top: 8, bottom: 8, left: 6, right: 6 }} accessibilityRole="button" accessibilityLabel="Chapter Branch Map">
+            <Feather name="git-branch" size={14} color="#1abc9c" />
           </Pressable>
         </View>
       </View>
@@ -292,6 +298,8 @@ export default function StoryPanel({ onOpenHotkeys }: { onOpenHotkeys?: () => vo
   } = useGame();
   const reducedMotion = useReducedMotion();
 
+  const resolvedNarrative = resolveNodeNarrative(currentNode, state);
+
   // Typewriter streaming for narration and dialogue
   const {
     displayedNarration,
@@ -299,52 +307,8 @@ export default function StoryPanel({ onOpenHotkeys }: { onOpenHotkeys?: () => vo
     isTyping,
     skip: skipTypewriter,
   } = useTypewriter({
-    text: (() => {
-      let txt = currentNode?.text ?? '';
-      if (!txt) return txt;
-      const miraInParty = Boolean(
-        state.companions.mira.present &&
-        state.companions.mira.alive &&
-        (state.flags.mira_joins_party || state.flags.mira_recruited || state.character?.startingCompanion === 'mira')
-      );
-      const cainInParty = Boolean(
-        state.companions.cain.present &&
-        state.companions.cain.alive &&
-        (state.flags.cain_joins_party || state.flags.cain_recruited || state.character?.startingCompanion === 'cain')
-      );
-      if (!miraInParty && !cainInParty) {
-        txt = txt.replace('Mira and Cain are not registered and therefore do not exist as far as the Saints are concerned, which is the safest kind of existence in this city. ', '');
-      } else if (!miraInParty && cainInParty) {
-        txt = txt.replace('Mira and Cain are not registered', 'Cain is not registered');
-      } else if (miraInParty && !cainInParty) {
-        txt = txt.replace('Mira and Cain are not registered', 'Mira is not registered');
-      }
-      if (!miraInParty) {
-        txt = txt
-          .replace('Mira points north, toward a clinic she knows. ', '')
-          .replace('Mira tends to whatever needs tending. ', '')
-          .replace('Mira walks beside you with her hands empty and her face composed into the expression she uses when there is no good option and she is choosing not to make it worse by naming it. ', '')
-          .replace('Mira, beside you, counts her remaining medicine with her lips moving silently. ', '')
-          .replace(', what Mira said by firelight', '')
-          .replace('Mira is at your side in two seconds with the antiseptic. ', '')
-          .replace('Mira calls your name three times. The engine answers.', 'The engine answers.');
-        if (currentNode?.id === 'c3_hidden_clinic_arrive') {
-          txt = "The clinic is a converted maintenance bay run by a woman named Vel who was a field nurse in a city that no longer exists. The space is clean in the way that people who know about infection make things clean. Organised. Vel treats three patients before she sees you — a child with an infected foot, a tunnel worker with a cut that needs closing, a person who just needs water and to sit. She looks at you, noting your exhaustion and the pulse on your wrist. \"Rest if you need to,\" she says. \"The engine room lies deeper in the eastern passage.\"";
-        }
-      }
-      if (!cainInParty) {
-        txt = txt
-          .replace('Cain points east. ', '')
-          .replace("Cain sharpens things he doesn't have. ", '')
-          .replace('Cain has already moved to the right-side alcove. He is watching the timing.', 'You move to the right-side alcove and watch the patrol timing.')
-          .replace('Cain is already ten paces ahead. ', '');
-        if (currentNode?.id === 'c3_cain_tactical_moment') {
-          txt = "You pause in the alcove where the tunnel geometry narrows. Studying the three exits, the low ceiling, and the patrol interval ahead, you note that the Rat King's gate guards rotate on a rigid tunnel schedule — though without Cain's inside knowledge of the eastern channel lock sequence, you will have to face the toll gate directly.";
-        }
-      }
-      return txt;
-    })(),
-    dialogue: currentNode?.dialogue,
+    text: resolvedNarrative.text,
+    dialogue: resolvedNarrative.dialogue,
     textSpeed: state.settings.textSpeed,
     reducedMotion,
   });
@@ -490,6 +454,7 @@ export default function StoryPanel({ onOpenHotkeys }: { onOpenHotkeys?: () => vo
         isCompanionEvent={isCompanionEvent}
         fontSize={state.settings.fontSize}
         proseFont={state.settings.proseFont ?? 'inter'}
+        highContrast={state.settings.highContrast ?? false}
         titleFade={titleFade}
         titleSlide={titleSlide}
       />
@@ -550,6 +515,9 @@ export default function StoryPanel({ onOpenHotkeys }: { onOpenHotkeys?: () => vo
                 reasons={reasons}
                 flavorText={choice.flavorText}
                 diceCheck={choice.diceCheck}
+                state={state}
+                effects={choice.effects}
+                highContrast={state.settings.highContrast ?? false}
                 hotkeyIndex={index + 1}
                 isTyping={isTyping}
                 onSkip={skipTypewriter}
@@ -613,6 +581,7 @@ export default function StoryPanel({ onOpenHotkeys }: { onOpenHotkeys?: () => vo
           onCompanions={() => setScreen('companions')}
           onFactions={() => setScreen('factions')}
           onHistory={() => setScreen('history')}
+          onMap={() => setScreen('map')}
         />
       }
       storyContent={storyContent}

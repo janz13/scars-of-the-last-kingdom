@@ -6,7 +6,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useGame } from '../context/GameContext';
 
 export default function HistoryPanel() {
-  const { state, setScreen } = useGame();
+  const { state, setScreen, checkpointMeta, rewindToCheckpoint } = useGame();
   const insets = useSafeAreaInsets();
   const { routeHistory } = state;
 
@@ -21,6 +21,24 @@ export default function HistoryPanel() {
         <Pressable style={styles.backBtn} onPress={() => setScreen('game')}>
           <Feather name="x" size={22} color="#8a7d6e" />
         </Pressable>
+      </View>
+
+      <View style={styles.actionBar}>
+        <Pressable style={styles.mapActionBtn} onPress={() => setScreen('map')}>
+          <Feather name="git-branch" size={13} color="#1abc9c" />
+          <Text style={styles.mapActionText}>OPEN CHAPTER BRANCH MAP [M]</Text>
+        </Pressable>
+        {checkpointMeta && (
+          <Pressable
+            style={styles.rewindActionBtn}
+            onPress={() => {
+              void rewindToCheckpoint();
+            }}
+          >
+            <Feather name="rotate-ccw" size={13} color="#e67e22" />
+            <Text style={styles.rewindActionText}>REWIND TO CHECKPOINT ({checkpointMeta.label})</Text>
+          </Pressable>
+        )}
       </View>
 
       <ScrollView style={styles.scroll} contentContainerStyle={[styles.content, { paddingBottom: botPad + 20 }]}>
@@ -67,6 +85,48 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
   },
   backBtn: { position: 'absolute', right: 16, bottom: 16, padding: 6 },
+  actionBar: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+    paddingHorizontal: 16,
+    paddingTop: 12,
+    paddingBottom: 4,
+  },
+  mapActionBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    backgroundColor: 'rgba(26,188,156,0.1)',
+    borderWidth: 1,
+    borderColor: 'rgba(26,188,156,0.4)',
+    borderRadius: 4,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+  },
+  mapActionText: {
+    fontSize: 10,
+    letterSpacing: 1.4,
+    color: '#1abc9c',
+    fontFamily: 'Inter_600SemiBold',
+  },
+  rewindActionBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    backgroundColor: 'rgba(230,126,34,0.1)',
+    borderWidth: 1,
+    borderColor: 'rgba(230,126,34,0.45)',
+    borderRadius: 4,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+  },
+  rewindActionText: {
+    fontSize: 10,
+    letterSpacing: 1.1,
+    color: '#e67e22',
+    fontFamily: 'Inter_600SemiBold',
+  },
   scroll: { flex: 1 },
   content: { padding: 16 },
   empty: {

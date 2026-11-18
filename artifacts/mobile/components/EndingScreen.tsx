@@ -19,6 +19,7 @@ import { getEndingById } from '../data/endings';
 import { ENDINGS } from '../data/story/endings';
 import { MOTION_SPRINGS } from '../constants/motion';
 import { sound } from '../logic/audioEngine';
+import { sanitizeEndingDescription } from '../logic/narrativeResolver';
 import { CinematicView } from './scene/CinematicView';
 import { getEndingLoopTimeline } from '../data/cinematics/endingLoops';
 import { exportEndingClip, isClipExportSupported } from '../logic/clipExporter';
@@ -46,7 +47,7 @@ const ENDING_ICONS: Record<string, string> = {
 };
 
 export default function EndingScreen() {
-  const { state, currentNode, makeChoice, setScreen, deleteAndReset } = useGame();
+  const { state, currentNode, makeChoice, setScreen, deleteAndReset, checkpointMeta, rewindToCheckpoint } = useGame();
   const [exportStatus, setExportStatus] = useState<'idle' | 'recording' | 'done' | 'error'>('idle');
   const insets = useSafeAreaInsets();
   const { activeEnding, endingsDiscovered, routeHistory } = state;
@@ -291,16 +292,7 @@ export default function EndingScreen() {
 
           {/* Description */}
           <Text style={styles.endingText}>
-            {(() => {
-              let desc = ending?.description ?? '';
-              if (!state.companions.mira.present) {
-                desc = desc.replace('Mira walks with her hands empty. ', '');
-              }
-              if (!state.companions.cain.present) {
-                desc = desc.replace('Cain is already ten paces ahead. ', '');
-              }
-              return desc;
-            })()}
+            {sanitizeEndingDescription(ending?.description, state)}
           </Text>
 
           {/* Run summary card */}
@@ -371,6 +363,17 @@ export default function EndingScreen() {
                       makeChoice(epilogueChoice.id);
                     }}
                     primary
+                  />
+                )}
+                {checkpointMeta && (
+                  <EndingButton
+                    label={`REWIND TO CHECKPOINT — ${checkpointMeta.label.toUpperCase()}`}
+                    icon="rotate-ccw"
+                    color="#e67e22"
+                    onPress={() => {
+                      void rewindToCheckpoint();
+                    }}
+                    primary={!epilogueChoice}
                   />
                 )}
                 <EndingButton

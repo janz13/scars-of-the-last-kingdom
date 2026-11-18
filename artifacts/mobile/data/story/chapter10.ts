@@ -581,7 +581,8 @@ export const CHAPTER_10_NODES: StoryNode[] = [
         id: 'c10_leaves_last_chance',
         text: '"Wait. I am not finished with this conversation."',
         nextNode: 'c10_clinic_forgive_choice',
-        effects: { miraTrust: 1 },
+        effects: { setFlags: ['c10_mira_leave_hesitated'], miraTrust: 1 },
+        requirements: { blockedFlags: ['c10_mira_leave_hesitated'] },
       },
       {
         id: 'c10_leaves_let_go',
@@ -915,7 +916,7 @@ export const CHAPTER_10_NODES: StoryNode[] = [
         id: 'c10_veyra_fail_cain_stays',
         text: '"Cain. Your choice."',
         nextNode: 'c10_cain_accept_past',
-        requirements: { cainTrust: 6 },
+        requirements: { blockedFlags: ['cain_chose_player_over_saints'], cainTrust: 6 },
         effects: { cainTrust: 3, setFlags: ['cain_chose_player_over_saints'] },
       },
       {

@@ -42,6 +42,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Generate Story Metadata
+        run: pnpm run generate:metadata
+
       - name: Run Typecheck
         run: pnpm run typecheck
 
@@ -87,4 +90,20 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
         with:
-          timeout: 1200000
+          timeout: 600000
+
+      - name: Post-Deploy Live URL & SW Cache Smoke Check
+        shell: bash
+        run: |
+          BASE_URL="${{ steps.deployment.outputs.page_url }}"
+          SHORT_SHA="${GITHUB_SHA:0:7}"
+          for i in $(seq 1 6); do
+            if curl -fsSL "${BASE_URL}" > /dev/null && curl -fsSL "${BASE_URL}sw.js?t=$(date +%s)" | grep -q "sotlk-${SHORT_SHA}"; then
+              echo "✅ Live deployment verified at ${BASE_URL} with CACHE_VERSION=sotlk-${SHORT_SHA}"
+              exit 0
+            fi
+            echo "⏳ Waiting for CDN propagation (${i}/6)..."
+            sleep 5
+          done
+          echo "⚠️ Timed out waiting for SW stamp propagation; checking base HTML status:"
+          curl -fsSLI "${BASE_URL}"

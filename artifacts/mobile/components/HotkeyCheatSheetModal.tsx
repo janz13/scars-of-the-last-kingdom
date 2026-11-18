@@ -42,12 +42,14 @@ const SHORTCUT_SECTIONS: ShortcutSection[] = [
       { keys: ['S'], description: 'Open Character Stats' },
       { keys: ['F'], description: 'Open Factions' },
       { keys: ['H'], description: 'Open Route History' },
+      { keys: ['M'], description: 'Open Chapter Branch Map' },
     ],
   },
   {
     title: 'SYSTEM & CONTROLS',
     shortcuts: [
       { keys: ['Ctrl + S'], description: 'Quick Save timeline' },
+      { keys: ['R'], description: 'Rewind to Checkpoint (on Ending Screen)' },
       { keys: ['Escape'], description: 'Close modal / Return to game' },
       { keys: ['?', 'Shift + /'], description: 'Toggle Hotkey Cheat Sheet' },
     ],

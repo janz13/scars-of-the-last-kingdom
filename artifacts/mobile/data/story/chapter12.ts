@@ -2077,6 +2077,8 @@ export const CHAPTER_12_NODES: StoryNode[] = [
         id: 'c12_wander_battlefield',
         text: 'Move through the Citywide Battlefield. The exit from the chapter is on the other side.',
         nextNode: 'c12_citywide_battlefield',
+        requirements: { blockedFlags: ['c12_wander_battlefield_checked'] },
+        effects: { setFlags: ['c12_wander_battlefield_checked'] },
       },
       {
         id: 'c12_wander_complete_departure',

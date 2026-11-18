@@ -62,6 +62,8 @@ export interface StoryTextProps {
   isDesktopView?: boolean;
   /** Whether reduced motion is enabled */
   reducedMotion?: boolean;
+  /** High-legibility reading mode */
+  highContrast?: boolean;
   /** Custom container style */
   style?: StyleProp<ViewStyle>;
 }
@@ -104,11 +106,12 @@ export default function StoryText({
   titleSlide,
   isDesktopView = false,
   reducedMotion = false,
+  highContrast = false,
   style,
 }: StoryTextProps) {
   // Font scaling metrics
   const narrationFontSize = fontSize === 'small' ? 14 : fontSize === 'large' ? 19 : 16.5;
-  const narrationLineHeight = fontSize === 'small' ? 23 : fontSize === 'large' ? 31 : 28;
+  const narrationLineHeight = (fontSize === 'small' ? 23 : fontSize === 'large' ? 31 : 28) + (highContrast ? 2 : 0);
   const dialogueFontSize = fontSize === 'small' ? 13 : fontSize === 'large' ? 17 : 15.5;
   const dialogueLineHeight = fontSize === 'small' ? 21 : fontSize === 'large' ? 27 : 25;
 
@@ -141,6 +144,7 @@ export default function StoryText({
       style={[
         styles.storySection,
         isDesktopView && styles.desktopStorySection,
+        highContrast && isDesktopView && styles.highContrastDesktopSection,
         isHallucination && styles.hallucinationSection,
         isCompanionEvent && {
           backgroundColor: isCainSpeaker ? 'rgba(40,20,0,0.28)' : 'rgba(30,0,40,0.22)',
@@ -196,6 +200,7 @@ export default function StoryText({
       <Text
         style={[
           styles.narration,
+          highContrast && styles.highContrastNarration,
           fontStyle,
           isHallucination && styles.hallucinationNarration,
           { fontSize: narrationFontSize, lineHeight: narrationLineHeight },
@@ -235,6 +240,7 @@ export default function StoryText({
                   styles.dialogue,
                   fontStyle,
                   speakerMeta ? { color: '#f0e2c8' } : undefined,
+                  highContrast && { color: '#ffffff' },
                   isHallucination && styles.hallucinationDialogue,
                   { fontSize: dialogueFontSize, lineHeight: dialogueLineHeight },
                 ]}
@@ -286,6 +292,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 36,
     paddingTop: 32,
     paddingBottom: 28,
+  },
+  highContrastDesktopSection: {
+    backgroundColor: 'rgba(6, 4, 12, 0.97)',
+    borderColor: 'rgba(212, 180, 110, 0.45)',
+  },
+  highContrastNarration: {
+    color: '#f5efe6',
   },
   hallucinationSection: {
     backgroundColor: 'rgba(30,0,50,0.25)',

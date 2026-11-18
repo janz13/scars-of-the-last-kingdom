@@ -12,6 +12,7 @@ import InventoryPanel from "@/components/InventoryPanel";
 import CompanionPanel from "@/components/CompanionPanel";
 import FactionPanel from "@/components/FactionPanel";
 import HistoryPanel from "@/components/HistoryPanel";
+import BranchMapPanel from "@/components/BranchMapPanel";
 import EndingScreen from "@/components/EndingScreen";
 import SettingsPanel from "@/components/SettingsPanel";
 import ChapterRoadmapScreen from "@/components/ChapterRoadmapScreen";
@@ -99,6 +100,7 @@ function ScreenRouter({ screen, onOpenHotkeys }: { screen: string; onOpenHotkeys
     case "companions":
     case "factions":
     case "history":
+    case "map":
     case "settings":
       return <GameScreens screen={screen} onOpenHotkeys={onOpenHotkeys} />;
     case "ending":
@@ -116,6 +118,7 @@ function GameScreens({ screen, onOpenHotkeys }: { screen: string; onOpenHotkeys?
     case "companions":return <CompanionPanel />;
     case "factions":  return <FactionPanel />;
     case "history":   return <HistoryPanel />;
+    case "map":       return <BranchMapPanel />;
     case "settings":  return <SettingsPanel />;
     default:          return <StoryPanel onOpenHotkeys={onOpenHotkeys} />;
   }

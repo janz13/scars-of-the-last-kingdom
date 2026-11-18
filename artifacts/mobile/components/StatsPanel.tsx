@@ -19,6 +19,8 @@ import { Feather } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useGame } from '../context/GameContext';
 import { MOTION_SPRINGS } from '../constants/motion';
+import { getStatBreakdown } from '../logic/diceEngine';
+import type { DiceStat } from '../data/types';
 
 interface StatBarRowProps {
   label: string;
@@ -159,12 +161,53 @@ export default function StatsPanel() {
         {/* Attributes */}
         <SectionCard title="ATTRIBUTES" icon="zap">
           <View style={styles.attrGrid}>
-            <AttrBadge label="STR" value={stats.strength} color="#e74c3c" delay={320} />
-            <AttrBadge label="INT" value={stats.intelligence} color="#3d9ad1" delay={360} />
-            <AttrBadge label="AGI" value={stats.agility} color="#2ecc71" delay={400} />
-            <AttrBadge label="CHA" value={stats.charisma} color="#c9a84c" delay={440} />
-            <AttrBadge label="LCK" value={stats.luck} color="#e67e22" delay={480} />
+            {(['strength', 'intelligence', 'agility', 'charisma', 'luck'] as const).map((statKey, idx) => {
+              const colors: Record<DiceStat, string> = {
+                strength: '#e74c3c',
+                intelligence: '#3d9ad1',
+                agility: '#2ecc71',
+                charisma: '#c9a84c',
+                luck: '#e67e22',
+              };
+              const bd = getStatBreakdown(state, statKey);
+              return (
+                <AttrBadge
+                  key={statKey}
+                  label={bd.statLabel}
+                  value={bd.storedValue}
+                  modifierText={bd.modifierFormatted}
+                  color={colors[statKey]}
+                  delay={320 + idx * 40}
+                />
+              );
+            })}
           </View>
+          {character && (
+            <View style={styles.breakdownBox}>
+              <Text style={styles.breakdownHeader}>ATTRIBUTE BREAKDOWN (ROLL EFFECTIVE)</Text>
+              {(['strength', 'intelligence', 'agility', 'charisma', 'luck'] as const).map((statKey) => {
+                const bd = getStatBreakdown(state, statKey);
+                const parts: string[] = [`${bd.classBase} Base`];
+                if (bd.bgBonus !== 0 && bd.bgName) {
+                  parts.push(`${bd.bgBonus > 0 ? '+' : ''}${bd.bgBonus} ${bd.bgName}`);
+                }
+                if (bd.runtimeDelta !== 0) {
+                  parts.push(`${bd.runtimeDelta > 0 ? '+' : ''}${bd.runtimeDelta} Story`);
+                }
+                if (bd.traitBonus !== 0 && bd.traitName) {
+                  parts.push(`+${bd.traitBonus} ${bd.traitName}`);
+                }
+                return (
+                  <View key={statKey} style={styles.breakdownRow}>
+                    <Text style={styles.breakdownStat}>{bd.statFull}</Text>
+                    <Text style={styles.breakdownDetail}>
+                      {parts.join(' ')} = {bd.effectiveStat} ({bd.modifierFormatted})
+                    </Text>
+                  </View>
+                );
+              })}
+            </View>
+          )}
         </SectionCard>
 
         {/* Corruption */}
@@ -189,7 +232,7 @@ export default function StatsPanel() {
   );
 }
 
-function AttrBadge({ label, value, color, delay = 0 }: { label: string; value: number; color: string; delay?: number }) {
+function AttrBadge({ label, value, modifierText, color, delay = 0 }: { label: string; value: number; modifierText?: string; color: string; delay?: number }) {
   const fadeAnim = useSharedValue(0);
   const scaleAnim = useSharedValue(0.85);
   useEffect(() => {
@@ -212,6 +255,9 @@ function AttrBadge({ label, value, color, delay = 0 }: { label: string; value: n
     >
       <Text style={[styles.attrLabel, { color: `${color}88` }]}>{label}</Text>
       <Text style={[styles.attrValue, { color }]}>{value}</Text>
+      {modifierText !== undefined && (
+        <Text style={styles.attrMod}>Roll {modifierText}</Text>
+      )}
     </Animated.View>
   );
 }
@@ -360,6 +406,44 @@ const styles = StyleSheet.create({
   attrValue: {
     fontSize: 20,
     fontFamily: 'Inter_700Bold',
+  },
+  attrMod: {
+    fontSize: 9,
+    color: '#8c829e',
+    fontFamily: 'Inter_600SemiBold',
+    marginTop: 2,
+  },
+  breakdownBox: {
+    marginTop: 14,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(42,38,58,0.6)',
+    gap: 5,
+  },
+  breakdownHeader: {
+    fontSize: 9,
+    letterSpacing: 1.8,
+    color: '#6a5e70',
+    fontFamily: 'Inter_600SemiBold',
+    marginBottom: 4,
+  },
+  breakdownRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: 8,
+  },
+  breakdownStat: {
+    fontSize: 12,
+    color: '#9a8898',
+    fontFamily: 'Inter_500Medium',
+  },
+  breakdownDetail: {
+    fontSize: 11,
+    color: '#ede0c4',
+    fontFamily: 'Inter_400Regular',
+    textAlign: 'right',
+    flex: 1,
   },
 
   warningBadge: {

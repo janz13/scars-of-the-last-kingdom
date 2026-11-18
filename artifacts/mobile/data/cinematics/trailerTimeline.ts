@@ -1,4 +1,7 @@
 import { CinematicTimeline } from '../../engine/pixel/cinematicPlayer';
+import { GENERATED_STORY_SUMMARY } from '../storyMetadata.generated';
+
+const TRAILER_SUMMARY_EYEBROW = `${GENERATED_STORY_SUMMARY.totalNodes.toLocaleString('en-US')} NODES · ${GENERATED_STORY_SUMMARY.pixelSceneCount} PIXEL SCENES · ${GENERATED_STORY_SUMMARY.endingNodes} ENDINGS`;
 
 /**
  * 75-second Master Trailer Timeline
@@ -148,7 +151,7 @@ export const TRAILER_75S_TIMELINE: CinematicTimeline = {
       titleCard: {
         startSec: 1.0,
         endSec: 7.2,
-        eyebrow: '1,636 NODES · 169 PIXEL SCENES · 244 ENDINGS',
+        eyebrow: TRAILER_SUMMARY_EYEBROW,
         title: 'WHAT WILL YOU SAY BACK?',
         subtitle: 'EPILOGUE: THE RESPONSE — INCLUDED',
       },

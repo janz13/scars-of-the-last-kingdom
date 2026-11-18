@@ -133,12 +133,15 @@ export const CHAPTER_2_NODES: StoryNode[] = [
         id: 'c2_toward_towers',
         text: 'The Glass Court towers are north-northwest. Information lives there, if nothing else.',
         nextNode: 'c2_glass_approach',
+        requirements: { blockedFlags: ['c2_glass_approach_visited'] },
+        effects: { setFlags: ['c2_glass_approach_visited'] },
       },
       {
         id: 'c2_follow_the_pulse',
         text: 'The mark is responding to something from the west. Follow it.',
         nextNode: 'c2_choir_signal_heard',
-        effects: { corruption: 1 },
+        effects: { setFlags: ['c2_choir_signal_visited'], corruption: 1 },
+        requirements: { blockedFlags: ['c2_choir_signal_visited'] },
       },
       {
         id: 'c2_archive_symbol',
@@ -150,13 +153,15 @@ export const CHAPTER_2_NODES: StoryNode[] = [
         id: 'c2_water_first',
         text: 'Before anything else — you need water. You have twelve hours at most.',
         nextNode: 'c2_water_crisis',
-        effects: { thirst: -1 },
+        effects: { setFlags: ['c2_water_crisis_visited'], thirst: -1 },
+        requirements: { blockedFlags: ['c2_water_crisis_visited'] },
       },
       {
         id: 'c2_patrol_risk',
         text: 'Move east through the open streets. Risk the patrol routes.',
         nextNode: 'c2_patrol_spotted',
-        effects: { ironSaints: -1 },
+        effects: { setFlags: ['c2_patrol_visited'], ironSaints: -1 },
+        requirements: { blockedFlags: ['c2_patrol_visited'] },
       },
       {
         id: 'c2_survivor_rubble',
@@ -1932,6 +1937,23 @@ export const CHAPTER_2_NODES: StoryNode[] = [
     location: 'City Surface — Improvised Shelter',
     imageKey: 'surface_night',
     text: 'The camp is minimal: cleared floor, one covered fire small enough to not be visible from the street, watch rotation if you have companions. The surface at night has its own sounds — wind through structural damage, distant Saints activity, once something that isn\'t any of those things, a low harmonic that might be the Choir\'s broadcast traveling through the ground, or might be the city\'s own infrastructure doing what damaged infrastructure does in the dark. Mira tends to whatever needs tending. Cain sharpens things he doesn\'t have. You hold the mark against your palm and feel it thinking at you.',
+    narrativeBlocks: [
+      {
+        when: { miraPresent: true, cainPresent: true },
+        text: 'The camp is minimal: cleared floor, one covered fire small enough to not be visible from the street, watch rotation split across three. The surface at night has its own sounds — wind through structural damage, distant Saints activity, once something that isn\'t any of those things, a low harmonic that might be the Choir\'s broadcast traveling through the ground, or might be the city\'s own infrastructure doing what damaged infrastructure does in the dark. Mira tends to whatever needs tending. Cain sharpens things he doesn\'t have. You hold the mark against your palm and feel it thinking at you.',
+      },
+      {
+        when: { miraPresent: true, cainPresent: false },
+        text: 'The camp is minimal: cleared floor, one covered fire small enough to not be visible from the street, watch rotation split with Mira. The surface at night has its own sounds — wind through structural damage, distant Saints activity, once something that isn\'t any of those things, a low harmonic that might be the Choir\'s broadcast traveling through the ground, or might be the city\'s own infrastructure doing what damaged infrastructure does in the dark. Mira tends to whatever needs tending across the firelight. You hold the mark against your palm and feel it thinking at you.',
+      },
+      {
+        when: { miraPresent: false, cainPresent: true },
+        text: 'The camp is minimal: cleared floor, one covered fire small enough to not be visible from the street, watch rotation split with Cain. The surface at night has its own sounds — wind through structural damage, distant Saints activity, once something that isn\'t any of those things, a low harmonic that might be the Choir\'s broadcast traveling through the ground, or might be the city\'s own infrastructure doing what damaged infrastructure does in the dark. Cain sits near the threshold, sharpening things he doesn\'t have and listening to the dark. You hold the mark against your palm and feel it thinking at you.',
+      },
+      {
+        text: 'The camp is minimal: cleared floor, one covered fire small enough to not be visible from the street, and only you to keep first and last watch. The surface at night has its own sounds — wind through structural damage, distant Saints activity, once something that isn\'t any of those things, a low harmonic that might be the Choir\'s broadcast traveling through the ground, or might be the city\'s own infrastructure doing what damaged infrastructure does in the dark. Alone in the cold glow, you hold the mark against your palm and feel it thinking at you.',
+      },
+    ],
     effectsOnEnter: { morale: 3, health: 2, setFlags: ['c2_surface_camp_made'] },
     choices: [
       {

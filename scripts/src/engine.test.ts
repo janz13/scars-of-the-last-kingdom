@@ -24,6 +24,10 @@ const {
 
 const {
   getStatModifier,
+  formatStatModifier,
+  getDiceOddsPreview,
+  getStatBreakdown,
+  canUseLuckReroll,
   resolveDiceCheck,
 } = require('../../artifacts/mobile/logic/diceEngine.ts');
 
@@ -407,17 +411,20 @@ console.log('\n--- 3. Testing runSurvivalTick and checkSurvivalEndings ---');
 console.log('\n--- 4. Testing diceEngine ---');
 
 {
-  // Test: Stat modifiers
+  // Test: Unified Stat modifiers (3–15+ scale)
   assert(getStatModifier(2) === -3, 'Stat 2 gives -3 modifier');
-  assert(getStatModifier(5) === -2, 'Stat 5 gives -2 modifier');
-  assert(getStatModifier(7) === -1, 'Stat 7 gives -1 modifier');
-  assert(getStatModifier(9) === 0, 'Stat 9 gives 0 modifier');
-  assert(getStatModifier(11) === 1, 'Stat 11 gives +1 modifier');
-  assert(getStatModifier(15) === 2, 'Stat 15 gives +2 modifier');
-  assert(getStatModifier(20) === 3, 'Stat 20 gives +3 modifier');
-  assert(getStatModifier(25) === 4, 'Stat 25 gives +4 modifier');
+  assert(getStatModifier(3) === -2, 'Stat 3 gives -2 modifier');
+  assert(getStatModifier(4) === -1, 'Stat 4 gives -1 modifier');
+  assert(getStatModifier(5) === 0, 'Stat 5 gives 0 modifier');
+  assert(getStatModifier(7) === 1, 'Stat 7 gives +1 modifier');
+  assert(getStatModifier(9) === 2, 'Stat 9 gives +2 modifier');
+  assert(getStatModifier(12) === 3, 'Stat 12 gives +3 modifier');
+  assert(getStatModifier(16) === 4, 'Stat 16 gives +4 modifier');
+  assert(formatStatModifier(0) === '+0', 'formatStatModifier formats 0 as +0');
+  assert(formatStatModifier(-2) === '-2', 'formatStatModifier formats -2 as -2');
 
-  const state = createBaseState(); // INT = 12 -> modifier +1
+  const baseState = createBaseState();
+  const state = { ...baseState, stats: { ...baseState.stats, intelligence: 8, luck: 7 } }; // INT = 8 -> modifier +1, LCK = 7 -> reroll ready
   const check = {
     stat: 'intelligence',
     diceType: 'd20',
@@ -427,6 +434,16 @@ console.log('\n--- 4. Testing diceEngine ---');
     criticalSuccessNode: 'node_int_crit_success',
     criticalFailureNode: 'node_int_crit_fail',
   };
+
+  // Odds preview + Luck Reroll
+  assert(canUseLuckReroll(state) === true, 'canUseLuckReroll returns true when Luck >= 7 and unused');
+  assert(canUseLuckReroll({ ...state, stats: { ...state.stats, luck: 5 } }) === false, 'canUseLuckReroll returns false when Luck < 7');
+  const preview = getDiceOddsPreview(state, check);
+  assert(preview.modifier === 1 && preview.modifierFormatted === '+1', 'getDiceOddsPreview reflects +1 modifier');
+  assert(preview.successPct === 50, `getDiceOddsPreview calculates 50% success (faces 11..20) (got ${preview.successPct})`);
+  assert(preview.hasLuckReroll === true, 'getDiceOddsPreview surfaces luck reroll availability');
+  const breakdown = getStatBreakdown(state, 'intelligence');
+  assert(breakdown.effectiveStat === 8 && breakdown.modifierFormatted === '+1', 'getStatBreakdown computes effective stat and formatted modifier');
 
   // Natural 20
   const critSuccess = resolveDiceCheck(state, check, 20);
@@ -1117,6 +1134,62 @@ for (const cat of endingCategories) {
 assert(TRAILER_75S_TIMELINE.totalDurationSec === 75, 'TRAILER_75S_TIMELINE is 75 seconds long');
 assert(TRAILER_75S_TIMELINE.shots.length === 10, 'TRAILER_75S_TIMELINE has 10 shots');
 
+
+// ============================================================================
+// SUITE 18: ARCHITECTURAL HARDENING, BRANCH MAP, CHECKPOINTS & CYCLE LINTER
+// ============================================================================
+console.log('\n--- Suite 18: Build Metadata, Narrative Blocks, Checkpoints & Cycle Linter ---');
+
+{
+  const { GENERATED_STORY_SUMMARY, GENERATED_ROADMAP_NODE_COUNTS } = require('../../artifacts/mobile/data/storyMetadata.generated.ts');
+  const { resolveNodeNarrative, sanitizeEndingDescription, isCompanionInParty } = require('../../artifacts/mobile/logic/narrativeResolver.ts');
+  const { saveVisitedNodes, loadVisitedNodes, saveBranchCheckpoint, loadBranchCheckpoint, clearBranchCheckpoint } = require('../../artifacts/mobile/logic/saveSystem.ts');
+  const { findUnguardedMutatingCycles } = require('./cycleLinter.ts');
+
+  // 1. Build-time metadata sum invariant
+  const roadmapSum = Object.values(GENERATED_ROADMAP_NODE_COUNTS).reduce((a: number, b: number) => a + b, 0);
+  assert(GENERATED_STORY_SUMMARY.totalNodes === ALL_STORY_NODES.length, 'GENERATED_STORY_SUMMARY.totalNodes matches graph length');
+  assert(GENERATED_STORY_SUMMARY.endingNodes === 244, 'GENERATED_STORY_SUMMARY.endingNodes equals 244');
+  assert(roadmapSum === GENERATED_STORY_SUMMARY.totalNodes, `Roadmap counts sum to ${GENERATED_STORY_SUMMARY.totalNodes} (got ${roadmapSum})`);
+
+  // 2. Typed narrativeBlocks resolution for solo vs party states
+  const soloState = createBaseState();
+  assert(!isCompanionInParty(soloState, 'cain'), 'Solo state correctly reports Cain not in party');
+  const c3CainNode = getSyncNodeById('c3_cain_tactical_moment');
+  const soloC3Text = resolveNodeNarrative(c3CainNode, soloState).text;
+  assert(soloC3Text.includes('without Cain'), 'Solo narrativeBlock renders for c3_cain_tactical_moment');
+  const cainPartyState = {
+    ...soloState,
+    flags: { cain_joins_party: true },
+    companions: { ...soloState.companions, cain: { present: true, trust: 4, alive: true } },
+  };
+  const partyC3Text = resolveNodeNarrative(c3CainNode, cainPartyState).text;
+  assert(partyC3Text.includes('I know the mechanical sequence'), 'Cain party narrativeBlock renders when recruited');
+  const cleanedEndDesc = sanitizeEndingDescription('Mira walks with her hands empty. Dawn breaks.', soloState);
+  assert(cleanedEndDesc === 'Dawn breaks.', 'sanitizeEndingDescription removes phantom Mira line');
+
+  // 3. Cycle Linter 0 unguarded mutating cycles invariant
+  const cycles = findUnguardedMutatingCycles(ALL_STORY_NODES);
+  assert(cycles.length === 0, `Cycle linter reports 0 unguarded mutating cycles across 1,636 nodes (found ${cycles.length})`);
+
+  // 4. Visited nodes & checkpoint rewind round-trip with mock AsyncStorage
+  const mem = new Map<string, string>();
+  const mockStorage = {
+    getItem: async (k: string) => mem.get(k) ?? null,
+    setItem: async (k: string, v: string) => { mem.set(k, v); },
+    removeItem: async (k: string) => { mem.delete(k); },
+  };
+  await saveVisitedNodes(['prologue_start', 'chapter1_start'], mockStorage);
+  const loadedVisited = await loadVisitedNodes(mockStorage);
+  assert(loadedVisited.length === 2 && loadedVisited.includes('chapter1_start'), 'Visited nodes persist and reload cleanly');
+  const cpMeta = await saveBranchCheckpoint(soloState, 'Station Hub', 'Chapter 1', mockStorage);
+  assert(Boolean(cpMeta) && cpMeta?.nodeId === 'metro_station_hub', 'Branch checkpoint saves metadata and snapshot');
+  const loadedCp = await loadBranchCheckpoint(mockStorage);
+  assert(loadedCp?.state.currentNodeId === 'metro_station_hub', 'Branch checkpoint restores exact GameState');
+  await clearBranchCheckpoint(mockStorage);
+  const clearedCp = await loadBranchCheckpoint(mockStorage);
+  assert(clearedCp === null, 'clearBranchCheckpoint removes saved checkpoint');
+}
 console.log(`\n========================================`);
 console.log(`TOTAL TESTS: ${passedTests + failedTests}`);
 console.log(`PASSED:      ${passedTests}`);

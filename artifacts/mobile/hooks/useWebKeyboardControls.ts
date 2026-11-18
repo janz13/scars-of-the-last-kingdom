@@ -17,6 +17,7 @@ export function useWebKeyboardControls(
     initiateDiceRoll,
     commitDiceRoll,
     quickSave,
+    rewindToCheckpoint,
     showHotkeyModal,
     setShowHotkeyModal,
     toggleHotkeyModal,
@@ -32,6 +33,7 @@ export function useWebKeyboardControls(
     initiateDiceRoll,
     commitDiceRoll,
     quickSave,
+    rewindToCheckpoint,
     showHotkeyModal,
     setShowHotkeyModal,
     toggleHotkeyModal,
@@ -50,6 +52,7 @@ export function useWebKeyboardControls(
       initiateDiceRoll,
       commitDiceRoll,
       quickSave,
+      rewindToCheckpoint,
       showHotkeyModal,
       setShowHotkeyModal,
       toggleHotkeyModal,
@@ -87,6 +90,7 @@ export function useWebKeyboardControls(
         initiateDiceRoll: doInitiateRoll,
         commitDiceRoll: doCommitRoll,
         quickSave: doQuickSave,
+        rewindToCheckpoint: doRewind,
         showHotkeyModal: curShowHotkeyModal,
         setShowHotkeyModal: doSetShowHotkeyModal,
         toggleHotkeyModal: doToggleHotkeyModal,
@@ -219,6 +223,20 @@ export function useWebKeyboardControls(
           e.preventDefault();
           (e as any).__handledWebControl = true;
           doSetScreen(curState.screen === 'history' ? 'game' : 'history');
+          return;
+        }
+
+        if (lowerKey === 'm') {
+          e.preventDefault();
+          (e as any).__handledWebControl = true;
+          doSetScreen(curState.screen === 'map' ? 'game' : 'map');
+          return;
+        }
+
+        if (lowerKey === 'r' && curState.screen === 'ending') {
+          e.preventDefault();
+          (e as any).__handledWebControl = true;
+          void doRewind();
           return;
         }
 
