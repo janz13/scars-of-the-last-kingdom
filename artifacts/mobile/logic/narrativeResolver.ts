@@ -82,14 +82,32 @@ export function sanitizeLegacyCompanionProse(rawText: string, state: GameState):
   const cainInParty = isCompanionInParty(state, 'cain');
 
   if (!miraInParty && !cainInParty) {
-    txt = txt.replace(
-      'Mira and Cain are not registered and therefore do not exist as far as the Saints are concerned, which is the safest kind of existence in this city. ',
-      ''
-    );
+    txt = txt
+      .replace(
+        'Mira and Cain are not registered and therefore do not exist as far as the Saints are concerned, which is the safest kind of existence in this city. ',
+        ''
+      )
+      .replace('Neither of them says anything about the thin sound', 'There is no obvious source for the thin sound')
+      .replace(
+        "Mira or Cain or both, depending on who came with you, settling the logistics of rest with the practiced efficiency of people who've done this before.",
+        'you settle the logistics of rest alone with practiced, quiet efficiency.'
+      );
   } else if (!miraInParty && cainInParty) {
-    txt = txt.replace('Mira and Cain are not registered', 'Cain is not registered');
+    txt = txt
+      .replace('Mira and Cain are not registered', 'Cain is not registered')
+      .replace('Neither of them says anything about the thin sound', 'Cain says nothing about the thin sound')
+      .replace(
+        "Mira or Cain or both, depending on who came with you, settling the logistics of rest with the practiced efficiency of people who've done this before.",
+        'Cain settles the perimeter and logistics of rest with practiced efficiency.'
+      );
   } else if (miraInParty && !cainInParty) {
-    txt = txt.replace('Mira and Cain are not registered', 'Mira is not registered');
+    txt = txt
+      .replace('Mira and Cain are not registered', 'Mira is not registered')
+      .replace('Neither of them says anything about the thin sound', 'Mira says nothing about the thin sound')
+      .replace(
+        "Mira or Cain or both, depending on who came with you, settling the logistics of rest with the practiced efficiency of people who've done this before.",
+        'Mira settles the logistics of rest beside you with practiced efficiency.'
+      );
   }
 
   if (!miraInParty) {
@@ -103,7 +121,18 @@ export function sanitizeLegacyCompanionProse(rawText: string, state: GameState):
       .replace('Mira, beside you, counts her remaining medicine with her lips moving silently. ', '')
       .replace(', what Mira said by firelight', '')
       .replace('Mira is at your side in two seconds with the antiseptic. ', '')
-      .replace('Mira calls your name three times. The engine answers.', 'The engine answers.');
+      .replace('Mira calls your name three times. The engine answers.', 'The engine answers.')
+      .replace("Mira's hand, which had been gripping your arm hard enough to leave marks, loosens.", '')
+      .replace('Mira keeps close. ', '')
+      .replace('Mira puts a hand on your arm and says nothing. You understand what she means. You proceed anyway. ', '')
+      .replace("Mira doesn't look at you for the next ten minutes. ", '')
+      .replace("Mira tries to stop it. She can't. ", '')
+      .replace('Mira watches. Her expression is something that hasn\'t happened in a while: relief.', '')
+      .replace('Mira, if she is still with you, has taken two steps back and is watching your face. ', '')
+      .replace(
+        'Mira lets out a breath she seems to have held for minutes, and Cain gives a single, approving nod. ',
+        cainInParty ? 'Cain gives a single, approving nod. ' : ''
+      );
   }
 
   if (!cainInParty) {
@@ -114,36 +143,62 @@ export function sanitizeLegacyCompanionProse(rawText: string, state: GameState):
         'Cain has already moved to the right-side alcove. He is watching the timing.',
         'You move to the right-side alcove and watch the patrol timing.'
       )
-      .replace('Cain is already ten paces ahead. ', '');
+      .replace('Cain is already ten paces ahead. ', '')
+      .replace('Cain is watching the patrol patterns.', '')
+      .replace(
+        "You know this because Cain told you, quietly, before Mira started walking toward the papers queue.",
+        "You spot the gap by timing the soldiers' rotation from the corner."
+      )
+      .replace('Cain reads the markings without touching them. ', '')
+      .replace('Cain meets your eye and nods, once — a professional acknowledgment, nothing more. ', '')
+      .replace("Cain doesn't try. ", '')
+      .replace('Cain has not moved.', '')
+      .replace(
+        'Mira lets out a breath she seems to have held for minutes, and Cain gives a single, approving nod. ',
+        miraInParty ? 'Mira lets out a breath she seems to have held for minutes. ' : ''
+      );
   }
 
-  return txt;
+  return txt.replace(/ {2,}/g, ' ').trim();
 }
 
 /**
- * Resolves the final narration and dialogue strings for a StoryNode, preferring
+ * Resolves the final narration, dialogue, and speaker strings for a StoryNode, preferring
  * structured `narrativeBlocks` / `dialogueBlocks` when present and falling back to
- * sanitized `node.text` / `node.dialogue`.
+ * sanitized `node.text` / `node.dialogue`, with solo speaker fallback after Chapter 1.
  */
 export function resolveNodeNarrative(
   node: StoryNode | undefined,
   state: GameState
-): { text: string; dialogue?: string } {
-  if (!node) return { text: '', dialogue: undefined };
+): { text: string; dialogue?: string; speaker?: string } {
+  if (!node) return { text: '', dialogue: undefined, speaker: undefined };
+
+  let speaker = node.speaker;
+  let suppressedMissingCompanionSpeaker = false;
+  if (node.chapter !== 'Prologue' && node.chapter !== 'Chapter 1') {
+    if (speaker === 'Mira' && !isCompanionInParty(state, 'mira')) {
+      speaker = 'Narrator';
+      suppressedMissingCompanionSpeaker = true;
+    } else if (speaker === 'Cain' && !isCompanionInParty(state, 'cain')) {
+      speaker = 'Narrator';
+      suppressedMissingCompanionSpeaker = true;
+    }
+  }
 
   const blockText = selectFirstMatchingBlock(node.narrativeBlocks, state);
   const text =
     blockText !== undefined ? blockText : sanitizeLegacyCompanionProse(node.text ?? '', state);
 
   const blockDialogue = selectFirstMatchingBlock(node.dialogueBlocks, state);
-  const dialogue =
+  const rawDialogue =
     blockDialogue !== undefined
       ? blockDialogue
-      : node.dialogue
+      : node.dialogue && !suppressedMissingCompanionSpeaker
         ? sanitizeLegacyCompanionProse(node.dialogue, state)
         : undefined;
+  const dialogue = rawDialogue && rawDialogue.trim().length > 0 ? rawDialogue : undefined;
 
-  return { text, dialogue };
+  return { text, dialogue, speaker };
 }
 
 /**

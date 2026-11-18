@@ -140,17 +140,24 @@ export function checkRequirements(state: GameState, req?: ChoiceRequirements): R
     }
   }
 
-  // Class restrictions
-  if (req.classes && state.character) {
-    if (!req.classes.includes(state.character.characterClass)) {
-      reasons.push(`Requires class: ${req.classes.join(' or ')}`);
+  // Class / background restrictions (treat paired classes + backgrounds as OR identity gate)
+  if (req.classes && req.backgrounds && state.character) {
+    const classOk = req.classes.includes(state.character.characterClass);
+    const bgOk = req.backgrounds.includes(state.character.background);
+    if (!classOk && !bgOk) {
+      reasons.push(`Requires class ${req.classes.join(' or ')} or background ${req.backgrounds.join(' or ')}`);
     }
-  }
+  } else {
+    if (req.classes && state.character) {
+      if (!req.classes.includes(state.character.characterClass)) {
+        reasons.push(`Requires class: ${req.classes.join(' or ')}`);
+      }
+    }
 
-  // Background restrictions
-  if (req.backgrounds && state.character) {
-    if (!req.backgrounds.includes(state.character.background)) {
-      reasons.push(`Requires background: ${req.backgrounds.join(' or ')}`);
+    if (req.backgrounds && state.character) {
+      if (!req.backgrounds.includes(state.character.background)) {
+        reasons.push(`Requires background: ${req.backgrounds.join(' or ')}`);
+      }
     }
   }
 

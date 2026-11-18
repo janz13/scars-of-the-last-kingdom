@@ -268,6 +268,22 @@ export const CHAPTER_2_NODES: StoryNode[] = [
     speaker: 'Mira',
     text: 'Mira looks at the water — the rain collection you\'ve gathered — and does something with her face that isn\'t quite a wince.',
     dialogue: 'Silica particulate. Some organic matter — old organic matter. A Medic could filter most of it with a standard kit. Without one, you\'re rolling dice on how long your gut keeps it together. It won\'t kill you today. It might kill you in three days when you can least afford to be weak.',
+    narrativeBlocks: [
+      {
+        when: { miraPresent: true },
+        text: 'Mira looks at the water — the rain collection you\'ve gathered — and does something with her face that isn\'t quite a wince.',
+      },
+      {
+        when: { miraPresent: false },
+        text: 'You hold the rain collection up to the pale ash-light and study what settles at the bottom — fine silica particulate and old organic matter. A Medic could filter most of it with a standard kit; without one, you\'re rolling dice on how long your gut keeps it together.',
+      },
+    ],
+    dialogueBlocks: [
+      {
+        when: { miraPresent: true },
+        text: 'Silica particulate. Some organic matter — old organic matter. A Medic could filter most of it with a standard kit. Without one, you\'re rolling dice on how long your gut keeps it together. It won\'t kill you today. It might kill you in three days when you can least afford to be weak.',
+      },
+    ],
     effectsOnEnter: {},
     choices: [
       {
@@ -304,6 +320,22 @@ export const CHAPTER_2_NODES: StoryNode[] = [
     speaker: 'Cain',
     text: 'Cain grabs your arm and pulls you behind a collapsed wall section before you fully register what he\'s seen. A Saints patrol — six soldiers, full kit, the red-cross sigil on their chest plates. They walk in the practiced rectangle of soldiers who\'ve done this route eight hundred times. One of them carries a mark-detection wand. The device sweeps in lazy arcs. It hasn\'t pointed at you. Yet.',
     dialogue: 'The wand\'s range is about ten meters. We\'re fifteen away. If you move, stay low and move in the shadow of the wall. If it sweeps our direction, the mark will glow. We need to be behind something solid.',
+    narrativeBlocks: [
+      {
+        when: { cainPresent: true },
+        text: 'Cain grabs your arm and pulls you behind a collapsed wall section before you fully register what he\'s seen. A Saints patrol — six soldiers, full kit, the red-cross sigil on their chest plates. They walk in the practiced rectangle of soldiers who\'ve done this route eight hundred times. One of them carries a mark-detection wand. The device sweeps in lazy arcs. It hasn\'t pointed at you. Yet.',
+      },
+      {
+        when: { cainPresent: false },
+        text: 'You drop behind a collapsed wall section just before boots round the corner. A Saints patrol — six soldiers, full kit, the red-cross sigil on their chest plates — marches in the practiced rectangle of a unit that has walked this route eight hundred times. One carries a mark-detection wand with a ten-meter sweep; at fifteen meters out, the mark will glow if the lens turns your way unless solid stone stays between you and the street.',
+      },
+    ],
+    dialogueBlocks: [
+      {
+        when: { cainPresent: true },
+        text: 'The wand\'s range is about ten meters. We\'re fifteen away. If you move, stay low and move in the shadow of the wall. If it sweeps our direction, the mark will glow. We need to be behind something solid.',
+      },
+    ],
     effectsOnEnter: { morale: -2 },
     choices: [
       {

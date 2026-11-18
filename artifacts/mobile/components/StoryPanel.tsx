@@ -443,10 +443,10 @@ export default function StoryPanel({ onOpenHotkeys }: { onOpenHotkeys?: () => vo
         chapter={currentNode.chapter}
         location={currentNode.location}
         title={currentNode.title}
-        speaker={currentNode.speaker}
+        speaker={resolvedNarrative.speaker}
         displayedNarration={displayedNarration}
         displayedDialogue={displayedDialogue}
-        hasDialogue={Boolean(currentNode.dialogue)}
+        hasDialogue={Boolean(resolvedNarrative.dialogue)}
         isTyping={isTyping}
         onSkipTypewriter={skipTypewriter}
         companions={state.companions}
@@ -470,7 +470,7 @@ export default function StoryPanel({ onOpenHotkeys }: { onOpenHotkeys?: () => vo
           isHallucination && styles.hallucinationChoicesPanel,
           isCompanionEvent && {
             backgroundColor:
-              currentNode.speaker === 'Cain'
+              resolvedNarrative.speaker === 'Cain'
                 ? 'rgba(40,20,0,0.92)'
                 : 'rgba(25,10,35,0.92)',
           },
@@ -482,7 +482,7 @@ export default function StoryPanel({ onOpenHotkeys }: { onOpenHotkeys?: () => vo
             isHallucination && styles.hallucinationTopAccent,
             isCompanionEvent && {
               backgroundColor:
-                currentNode.speaker === 'Cain'
+                resolvedNarrative.speaker === 'Cain'
                   ? 'rgba(230,126,34,0.45)'
                   : 'rgba(155,89,182,0.35)',
             },
