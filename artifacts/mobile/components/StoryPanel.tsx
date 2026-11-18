@@ -1,3 +1,4 @@
+import PixelWristMark from './scene/PixelWristMark';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
@@ -138,12 +139,12 @@ function StatBar({
 
         <View style={{ flex: 1 }} />
 
-        {corruption > 0 && (
-          <View style={barStyles.corruptionBadge}>
-            <Feather name="zap" size={9} color="#9b59b6" />
-            <Text style={barStyles.corruptionVal}>{corruption}</Text>
-          </View>
-        )}
+        <PixelWristMark
+          corruption={corruption}
+          size={16}
+          showLabel={corruption > 0}
+          onPress={onStats}
+        />
 
         <View style={barStyles.navRow}>
           <Pressable onPress={onInventory} style={barStyles.navIcon} hitSlop={{ top: 8, bottom: 8, left: 6, right: 6 }}>

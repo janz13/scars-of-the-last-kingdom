@@ -41,7 +41,7 @@ import {
 import { useQualityTier } from '../../constants/pixelTiers';
 import { PaletteCycler } from '../../engine/pixel/palette';
 import { PixelCamera } from '../../engine/pixel/camera';
-import { PixelParticleSystem } from '../../engine/pixel/particles';
+import { PixelParticleSystem, getEffectiveAtmosphere } from '../../engine/pixel/particles';
 import { renderPixelTransition, type PixelTransitionMode } from '../../engine/pixel/transitions';
 import { compositeParallaxLayers, renderStageOverlays } from '../../engine/pixel/compositor';
 
@@ -437,10 +437,11 @@ function WebPixelStage({
 
       loadParallaxLayers(imageKey, orientation, transitionId);
 
-      // Configure atmospheric particles for this scene
+      // Configure atmospheric particles for this scene (manifest tag or inferred weather)
       const effectiveParticleCap = liveStatsRef.current.reducedMotion ? 0 : tierCaps.maxParticles;
+      const effectiveAtmosphere = getEffectiveAtmosphere(imageKey, manifestEntry?.atmosphere);
       particleSysRef.current.configure(
-        manifestEntry?.atmosphere,
+        effectiveAtmosphere,
         effectiveParticleCap,
         masterW,
         masterH
@@ -518,7 +519,16 @@ function WebPixelStage({
           masterH
         );
 
-        // 4. Update and render grid-snapped atmospheric particles
+        // 3b. Canvas-level readability shade so atmospheric particles float cleanly in front
+        const bgGrad = displayCtx.createLinearGradient(0, 0, 0, masterH);
+        bgGrad.addColorStop(0, 'rgba(4,2,10,0.12)');
+        bgGrad.addColorStop(0.4, 'rgba(4,2,10,0.36)');
+        bgGrad.addColorStop(0.75, `rgba(4,2,10,${(overlayOpacity * 0.72).toFixed(2)})`);
+        bgGrad.addColorStop(1, 'rgba(4,2,10,0.86)');
+        displayCtx.fillStyle = bgGrad;
+        displayCtx.fillRect(0, 0, masterW, masterH);
+
+        // 4. Update and render grid-snapped atmospheric particles in front of background
         if (!isReduced && tierCaps.maxParticles > 0) {
           particleSysRef.current.update(dt);
           particleSysRef.current.render(displayCtx, offsets.foreX * 0.5, offsets.foreY * 0.5);
@@ -658,10 +668,10 @@ function WebPixelStage({
   ]);
 
   const overlayColors = [
-    `rgba(4,2,10,0.15)`,
-    `rgba(4,2,10,0.45)`,
-    `rgba(4,2,10,${overlayOpacity})`,
-    `rgba(4,2,10,0.96)`,
+    `rgba(4,2,10,0.06)`,
+    `rgba(4,2,10,0.18)`,
+    `rgba(4,2,10,${(overlayOpacity * 0.35).toFixed(2)})`,
+    `rgba(4,2,10,0.52)`,
   ];
 
   return (
@@ -786,10 +796,10 @@ function NativePixelStage({
   }, [imageKey, fadeDuration, currentKey]);
 
   const overlayColors = [
-    `rgba(4,2,10,0.15)`,
-    `rgba(4,2,10,0.45)`,
-    `rgba(4,2,10,${overlayOpacity})`,
-    `rgba(4,2,10,0.96)`,
+    `rgba(4,2,10,0.06)`,
+    `rgba(4,2,10,0.18)`,
+    `rgba(4,2,10,${(overlayOpacity * 0.35).toFixed(2)})`,
+    `rgba(4,2,10,0.52)`,
   ];
 
   const renderLayer = (key: string, opacity: any) => {

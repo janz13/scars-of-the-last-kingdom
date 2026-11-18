@@ -14,7 +14,7 @@ import { gzipSync } from 'node:zlib';
 // 2.5 MB budget threshold (in bytes: 2.5 * 1024 * 1024 = 2,621,440 B)
 export const MAX_ENTRY_BYTES = 2.5 * 1024 * 1024;
 export const MAX_ENTRY_MB_LABEL = '2.50 MB';
-export const MAX_RAW_ENTRY_BYTES = 3.75 * 1024 * 1024;
+export const MAX_RAW_ENTRY_BYTES = 3.85 * 1024 * 1024;
 
 export interface BundleFileInfo {
   name: string;

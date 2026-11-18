@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Platform, Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import Animated, {
+  cancelAnimation,
   useAnimatedStyle,
   useSharedValue,
   withDelay,
+  withRepeat,
   withSequence,
   withSpring,
   withTiming,
@@ -82,6 +84,30 @@ export default function ChoiceButton({
   const shakeX = useSharedValue(0);
   const entryOpacity = useSharedValue(0);
   const entrySlideX = useSharedValue(-8);
+  const cursorBounce = useSharedValue(0);
+
+  useEffect(() => {
+    if (isHovered && met) {
+      cursorBounce.value = withRepeat(
+        withSequence(
+          withTiming(2, { duration: 220, easing: MOTION_EASINGS.step4 }),
+          withTiming(0, { duration: 220, easing: MOTION_EASINGS.step4 })
+        ),
+        -1,
+        true
+      );
+    } else {
+      cancelAnimation(cursorBounce);
+      cursorBounce.value = 0;
+    }
+    return () => {
+      cancelAnimation(cursorBounce);
+    };
+  }, [isHovered, met]);
+
+  const cursorBounceStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: Math.round(cursorBounce.value) }],
+  }));
 
   useEffect(() => {
     const staggerMs = ((hotkeyIndex ?? 1) - 1) * 45;
@@ -211,7 +237,9 @@ export default function ChoiceButton({
               <Feather name="lock" size={12} color="#4a4058" style={styles.lockIcon} />
             )}
             {met && !hasDice && (
-              <View style={[styles.diamond, isHovered && { backgroundColor: '#f39c12' }]} />
+              <Animated.View style={cursorBounceStyle}>
+                <View style={[styles.diamond, isHovered && { backgroundColor: '#f39c12' }]} />
+              </Animated.View>
             )}
             {met && hasDice && (
               <View style={styles.diceBadge}>

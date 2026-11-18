@@ -1,3 +1,4 @@
+import PixelWristMark from './scene/PixelWristMark';
 import React, { useEffect, useState } from 'react';
 import {
   Pressable,
@@ -222,6 +223,7 @@ export default function DesktopSidebarHUD({ onOpenHotkeys }: DesktopSidebarHUDPr
                   {className.toUpperCase()}
                 </Text>
               </View>
+              <PixelWristMark corruption={stats.corruption} size={16} />
             </View>
           </View>
 

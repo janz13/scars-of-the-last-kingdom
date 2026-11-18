@@ -101,22 +101,22 @@ export class PixelParticleSystem {
   private getTargetCount(type: AtmosphereType, cap: number): number {
     switch (type) {
       case 'rain':
-        return cap;
+        return Math.max(28, cap);
       case 'ash':
       case 'snow-ash':
-        return Math.min(cap, 90);
+        return Math.max(24, Math.min(cap, 90));
       case 'dust':
       case 'spores':
-        return Math.min(cap, 60);
+        return Math.max(20, Math.min(cap, 60));
       case 'embers':
       case 'sparks':
-        return Math.min(cap, 55);
+        return Math.max(22, Math.min(cap, 55));
       case 'drip':
-        return Math.min(cap, 24);
+        return Math.max(16, Math.min(cap, 28));
       case 'fog':
-        return Math.min(cap, 36);
+        return Math.max(16, Math.min(cap, 36));
       default:
-        return Math.min(cap, 50);
+        return Math.max(20, Math.min(cap, 50));
     }
   }
 
@@ -263,21 +263,108 @@ export class PixelParticleSystem {
 
       if (px < 0 || px >= this.width || py < 0 || py >= this.height) continue;
 
-      ctx.globalAlpha = p.alpha;
+      const alpha =
+        this.type === 'embers' || this.type === 'sparks'
+          ? Math.min(1, p.alpha * (0.8 + 0.3 * Math.sin(p.phase * 3.5)))
+          : p.alpha;
+
+      ctx.globalAlpha = alpha;
       ctx.fillStyle = p.color;
 
       if (this.type === 'rain') {
         // 1px wide, 4px tall diagonal raindrop streak snapped to grid
         ctx.fillRect(px, py, 1, 3);
         ctx.fillRect(px - 1, py + 3, 1, 2);
+      } else if (this.type === 'drip') {
+        // Crisp 1px wide, 2px tall vertical water drip with ground splash
+        ctx.fillRect(px, py, 1, 2);
+        if (py > this.height - 18 && (px & 3) === 0) {
+          ctx.fillRect(px - 1, py + 1, 3, 1);
+        }
       } else if (this.type === 'fog') {
         // Dithered horizontal drifting band cluster
         ctx.fillRect(px, py, 12, 2);
         ctx.fillRect(px + 4, py - 2, 8, 2);
+      } else if (this.type === 'embers' || this.type === 'sparks') {
+        // Core pixel + optional glow halo for larger embers
+        ctx.fillRect(px, py, p.size, p.size);
+        if (p.size === 2 && alpha > 0.65) {
+          ctx.globalAlpha = alpha * 0.35;
+          ctx.fillRect(px - 1, py, 4, 2);
+          ctx.fillRect(px, py - 1, 2, 4);
+        }
       } else {
         ctx.fillRect(px, py, p.size, p.size);
       }
     }
     ctx.restore();
   }
+}
+
+/**
+ * Resolves the effective atmospheric particle type for any scene.
+ * If manifest specifies an atmosphere tag, it is preserved.
+ * Otherwise, infers appropriate thematic weather from the imageKey.
+ */
+export function getEffectiveAtmosphere(
+  imageKey: string,
+  manifestAtmosphere?: AtmosphereType
+): AtmosphereType {
+  if (manifestAtmosphere) return manifestAtmosphere;
+  const key = imageKey ? imageKey.toLowerCase() : '';
+  if (
+    key.includes('rain') ||
+    key.includes('storm') ||
+    key.includes('flood') ||
+    key.includes('downpour') ||
+    key.includes('canal') ||
+    key.includes('docks')
+  ) {
+    return 'rain';
+  }
+  if (
+    key.includes('metro') ||
+    key.includes('tunnel') ||
+    key.includes('sublevel') ||
+    key.includes('cistern') ||
+    key.includes('sewer') ||
+    key.includes('catacomb') ||
+    key.includes('archive') ||
+    key.includes('underpass') ||
+    key.includes('passage') ||
+    key.includes('clinic') ||
+    key.includes('vault') ||
+    key.includes('bunker')
+  ) {
+    return 'drip';
+  }
+  if (
+    key.includes('relic') ||
+    key.includes('engine') ||
+    key.includes('core') ||
+    key.includes('choir') ||
+    key.includes('beacon') ||
+    key.includes('generator') ||
+    key.includes('spire') ||
+    key.includes('altar') ||
+    key.includes('relay')
+  ) {
+    return 'sparks';
+  }
+  if (
+    key.includes('skyline') ||
+    key.includes('ruins') ||
+    key.includes('street') ||
+    key.includes('square') ||
+    key.includes('highway') ||
+    key.includes('outskirts') ||
+    key.includes('dawn') ||
+    key.includes('crater') ||
+    key.includes('camp') ||
+    key.includes('surface') ||
+    key.includes('dead_city')
+  ) {
+    return 'ash';
+  }
+  return 'dust';
 }

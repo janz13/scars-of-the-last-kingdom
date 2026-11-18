@@ -11,8 +11,11 @@
 import React, { useEffect, useState } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 import Animated, {
+  cancelAnimation,
   useAnimatedStyle,
   useSharedValue,
+  withRepeat,
+  withSequence,
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
@@ -43,7 +46,27 @@ export default function CharacterPortrait({
   const [isMouthOpen, setIsMouthOpen] = useState(false);
 
   const slideX = useSharedValue(reducedMotion ? 0 : -16);
+  const idleY = useSharedValue(0);
   const opacity = useSharedValue(reducedMotion ? 1 : 0);
+
+  // Stepped retro 1-pixel idle breathing cycle (2400ms period)
+  useEffect(() => {
+    if (reducedMotion) {
+      idleY.value = 0;
+      return;
+    }
+    idleY.value = withRepeat(
+      withSequence(
+        withTiming(-1, { duration: 1100, easing: MOTION_EASINGS.step4 }),
+        withTiming(0, { duration: 1300, easing: MOTION_EASINGS.step4 })
+      ),
+      -1,
+      true
+    );
+    return () => {
+      cancelAnimation(idleY);
+    };
+  }, [reducedMotion]);
 
   // Slide-in entrance when speaker changes
   useEffect(() => {
@@ -103,7 +126,10 @@ export default function CharacterPortrait({
 
   const animStyle = useAnimatedStyle(() => ({
     opacity: opacity.value,
-    transform: [{ translateX: Math.round(slideX.value) }],
+    transform: [
+      { translateX: Math.round(slideX.value) },
+      { translateY: Math.round(idleY.value) },
+    ],
   }));
 
   const meta = CHARACTER_PORTRAIT_CATALOG[characterId] ?? CHARACTER_PORTRAIT_CATALOG.mira;
@@ -120,6 +146,21 @@ export default function CharacterPortrait({
       ]}
       accessibilityLabel={`${meta.displayName} portrait (${expression})`}
     >
+      {/* Speaking Active Audio Pulse Dot */}
+      {isTalking && !reducedMotion && (
+        <View
+          style={[
+            styles.speakingBadge,
+            {
+              backgroundColor: meta.accentColor,
+              width: cellSize * 2,
+              height: cellSize * 2,
+              top: cellSize,
+              right: cellSize,
+            },
+          ]}
+        />
+      )}
       {grid.map((row, rIdx) => (
         <View key={rIdx} style={[styles.row, { height: cellSize }]}>
           {row.map((color, cIdx) => (
@@ -145,6 +186,13 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     backgroundColor: '#080612',
     flexShrink: 0,
+    position: 'relative',
+  },
+  speakingBadge: {
+    position: 'absolute',
+    borderRadius: 1,
+    zIndex: 10,
+    opacity: 0.9,
   },
   row: {
     flexDirection: 'row',
